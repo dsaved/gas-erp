@@ -1,0 +1,37 @@
+{
+    "name": "GAS App",
+    "version": "1.0.3",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "devStart": "nodemon app.js"
+    },
+    "bin": "app.js",
+    "pkg": {
+        "assets": [
+            "node_modules/**/*"
+        ],
+        "targets": [
+            "node12-win-x64"
+        ],
+        "predist": "yarn build && rm -rf node_modules/normalize.css",
+        "postdist": "yarn install"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "convert-excel-to-json": "^1.7.0",
+        "express": "^4.17.1",
+        "forever-monitor": "^1.7.1",
+        "fs": "0.0.1-security",
+        "mysql": "^2.17.1",
+        "pm2": "^4.4.0",
+        "read-excel-file": "^4.0.7",
+        "worker-farm": "^1.7.0",
+        "xlsx": "^0.16.7"
+    },
+    "devDependencies": {
+        "nodemon": "^1.19.1"
+    }
+}

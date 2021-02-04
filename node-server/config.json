@@ -1,0 +1,9 @@
+{
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "database": "audits_master_db",
+    "debug": false,
+    "dateStrings": "date",
+    "multipleStatements": true
+}
