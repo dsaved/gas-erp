@@ -260,14 +260,11 @@
 <script>
 // Import Swal
 import XLSX from "xlsx";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-import fs from "fs";
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -375,57 +372,6 @@ export default {
   },
   watch: {},
   methods: {
-    exportPDF() {
-      const vm = this;
-      this.showLoading("getting file ready for download");
-      const pageC = document.getElementById("pdf-content");
-      setTimeout(() => {
-        html2canvas(pageC, {
-          logging: false,
-        }).then((canvas) => {
-          let pdf = new jsPDF("p", "mm", "a4"); //A4 portrait
-          let ctx = canvas.getContext("2d");
-          let a4w = 190; //A4 size, 210mm x 297mm, with custom margins on each side, display area 190x260
-          let a4h = 260;
-          let imgHeight = Math.floor((a4h * canvas.width) / a4w); //Convert the pixel height of a page image according to the A4 display ratio
-          let renderedHeight = 0;
-          while (renderedHeight < canvas.height) {
-            let page = document.createElement("canvas");
-            page.width = canvas.width;
-            page.height = Math.min(imgHeight, canvas.height - renderedHeight); //Less than one page
-            //Crop the specified area with getImageData and draw it to the canvas object created earlier
-            var a = page.getContext("2d");
-
-            a.putImageData(
-              ctx.getImageData(
-                0,
-                renderedHeight,
-                canvas.width,
-                Math.min(imgHeight, canvas.height - renderedHeight)
-              ),
-              0,
-              0
-            );
-            pdf.addImage(
-              page.toDataURL("image/jpeg", 2.0),
-              "JPEG",
-              10,
-              10,
-              a4w,
-              Math.min(a4h, (a4w * page.height) / page.width)
-            ); //Add image to the page, keep 10mm margin
-
-            renderedHeight += imgHeight;
-            if (renderedHeight < canvas.height) {
-              pdf.addPage();
-            } //If there is content later, add an empty page
-            // delete page;
-          }
-          vm.closeLoading();
-          pdf.save("report.pdf");
-        });
-      }, 300);
-    },
     exportExcel() {
       const liftings = ["Tax", "Quantity", "Amount"];
       const receipts = ["Bank", "Amount"];
