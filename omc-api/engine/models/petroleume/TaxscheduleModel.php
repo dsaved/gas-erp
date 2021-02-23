@@ -159,8 +159,8 @@ class TaxscheduleModel extends BaseModel
 
         $data = array(
             "tax_type" =>  $tax_type,
-            "date_from" =>  $date_from,
-            "date_to" =>  $date_to,
+            "date_from" =>  $this->date->sql_datetime($date_from),
+            "date_to" =>  $this->date->sql_datetime($date_to),
             "tax_product"=>$tax_product,
             "rate"=>$rate,
         );
@@ -207,8 +207,8 @@ class TaxscheduleModel extends BaseModel
 
         $data = array(
             "tax_type" =>  $tax_type,
-            "date_from" =>  $date_from,
-            "date_to" =>  $date_to,
+            "date_from" =>  $this->date->sql_datetime($date_from),
+            "date_to" =>  $this->date->sql_datetime($date_to),
             "tax_product"=>$tax_product,
             "rate"=>$rate,
         );

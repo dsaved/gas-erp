@@ -157,8 +157,8 @@ class TaxexemptionModel extends BaseModel
 
         $data = array(
             "omc" =>  $omc,
-            "date_from" =>  $date_from,
-            "date_to" =>  $date_to,
+            "date_from" =>  $this->date->sql_date($date_from),
+            "date_to" =>  $this->date->sql_date($date_to),
             "tax_product"=>$tax_product,
             "litters"=>$litters,
         );
@@ -206,7 +206,7 @@ class TaxexemptionModel extends BaseModel
         $data = array(
             "omc" =>  $omc,
             "date_from" => $this->date->sql_date($date_from),
-            "date_to" =>  $date_to,
+            "date_to" =>  $this->date->sql_date($date_to),
             "tax_product"=>$tax_product,
             "litters"=>$litters,
         );

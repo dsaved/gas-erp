@@ -44,15 +44,25 @@
               </form>
             </div>
             <vs-spacer />
-            <div class="md:w-1/5 sm:w-full mx-1">
+            <div class="md:w-1/4 sm:w-full mx-1 vx-row">
               <vs-button
                 color="dark"
                 icon-pack="feather"
                 icon="icon-file"
                 v-if="sortedRecords"
-                @click="exportPDF()"
+                class="mr-1"
+                @click="_exportPDF()"
               >
-                Export PDF
+                PDF
+              </vs-button>
+              <vs-button
+                color="warning"
+                icon-pack="feather"
+                icon="icon-file"
+                v-if="sortedRecords"
+                @click="exportExcel()"
+              >
+                EXCEL
               </vs-button>
             </div>
             <!-- <div class="md:w-1/5 sm:w-full">
@@ -214,7 +224,7 @@
                       <tr>
                         <th scope="col">Grand Total</th>
                         <th scope="col">Receipt Total</th>
-                        <th scope="col">Remaining Balance</th>
+                        <th scope="col">Remaining Task Liability</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -238,7 +248,7 @@
             </div>
 
             <strong
-              >Remaining payment balance is GHS {{ remaining_balance }}</strong
+              >Remaining Task Liability GHS {{ remaining_balance }}</strong
             >
           </div>
         </vx-card>
@@ -251,7 +261,13 @@
 // Import Swal
 import XLSX from "xlsx";
 import jsPDF from "jspdf";
-import html2canvas from 'html2canvas'
+import html2canvas from "html2canvas";
+
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+import fs from "fs";
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -362,7 +378,7 @@ export default {
     exportPDF() {
       const vm = this;
       this.showLoading("getting file ready for download");
-      const pageC = document.getElementById("pdf-content")
+      const pageC = document.getElementById("pdf-content");
       setTimeout(() => {
         html2canvas(pageC, {
           logging: false,
@@ -400,12 +416,297 @@ export default {
             ); //Add image to the page, keep 10mm margin
 
             renderedHeight += imgHeight;
-            if (renderedHeight < canvas.height){ pdf.addPage();} //If there is content later, add an empty page
+            if (renderedHeight < canvas.height) {
+              pdf.addPage();
+            } //If there is content later, add an empty page
             // delete page;
           }
           vm.closeLoading();
           pdf.save("report.pdf");
         });
+      }, 300);
+    },
+    exportExcel() {
+      const liftings = ["Tax", "Quantity", "Amount"];
+      const receipts = ["Bank", "Amount"];
+      const vm = this;
+      this.showLoading("getting file ready for download");
+
+      let exportFiles = [[this.omc.name]];
+      this.sortedRecords.forEach((data, index) => {
+        exportFiles.push([""]);
+        exportFiles.push([""]);
+        exportFiles.push([data.product]);
+        exportFiles.push(liftings);
+        data.computations.forEach((compute, ind) => {
+          exportFiles.push([
+            compute.tax,
+            compute.calculation,
+            "GHS " +
+              parseFloat(compute.amount)
+                .toFixed(2)
+                .replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+          ]);
+        });
+        exportFiles.push([
+          "Sub total",
+          "",
+          "GHS " +
+            parseFloat(data.total)
+              .toFixed(2)
+              .replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+        ]);
+      });
+
+      exportFiles.push([""]);
+      exportFiles.push([""]);
+      exportFiles.push([""]);
+      exportFiles.push(["RECEIPTS"]);
+      this.receipts.forEach((receipt, index) => {
+        exportFiles.push([""]);
+        exportFiles.push([""]);
+        exportFiles.push([receipt.name]);
+        exportFiles.push(receipts);
+        receipt.payments.forEach((payment, ind) => {
+          exportFiles.push([
+            payment.bank,
+            "GHS " +
+              parseFloat(payment.amount)
+                .toFixed(2)
+                .replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+          ]);
+        });
+        exportFiles.push([
+          "Sub total",
+          "GHS " +
+            parseFloat(receipt.subtotal)
+              .toFixed(2)
+              .replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+        ]);
+      });
+
+      exportFiles.push([""]);
+      exportFiles.push([""]);
+      exportFiles.push([""]);
+      exportFiles.push([
+        "Grand Total",
+        "Receipt total",
+        "Remaining Task Liability",
+      ]);
+      exportFiles.push([
+        "GHS " + this.total,
+        "GHS " + this.receipt_total_amount,
+        "GHS " + this.remaining_balance,
+      ]);
+
+      const workbook = XLSX.utils.book_new();
+      workbook.Props = {
+        Title: this.omc.name,
+        Subject: "OMC REPORT",
+        Author: "Ghana Audit Service",
+        Company: "Ghana Audit Service",
+        CreatedDate: new Date(),
+      };
+      workbook.SheetNames.push("report");
+      workbook.Sheets["report"] = XLSX.utils.aoa_to_sheet(exportFiles);
+      var wopts = { bookType: "xlsx", bookSST: false, type: "binary" };
+      var wbout = XLSX.write(workbook, wopts);
+      // XLSX.writeFile(workbook, "report.xlsx");
+      this.closeLoading();
+      this.savebytes([this.s2ab(wbout)], "report.xlsx");
+    },
+    _exportPDF() {
+      this.showLoading("getting file ready for download");
+      var docDefinition = {
+        footer: function (currentPage, pageCount) {
+          return currentPage.toString() + " of " + pageCount;
+        },
+        header: function (currentPage, pageCount, pageSize) {
+          return [
+            {
+              text: "GHANA AUDIT SERVICE",
+              alignment: "left",
+            },
+            {
+              canvas: [
+                { type: "rect", x: 170, y: 32, w: pageSize.width - 170, h: 40 },
+              ],
+            },
+          ];
+        },
+        watermark: {
+          text: "GHANA AUDIT SERVICE",
+          color: "green",
+          opacity: 0.1,
+          bold: true,
+          italics: false,
+        },
+        content: [],
+        styles: {
+          header: {
+            fontSize: 17,
+            bold: true,
+          },
+          subheader: {
+            fontSize: 14,
+            bold: true,
+          },
+          quote: {
+            italics: true,
+          },
+          small: {
+            fontSize: 8,
+          },
+        },
+        defaultStyle: {
+          fontSize: 12,
+          bold: false,
+        },
+      };
+
+      // ADD OMC TILE TO DOCUMENT
+      docDefinition.content.push({
+        text: this.omc.name + "\n\n",
+        style: "header",
+      });
+
+      // ADD TAX TO DOCUMENT
+      this.sortedRecords.forEach((data, index) => {
+        docDefinition.content.push({
+          text: data.product,
+          style: "subheader",
+        });
+        var table = {
+          table: {
+            widths: ["auto", "*", "auto"],
+            headerRows: 1,
+            body: [
+              [
+                { text: "Tax", bold: true },
+                { text: "Quantity", bold: true },
+                { text: "Amount", bold: true },
+              ],
+            ],
+          },
+          layout: {
+            fillColor: function (rowIndex, node, columnIndex) {
+              return rowIndex === 0 ? "#CCCCCC" : null;
+            },
+          },
+        };
+        data.computations.forEach((compute, ind) => {
+          table.table.body.push([
+            {text:compute.tax, noWrap: true },
+            compute.calculation,
+            {text:"GHS " + compute.amount, noWrap: true },
+          ]);
+        });
+        table.table.body.push([
+          "Sub Total",
+          "",
+          "GHS " + data.total,
+        ]);
+        docDefinition.content.push(table);
+        //ADD LINE BREAKE
+        docDefinition.content.push({
+          text: "\n",
+        });
+      });
+
+      //ADD LINE BREAKE
+      docDefinition.content.push({
+        text: "\n\n",
+      });
+
+      // ADD RECEPIT TILE TO DOCUMENT
+      docDefinition.content.push({
+        text: "RECEIPTS\n\n",
+        style: "header",
+      });
+
+      // ADD TAX TO DOCUMENT
+      this.receipts.forEach((receipt, index) => {
+        docDefinition.content.push({
+          text: receipt.name,
+          style: "subheader",
+        });
+        var table = {
+          table: {
+            widths: ["*", "auto"],
+            headerRows: 1,
+            body: [
+              [
+                { text: "Bank", bold: true },
+                { text: "Amount", bold: true },
+              ],
+            ],
+          },
+          layout: {
+            fillColor: function (rowIndex, node, columnIndex) {
+              return rowIndex === 0 ? "#CCCCCC" : null;
+            },
+          },
+        };
+        receipt.payments.forEach((payment, ind) => {
+          table.table.body.push([
+            payment.bank,
+           { text: "GHS " + payment.amount, noWrap: true },
+          ]);
+        });
+        table.table.body.push([
+          "Sub Total",
+          "GHS " +
+            parseFloat(receipt.subtotal)
+              .toFixed(2)
+              .replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+        ]);
+        docDefinition.content.push(table);
+        //ADD LINE BREAKE
+        docDefinition.content.push({
+          text: "\n",
+        });
+      });
+
+      //ADD LINE BREAKE
+      docDefinition.content.push({
+        text: "\n\n",
+      });
+
+      // ADD TOTAL SECTION
+      docDefinition.content.push({
+        table: {
+            widths: ["*","*", "*"],
+            headerRows: 1,
+          body: [
+            [
+              { text: "Grand Total", bold: true },
+              { text: "Receipt total", bold: true },
+              { text: "Remaining Task Liability", bold: true },
+            ],
+            [
+              { text: "GHS " + this.total },
+              { text: "GHS " + this.receipt_total_amount },
+              { text: "GHS " + this.remaining_balance },
+            ],
+          ],
+        },
+        layout: {
+          fillColor: function (rowIndex, node, columnIndex) {
+            return rowIndex === 0 ? "#CCCCCC" : null;
+          },
+        },
+      });
+
+      // ADD SUMARY TO PDF
+      docDefinition.content.push({
+        text: "\n\nRemaining Task Liability is GHS" + this.remaining_balance,
+        style: "subheader",
+      });
+
+      const vm = this;
+      setTimeout(() => {
+        vm.closeLoading();
+        pdfMake.createPdf(docDefinition).download();
       }, 300);
     },
     getLiftings() {
@@ -469,6 +770,25 @@ export default {
           });
           this.user_not_found = true;
         });
+    },
+    savebytes: (function () {
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+      return function (data, name) {
+        var blob = new Blob(data, { type: "octet/stream" }),
+          url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = name;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      };
+    })(),
+    s2ab(s) {
+      var buf = new ArrayBuffer(s.length);
+      var view = new Uint8Array(buf);
+      for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
+      return buf;
     },
     //file import function starts here
     chooseFiles() {

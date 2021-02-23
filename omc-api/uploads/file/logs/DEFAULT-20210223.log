@@ -1,0 +1,2097 @@
+REQUEST TIME: 07:54:08+00:00
+POST /gas/omc-api/omc/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 07:54:13+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/view
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 07:54:13+00:00
+POST /gas/omc-api/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 07:54:17+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 07:54:21+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:07:21+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:32:10+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+Cache-Control: max-age=0
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:32:14+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:33:04+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:33:09+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:33:39+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:33:43+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:33:47+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:34:11+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:34:21+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:34:26+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:35:22+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:35:36+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:35:38+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:36:05+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:36:13+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:36:37+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:36:57+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:38:13+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:39:15+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:39:28+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:39:33+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:43:41+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:43:47+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:45:39+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:46:09+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:46:13+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:46:17+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:47:49+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:48:18+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:48:24+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:48:57+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:49:01+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:50:32+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:50:35+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:50:41+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:50:46+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:50:56+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:51:02+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:51:23+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:51:52+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:51:58+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:52:27+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:52:30+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:52:40+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:54:06+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:54:13+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:55:00+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:55:04+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:55:12+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:56:19+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:56:28+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 08:56:43+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:27:28+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:27:32+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:31:38+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+Cache-Control: max-age=0
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:32:10+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:32:43+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:37:04+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+Cache-Control: max-age=0
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:37:13+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:40:50+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:41:17+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:41:57+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:42:13+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:42:32+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:51:48+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:22:12+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:45:43+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+Cache-Control: max-age=0
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:47:12+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:48:54+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:49:01+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:53:28+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:54:57+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:56:02+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:56:41+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:56:43+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:56:48+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:57:50+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:57:53+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:57:58+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:58:57+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:59:59+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:00:47+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:01:00+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:02:19+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:02:21+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:02:25+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:03:29+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:05:52+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:05:58+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:06:55+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:06:58+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:07:42+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:07:45+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:07:59+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:07:59+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:08:04+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:16:07+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:17:46+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:17:47+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:17:51+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:18:35+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:18:53+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:22:07+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:22:15+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:22:19+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:23:15+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:30:27+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+Cache-Control: max-age=0
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:31:17+00:00
+POST /gas/omc-api/omc/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:31:18+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/view
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:31:19+00:00
+POST /gas/omc-api/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:31:22+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:31:26+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:46:29+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:46:43+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:46:49+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:47:47+00:00
+POST /gas/omc-api/omc/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+Cache-Control: max-age=0
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 13:48:24+00:00
+POST /gas/omc-api/liftings/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo5Y2FjYmRjZjY3ODg=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleume/omc/2/compute/
+
+Request body:
+{"computes":[{"date":"24-05-2015","location":2,"litres":"423423","product":"PMS"},{"date":"24-05-2016","location":3,"litres":"33223","product":"KMS"},{"date":"24-05-2017","location":4,"litres":"4111","product":"PMS"},{"date":"24-05-2018","location":5,"litres":"100000","product":"ARGO"},{"date":"24-05-2019","location":6,"litres":"678","product":"KMS"},{"date":"24-05-2020","location":7,"litres":"66538","product":"ARGO"},{"date":"24-05-2021","location":8,"litres":"8457","product":"PLG"}],"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
