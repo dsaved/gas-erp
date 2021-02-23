@@ -898,6 +898,24 @@ const router = new Router({
                     props: true,
                 },
                 {
+                    path: '/petroleume/omc/:omcid/compute',
+                    name: 'omc-org-compute',
+                    component: () =>
+                        import ('./views/pages/petroleume/omc/OMCComputeLiftings.vue'),
+                    meta: {
+                        identity: 'OMCs', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleume' },
+                            { title: 'OMCs', url: '/petroleume/omc' },
+                            { title: 'Veiw', active: true },
+                            { title: 'Compute', active: true },
+                        ],
+                        homeurl: '/accounts',
+                        pageTitle: 'Accounts'
+                    },
+                    props: true,
+                },
+                {
                     path: '/petroleume/omc/:omcid/reconcile',
                     name: 'omc-reconcile',
                     component: () =>

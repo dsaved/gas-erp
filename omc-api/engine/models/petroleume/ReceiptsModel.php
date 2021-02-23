@@ -213,4 +213,20 @@ class ReceiptsModel extends BaseModel
         $response["pagination"] = $this->paging->paging();
         return $response;
     }
+
+    // remove
+    
+    public function remove()
+    {
+        $response = array();
+        $done = $this->db->query("DELETE FROM ".self::$table." WHERE `omc_id` = {$this->http->json->id}");
+        if ($done) {
+            $response['success'] = true;
+            $response['message'] = "Receipts Removed successfully";
+        } else {
+            $response['success'] = false;
+            $response['message'] = "Receipts could not be Removed ";
+        }
+        return $response;
+    }
 }

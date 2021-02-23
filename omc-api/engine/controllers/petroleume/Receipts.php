@@ -31,4 +31,11 @@ class Receipts extends SecureController {
           $receipt
       )->json();
     }
+
+    public function remove(){
+      $receipt = $this->model->remove();
+      $this->http->reply(
+          $receipt
+      )->json();
+    }
 }

@@ -1191,7 +1191,7 @@ exports.exportFile = function(data, callback) {
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
 
             //save the worksheet for download
-            var wookbookFile = '../api/downloads/docs/' + data.filename + '.xlsx';
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
             // write the workbook object to a file
             XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
@@ -1391,7 +1391,7 @@ exports.exportFileLog = function(data, callback) {
             await executeStatement("Call file_export_status_logs(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
 
             //save the worksheet for download
-            var wookbookFile = '../api/downloads/docs/' + data.filename + '.xlsx';
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
             // write the workbook object to a file
             XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
             await executeStatement("Call file_export_status_logs(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
@@ -1539,24 +1539,19 @@ exports.importReceiptFile = function(data, callback) {
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
             var fileCheckError = false,
-                fileCheckContinue = false,
                 lastKey = 0,
                 i = 0;
             for (i = 0; i < excelData.length; i++) {
                 /**
-                 * The excel data contains empty lines with only discription
-                 * when this occures add that data to the previous  array and move to the
-                 *next array.
+                 *validate accounting_date and account must not be empty
                  */
-                if (!('date' in excelData[i])) {
-                    if (excelDataToInsert && typeof(excelDataToInsert[lastKey - 1].particulars) != "undefined") {
-                        var particulars = excelDataToInsert[lastKey - 1].particulars;
-                        var newpateculars = excelData[i].particulars;
-                        excelDataToInsert[lastKey - 1].particulars = particulars + " " + newpateculars;
-                        fileCheckContinue = true;
-                    }
-                    continue;
+                var newDate = await convertDate(excelData[i]['date']);
+                if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
+                    noErrorInFile = false;
+                    await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
+                    return callback(null, { isDone: true, id: proccessID });
                 }
+                excelData[i]['date'] = newDate;
                 excelDataToInsert.push(excelData[i]);
                 lastKey++
             }
@@ -1598,6 +1593,12 @@ exports.importReceiptFile = function(data, callback) {
         for (let index = 0; index < array.length; index++) {
             await arrayCallback(array[index], index, array);
         }
+    }
+
+    async function convertDate(inputDate) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var d = new Date(inputDate)
+        return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
     }
 
     /**

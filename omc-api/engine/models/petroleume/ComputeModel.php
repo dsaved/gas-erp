@@ -35,7 +35,7 @@ class ComputeModel extends BaseModel
                 // $this->http->reply($this->db->results())->json();
                 foreach ($this->db->results() as $key => $tax) {
                     $tax_schedule = array();
-                    $tax_schedule['calculation'] = $compute->litters."*".$tax->rate."(litters)";
+                    $tax_schedule['calculation'] = $compute->litters." * ".$tax->rate." (litres)";
                     $tax_schedule['tax'] = $tax->name;
                     $tax_schedule['amount'] = number_format($compute->litters * $tax->rate,2);
                     $product['total'] += $compute->litters * $tax->rate;

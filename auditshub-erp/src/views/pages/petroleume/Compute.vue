@@ -14,7 +14,7 @@
         />
         <vs-input
           placeholder="Litters"
-          name="litters"
+          name="litres"
           v-model="compute.litters"
           class="w-1/3 px-2"
         />

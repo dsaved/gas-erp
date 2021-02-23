@@ -1,0 +1,112 @@
+REQUEST TIME: 19:41:37+00:00
+POST /gas/api/users/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:42:09+00:00
+POST /gas/api/users/get_roles/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:42:11+00:00
+POST /gas/api/users/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:42:26+00:00
+POST /gas/api/users/bdc HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:42:27+00:00
+POST /gas/api/users/omc HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:42:29+00:00
+POST /gas/api/users/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:50:53+00:00
+POST /gas/api/users/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+

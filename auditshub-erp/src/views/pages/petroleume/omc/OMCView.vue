@@ -74,18 +74,21 @@
             <vs-spacer />
             <vs-button
               type="border"
+              color="primary"
+              icon-pack="feather"
+              icon="icon-cpu"
+              class="mr-2"
+              v-if="canAdd()"
+              v-on:click="linkto('/petroleume/omc/' + omcid + '/compute/')"
+              >Compute Liftings</vs-button
+            >
+            <vs-button
+              type="border"
               color="dark"
               icon-pack="feather"
               icon="icon-shuffle"
               v-if="canAdd()"
-                    v-on:click="
-                      linkto(
-                        '/petroleume/omc/' +
-                          omcid +
-                          '/reconcile/' 
-                    
-                      )
-                    "
+              v-on:click="linkto('/petroleume/omc/' + omcid + '/reconcile/')"
               >Use For Reconcilation</vs-button
             >
           </div>
@@ -111,6 +114,20 @@
             <div
               class="flex flex-wrap-reverse items-center data-list-btn-container"
             >
+              <vs-button
+                color="danger"
+                icon-pack="feather"
+                class="ml-2"
+                v-if="canDelete()"
+                @click="deleteWarnSingle"
+                icon="icon-trash"
+                >Remove Receipts</vs-button
+              >
+            </div>
+            <vs-spacer />
+            <div
+              class="flex flex-wrap-reverse items-center data-list-btn-container"
+            >
               <vs-input
                 id="text"
                 type="text"
@@ -129,7 +146,7 @@
                       <vs-checkbox v-model="selectAll">#</vs-checkbox>
                     </th>
                     <th scope="col">Bank</th>
-                    <th scope="col">Declaration Number &amp; Receipt Number</th>
+                    <!-- <th scope="col">Declaration Number &amp; Receipt Number</th> -->
                     <th scope="col">Mode of Payment</th>
                     <th scope="col" class="text-right">Amount</th>
                     <th scope="col">Date</th>
@@ -162,10 +179,10 @@
                     <td>
                       {{ record.bank | title }}
                     </td>
-                    <td>
+                    <!-- <td>
                       <b>{{ record.declaration_number }}</b> <br />
                       {{ record.receipt_number }}
-                    </td>
+                    </td> -->
                     <td>
                       {{ record.mode_of_payment }}
                     </td>
@@ -411,7 +428,8 @@ export default {
     },
   },
   mounted: function () {
-    this.currentPage = Number(mStorage.get(`${this.pkey}page${this.omcid}`)) || 1;
+    this.currentPage =
+      Number(mStorage.get(`${this.pkey}page${this.omcid}`)) || 1;
     this.getData();
   },
   watch: {
@@ -517,7 +535,7 @@ export default {
           this.user_not_found = true;
         });
     },
-    deleteWarnSingle(id) {
+    deleteWarnSingle() {
       if (!this.canDelete()) {
         return Swal.fire(
           "Not Allowed!",
@@ -532,28 +550,31 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3cc879",
         cancelButtonColor: "#ea5455",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Yes, remove them!",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.delete([id]);
+          this.delete();
         }
       });
     },
-    delete: function (ids) {
-      this.showLoading("Deleting OMC, hang on a bit...");
-      this.post("/omc/delete", {
-        id: ids,
+    delete: function () {
+      this.showLoading("Removing OMC Receipts, hang on a bit...");
+      this.post("/receipts/remove", {
+        id: this.omcid,
       })
         .then((response) => {
           this.closeLoading();
           if (response.data.success == true) {
-            Swal.fire("Deleted!", "The OMC has been deleted.", "success").then(
-              (result) => {
-                if (result.isConfirmed) {
-                  this.back();
-                }
+            Swal.fire(
+              "Removed!",
+              "The OMC Receipts has been deleted.",
+              "success"
+            ).then((result) => {
+              if (result.isConfirmed) {
+                // this.back();
+                this.getReceipt();
               }
-            );
+            });
           } else {
             Swal.fire("Failed!", response.data.message, "error");
           }

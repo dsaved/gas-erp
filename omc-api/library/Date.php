@@ -248,6 +248,27 @@ class Date
 		}
 		return date("l jS F, Y. ", $unix_date);
 	}
+
+	/**
+     * Parse Date Or Timestamp Object into Human Readable Date (e.g. 26th of March 2016)
+     * @return  string
+     */
+	public function _human_date($date){
+		if(empty($date)) {
+			return "No date provided";
+		}
+		if(is_numeric($date)){
+			$unix_date        = $date;
+		}
+		else{
+			$unix_date         = strtotime($date);
+		}
+		// check validity of date
+		if(empty($unix_date)) {    
+			return "Invalide date";
+		}
+		return date("jS F, Y. ", $unix_date);
+	}
 	/**
      * Parse Date Or Timestamp Object into Human Readable Date (e.g. 26th of March 2016)
      * @return  string

@@ -22,6 +22,7 @@
         "firebase": "7.13.2",
         "instantsearch.css": "^7.3.1",
         "jsonwebtoken": "^8.5.1",
+        "jspdf": "^2.3.0",
         "material-icons": "^0.3.1",
         "perfect-scrollbar": "^1.4.0",
         "postcss-rtl": "^1.5.0",
@@ -41,6 +42,7 @@
         "vue-flatpickr-component": "^8.1.2",
         "vue-form-wizard": "^0.8.4",
         "vue-fullcalendar": "^1.0.9",
+        "vue-html2pdf": "^1.8.0",
         "vue-i18n": "^8.11.2",
         "vue-instantsearch": "^2.2.1",
         "vue-perfect-scrollbar": "^0.1.0",
@@ -61,7 +63,7 @@
         "vuejs-datepicker": "^1.5.4",
         "vuesax": "jd-0001/vuesax#feat-vs-popup-persistence",
         "vuex": "^3.1.1",
-        "xlsx": "^0.15.0"
+        "xlsx": "^0.16.9"
     },
     "devDependencies": {
         "@fullhuman/postcss-purgecss": "^1.2.0",

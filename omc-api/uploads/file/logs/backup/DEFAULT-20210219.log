@@ -1,0 +1,96 @@
+REQUEST TIME: 16:51:48+00:00
+POST /gas/api/omc/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:51:58+00:00
+POST /gas/api/taxproducts/options HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:52:22+00:00
+POST /gas/api/compute/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"computes":[{"litters":"120000","taxdate":"2019-10-09T16:51:00.000Z","product":{"value":"2","label":"KERO"}}],"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:52:30+00:00
+POST /gas/api/taxproducts/options HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:52:54+00:00
+POST /gas/api/compute/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"computes":[{"litters":"120000","taxdate":"2019-10-09T16:51:00.000Z","product":{"value":"2","label":"KERO"}},{"litters":"20000","taxdate":"2017-02-01T16:52:00.000Z","product":{"value":"4","label":"MGO Foreign"}}],"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:53:29+00:00
+POST /gas/api/omc/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo3NGI4N2M2OGI2OGM=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: https://auditshub.com
+Connection: keep-alive
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
