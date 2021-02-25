@@ -35,10 +35,10 @@ export default [
         page: 'Regimes',
         i18n: 'Regimes',
         submenu: [{
-            url: '/petroleume',
-            name: 'Petroleume',
-            slug: 'petroleume',
-            page: 'Petroleume'
+            url: '/petroleum',
+            name: 'Petroleum',
+            slug: 'petroleum',
+            page: 'Petroleum'
         }]
     },
     {

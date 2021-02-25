@@ -80,7 +80,7 @@
 
 <script>
 // Import Storage
-import mStorage from '../../store/storage'
+import mStorage from '@/store/storage.js'
 
 // Vue Router
 import router from '../../router'

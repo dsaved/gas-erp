@@ -9,10 +9,10 @@
 
 
 export default [{
-        url: '/petroleume',
+        url: '/petroleum',
         name: 'Home',
         slug: 'home',
-        page: 'Petroleume Home',
+        page: 'Petroleum Home',
         icon: 'HomeIcon'
     }, {
         url: null,
@@ -21,26 +21,26 @@ export default [{
         page: 'Tax',
         i18n: 'Tax',
         submenu: [{
-                url: '/petroleume/tax-type',
+                url: '/petroleum/tax-type',
                 name: 'Tax Type',
                 page: 'Tax Type',
                 slug: 'tax-type',
                 i18n: 'SetUpTaxType'
             }, {
-                url: '/petroleume/tax-products',
+                url: '/petroleum/tax-products',
                 name: 'Products',
                 page: 'Tax Products',
                 slug: 'sml-npa-reconcilation',
                 i18n: 'SetupProducts'
             },
             {
-                url: '/petroleume/tax-schedule',
+                url: '/petroleum/tax-schedule',
                 name: 'Tax Schedule',
                 page: 'Tax Schedule',
                 slug: 'tax-schedule',
                 i18n: 'TaxSchadule'
             }, {
-                url: '/petroleume/exemptions',
+                url: '/petroleum/exemptions',
                 name: 'Exemptions',
                 page: 'Exemptions',
                 slug: 'exemptions',
@@ -48,19 +48,41 @@ export default [{
             }
         ]
     }, {
-        url: '/petroleume/compute',
+        url: '/petroleum/compute',
         name: 'Compute',
         page: 'Compute Tax Schedule',
         slug: 'compute',
         icon: 'CpuIcon',
         i18n: 'Compute'
-    }, {
-        url: '/petroleume/omc',
+    },
+    {
+        url: null,
         name: 'OMC',
-        page: 'OMCs',
-        slug: 'OMCs',
+        page: 'OMC',
         icon: 'OctagonIcon',
-        i18n: 'OMCs'
+        i18n: 'OMC',
+        submenu: [{
+                url: '/petroleum/omc',
+                name: 'All OMC',
+                page: 'All OMC',
+                slug: 'All OMC',
+                i18n: 'All OMC'
+            },
+            {
+                url: '/petroleum/omc/fallouts',
+                name: 'Fall Out Receipts',
+                page: 'Fall Out Receipts',
+                slug: 'Fall Out Receipts',
+                i18n: 'Fall Out Receipts'
+            },
+            {
+                url: '/petroleum/omc/logs',
+                name: 'Reconcilation Log',
+                page: 'Reconcilation Log',
+                slug: 'Reconcilation Log',
+                i18n: 'Reconcilation Log'
+            }
+        ]
     },
     {
         url: null,
@@ -69,21 +91,21 @@ export default [{
         icon: 'CommandIcon',
         i18n: 'Reconcile',
         submenu: [{
-                url: '/petroleume/rcn/sml-npa',
+                url: '/petroleum/rcn/sml-npa',
                 name: 'SML - NPA',
                 page: 'SML - NPA Reconcilations',
                 slug: 'sml-npa-reconcilation',
                 i18n: 'SML - NPA'
             },
             {
-                url: '/petroleume/rcn/npa-icoms',
+                url: '/petroleum/rcn/npa-icoms',
                 name: 'NPA - ICOMS',
                 page: 'NPA - ICOMS Reconcilations',
                 slug: 'npa-icoms-reconcilation',
                 i18n: 'NPA ICOMS'
             },
             {
-                url: '/petroleume/rcn/npa-npa',
+                url: '/petroleum/rcn/npa-npa',
                 name: 'NPA - NPA',
                 page: 'NPA - NPA Reconcilations',
                 slug: 'npa-npa-reconcilation',
@@ -98,14 +120,14 @@ export default [{
         icon: 'ActivityIcon',
         i18n: 'NPA',
         submenu: [{
-                url: '/petroleume/npa/reconcilation-report',
+                url: '/petroleum/npa/reconcilation-report',
                 name: 'Reconcilation Reports',
                 page: 'NPA Reconcilation Reports',
                 slug: 'reconcilation-reports',
                 i18n: 'Reports'
             },
             {
-                url: '/petroleume/npa/daily-liftings',
+                url: '/petroleum/npa/daily-liftings',
                 name: 'Daily Lifting',
                 page: 'NPA Daily Liftings',
                 slug: 'npa-daily-lifting',
@@ -120,21 +142,21 @@ export default [{
         page: 'ICOMS (CEPS)',
         i18n: 'ICOMS (CEPS)',
         submenu: [{
-                url: '/petroleume/icoms/declearations',
+                url: '/petroleum/icoms/declearations',
                 name: 'Declearations',
                 page: 'ICOMS Declearations',
                 slug: 'declearations',
                 i18n: 'Declearations'
             },
             {
-                url: '/petroleume/icoms/payments',
+                url: '/petroleum/icoms/payments',
                 name: 'Payments',
                 page: 'ICOMS Payments',
                 slug: 'icom-payments',
                 i18n: 'Payments'
             },
             {
-                url: '/petroleume/icoms/differences',
+                url: '/petroleum/icoms/differences',
                 name: 'Differences',
                 page: 'ICOMS Differences',
                 slug: 'icoms-differences',
@@ -149,7 +171,7 @@ export default [{
         icon: 'ActivityIcon',
         i18n: 'SML',
         submenu: [{
-            url: '/petroleume/sml/daily-liftings',
+            url: '/petroleum/sml/daily-liftings',
             name: 'Daily Liftings',
             page: 'SML Daily Liftings',
             slug: 'ecommerce-shop',

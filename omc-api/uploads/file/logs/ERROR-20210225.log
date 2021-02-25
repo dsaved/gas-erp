@@ -1,0 +1,6 @@
+[25-Feb-2021 10:13:55 Africa/Accra] PHP Fatal error:  Uncaught Error: Class 'OmcfalloutModel' not found in C:\xampp\htdocs\gas\omc-api\app\BaseController.php:32
+Stack trace:
+#0 C:\xampp\htdocs\gas\omc-api\library\Application.php(81): BaseController->loadModel('Omcfallout')
+#1 C:\xampp\htdocs\gas\omc-api\index.php(83): Application->run()
+#2 {main}
+  thrown in C:\xampp\htdocs\gas\omc-api\app\BaseController.php on line 32

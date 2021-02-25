@@ -404,167 +404,90 @@ exports.reconcileOMC = function(data, callback) {
     const start = async() => {
         try {
             /**
-             * get the accounts statements for the main accounts
-             * @param mainTransOffset this hold all the transactions of 
-             * the main account with offset account
+             * get the omc receipts for the main accounts
+             * @param mainReceiptsData this hold all the receipts of 
+             * the main omc with offset account
              */
-            var sqlQuery = "SELECT debit_amount, post_date,particulars, id, account_id,offset_acc_no FROM `statements` WHERE `account_id` = " + data.account +
-                " AND (debit_amount > 0 || debit_amount < 0) AND `offset_acc_no` <> ''";
-            var mainTransOffset = await query(sqlQuery).catch(error => {
+            var sqlQuery = "SELECT omcr.bank,omcr.bank_id, omcr.id,omcr.amount, omcr.date, o.name as omc_name, o.id as omc_id FROM `omc_receipt` omcr LEFT JOIN omc o ON omcr.omc_id=o.id WHERE `omc_id` = " + data.account +
+                " AND amount > 0";
+            var mainReceiptsData = await query(sqlQuery).catch(error => {
                 config.log(error);
-                updateStatus("error", "job error: cannot read parent account transactions", "completed");
+                updateStatus("error", "job error: cannot read OMC receipts", "completed");
                 callback(null, { isDone: true, id: proccessID });
             });
 
-            if (typeof(mainTransOffset) == "undefined") {
-                updateStatus("Error", "error: no statements found for main account with offset - " + getTime(), "completed");
-                config.log("error: no statements found for main account with offset - " + getTime());
+            if (typeof(mainReceiptsData) == "undefined") {
+                updateStatus("Error", "error: no receipts found for OMC - " + getTime(), "completed");
+                config.log("error:  no receipts found for OMC - " + getTime());
                 return callback(null, { isDone: true, id: proccessID });
             }
-            //remove from flag
-            // var delQuery = "DELETE FROM `unauthorized_transfers` WHERE `account_from`=" + data.account;
-            // await query(delQuery).catch(error => {
-            //     config.log(error);
-            // });
 
-            await updateStatus("processing account statements with offsets", "reconcilation started - " + getTime());
+
+            await updateStatus("processing OMC receipts", "reconcilation started - " + getTime());
             config.log("reconcilation started - " + getTime());
-            config.log("processing account statements with offsets");
-            totalAccount = mainTransOffset.length;
+            config.log("processing OMC Receipts");
+            totalAccount = mainReceiptsData.length;
             workingOn = 0;
-            await asyncForEach(mainTransOffset, async(statements, index) => {
+            await asyncForEach(mainReceiptsData, async(receipts, index) => {
                 workingOn = index + 1;
                 update("reconcilation_status", "id", data.id, {
                     proccessing_account: workingOn,
                     total_account: totalAccount,
                 });
-                config.log("processing statements: " + statements.id);
-                //CHECK IF ACCOUNT NUM EXIST IN THE DB AND GET THE ID OF THAT ACCOUNT NUMBER
-                var sqlParentnum = "SELECT id FROM `accounts` WHERE (`acc_num1`='" + statements.offset_acc_no + "'  OR `acc_num2` ='" + statements.offset_acc_no + "') LIMIT 1";
-                var resultStatementResult = await query(sqlParentnum).catch(error => {
+                config.log("processing receipts: " + receipts.id);
+
+                /**
+                 * useing the bank id find the accounts in the bank and check 
+                 */
+                var stm = `SELECT credit_amount, post_date,particulars, id, account_id,offset_acc_no FROM statements WHERE account_id IN (SELECT id FROM accounts WHERE bank = ${receipts.bank_id}) ` +
+                    `AND  credit_amount = ${receipts.amount} AND  (DATE(post_date) BETWEEN '${receipts.date}' AND DATE_ADD('${receipts.date}', INTERVAL ${data.intval} DAY)) AND receipt_status != 'locked' LIMIT 1;`;
+                var resultStatement = await query(stm).catch(error => {
                     config.log(error);
-                    updateStatus("error", "job error: unable to find child account", "completed");
+                    updateStatus("error", "job error: internal query failed", "completed");
                     callback(null, { isDone: true, id: proccessID });
                 });
-                if (resultStatementResult != null && typeof(resultStatementResult[0]) != "undefined" && resultStatementResult[0] != null) {
-                    var chilldAccountID = resultStatementResult[0];
-                    /**
-                     * get the transaction in the list of child accounts that its offset account 
-                     * matches that of the parent's transaction offset.
-                     */
-                    var stm = "SELECT credit_amount, post_date,particulars, id, account_id,offset_acc_no FROM `statements` WHERE `account_id` = " + chilldAccountID.id +
-                        " AND  `credit_amount` = " + statements.debit_amount +
-                        " AND  (DATE(`post_date`) BETWEEN '" + statements.post_date + "' AND DATE_ADD('" + statements.post_date + "', INTERVAL " + data.intval + " DAY))" +
-                        " AND `status` != 'locked' LIMIT 1;";
-                    var resultStatement = await query(stm).catch(error => {
+                if (resultStatement != null && typeof(resultStatement[0]) != "undefined" && resultStatement[0] != null) {
+                    var $found = resultStatement[0];
+                    var resultbankQuery = await query(`SELECT acc.name,acc.acc_num1,acc.acc_num2,acc.bank as bank_id, bnk.name as bank_name FROM accounts acc LEFT JOIN banks bnk ON bnk.id=acc.bank WHERE acc.id=${$found.account_id}`).catch(error => {
                         config.log(error);
-                        updateStatus("error", "job error: unable to find child statements", "completed");
-                        callback(null, { isDone: true, id: proccessID });
                     });
-                    //remove from flag
-                    if (resultStatement != null && typeof(resultStatement[0]) != "undefined" && resultStatement[0] != null) {
-                        var $found = resultStatement[0];
-                        // config.log("statements match: " + $found.id);
+                    if (resultbankQuery != null && typeof(resultbankQuery[0]) != "undefined" && resultbankQuery[0] != null) {
+                        let accountInfor = resultbankQuery[0];
+                        let account_number = accountInfor.acc_num1;
+                        if (account_number === null || account_number === "") {
+                            account_number = accountInfor.acc_num2;
+                        }
+                        let omc_amount = receipts.amount;
+                        let omc_date = receipts.date;
+                        let omc = receipts.omc_name;
+                        let omc_id = receipts.omc_id;
+                        let bank = accountInfor.bank_name;
+                        let bank_id = accountInfor.bank_id;
+                        let account = accountInfor.name;
+                        let account_id = $found.account_id;
+                        let description = $found.particulars;
+                        let credit_amount = $found.credit_amount;
+                        let creadit_date = $found.post_date;
+                        let intVal = data.intval;
                         //Transaction found, therefor lock that childs account transaction
-                        var sql = "Call create_log(" + statements.account_id + "," + statements.debit_amount + ",'" + statements.post_date + "','" + statements.particulars + "'," + statements.id + "," + $found.account_id + "," + $found.credit_amount + ",'" + $found.post_date + "','" + $found.particulars + "'," + $found.id + "," + data.intval + ")";
+                        var sql = `UPDATE statements SET statements.receipt_status='locked' WHERE statements.id = ${$found.id};`;
+                        sql += "INSERT INTO `audits_logs_omc`( `amount`, `date`, `omc`, `bank`, `bank_id`, `account`, `account_id`, `account_number`, `description`, `credit_amount`, `creadit_date`, `intval`, `omc_id`) ";
+                        sql += `VALUES (${omc_amount},'${omc_date}','${omc}','${bank}',${bank_id},'${account}',${account_id},'${account_number}','${description}',${credit_amount},'${creadit_date}',${intVal},${omc_id})`;
+                        console.log(sql)
                         await query(sql).catch(error => {
                             config.log(error);
-                            updateStatus("error", "job error: cannot update statement for matched transaction", "completed");
+                            updateStatus("error", "job error: cannot create log for matched receipt", "completed");
                             callback(null, { isDone: true, id: proccessID });
                         });
                     } else {
-                        config.log("statements no match");
-                        //set the transaction to pending
-                        var offset_acc_no = '';
-                        if (typeof(statements.offset_acc_no) != "undefined") {
-                            offset_acc_no = statements.offset_acc_no;
-                        }
-                        var sql = "Call flag_transaction(" + statements.account_id + ",'" + offset_acc_no + "'," + statements.id + "," + statements.debit_amount + "," + data.intval + ")";
-                        await query(sql).catch(error => {
-                            config.log(error);
-                            updateStatus("error", "job error: cannot update statement for no match transaction", "completed");
-                            callback(null, { isDone: true, id: proccessID });
-                        })
+                        updateStatus("error", "job error: cannot create log for matched receipt", "completed");
+                        callback(null, { isDone: true, id: proccessID });
                     }
                 } else {
-                    // config.log("statements no match");
-                    //set the transaction to pending
-                    var offset_acc_no = '';
-                    if (typeof(statements.offset_acc_no) != "undefined") {
-                        offset_acc_no = statements.offset_acc_no;
-                    }
-                    var sql = "Call flag_transaction(" + statements.account_id + ",'" + offset_acc_no + "'," + statements.id + "," + statements.debit_amount + "," + data.intval + ")";
+                    var sql = `UPDATE omc_receipt SET omc_receipt.status='flagged' WHERE omc_receipt.id = ${receipts.id};`;
                     await query(sql).catch(error => {
                         config.log(error);
-                        updateStatus("error", "job error: cannot update statement for no match transaction", "completed");
-                        callback(null, { isDone: true, id: proccessID });
-                    })
-                }
-            });
-
-            /**
-             * get the accounts statements for the main accounts
-             * @param mainTransNoOffset this hold all the transactions of 
-             * the main account with no offset account
-             */
-            var sqlQuery = "SELECT debit_amount, post_date,particulars, id, account_id,offset_acc_no FROM `statements` WHERE `account_id` = " + data.account +
-                " AND (debit_amount > 0 || debit_amount < 0) AND (`offset_acc_no` IS NULL OR `offset_acc_no` = '')";
-            var mainTransNoOffset = await query(sqlQuery).catch(error => {
-                config.log(error);
-                updateStatus("error", "job error: could not get results for no offset", "completed");
-                callback(null, { isDone: true, id: proccessID });
-            });
-            if (typeof(mainTransNoOffset) == "undefined") {
-                await updateStatus("Error", "error: no statements found for main account with no offset - " + getTime(), "completed");
-                config.log("error: no statements found for main account with no offset - " + getTime());
-                return callback(null, { isDone: true, id: proccessID });
-            }
-
-            await updateStatus("processing account statements with no offsets", "done processing account statements with offsets - " + getTime());
-            config.log("done processing account statements with offsets - " + getTime());
-            config.log("processing account statements with no offsets");
-            totalAccount = mainTransNoOffset.length;
-            workingOn = 0;
-            await asyncForEach(mainTransNoOffset, async(statements, index) => {
-                workingOn = index + 1;
-                update("reconcilation_status", "id", data.id, {
-                    proccessing_account: workingOn,
-                    total_account: totalAccount,
-                });
-                config.log("processing statements: " + statements.id);
-                /**
-                 * get the transaction in the list of child accounts that its offset account 
-                 * matches that of the parent's transaction offset.
-                 */
-                var stm = "SELECT credit_amount, post_date, particulars,id, account_id,offset_acc_no FROM `statements` WHERE `account_id` IN (" + data.ids + ")" +
-                    " AND  `credit_amount` = " + statements.debit_amount +
-                    " AND  (DATE(`post_date`) BETWEEN '" + statements.post_date + "' AND DATE_ADD('" + statements.post_date + "', INTERVAL " + data.intval + " DAY))" +
-                    " AND `status` != 'locked' LIMIT 1;";
-                var resultStatement = await query(stm).catch(error => {
-                    config.log(error);
-                    updateStatus("error", "job error: " + error, "completed");
-                    callback(null, { isDone: true, id: proccessID });
-                });
-                if (resultStatement && typeof(resultStatement[0]) != "undefined" && resultStatement[0] != null) {
-                    var reslutStm = resultStatement[0];
-                    // config.log("statements match: " + reslutStm.id);
-                    /**
-                     * transaction found therefore lock the transaction
-                     * and remove it from the list of unauthorized transaction
-                     */
-                    var sql = "Call create_log(" + statements.account_id + "," + statements.debit_amount + ",'" + statements.post_date + "','" + statements.particulars + "'," + statements.id + "," + reslutStm.account_id + "," + reslutStm.credit_amount + ",'" + reslutStm.post_date + "','" + reslutStm.particulars + "'," + reslutStm.id + "," + data.intval + ")";
-                    await query(sql).catch(error => {
-                        config.log(error);
-                        updateStatus("error", "job error: cannot update statement for matched transaction", "completed");
-                        callback(null, { isDone: true, id: proccessID });
-                    });
-                } else {
-                    // config.log("statements no match");
-                    // flag the statement because no record was found
-                    var sql = "Call flag_transaction(" + statements.account_id + ",''," + statements.id + "," + statements.debit_amount + "," + data.intval + ")";
-                    await query(sql).catch(error => {
-                        config.log(error);
-                        updateStatus("error", "job error: cannot update statement for no match transaction", "completed");
+                        updateStatus("error", "job error: cannot flag receipts", "completed");
                         callback(null, { isDone: true, id: proccessID });
                     })
                 }
@@ -1077,7 +1000,7 @@ exports.exportFile = function(data, callback) {
         });
     });
 
-    var filePath = data.path + "downloads/docs";
+    var filePath = data.path + "downloads/docs/";
 
     const start = async() => {
         try {
@@ -1255,6 +1178,161 @@ exports.exportFile = function(data, callback) {
  * @param data is a variable holding the current job
  * @param callback this is a method called when the job is finished in otherto terminate the process.
  */
+exports.exportFileFallout = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export fallout: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            var dataHeaders = [
+                "BANK",
+                "DATE",
+                "MODE OF PAYMENT",
+                "AMOUNT"
+            ];
+            var AuthorizedData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "OMC Unrecognized receipts",
+                Author: "Ghana Audit Service",
+                Company: "Ghana Audit Service",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push("sheet1");
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+            var sqlQuery = `SELECT * FROM omc_receipt WHERE omc_id=${data.ids} and status='flagged'`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var newObject = [
+                    exportData.bank,
+                    exportData.date,
+                    exportData.mode_of_payment,
+                    exportData.amount,
+                ];
+                AuthorizedData.push(newObject);
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(AuthorizedData)
+
+            workbook.Sheets["sheet1"] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
 exports.exportFileLog = function(data, callback) {
     var module = require('./config');
     var config = module.configs;
@@ -1280,7 +1358,7 @@ exports.exportFileLog = function(data, callback) {
         });
     });
 
-    var filePath = data.path + "downloads/docs";
+    var filePath = data.path + "downloads/docs/";
 
     const start = async() => {
         try {
@@ -1520,6 +1598,7 @@ exports.importReceiptFile = function(data, callback) {
                         newObject[newIndx] = value;
                     }
                     newObject["omc_id"] = data.account_id;
+                    newObject["bank_id"] = data.bank_id;
                     newObject["location"] = index + 2;
                 }
                 excelData.push(newObject);
@@ -1538,7 +1617,7 @@ exports.importReceiptFile = function(data, callback) {
             });
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
-            var fileCheckError = false,
+            var noErrorInFile = true,
                 lastKey = 0,
                 i = 0;
             for (i = 0; i < excelData.length; i++) {
@@ -1546,26 +1625,21 @@ exports.importReceiptFile = function(data, callback) {
                  *validate accounting_date and account must not be empty
                  */
                 var newDate = await convertDate(excelData[i]['date']);
-                if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
-                    noErrorInFile = false;
-                    await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
-                    return callback(null, { isDone: true, id: proccessID });
-                }
+                // if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
+                //     noErrorInFile = false;
+                //     await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
+                //     return false;
+                // }
                 excelData[i]['date'] = newDate;
                 excelDataToInsert.push(excelData[i]);
                 lastKey++
             }
             await updateStatus("Validating file", "Analyzing succesful - " + getTime());
 
-            /**
-             * using the first data in the system, check if the excel file is the right
-             * one to be added to the currrent account
-             */
-            if (!fileCheckError) {
+            if (noErrorInFile) {
                 total = excelDataToInsert.length;
-                var cmpData = excelDataToInsert[0];
 
-                await updateStatus("Creating Transactions", "Validation successful - " + getTime());
+                await updateStatus("Creating Receipts", "Validation successful - " + getTime());
                 await asyncForEach(excelDataToInsert, async(insertal, index) => {
                     current = index + 1;
                     //insert data to db
@@ -1662,8 +1736,8 @@ exports.importReceiptFile = function(data, callback) {
         if (isNaN(data.amount)) {
             data.amount = 0;
         }
-        var sqlQuery = "INSERT INTO `" + table + "`(`bank`, `omc_id`, `date`, `declaration_number`, `receipt_number`, `mode_of_payment`,`amount`)  " +
-            "VALUES('" + data.bank + "'," + data.omc_id + ",'" + data.date + "','" + data.declaration_number + "','" + data.receipt_number + "','" + data.mode_of_payment + "'," + data.amount + "); ";
+        var sqlQuery = "INSERT INTO `" + table + "`(`bank`, `omc_id`, `date`, `declaration_number`, `receipt_number`, `mode_of_payment`,`amount`,`bank_id`)  " +
+            "VALUES('" + data.bank + "'," + data.omc_id + ",'" + data.date + "','" + data.declaration_number + "','" + data.receipt_number + "','" + data.mode_of_payment + "'," + data.amount + ",'" + data.bank_id + "'); ";
         return sqlQuery;
     }
 

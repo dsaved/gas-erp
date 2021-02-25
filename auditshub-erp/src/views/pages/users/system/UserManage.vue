@@ -336,7 +336,7 @@ export default {
       baseUrl_error: "",
       baseUrls: [
         { label: "Home", value: "/" },
-        { label: "Petroleume", value: "/petroleume" },
+        { label: "Petroleum", value: "/petroleum" },
         { label: "Revenue", value: "/revenue" },
       ],
       organization_error: "",
@@ -435,7 +435,7 @@ export default {
       }
 
       if (this.user.baseurl && this.user.baseurl.value) {
-        if (this.user.baseurl.value === "/petroleume") {
+        if (this.user.baseurl.value === "/petroleum") {
           this.pageArray = petroleumeMenu;
         }
         if (this.baseurl.value === "/revenue") {

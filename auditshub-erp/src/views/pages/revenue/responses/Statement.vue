@@ -606,7 +606,7 @@
 <script>
 // Import Swal
 import Swal from "sweetalert2";
-import mStorage from "../../../../store/storage";
+import mStorage from "@/store/storage.js";
 import Datepicker from "vuejs-datepicker";
 
 export default {

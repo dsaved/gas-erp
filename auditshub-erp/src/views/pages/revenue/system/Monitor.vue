@@ -154,7 +154,7 @@
 </template>
 
 <script>
-import mStorage from "../../../../store/storage";
+import mStorage from "@/store/storage.js";
 
 export default {
   beforeRouteEnter(to, from, next) {

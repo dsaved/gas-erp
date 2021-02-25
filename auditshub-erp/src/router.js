@@ -611,302 +611,387 @@ const router = new Router({
             // =============================================================================
             // PATROLEUME LAYOUT ROUTES
             // =============================================================================
-            path: '/petroleume',
+            path: '/petroleum',
             component: () =>
-                import ('./layouts/main/Patroleume.vue'),
+                import ('./layouts/main/Petroleum.vue'),
             children: [
                 // =============================================================================
                 // Theme Routes
                 // =============================================================================
                 {
-                    path: '/petroleume',
-                    name: 'petroleume home',
+                    path: '/petroleum',
+                    name: 'petroleum home',
                     component: () =>
-                        import ('./views/pages/petroleume/Home.vue'),
+                        import ('./views/pages/petroleum/Home.vue'),
                     meta: {
-                        identity: 'Petroleume', //this should match then page in navMainMenuItems.js
+                        identity: 'Petroleum', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
+                            { title: 'Home', url: '/petroleum' },
                         ],
-                        homeurl: '/petroleume',
-                        pageTitle: 'Petroleume'
+                        homeurl: '/petroleum',
+                        pageTitle: 'Petroleum'
                     },
                 },
                 // =============================================================================
                 // TASK MENU START HERE
                 // =============================================================================
                 {
-                    path: '/petroleume/tax-type',
+                    path: '/petroleum/tax-type',
                     name: 'Tax List',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/tax-type/Tax.vue'),
+                        import ('./views/pages/petroleum/tax/tax-type/Tax.vue'),
                     meta: {
                         identity: 'Tax Type', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
+                            { title: 'Home', url: '/petroleum' },
                             { title: 'Tax Type', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                 },
                 {
-                    path: '/petroleume/tax-type/add',
+                    path: '/petroleum/tax-type/add',
                     name: 'add-tax-type',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/tax-type/TaxManage.vue'),
+                        import ('./views/pages/petroleum/tax/tax-type/TaxManage.vue'),
                     meta: {
                         identity: 'Tax Type', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'Tax Type', url: '/petroleume/tax-type' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Tax Type', url: '/petroleum/tax-type' },
                             { title: 'Add', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                 },
                 {
-                    path: '/petroleume/tax-type/:taxtypeid',
+                    path: '/petroleum/tax-type/:taxtypeid',
                     name: 'edit-tax-type',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/tax-type/TaxManage.vue'),
+                        import ('./views/pages/petroleum/tax/tax-type/TaxManage.vue'),
                     meta: {
                         identity: 'Tax Type', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'Tax Type', url: '/petroleume/tax-type' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Tax Type', url: '/petroleum/tax-type' },
                             { title: 'Edit', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                     props: true,
                 },
                 {
-                    path: '/petroleume/tax-products',
+                    path: '/petroleum/tax-products',
                     name: 'Tax Product List',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/products/Products.vue'),
+                        import ('./views/pages/petroleum/tax/products/Products.vue'),
                     meta: {
                         identity: 'Tax Products', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
+                            { title: 'Home', url: '/petroleum' },
                             { title: 'Products', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                 },
                 {
-                    path: '/petroleume/tax-product/add',
+                    path: '/petroleum/tax-product/add',
                     name: 'add-tax-product',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/products/ProductManage.vue'),
+                        import ('./views/pages/petroleum/tax/products/ProductManage.vue'),
                     meta: {
                         identity: 'Tax Products', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'Products', url: '/petroleume/tax-products' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Products', url: '/petroleum/tax-products' },
                             { title: 'Add', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                 },
                 {
-                    path: '/petroleume/tax-product/:taxproductid',
+                    path: '/petroleum/tax-product/:taxproductid',
                     name: 'edit-tax-product',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/products/ProductManage.vue'),
+                        import ('./views/pages/petroleum/tax/products/ProductManage.vue'),
                     meta: {
                         identity: 'Tax Products', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'Products', url: '/petroleume/tax-products' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Products', url: '/petroleum/tax-products' },
                             { title: 'Edit', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                     props: true,
                 },
                 {
-                    path: '/petroleume/tax-schedule',
+                    path: '/petroleum/tax-schedule',
                     name: 'Tax Schadules',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/tax-schedule/TaxSchadules.vue'),
+                        import ('./views/pages/petroleum/tax/tax-schedule/TaxSchadules.vue'),
                     meta: {
                         identity: 'Tax Schedule', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
+                            { title: 'Home', url: '/petroleum' },
                             { title: 'Tax Schedules', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                 },
                 {
-                    path: '/petroleume/tax-schedule/add',
+                    path: '/petroleum/tax-schedule/add',
                     name: 'add-tax-schedule',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/tax-schedule/TaxScheduleManage.vue'),
+                        import ('./views/pages/petroleum/tax/tax-schedule/TaxScheduleManage.vue'),
                     meta: {
                         identity: 'Tax Schedule', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'Tax Schedules', url: '/petroleume/tax-schedule' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Tax Schedules', url: '/petroleum/tax-schedule' },
                             { title: 'Add', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                 },
                 {
-                    path: '/petroleume/tax-schedule/:taxscheduleid',
+                    path: '/petroleum/tax-schedule/:taxscheduleid',
                     name: 'edit-tax-schedule',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/tax-schedule/TaxScheduleManage.vue'),
+                        import ('./views/pages/petroleum/tax/tax-schedule/TaxScheduleManage.vue'),
                     meta: {
                         identity: 'Tax Schedule', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'Tax Schedules', url: '/petroleume/tax-schedule' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Tax Schedules', url: '/petroleum/tax-schedule' },
                             { title: 'Edit', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                     props: true,
                 },
                 {
-                    path: '/petroleume/exemptions',
+                    path: '/petroleum/exemptions',
                     name: 'Exemptions',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/exemptions/Exemptions.vue'),
+                        import ('./views/pages/petroleum/tax/exemptions/Exemptions.vue'),
                     meta: {
                         identity: 'Exemptions', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
+                            { title: 'Home', url: '/petroleum' },
                             { title: 'Exemptions', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                 },
                 {
-                    path: '/petroleume/exemptions/add',
+                    path: '/petroleum/exemptions/add',
                     name: 'add-exemptions',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/exemptions/ExemptionManage.vue'),
+                        import ('./views/pages/petroleum/tax/exemptions/ExemptionManage.vue'),
                     meta: {
                         identity: 'Exemptions', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'Exemptions', url: '/petroleume/exemptions' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Exemptions', url: '/petroleum/exemptions' },
                             { title: 'Add', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                     props: true,
                 },
                 {
-                    path: '/petroleume/exemptions/:exemptionid',
+                    path: '/petroleum/exemptions/:exemptionid',
                     name: 'edit-exemptions',
                     component: () =>
-                        import ('./views/pages/petroleume/tax/exemptions/ExemptionManage.vue'),
+                        import ('./views/pages/petroleum/tax/exemptions/ExemptionManage.vue'),
                     meta: {
                         identity: 'Exemptions', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'Exemptions', url: '/petroleume/exemptions' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Exemptions', url: '/petroleum/exemptions' },
                             { title: 'Edit', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Tax'
                     },
                     props: true,
+                }, {
+                    path: '/petroleum/monitor',
+                    name: 'petroleum-monitor-jobs',
+                    component: () =>
+                        import ('./views/pages/revenue/system/Monitor.vue'),
+                    meta: {
+                        identity: "neutral", //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', },
+                            { title: 'Monitor', active: true }
+                        ],
+                        homeurl: '/revenue',
+                        pageTitle: 'System'
+                    }
+                }, {
+                    path: '/petroleum/downloads',
+                    name: 'petroleum-file-download',
+                    component: () =>
+                        import ('./views/pages/revenue/system/Downloads.vue'),
+                    meta: {
+                        identity: "neutral", //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', },
+                            { title: 'Downloads', active: true }
+                        ],
+                        homeurl: '/revenue',
+                        pageTitle: 'System'
+                    }
                 },
                 // =============================================================================
                 // OMC ORGANIZATION MENU START HERE
                 // =============================================================================
 
                 {
-                    path: '/petroleume/omc',
+                    path: '/petroleum/omc',
                     name: 'omc-list',
                     component: () =>
-                        import ('./views/pages/petroleume/omc/OMC.vue'),
+                        import ('./views/pages/petroleum/omc/OMC.vue'),
                     meta: {
                         identity: 'OMCs', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
+                            { title: 'Home', url: '/petroleum' },
                             { title: 'OMCs', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'OMC'
                     },
                 },
                 {
-                    path: '/petroleume/omc/add',
-                    name: 'omc-add',
-                    component: () =>
-                        import ('./views/pages/petroleume/omc/OMCManage.vue'),
-                    meta: {
-                        identity: 'OMCs', //this should match then page in navMainMenuItems.js
-                        breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'OMCs', url: '/petroleume/omc' },
-                            { title: 'Add', active: true },
-                        ],
-                        homeurl: '/petroleume',
-                        pageTitle: 'OMC'
-                    },
-                },
-                {
-                    path: '/petroleume/omc/:omcid',
-                    name: 'omc-edit',
-                    component: () =>
-                        import ('./views/pages/petroleume/omc/OMCManage.vue'),
-                    meta: {
-                        identity: 'OMCs', //this should match then page in navMainMenuItems.js
-                        breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'OMCs', url: '/petroleume/omc' },
-                            { title: 'Edit', active: true },
-                        ],
-                        homeurl: '/petroleume',
-                        pageTitle: 'OMC'
-                    },
-                    props: true,
-                },
-                {
-                    path: '/petroleume/omc/:omcid/view',
+                    path: '/petroleum/omc/:omcid/view',
                     name: 'omc-view',
                     component: () =>
-                        import ('./views/pages/petroleume/omc/OMCView.vue'),
+                        import ('./views/pages/petroleum/omc/OMCView.vue'),
                     meta: {
                         identity: 'OMCs', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'OMCs', url: '/petroleume/omc' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'OMCs', url: '/petroleum/omc' },
                             { title: 'Veiw', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
+                        pageTitle: 'OMC'
+                    },
+                    props: true,
+                },
+                // =============================================================================
+                // OMC RECONCILE MENU START HERE
+                // =============================================================================
+                {
+                    path: '/petroleum/omc/fallouts',
+                    name: 'omc-reconcilation-fallout',
+                    component: () =>
+                        import ('./views/pages/petroleum/omc/fallout/OMC.vue'),
+                    meta: {
+                        identity: 'Fall Out Receipts',
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Fall Out Receipts', active: true },
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'OMC'
+                    },
+                },
+                {
+                    path: '/petroleum/omc/fallouts/:omcid/view',
+                    name: 'omc-reconcilation-fallout-view',
+                    component: () =>
+                        import ('./views/pages/petroleum/omc/fallout/OMCView.vue'),
+                    meta: {
+                        identity: 'Fall Out Receipts',
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Fall Out Receipts', url: '/petroleum/omc/fallouts' },
+                            { title: 'View', active: true },
+                        ],
+                        homeurl: '/petroleum',
                         pageTitle: 'OMC'
                     },
                     props: true,
                 },
                 {
-                    path: '/petroleume/omc/:omcid/compute',
-                    name: 'omc-org-compute',
+                    path: '/petroleum/omc/fallouts/:omcid/view/receipt/:receiptid/:page',
+                    name: 'omc-view-receipt-fallout',
                     component: () =>
-                        import ('./views/pages/petroleume/omc/OMCComputeLiftings.vue'),
+                        import ('./views/pages/petroleum/omc/fallout/OMCReceiptView.vue'),
                     meta: {
                         identity: 'OMCs', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'OMCs', url: '/petroleume/omc' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Fall Out Receipts', url: '/petroleum/omc/fallouts' },
+                            { title: 'Veiw', active: true },
+                            { title: 'Receipt', active: true },
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'OMC'
+                    },
+                    props: true,
+                },
+                // =============================================================================
+                // OMC RECONCILE LOG MENU START HERE
+                // =============================================================================
+                {
+                    path: '/petroleum/omc/logs',
+                    name: 'omc-reconcile-logs',
+                    component: () =>
+                        import ('./views/pages/petroleum/omc/logs/Accounts.vue'),
+                    meta: {
+                        identity: 'Reconcilation Log',
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Reconcilation Log', active: true },
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'OMC Logs'
+                    },
+                }, {
+                    path: '/petroleum/omc/logs/:accountid',
+                    name: 'omc-reconcile-logs-transactions',
+                    component: () =>
+                        import ('./views/pages/petroleum/omc/logs/Transactions.vue'),
+                    meta: {
+                        identity: "Reconcilation Log",
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Reconcilation Log', active: true },
+                            { title: 'Transactions', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'OMC Logs'
+                    },
+                    props: true
+                },
+                // =============================================================================
+                // COMPUTE MENU START HERE
+                // =============================================================================
+                {
+                    path: '/petroleum/omc/:omcid/compute',
+                    name: 'omc-org-compute',
+                    component: () =>
+                        import ('./views/pages/petroleum/omc/OMCComputeLiftings.vue'),
+                    meta: {
+                        identity: 'OMCs', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'OMCs', url: '/petroleum/omc' },
                             { title: 'Veiw', active: true },
                             { title: 'Compute', active: true },
                         ],
@@ -916,37 +1001,37 @@ const router = new Router({
                     props: true,
                 },
                 {
-                    path: '/petroleume/omc/:omcid/reconcile',
+                    path: '/petroleum/omc/:omcid/reconcile',
                     name: 'omc-reconcile',
                     component: () =>
-                        import ('./views/pages/petroleume/omc/OMCReconcile.vue'),
+                        import ('./views/pages/petroleum/omc/OMCReconcile.vue'),
                     meta: {
                         identity: 'OMCs', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'OMCs', url: '/petroleume/omc' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'OMCs', url: '/petroleum/omc' },
                             { title: 'View', active: true },
                             { title: 'Reconcile', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'OMC'
                     },
                     props: true,
                 },
                 {
-                    path: '/petroleume/omc/:omcid/view/receipt/:receiptid/:page',
+                    path: '/petroleum/omc/:omcid/view/receipt/:receiptid/:page',
                     name: 'omc-view-receipt',
                     component: () =>
-                        import ('./views/pages/petroleume/omc/OMCReceiptView.vue'),
+                        import ('./views/pages/petroleum/omc/OMCReceiptView.vue'),
                     meta: {
                         identity: 'OMCs', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
-                            { title: 'OMCs', url: '/petroleume/omc' },
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'OMCs', url: '/petroleum/omc' },
                             { title: 'Veiw', active: true },
                             { title: 'Receipt', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'OMC'
                     },
                     props: true,
@@ -955,83 +1040,83 @@ const router = new Router({
                 // RECONCILE MENU START HERE
                 // =============================================================================
                 {
-                    path: '/petroleume/rcn/sml-npa',
+                    path: '/petroleum/rcn/sml-npa',
                     name: 'sml-npa',
                     component: () =>
-                        import ('./views/pages/petroleume/reconcile/SmlNpa.vue')
+                        import ('./views/pages/petroleum/reconcile/SmlNpa.vue')
                 },
                 {
-                    path: '/petroleume/rcn/npa-icoms',
+                    path: '/petroleum/rcn/npa-icoms',
                     name: 'npa-icoms',
                     component: () =>
-                        import ('./views/pages/petroleume/reconcile/NpaIcoms.vue')
+                        import ('./views/pages/petroleum/reconcile/NpaIcoms.vue')
                 },
                 {
-                    path: '/petroleume/rcn/npa-npa',
+                    path: '/petroleum/rcn/npa-npa',
                     name: 'npa-npa',
                     component: () =>
-                        import ('./views/pages/petroleume/reconcile/NpaNpa.vue')
+                        import ('./views/pages/petroleum/reconcile/NpaNpa.vue')
                 },
                 // =============================================================================
                 // NPA MENU START HERE
                 // =============================================================================
                 {
-                    path: '/petroleume/npa/reconcilation-report',
+                    path: '/petroleum/npa/reconcilation-report',
                     name: 'reconcilation-report',
                     component: () =>
-                        import ('./views/pages/petroleume/npa/ReconcilationReport.vue')
+                        import ('./views/pages/petroleum/npa/ReconcilationReport.vue')
                 },
                 {
-                    path: '/petroleume/npa/daily-liftings',
+                    path: '/petroleum/npa/daily-liftings',
                     name: 'npa daily-liftings',
                     component: () =>
-                        import ('./views/pages/petroleume/npa/DailyLiftings.vue')
+                        import ('./views/pages/petroleum/npa/DailyLiftings.vue')
                 },
                 // =============================================================================
                 // ICOMS-CEPS MENU START HERE
                 // =============================================================================
                 {
-                    path: '/petroleume/icoms/declearations',
+                    path: '/petroleum/icoms/declearations',
                     name: 'declearations',
                     component: () =>
-                        import ('./views/pages/petroleume/icoms/Declearations.vue')
+                        import ('./views/pages/petroleum/icoms/Declearations.vue')
                 },
                 {
-                    path: '/petroleume/icoms/payments',
+                    path: '/petroleum/icoms/payments',
                     name: 'payments',
                     component: () =>
-                        import ('./views/pages/petroleume/icoms/Payments.vue')
+                        import ('./views/pages/petroleum/icoms/Payments.vue')
                 },
                 {
-                    path: '/petroleume/icoms/differences',
+                    path: '/petroleum/icoms/differences',
                     name: 'differences',
                     component: () =>
-                        import ('./views/pages/petroleume/icoms/Differences.vue')
+                        import ('./views/pages/petroleum/icoms/Differences.vue')
                 },
                 // =============================================================================
                 // SML MENU START HERE
                 // =============================================================================
                 {
-                    path: '/petroleume/sml/daily-liftings',
+                    path: '/petroleum/sml/daily-liftings',
                     name: 'sml daily-liftings',
                     component: () =>
-                        import ('./views/pages/petroleume/icoms/Declearations.vue')
+                        import ('./views/pages/petroleum/icoms/Declearations.vue')
                 },
                 // =============================================================================
                 // COMPUTE MENU START HERE
                 // =============================================================================
                 {
-                    path: '/petroleume/compute',
+                    path: '/petroleum/compute',
                     name: 'compute',
                     component: () =>
-                        import ('./views/pages/petroleume/Compute.vue'),
+                        import ('./views/pages/petroleum/Compute.vue'),
                     meta: {
                         identity: 'Compute Tax Schedule', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
-                            { title: 'Home', url: '/petroleume' },
+                            { title: 'Home', url: '/petroleum' },
                             { title: 'Compute Tax Schedule', active: true },
                         ],
-                        homeurl: '/petroleume',
+                        homeurl: '/petroleum',
                         pageTitle: 'Compute'
                     },
                 },
@@ -1039,8 +1124,8 @@ const router = new Router({
                 // USERS PROFILE START HERE
                 // =============================================================================
                 {
-                    path: '/petroleume/accounts/profile',
-                    name: 'Petroleume User Pofile',
+                    path: '/petroleum/accounts/profile',
+                    name: 'Petroleum User Pofile',
                     component: () =>
                         import ('./views/pages/users/UserProfile.vue'),
                     meta: {

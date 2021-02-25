@@ -2,8 +2,8 @@ var module = require('./config');
 var config = module.configs;
 var mysql = require('mysql');
 var workerFarm = require('worker-farm'),
-    workers = workerFarm(require.resolve('./execute'), ['reconcile', 'reconcileOMC', 'importFile', 'exportFile', 'exportFileLog', 'importReceiptFile']),
-    maxJob = 3,
+    workers = workerFarm(require.resolve('./execute'), ['reconcile', 'reconcileOMC', 'importFile', 'exportFile', 'exportFileFallout', 'exportFileLog', 'importReceiptFile']),
+    maxJob = 4,
     currentJobR = 0,
     currentJobExport = 0,
     currentReceiptJobIm = 0,
@@ -155,12 +155,21 @@ function fileExport() {
                         if (err) {
                             config.log(err);
                         } else {
-                            workers.exportFile(childJobDescription, function(err, result) {
-                                if (result.isDone) {
-                                    process.kill(result.id);
-                                    currentJobExport--;
-                                }
-                            })
+                            if (childJobDescription.export_type === "OMC-FALLOUT") {
+                                workers.exportFileFallout(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else {
+                                workers.exportFile(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            }
                             currentJobExport++;
                         }
                     });

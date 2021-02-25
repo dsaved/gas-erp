@@ -275,7 +275,7 @@ export default {
         phone: "",
         password: "",
         photo: "",
-        baseurl: "/petroleume/icoms/declearations",
+        baseurl: "/petroleum/icoms/declearations",
         confirm_password: "",
         tin: "",
         location: "",
