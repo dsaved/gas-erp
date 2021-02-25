@@ -188,7 +188,7 @@
           </header>
           <div class="w-full flex mb-4">
             <div class="w-1/3 px-2">
-              <span>Category for reconcilation</span>
+              <span>Category for reconciliation</span>
               <ajax-select
                 placeholder="Reconcile With"
                 :options="[]"
@@ -200,7 +200,7 @@
               />
               <span class="text-secondary"
                 >when selected only accounts in this category will be used for
-                reconcilation.</span
+                reconciliation.</span
               >
             </div>
           </div>
@@ -408,7 +408,7 @@ export default {
       user_not_found: false,
       user_found: false,
       omc: {},
-      //reconcilation datat section
+      //reconciliation datat section
       popupActive: false,
       canCloseModal: false,
       reloadButton: false,
@@ -569,7 +569,7 @@ export default {
           this.user_not_found = true;
         });
     },
-    //reconcilation starts here
+    //reconciliation starts here
     loadAccounts: function (scroll) {
       this.loading = true;
       this.post("/omc/accounts", {
@@ -762,7 +762,7 @@ export default {
       var currentVal = this.interval != null ? this.interval : "";
       const { value: interval, isDismissed: isDismissed } = await Swal.fire({
         title: "Confirm Reconcilation",
-        text: "You are about to start reconcilation for this account!",
+        text: "You are about to start reconciliation for this account!",
         icon: "question",
         input: "select",
         inputOptions: inputOptions,

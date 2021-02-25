@@ -30,7 +30,7 @@ export default [{
                 url: '/petroleum/tax-products',
                 name: 'Products',
                 page: 'Tax Products',
-                slug: 'sml-npa-reconcilation',
+                slug: 'sml-npa-reconciliation',
                 i18n: 'SetupProducts'
             },
             {
@@ -94,21 +94,21 @@ export default [{
                 url: '/petroleum/rcn/sml-npa',
                 name: 'SML - NPA',
                 page: 'SML - NPA Reconcilations',
-                slug: 'sml-npa-reconcilation',
+                slug: 'sml-npa-reconciliation',
                 i18n: 'SML - NPA'
             },
             {
                 url: '/petroleum/rcn/npa-icoms',
                 name: 'NPA - ICOMS',
                 page: 'NPA - ICOMS Reconcilations',
-                slug: 'npa-icoms-reconcilation',
+                slug: 'npa-icoms-reconciliation',
                 i18n: 'NPA ICOMS'
             },
             {
                 url: '/petroleum/rcn/npa-npa',
                 name: 'NPA - NPA',
                 page: 'NPA - NPA Reconcilations',
-                slug: 'npa-npa-reconcilation',
+                slug: 'npa-npa-reconciliation',
                 i18n: 'NPA - NPA'
             }
         ]
@@ -120,10 +120,10 @@ export default [{
         icon: 'ActivityIcon',
         i18n: 'NPA',
         submenu: [{
-                url: '/petroleum/npa/reconcilation-report',
+                url: '/petroleum/npa/reconciliation-report',
                 name: 'Reconcilation Reports',
                 page: 'NPA Reconcilation Reports',
-                slug: 'reconcilation-reports',
+                slug: 'reconciliation-reports',
                 i18n: 'Reports'
             },
             {

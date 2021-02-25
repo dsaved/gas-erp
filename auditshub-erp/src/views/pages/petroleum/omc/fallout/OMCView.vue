@@ -488,7 +488,7 @@ export default {
           this.user_not_found = true;
         });
     },
-    //reconcilation starts here
+    //reconciliation starts here
     clearLog: function () {
       this.popupActive = false;
       this.canCloseModal = false;

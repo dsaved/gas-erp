@@ -9,7 +9,6 @@ class RunningjobsModel extends BaseModel
     public function index()
     {
         return $this->fileupload();
-        return $this->reconcilation();
     }
 
     public function fileupload($condition=""){

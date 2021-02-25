@@ -344,7 +344,7 @@ export default {
         vm.getData();
       }, 800);
     },
-    //reconcilation starts here
+    //reconciliation starts here
     getData: function (scroll) {
       var user = this.AppActiveUser;
       var isbog = user.types[1] == "organization" ? "true" : "false";

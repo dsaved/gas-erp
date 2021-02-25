@@ -225,7 +225,7 @@ class OmcModel extends BaseModel
         return $response;
     }
 
-    //get accounts to select for reconcilation
+    //get accounts to select for reconciliation
 
     public function accounts()
     {
@@ -421,18 +421,18 @@ class OmcModel extends BaseModel
                     'proccessing_account' =>  0,
                     'total_account' =>  0,
                     'status' =>  "Initializing",
-                    'description' =>  "reconcilation request queued",
+                    'description' =>  "reconciliation request queued",
                 );
                 $done = $this->db->insert("reconcilation_status", $data);
                 if ($done) {
                     $this->db->updateByID("omc", "id", $account, array("reconciled"=>1));
                     $response['success'] = true;
                     $response['jobid'] = $jobid;
-                    $response['message'] = "reconcilation submitted";
+                    $response['message'] = "reconciliation submitted";
                     return $response;
                 } else {
                     $response['success'] = false;
-                    $response['message'] = "Failed to initialize reconcilation";
+                    $response['message'] = "Failed to initialize reconciliation";
                     return $response;
                 }
             } else {
@@ -479,18 +479,18 @@ class OmcModel extends BaseModel
                 'proccessing_account' =>  0,
                 'total_account' =>  0,
                 'status' =>  "Initializing",
-                'description' =>  "reconcilation request queued",
+                'description' =>  "reconciliation request queued",
             );
             $done = $this->db->insert("reconcilation_status", $data);
             if ($done) {
                 $this->db->updateByID("omc", "id", $account, array("reconciled"=>1));
                 $response['success'] = true;
                 $response['jobid'] = $jobid;
-                $response['message'] = "reconcilation submitted";
+                $response['message'] = "reconciliation submitted";
                 return $response;
             } else {
                 $response['success'] = false;
-                $response['message'] = "Failed to initialize reconcilation";
+                $response['message'] = "Failed to initialize reconciliation";
                 return $response;
             }
         }

@@ -897,7 +897,7 @@ const router = new Router({
                 // =============================================================================
                 {
                     path: '/petroleum/omc/fallouts',
-                    name: 'omc-reconcilation-fallout',
+                    name: 'omc-reconciliation-fallout',
                     component: () =>
                         import ('./views/pages/petroleum/omc/fallout/OMC.vue'),
                     meta: {
@@ -912,7 +912,7 @@ const router = new Router({
                 },
                 {
                     path: '/petroleum/omc/fallouts/:omcid/view',
-                    name: 'omc-reconcilation-fallout-view',
+                    name: 'omc-reconciliation-fallout-view',
                     component: () =>
                         import ('./views/pages/petroleum/omc/fallout/OMCView.vue'),
                     meta: {
@@ -1061,8 +1061,8 @@ const router = new Router({
                 // NPA MENU START HERE
                 // =============================================================================
                 {
-                    path: '/petroleum/npa/reconcilation-report',
-                    name: 'reconcilation-report',
+                    path: '/petroleum/npa/reconciliation-report',
+                    name: 'reconciliation-report',
                     component: () =>
                         import ('./views/pages/petroleum/npa/ReconcilationReport.vue')
                 },

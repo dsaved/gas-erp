@@ -237,7 +237,7 @@ export default {
       var win = window.open(this.site_link + "/" + link, "_blank");
       win.focus();
     },
-    //reconcilation starts here
+    //reconciliation starts here
     getData: function (scroll) {
       var user = this.AppActiveUser;
       this.loading = true;

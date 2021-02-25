@@ -2,7 +2,7 @@
   <div class="cl">
     <vx-card title="Create Account ">
       <p>
-        The Account you create here will be used for reconcilation in the revenue section <br />
+        The Account you create here will be used for reconciliation in the revenue section <br />
         You can always modify the data later.
       </p>
       <div class="mt-5">

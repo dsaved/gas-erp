@@ -49,7 +49,7 @@ function startReconcilation() {
             } else {
                 if (typeof(chatsHid[0]) != "undefined" && chatsHid[0] != null) {
                     var childJobDescription = chatsHid[0];
-                    var sqlQuery = "UPDATE `reconcilation_status` SET `processing`='processing', status='initializing', description='reconcilation job  accepted - " +
+                    var sqlQuery = "UPDATE `reconcilation_status` SET `processing`='processing', status='initializing', description='reconciliation job  accepted - " +
                         getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
                     sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
                         if (err) {

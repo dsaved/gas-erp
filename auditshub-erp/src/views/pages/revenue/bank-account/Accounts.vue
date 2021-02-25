@@ -336,7 +336,7 @@ export default {
         vm.getData();
       }, 800);
     },
-    //reconcilation starts here
+    //reconciliation starts here
     getData: function (scroll) {
       this.loading = true;
       this.post("/bankaccounts/", {

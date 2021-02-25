@@ -62,8 +62,8 @@ exports.reconcile = async function(data, callback) {
             //     config.log(error);
             // });
 
-            await updateStatus("processing account statements with offsets", "reconcilation started - " + getTime());
-            config.log("reconcilation started - " + getTime());
+            await updateStatus("processing account statements with offsets", "reconciliation started - " + getTime());
+            config.log("reconciliation started - " + getTime());
             config.log("processing account statements with offsets");
             totalAccount = mainTransOffset.length;
             workingOn = 0;
@@ -251,8 +251,8 @@ exports.reconcile = async function(data, callback) {
                 }
             });
 
-            await updateStatus("completed", " reconcilation completed - " + getTime(), "completed");
-            config.log("reconcilation completed - " + getTime());
+            await updateStatus("completed", " reconciliation completed - " + getTime(), "completed");
+            config.log("reconciliation completed - " + getTime());
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: " + error.message + " - " + getTime(), "completed");
@@ -423,8 +423,8 @@ exports.reconcileOMC = function(data, callback) {
             }
 
 
-            await updateStatus("processing OMC receipts", "reconcilation started - " + getTime());
-            config.log("reconcilation started - " + getTime());
+            await updateStatus("processing OMC receipts", "reconciliation started - " + getTime());
+            config.log("reconciliation started - " + getTime());
             config.log("processing OMC Receipts");
             totalAccount = mainReceiptsData.length;
             workingOn = 0;
@@ -493,8 +493,8 @@ exports.reconcileOMC = function(data, callback) {
                 }
             });
 
-            await updateStatus("completed", " reconcilation completed - " + getTime(), "completed");
-            config.log("reconcilation completed - " + getTime());
+            await updateStatus("completed", " reconciliation completed - " + getTime(), "completed");
+            config.log("reconciliation completed - " + getTime());
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: " + error.message + " - " + getTime(), "completed");

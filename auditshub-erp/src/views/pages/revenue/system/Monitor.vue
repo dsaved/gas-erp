@@ -291,7 +291,7 @@ export default {
         vm.getData();
       }, 800);
     },
-    //reconcilation starts here
+    //reconciliation starts here
     getData: function (scroll) {
       var user = this.AppActiveUser;
       this.loading = true;
