@@ -116,7 +116,7 @@
 
             <div class="vx-col sm:w-1/3 w-full mb-2">
               <vs-input
-                v-validate="'min:5|max:15|numeric'"
+                v-validate="'min:5|max:19|numeric'"
                 label-placeholder="Old Account Number"
                 name="old account number"
                 v-model="acc_num1"
