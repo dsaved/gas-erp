@@ -76,6 +76,18 @@
                         <span>Profile</span>
                       </div>
                     </vs-dropdown-item>
+                    <vs-dropdown-item>
+                      <div v-if="AppActiveUser.access_level==='admin'" @click="$router.push('/revenue/monitor').catch(() => {})" class="flex items-center">
+                        <feather-icon icon="CpuIcon" class="inline-block mr-2" svgClasses="w-4 h-4" />
+                        <span>Jobs</span>
+                      </div>
+                    </vs-dropdown-item>
+                    <vs-dropdown-item>
+                      <div v-if="AppActiveUser.access_level==='admin'" @click="$router.push('/revenue/downloads').catch(() => {})" class="flex items-center">
+                        <feather-icon icon="DownloadIcon" class="inline-block mr-2" svgClasses="w-4 h-4" />
+                        <span>Files</span>
+                      </div>
+                    </vs-dropdown-item>
                   </vs-dropdown-menu>
 
                 </vs-dropdown>
