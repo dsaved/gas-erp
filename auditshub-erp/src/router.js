@@ -866,7 +866,7 @@ const router = new Router({
                     component: () =>
                         import ('./views/pages/petroleum/omc/OMC.vue'),
                     meta: {
-                        identity: 'OMCs', //this should match then page in navMainMenuItems.js
+                        identity: 'All OMC', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
                             { title: 'Home', url: '/petroleum' },
                             { title: 'OMCs', active: true },
