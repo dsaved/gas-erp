@@ -58,12 +58,12 @@ Vue.mixin({
             data() {
                 return {
                     development: true,
-                    site_link: "https://omc-api.auditshub.com",
-                    storage_key: 'gas-storage',
-                    // site_link: 'http://localhost/gas/omc-api',
-                    // storage_key: 'gas-storage-local',
+                    // site_link: 'https://omc-api.auditshub.com',
+                    // storage_key: 'gas-storage',
+                    site_link: 'http://localhost/gas/omc-api',
+                    storage_key: 'gas-storage-local',
                     axiosCancelSource: null,
-                    allowed_pages: ['neutral'],
+                    allowed_pages: ['neutral']
                 }
             },
             mounted() {
@@ -76,11 +76,11 @@ Vue.mixin({
             },
             beforeMount() {
                 this.axiosCancelSource = axios.CancelToken.source()
-                axios.defaults.headers.common['Authorization'] = `Bearer ${mStorage.get(`${this.storage_key  }gas_authorization`)}`;
+                axios.defaults.headers.common['Authorization'] = `Bearer ${mStorage.get(`${this.storage_key  }gas_authorization`)}`
 	},
 	computed: {
-		AppActiveUser(){
-			return this.getUser();
+		AppActiveUser () {
+			return this.getUser()
 		}
 	},
 	methods: {
@@ -115,42 +115,42 @@ Vue.mixin({
 				}
 			}
 		},
-        filterObj: function(objectsArray, value, casee) {
-            if (casee !== true) {
-                casee = false;
-            }
-            if (typeof objectsArray !== 'object') throw new Error("Not a valid ObjectArray");
+		filterObj (objectsArray, value, casee) {
+			if (casee !== true) {
+				casee = false
+			}
+			if (typeof objectsArray !== 'object') throw new Error('Not a valid ObjectArray')
 
-            var filteredArray = [],
-                added = [],
-                search = "",
-                keys = Object.keys(objectsArray[0]);
-            for (var i in objectsArray) {
-                for (var k in keys) {
-                    var key = keys[k];
-                    if (objectsArray[i][key] === parseInt(objectsArray[i][key], 10)) {
-                        objectsArray[i][key] = objectsArray[i][key].toString();
-                    }
-                    if (typeof objectsArray[i][key] === "string" && !casee) {
-                        search = objectsArray[i][key].toLowerCase();
-                        value = value.toLowerCase();
-                    } else {
-                        search = objectsArray[i][key];
-                    }
+			let filteredArray = [],
+				added = [],
+				search = '',
+				keys = Object.keys(objectsArray[0])
+			for (const i in objectsArray) {
+				for (const k in keys) {
+					const key = keys[k]
+					if (objectsArray[i][key] === parseInt(objectsArray[i][key], 10)) {
+						objectsArray[i][key] = objectsArray[i][key].toString()
+					}
+					if (typeof objectsArray[i][key] === 'string' && !casee) {
+						search = objectsArray[i][key].toLowerCase()
+						value = value.toLowerCase()
+					} else {
+						search = objectsArray[i][key]
+					}
 
-                    if (typeof search === "boolean") continue;
+					if (typeof search === 'boolean') continue
 
-                    //console.log(search," key: "+key);
-                    if (typeof objectsArray[i][key] !== 'object' && typeof objectsArray[i][key] !== 'array' && search.indexOf(value) !== -1) {
-                        if (!added.includes(objectsArray[i])) {
-                            filteredArray.push(objectsArray[i]);
-                            added.push(objectsArray[i]);
-                        }
-                    }
-                }
-            }
-            return filteredArray;
-        },
+					//console.log(search," key: "+key);
+					if (typeof objectsArray[i][key] !== 'object' && typeof objectsArray[i][key] !== 'array' && search.indexOf(value) !== -1) {
+						if (!added.includes(objectsArray[i])) {
+							filteredArray.push(objectsArray[i])
+							added.push(objectsArray[i])
+						}
+					}
+				}
+			}
+			return filteredArray
+		},
 		hasdata (data) {
 			return null !== data && data.length > 0
 		},
@@ -164,13 +164,13 @@ Vue.mixin({
 			}
 		},
 		canDelete () {
-			return this.AppActiveUser.permissions.includes("delete");
+			return this.AppActiveUser.permissions.includes('delete')
 		},
 		canAdd () {
-			return this.AppActiveUser.permissions.includes("create");
+			return this.AppActiveUser.permissions.includes('create')
 		},
 		canUpdate () {
-			return this.AppActiveUser.permissions.includes("update");
+			return this.AppActiveUser.permissions.includes('update')
 		},
 		logUserOut () {
 			this.removeUser()
@@ -334,7 +334,7 @@ Vue.mixin({
 		stringJson (data) {
 			return JSON.stringify(data)
 		},
-		storeData (key,value) {
+		storeData (key, value) {
 			mStorage.set(`${this.storage_key}${key}`, value)
 		},
 		setUser (user) {
@@ -360,7 +360,7 @@ Vue.mixin({
 				access_level: mStorage.get(`${this.storage_key}gas_access_level`),
 				types: JSON.parse(mStorage.get(`${this.storage_key}gas_access_level_types`)) || [],
 				permissions: JSON.parse(mStorage.get(`${this.storage_key  }gas_permissions`)) || [],
-				pages: JSON.parse(mStorage.get(`${this.storage_key}gas_pages`))||[]
+				pages: JSON.parse(mStorage.get(`${this.storage_key}gas_pages`)) || []
 			}
 		},
 		removeUser () {
@@ -374,25 +374,25 @@ Vue.mixin({
 			mStorage.remove(`${this.storage_key}gas_access_level_types`)
 			mStorage.remove(`${this.storage_key}gas_permissions`)
 			mStorage.remove(`${this.storage_key}gas_pages`)
-    },
-    getRandomInt(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    },
-    getOrderStatusColor(status) {
-      if (status === "create") return "success";
-      if (status === "delete") return "danger";
-      if (status === "update") return "warning";
-      return "primary";
-    },
-    getclasscolor() {
-		const arr = ["success","dark","warning","primary","danger"]
-      return arr[this.getRandomInt(0,arr.length - 1)];
-    },
-    acronum(str) {
-		if(!str) return;
-      let matches = str.match(/\b(\w)/g);
-      return matches.join('');
-    },
+		},
+		getRandomInt (min, max) {
+			return Math.floor(Math.random() * (max - min)) + min
+		},
+		getOrderStatusColor (status) {
+			if (status === 'create') return 'success'
+			if (status === 'delete') return 'danger'
+			if (status === 'update') return 'warning'
+			return 'primary'
+		},
+		getclasscolor () {
+			const arr = ['success', 'dark', 'warning', 'primary', 'danger']
+			return arr[this.getRandomInt(0, arr.length - 1)]
+		},
+		acronum (str) {
+			if (!str) return
+			const matches = str.match(/\b(\w)/g)
+			return matches.join('')
+		},
 		showLoading (data) {
 			Swal.fire({
 				title: 'Please Wait !',

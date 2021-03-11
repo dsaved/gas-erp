@@ -53,4 +53,11 @@ class Omcfallout extends SecureController {
       )->json();
     }
 
+    public function all_receipts(){
+      $receipts = $this->model->all_receipts();
+      $this->http->reply(
+          $receipts
+      )->json();
+    }
+
 }

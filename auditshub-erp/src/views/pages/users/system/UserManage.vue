@@ -270,570 +270,564 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import { VTree, VSelectTree } from "vue-tree-halower";
+import Swal from 'sweetalert2'
+import { VTree, VSelectTree } from 'vue-tree-halower'
 
-import mainItemsMenu from "@/layouts/components/menu-items/navMainMenuItems.js";
-import petroleumeMenu from "@/layouts/components/menu-items/navPetroleumeMenuItems.js";
-import revenueMenuItems from "@/layouts/components/menu-items/navRevenueMenuItems.js";
+import mainItemsMenu from '@/layouts/components/menu-items/navMainMenuItems.js'
+import petroleumeMenu from '@/layouts/components/menu-items/navPetroleumeMenuItems.js'
+import revenueMenuItems from '@/layouts/components/menu-items/navRevenueMenuItems.js'
 
 // For custom error message
-import { Validator } from "vee-validate";
+import { Validator } from 'vee-validate'
 const dict = {
-  custom: {
-    __920939usn: {
-      required: "Please enter Username",
-      alpha_dash:
-        "The Username field may contain alpha-numeric characters as well as dashes and underscores",
-    },
-    __920939eml: {
-      required: "The Email field is required",
-      email: "The Email field must be a valid email",
-    },
-  },
-};
+	custom: {
+		__920939usn: {
+			required: 'Please enter Username',
+			alpha_dash:
+        'The Username field may contain alpha-numeric characters as well as dashes and underscores'
+		},
+		__920939eml: {
+			required: 'The Email field is required',
+			email: 'The Email field must be a valid email'
+		}
+	}
+}
 
 // register custom messages
-Validator.localize("en", dict);
+Validator.localize('en', dict)
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  props: {
-    userid: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      searchword: "",
-      pageObjecMenus: [],
-      user: {
-        selectedPages: [],
-        username: "",
-        fullname: "",
-        email: "",
-        phone: "",
-        password: "",
-        photo: "",
-        baseurl: null,
-        confirm_password: "",
-        organization: null,
-        role: null,
-        access_level: "admin",
-        user_type: null,
-      },
-      baseUrl_error: "",
-      baseUrls: [
-        { label: "Home", value: "/" },
-        { label: "Petroleum", value: "/petroleum" },
-        { label: "Revenue", value: "/revenue" },
-      ],
-      organization_error: "",
-      organizations: [],
-      role_error: "",
-      roles: [],
-      usertype_error: "",
-      usertypes: [
-        // { label: "BDC Representative", value: "bdc" },
-        // { label: "OMC Representative", value: "omc" },
-        { label: "System", value: "system" },
-        { label: "Revenue (bog/org)", value: "bogorg" },
-      ],
-      showPageFor: ["system"],
-      showpageSelect: false,
-      pageArray: [],
-    };
-  },
-  components: {
-    VTree,
-    VSelectTree,
-  },
-  beforeMount: function () {
-    this.loadOptions();
-  },
-  mounted: function () {
-    if (this.isEdit()) {
-      this.getData();
-    }
-  },
-  computed: {
-    showRemoveImage: function () {
-      return this.hasdata(this.user.photo);
-    },
-    baseurl() {
-      return this.user.baseurl;
-    },
-    organization() {
-      return this.user.organization;
-    },
-    role() {
-      return this.user.role;
-    },
-    user_type() {
-      return this.user.user_type;
-    },
-  },
-  watch: {
-    user_type: function () {
-      this.usertype_error = "";
-      if (
-        this.user.user_type &&
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	props: {
+		userid: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	data () {
+		return {
+			searchword: '',
+			pageObjecMenus: [],
+			user: {
+				selectedPages: [],
+				username: '',
+				fullname: '',
+				email: '',
+				phone: '',
+				password: '',
+				photo: '',
+				baseurl: null,
+				confirm_password: '',
+				organization: null,
+				role: null,
+				access_level: 'admin',
+				user_type: null
+			},
+			baseUrl_error: '',
+			baseUrls: [
+				{ label: 'Home', value: '/' },
+				{ label: 'Petroleum', value: '/petroleum' },
+				{ label: 'Revenue', value: '/revenue' }
+			],
+			organization_error: '',
+			organizations: [],
+			role_error: '',
+			roles: [],
+			usertype_error: '',
+			usertypes: [
+				// { label: "BDC Representative", value: "bdc" },
+				// { label: "OMC Representative", value: "omc" },
+				{ label: 'System', value: 'system' },
+				{ label: 'Revenue (bog/org)', value: 'bogorg' }
+			],
+			showPageFor: ['system'],
+			showpageSelect: false,
+			pageArray: []
+		}
+	},
+	components: {
+		VTree,
+		VSelectTree
+	},
+	beforeMount () {
+		this.loadOptions()
+	},
+	mounted () {
+		if (this.isEdit()) {
+			this.getData()
+		}
+	},
+	computed: {
+		showRemoveImage () {
+			return this.hasdata(this.user.photo)
+		},
+		baseurl () {
+			return this.user.baseurl
+		},
+		organization () {
+			return this.user.organization
+		},
+		role () {
+			return this.user.role
+		},
+		user_type () {
+			return this.user.user_type
+		}
+	},
+	watch: {
+		user_type () {
+			this.usertype_error = ''
+			if (
+				this.user.user_type &&
         this.user.user_type.value &&
         !this.showPageFor.includes(this.user.user_type.value)
-      ) {
-        this.user.baseurl = null;
-        this.user.selectedPages = [];
-        this.user.role = null;
-      }
+			) {
+				this.user.baseurl = null
+				this.user.selectedPages = []
+				this.user.role = null
+			}
 
-      if (typeof this.user.user_type === "string") {
-        this.usertypes.forEach((type) => {
-          if (type.value === this.user.user_type) {
-            this.user.user_type = type;
-          }
-        });
-      }
+			if (typeof this.user.user_type === 'string') {
+				this.usertypes.forEach((type) => {
+					if (type.value === this.user.user_type) {
+						this.user.user_type = type
+					}
+				})
+			}
 
-      if (this.user.user_type.value === "bogorg") {
-        this.user.baseurl = { label: "Revenue", value: "/revenue" };
-      }
-    },
-    role: function () {
-      this.role_error = "";
-    },
-    organization: function () {
-      this.organization_error = "";
-    },
-    baseurl: function () {
-      //TODO add other pages here for user to choose from
-      this.baseUrl_error = "";
-      this.pageArray = [];
-      this.pageArray = this.pageArray.concat(mainItemsMenu);
-      this.pageArray = this.pageArray.concat(revenueMenuItems);
-      this.pageArray = this.pageArray.concat(petroleumeMenu);
+			if (this.user.user_type.value === 'bogorg') {
+				this.user.baseurl = { label: 'Revenue', value: '/revenue' }
+			}
+		},
+		role () {
+			this.role_error = ''
+		},
+		organization () {
+			this.organization_error = ''
+		},
+		baseurl () {
+			//TODO add other pages here for user to choose from
+			this.baseUrl_error = ''
+			this.pageArray = []
+			this.pageArray = this.pageArray.concat(mainItemsMenu)
+			this.pageArray = this.pageArray.concat(revenueMenuItems)
+			this.pageArray = this.pageArray.concat(petroleumeMenu)
 
-      if (
-        typeof this.user.baseurl === "string" &&
-        this.user.baseurl.startsWith("/")
-      ) {
-        this.baseUrls.forEach((url) => {
-          if (url.value === this.user.baseurl) {
-            this.user.baseurl = url;
-          }
-        });
-      }
+			if (
+				typeof this.user.baseurl === 'string' &&
+        this.user.baseurl.startsWith('/')
+			) {
+				this.baseUrls.forEach((url) => {
+					if (url.value === this.user.baseurl) {
+						this.user.baseurl = url
+					}
+				})
+			}
 
-      if (this.user.baseurl && this.user.baseurl.value) {
-        if (this.user.baseurl.value === "/petroleum") {
-          this.pageArray = petroleumeMenu;
-        }
-        if (this.baseurl.value === "/revenue") {
-          this.pageArray = revenueMenuItems;
-        }
-        if (
-          this.user.user_type &&
+			if (this.user.baseurl && this.user.baseurl.value) {
+				if (this.user.baseurl.value === '/petroleum') {
+					this.pageArray = petroleumeMenu
+				}
+				if (this.baseurl.value === '/revenue') {
+					this.pageArray = revenueMenuItems
+				}
+				if (
+					this.user.user_type &&
           this.user.user_type.value &&
           this.showPageFor.includes(this.user.user_type.value)
-        ) {
-          this.showpageSelect = true;
-        } else {
-          this.showpageSelect = false;
-        }
-      } else {
-        this.showpageSelect = false;
-      }
-      this.pageObjecMenus = this.menus();
-    },
-    organization: function () {
-      this.organization_error = "";
-    },
-  },
-  methods: {
-    menus() {
-      function getPnName(array, vm) {
-        let finalDataArray = [];
-        array.forEach((array, index) => {
-          if (array.page && array.page !== "neutral") {
-            if (array.items) {
-              var isChecked = vm.user.selectedPages.includes(array.page);
-              finalDataArray.push({
-                title: array.items.page,
-                checked: isChecked,
-                selected: isChecked,
-                children: getPnName(array.items.submenu, vm),
-              });
-            } else if (array.submenu) {
-              var isChecked = vm.user.selectedPages.includes(array.page);
-              finalDataArray.push({
-                title: array.page,
-                checked: isChecked,
-                selected: isChecked,
-                children: getPnName(array.submenu, vm),
-              });
-            } else {
-              var isChecked = vm.user.selectedPages.includes(array.page);
-              finalDataArray.push({
-                title: array.page,
-                checked: isChecked,
-                selected: isChecked,
-              });
-            }
-          } else {
-            if (array.items) {
-              array.items.forEach((itemsArray, index) => {
-                var isChecked = vm.user.selectedPages.includes(itemsArray.page);
-                finalDataArray.push({
-                  title: itemsArray.page,
-                  checked: isChecked,
-                  selected: isChecked,
-                  children: getPnName(itemsArray.submenu, vm),
-                });
-              });
-            } else if (array.submenu) {
-              var isChecked = vm.user.selectedPages.includes(array.page);
-              finalDataArray.push({
-                title: array.page,
-                checked: isChecked,
-                selected: isChecked,
-                children: getPnName(array.submenu, vm),
-              });
-            } else {
-              var isChecked = vm.user.selectedPages.includes(array.page);
-              finalDataArray.push({
-                title: array.page,
-                checked: isChecked,
-                selected: isChecked,
-              });
-            }
-          }
-        });
-        return finalDataArray;
-      }
+				) {
+					this.showpageSelect = true
+				} else {
+					this.showpageSelect = false
+				}
+			} else {
+				this.showpageSelect = false
+			}
+			this.pageObjecMenus = this.menus()
+		},
+		organization () {
+			this.organization_error = ''
+		}
+	},
+	methods: {
+		menus () {
+			function getPnName (array, vm) {
+				const finalDataArray = []
+				array.forEach((array, index) => {
+					if (array.page && array.page !== 'neutral') {
+						if (array.items) {
+							var isChecked = vm.user.selectedPages.includes(array.page)
+							finalDataArray.push({
+								title: array.items.page,
+								checked: isChecked,
+								selected: isChecked,
+								children: getPnName(array.items.submenu, vm)
+							})
+						} else if (array.submenu) {
+							var isChecked = vm.user.selectedPages.includes(array.page)
+							finalDataArray.push({
+								title: array.page,
+								checked: isChecked,
+								selected: isChecked,
+								children: getPnName(array.submenu, vm)
+							})
+						} else {
+							var isChecked = vm.user.selectedPages.includes(array.page)
+							finalDataArray.push({
+								title: array.page,
+								checked: isChecked,
+								selected: isChecked
+							})
+						}
+					} else if (array.items) {
+						array.items.forEach((itemsArray, index) => {
+							const isChecked = vm.user.selectedPages.includes(itemsArray.page)
+							finalDataArray.push({
+								title: itemsArray.page,
+								checked: isChecked,
+								selected: isChecked,
+								children: getPnName(itemsArray.submenu, vm)
+							})
+						})
+					} else if (array.submenu) {
+						var isChecked = vm.user.selectedPages.includes(array.page)
+						finalDataArray.push({
+							title: array.page,
+							checked: isChecked,
+							selected: isChecked,
+							children: getPnName(array.submenu, vm)
+						})
+					} else {
+						var isChecked = vm.user.selectedPages.includes(array.page)
+						finalDataArray.push({
+							title: array.page,
+							checked: isChecked,
+							selected: isChecked
+						})
+					}
+				})
+				return finalDataArray
+			}
 
-      return getPnName(this.pageArray, this);
-    },
-    setImage(photo) {
-      this.user.photo = photo;
-    },
-    search() {
-      this.$refs.tree.searchNodes(this.searchword);
-    },
-    nodeSelected(node) {
-      console.log(node);
-      if (
-        (node.selected || node.checked) &&
+			return getPnName(this.pageArray, this)
+		},
+		setImage (photo) {
+			this.user.photo = photo
+		},
+		search () {
+			this.$refs.tree.searchNodes(this.searchword)
+		},
+		nodeSelected (node) {
+			console.log(node)
+			if (
+				(node.selected || node.checked) &&
         node.parent &&
         node.parent() &&
         node.parent().title
-      ) {
-        console.log(typeof node.parent());
-        this.user.selectedPages.push(node.parent().title);
-      } else {
-        if (node.parent && node.parent() && node.parent().title) {
-          if (this.user.selectedPages.includes(node.parent().title)) {
-            const index = this.user.selectedPages.indexOf(node.parent().title);
-            if (index > -1) {
-              this.user.selectedPages.splice(index, 1);
-            }
-          }
-        }
-      }
-      if (node.selected || node.checked) {
-        if (!this.user.selectedPages.includes(node.title)) {
-          this.user.selectedPages.push(node.title);
-        }
-        if (node.children) {
-          node.children.forEach((child) => {
-            if (
-              (child.selected || child.checked) &&
+			) {
+				console.log(typeof node.parent())
+				this.user.selectedPages.push(node.parent().title)
+			} else if (node.parent && node.parent() && node.parent().title) {
+				if (this.user.selectedPages.includes(node.parent().title)) {
+					const index = this.user.selectedPages.indexOf(node.parent().title)
+					if (index > -1) {
+						this.user.selectedPages.splice(index, 1)
+					}
+				}
+			}
+			if (node.selected || node.checked) {
+				if (!this.user.selectedPages.includes(node.title)) {
+					this.user.selectedPages.push(node.title)
+				}
+				if (node.children) {
+					node.children.forEach((child) => {
+						if (
+							(child.selected || child.checked) &&
               !this.user.selectedPages.includes(child.title)
-            ) {
-              this.user.selectedPages.push(child.title);
-            }
-          });
-        }
-      } else {
-        if (this.user.selectedPages.includes(node.title)) {
-          const index = this.user.selectedPages.indexOf(node.title);
-          if (index > -1) {
-            this.user.selectedPages.splice(index, 1);
-          }
-        }
-        if (node.children) {
-          node.children.forEach((child) => {
-            if (this.user.selectedPages.includes(child.title)) {
-              const index = this.user.selectedPages.indexOf(child.title);
-              if (index > -1) {
-                this.user.selectedPages.splice(index, 1);
-              }
-            }
-            if (this.user.selectedPages.includes(node.title)) {
-              const index = this.user.selectedPages.indexOf(node.title);
-              if (index > -1) {
-                this.user.selectedPages.splice(index, 1);
-              }
-            }
-          });
-        }
-      }
-    },
-    loadOptions: function () {
-      this.post("/users/options", {})
-        .then((response) => {
-          var options = response.data;
-          this.organizations = options.organizations;
-          this.roles = options.roles;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    isEdit() {
-      return Number(this.userid) !== 0;
-    },
-    getData() {
-      this.showLoading("getting user infomation");
-      this.post("/users/get/", {
-        id: this.userid,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.user = response.data.users[0];
-          } else {
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.data.message}`,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-            const vm = this;
-            setTimeout(function () {
-              // vm.back();
-            }, 2000);
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          const vm = this;
-          setTimeout(function () {
-            // vm.back();
-          }, 2000);
-        });
-    },
-    validateAndSubmit() {
-      if (this.isEdit()) {
-        if (!this.canUpdate()) {
-          return Swal.fire(
-            "Not Allowed!",
-            "You do not have permission to edit any record",
-            "error"
-          );
-        }
-      } else {
-        if (!this.canAdd()) {
-          return Swal.fire(
-            "Not Allowed!",
-            "You do not have permission to add any record",
-            "error"
-          );
-        }
-      }
-      console.log(this.user.selectedPages);
-      this.$validator.validateAll().then((result) => {
-        if (
-          !this.user.user_type ||
+						) {
+							this.user.selectedPages.push(child.title)
+						}
+					})
+				}
+			} else {
+				if (this.user.selectedPages.includes(node.title)) {
+					const index = this.user.selectedPages.indexOf(node.title)
+					if (index > -1) {
+						this.user.selectedPages.splice(index, 1)
+					}
+				}
+				if (node.children) {
+					node.children.forEach((child) => {
+						if (this.user.selectedPages.includes(child.title)) {
+							const index = this.user.selectedPages.indexOf(child.title)
+							if (index > -1) {
+								this.user.selectedPages.splice(index, 1)
+							}
+						}
+						if (this.user.selectedPages.includes(node.title)) {
+							const index = this.user.selectedPages.indexOf(node.title)
+							if (index > -1) {
+								this.user.selectedPages.splice(index, 1)
+							}
+						}
+					})
+				}
+			}
+		},
+		loadOptions () {
+			this.post('/users/options', {})
+				.then((response) => {
+					const options = response.data
+					this.organizations = options.organizations
+					this.roles = options.roles
+				})
+				.catch((error) => {
+					console.log(error)
+				})
+		},
+		isEdit () {
+			return Number(this.userid) !== 0
+		},
+		getData () {
+			this.showLoading('getting user infomation')
+			this.post('/users/get/', {
+				id: this.userid
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.user = response.data.users[0]
+					} else {
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+						const vm = this
+						setTimeout(function () {
+							// vm.back();
+						}, 2000)
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					const vm = this
+					setTimeout(function () {
+						// vm.back();
+					}, 2000)
+				})
+		},
+		validateAndSubmit () {
+			if (this.isEdit()) {
+				if (!this.canUpdate()) {
+					return Swal.fire(
+						'Not Allowed!',
+						'You do not have permission to edit any record',
+						'error'
+					)
+				}
+			} else if (!this.canAdd()) {
+				return Swal.fire(
+					'Not Allowed!',
+					'You do not have permission to add any record',
+					'error'
+				)
+			}
+			console.log(this.user.selectedPages)
+			this.$validator.validateAll().then((result) => {
+				if (
+					!this.user.user_type ||
           (this.user.user_type && !this.hasdata(this.user.user_type.value))
-        ) {
-          this.usertype_error = "The User Type field is required";
-          result = false;
-        }
-        if (
-          this.user.user_type &&
+				) {
+					this.usertype_error = 'The User Type field is required'
+					result = false
+				}
+				if (
+					this.user.user_type &&
           this.user.user_type.value &&
-          this.user.user_type.value === "bogorg"
-        ) {
-          if (
-            !this.user.organization ||
+          this.user.user_type.value === 'bogorg'
+				) {
+					if (
+						!this.user.organization ||
             (this.user.organization &&
               !this.hasdata(this.user.organization.value))
-          ) {
-            this.organization_error = "The Organization field is required";
-            result = false;
-          }
-        }
-        if (
-          this.user.user_type &&
+					) {
+						this.organization_error = 'The Organization field is required'
+						result = false
+					}
+				}
+				if (
+					this.user.user_type &&
           this.user.user_type.value &&
-          this.user.user_type.value === "system"
-        ) {
-          if (
-            !this.user.role ||
+          this.user.user_type.value === 'system'
+				) {
+					if (
+						!this.user.role ||
             (this.user.role && !this.hasdata(this.user.role.value))
-          ) {
-            this.role_error = "The Role field is required";
-            result = false;
-          }
-        }
-        if (
-          this.user.user_type &&
+					) {
+						this.role_error = 'The Role field is required'
+						result = false
+					}
+				}
+				if (
+					this.user.user_type &&
           this.user.user_type.value &&
-          this.user.user_type.value === "system"
-        ) {
-          if (
-            !this.user.baseurl ||
+          this.user.user_type.value === 'system'
+				) {
+					if (
+						!this.user.baseurl ||
             (this.user.baseurl && !this.hasdata(this.user.baseurl.value))
-          ) {
-            this.baseUrl_error = "The Base URL field is required";
-            result = false;
-          }
-        }
-        if (result) {
-          if (this.user.user_type.value === "bogorg") {
-            this.user.access_level = "user";
-          }
-          // if form have no errors
-          //check if active page is edit or add
-          if (!this.isEdit()) {
-            this.saveUser();
-          } else {
-            this.updateUser();
-          }
-        }
-      });
-    },
-    saveUser: function () {
-      this.showLoading("creating user");
-      this.post("/users/create/", {
-        username: this.user.username,
-        fullname: this.user.fullname,
-        organization:
+					) {
+						this.baseUrl_error = 'The Base URL field is required'
+						result = false
+					}
+				}
+				if (result) {
+					if (this.user.user_type.value === 'bogorg') {
+						this.user.access_level = 'user'
+					}
+					// if form have no errors
+					//check if active page is edit or add
+					if (!this.isEdit()) {
+						this.saveUser()
+					} else {
+						this.updateUser()
+					}
+				}
+			})
+		},
+		saveUser () {
+			this.showLoading('creating user')
+			this.post('/users/create/', {
+				username: this.user.username,
+				fullname: this.user.fullname,
+				organization:
           null != this.organization && null != this.user.organization.value
-            ? this.user.organization.value
-            : 0,
-        email: this.user.email,
-        phone: this.user.phone,
-        user_type:
+          	? this.user.organization.value
+          	: 0,
+				email: this.user.email,
+				phone: this.user.phone,
+				user_type:
           null != this.user.user_type && null != this.user.user_type.value
-            ? this.user.user_type.value
-            : null,
-        access_level: this.user.access_level,
-        password: this.user.password,
-        photo: this.user.photo,
-        baseurl: this.user.baseurl.value,
-        pages: this.user.selectedPages,
-        role:
+          	? this.user.user_type.value
+          	: null,
+				access_level: this.user.access_level,
+				password: this.user.password,
+				photo: this.user.photo,
+				baseurl: this.user.baseurl.value,
+				pages: this.user.selectedPages,
+				role:
           null != this.user.role && null != this.user.role.value
-            ? this.user.role.value
-            : 0,
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.closeLoading();
-          if (response.data.success == true) {
-            Swal.fire(
-              "Account Created!",
-              response.data.message,
-              "success"
-            ).then((result) => {
-              if (result.isConfirmed) {
-                this.back();
-              }
-            });
-            this.photo = null;
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-    updateUser: function () {
-      this.showLoading("updating user");
-      this.post("/users/update/", {
-        id: this.user.id,
-        username: this.user.username,
-        fullname: this.user.fullname,
-        organization:
+          	? this.user.role.value
+          	: 0
+			})
+				.then((response) => {
+					console.log(response.data)
+					this.closeLoading()
+					if (response.data.success == true) {
+						Swal.fire(
+							'Account Created!',
+							response.data.message,
+							'success'
+						).then((result) => {
+							if (result.isConfirmed) {
+								this.back()
+							}
+						})
+						this.photo = null
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		updateUser () {
+			this.showLoading('updating user')
+			this.post('/users/update/', {
+				id: this.user.id,
+				username: this.user.username,
+				fullname: this.user.fullname,
+				organization:
           null != this.organization && null != this.user.organization.value
-            ? this.user.organization.value
-            : 0,
-        email: this.user.email,
-        phone: this.user.phone,
-        user_type:
+          	? this.user.organization.value
+          	: 0,
+				email: this.user.email,
+				phone: this.user.phone,
+				user_type:
           null != this.user.user_type && null != this.user.user_type.value
-            ? this.user.user_type.value
-            : null,
-        access_level: this.user.access_level,
-        password: this.user.password,
-        photo: this.user.photo,
-        baseurl: this.user.baseurl.value,
-        pages: this.user.selectedPages,
-        role:
+          	? this.user.user_type.value
+          	: null,
+				access_level: this.user.access_level,
+				password: this.user.password,
+				photo: this.user.photo,
+				baseurl: this.user.baseurl.value,
+				pages: this.user.selectedPages,
+				role:
           null != this.user.role && null != this.user.role.value
-            ? this.user.role.value
-            : 0,
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.closeLoading();
-          if (response.data.success == true) {
-            Swal.fire("Account Updated!", response.data.message, "success");
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-    deleteMedia: function () {
-      this.showLoading("Deleting photo, please wait");
-      this.post("/users/delete_file", {
-        oldfile: this.hasdata(this.user.photo) ? this.user.photo : null,
-        id: this.hasdata(this.userid) ? this.userid : null,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.user.photo = null;
-            Swal.fire("Deleted!", response.data.message, "success");
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          console.log(error);
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-  },
-};
+          	? this.user.role.value
+          	: 0
+			})
+				.then((response) => {
+					console.log(response.data)
+					this.closeLoading()
+					if (response.data.success == true) {
+						Swal.fire('Account Updated!', response.data.message, 'success')
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		deleteMedia () {
+			this.showLoading('Deleting photo, please wait')
+			this.post('/users/delete_file', {
+				oldfile: this.hasdata(this.user.photo) ? this.user.photo : null,
+				id: this.hasdata(this.userid) ? this.userid : null
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.user.photo = null
+						Swal.fire('Deleted!', response.data.message, 'success')
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					console.log(error)
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		}
+	}
+}
 </script>
 
 <style lang="scss">

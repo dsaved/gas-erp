@@ -32,6 +32,6 @@
 
 <script>
 export default{
-  name: 'vx-breadcrumb',
+	name: 'vx-breadcrumb'
 }
 </script>

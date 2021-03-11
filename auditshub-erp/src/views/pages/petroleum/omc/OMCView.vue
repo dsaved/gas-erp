@@ -349,390 +349,390 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import mStorage from "@/store/storage.js";
+import Swal from 'sweetalert2'
+import mStorage from '@/store/storage.js'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  beforeRouteLeave(to, from, next) {
-    if (this.statuscheck) {
-      clearInterval(this.statuscheck);
-      this.statuscheck = null;
-    }
-    next();
-  },
-  props: {
-    omcid: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      user_not_found: false,
-      user_found: false,
-      omc: {},
-      //file import section
-      popupActive: false,
-      statuscheck: null,
-      errorStr: ["unknown jobid", "error"],
-      importDesc: [],
-      importDetails: "",
-      importStatus: "",
-      //receipt data list starts here
-      pkey: "omc-orgreceipt-list-key",
-      message: "",
-      numbering: 0,
-      currentPage: 1,
-      result_per_page: 20,
-      loading: true,
-      deletebutton: false,
-      pagination: {
-        haspages: false,
-        page: 0,
-        start: 0,
-        end: 0,
-        total: 0,
-        pages: 0,
-        hasNext: false,
-        hasPrevious: false,
-      },
-      selectedRecords: [],
-      search: "",
-      records: [],
-      search_timer: null,
-      banksoption: null,
-    };
-  },
-  computed: {
-    selectAll: {
-      get: function () {
-        return this.records
-          ? this.selectedRecords.length == this.records.length
-          : false;
-      },
-      set: function (value) {
-        var selected = [];
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	beforeRouteLeave (to, from, next) {
+		if (this.statuscheck) {
+			clearInterval(this.statuscheck)
+			this.statuscheck = null
+		}
+		next()
+	},
+	props: {
+		omcid: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	data () {
+		return {
+			user_not_found: false,
+			user_found: false,
+			omc: {},
+			//file import section
+			popupActive: false,
+			statuscheck: null,
+			errorStr: ['unknown jobid', 'error'],
+			importDesc: [],
+			importDetails: '',
+			importStatus: '',
+			//receipt data list starts here
+			pkey: 'omc-orgreceipt-list-key',
+			message: '',
+			numbering: 0,
+			currentPage: 1,
+			result_per_page: 20,
+			loading: true,
+			deletebutton: false,
+			pagination: {
+				haspages: false,
+				page: 0,
+				start: 0,
+				end: 0,
+				total: 0,
+				pages: 0,
+				hasNext: false,
+				hasPrevious: false
+			},
+			selectedRecords: [],
+			search: '',
+			records: [],
+			search_timer: null,
+			banksoption: null
+		}
+	},
+	computed: {
+		selectAll: {
+			get () {
+				return this.records
+					? this.selectedRecords.length == this.records.length
+					: false
+			},
+			set (value) {
+				const selected = []
 
-        if (value) {
-          this.records.forEach(function (record) {
-            selected.push(record.id);
-          });
-        }
-        this.selectedRecords = selected;
-      },
-    },
-    sortedRecords: function () {
-      try {
-        return this.filterObj(this.records, this.search).sort((a, b) => {
-          var modifier = 1;
-          if (this.currentSortDir === "desc") modifier = -1;
-          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-          return 0;
-        });
-      } catch (error) {
-        console.warn(error);
-      }
-    },
-    photo() {
-      return require("@/assets/images/portrait/small/default.png");
-    },
-  },
-  mounted: function () {
-    this.currentPage =
-      Number(mStorage.get(`${this.pkey}page${this.omcid}`)) || 1;
-    this.getData();
-  },
-  watch: {
-    currentPage: function () {
-      mStorage.set(`${this.pkey}page${this.omcid}`, this.currentPage);
-      this.getReceipt();
-    },
-    search: function (newVal, oldVal) {
-      this.startSearch(newVal, oldVal);
-    },
-    pagination: function () {
-      this.numbering = this.pagination.start;
-    },
-  },
-  methods: {
-    number: function (num) {
-      return this.numbering + num;
-    },
-    startSearch: function (newVal, oldVal) {
-      if (this.search_timer) {
-        clearTimeout(this.search_timer);
-      }
-      const vm = this;
-      this.search_timer = setTimeout(function () {
-        vm.getReceipt();
-      }, 800);
-    },
-    getReceipt() {
-      this.loading = true;
-      this.post("/receipts/", {
-        result_per_page: this.result_per_page,
-        page: this.currentPage,
-        search: this.search,
-        id: this.omcid,
-      })
-        .then((response) => {
-          this.loading = false;
-          console.log(response.data);
-          if (response.data.success == true) {
-            this.message = "";
-            this.records = response.data.receipts;
-          } else {
-            this.message = response.data.message;
-            this.records = [];
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.data.message}`,
-              sticky: true,
-              border: "danger",
-              color: "dark",
-              duration: null,
-              position: "bottom-left",
-            });
-          }
-          this.pagination = response.data.pagination;
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            border: "danger",
-            color: "dark",
-            duration: null,
-            position: "bottom-left",
-          });
-        });
-    },
-    getData() {
-      this.showLoading("getting OMC infomation");
-      this.post("/omc/get", {
-        id: this.omcid,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.user_found = true;
-            this.omc = response.data.omcs[0];
-            this.getReceipt();
-          } else {
-            this.user_not_found = true;
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.data.message}`,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          this.user_not_found = true;
-        });
-    },
-    removeReconcilationWarn() {
-      if (!this.canDelete()) {
-        return Swal.fire(
-          "Not Allowed!",
-          "You do not have permission to delete any record",
-          "error"
-        );
-      }
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3cc879",
-        cancelButtonColor: "#ea5455",
-        confirmButtonText: "Yes, remove it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.removeReconcilation();
-        }
-      });
-    },
-    removeReconcilation: function () {
-      this.showLoading("Removing OMC Receipts, hang on a bit...");
-      this.post("/receipts/remove_reconcilation", {
-        id: this.omcid,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            if(response.data.omc){
-              this.omc = response.data.omc;
-            }
-            Swal.fire(
-              "Removed!",
-              "The OMC Reconcilation has been removed.",
-              "success"
-            ).then((result) => {
-              if (result.isConfirmed) {
-                // this.back();
-                this.getReceipt();
-              }
-            });
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-    deleteWarnSingle() {
-      if (!this.canDelete()) {
-        return Swal.fire(
-          "Not Allowed!",
-          "You do not have permission to delete any record",
-          "error"
-        );
-      }
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3cc879",
-        cancelButtonColor: "#ea5455",
-        confirmButtonText: "Yes, remove them!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.delete();
-        }
-      });
-    },
-    delete: function () {
-      this.showLoading("Removing OMC Receipts, hang on a bit...");
-      this.post("/receipts/remove", {
-        id: this.omcid,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            Swal.fire(
-              "Removed!",
-              "The OMC Receipts has been deleted.",
-              "success"
-            ).then((result) => {
-              if (result.isConfirmed) {
-                // this.back();
-                this.getReceipt();
-              }
-            });
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-    //file import function starts here
-    uploadCompleted: function (data) {
-      if (data.success == true) {
-        this.pushDescription(data.message);
-        this.importStatus = "Reading File Content";
-        this.checkImportStatus(data.jobid);
-      } else {
-        Swal.fire("Failed!", data.message, "error");
-      }
-    },
-    checkImportStatus: function (id) {
-      const vm = this;
-      this.statuscheck = setInterval(function () {
-        vm.checkStatusForImport(id);
-      }, 1200);
-    },
-    formatDesc: function (data) {
-      var error = false;
-      this.errorStr.forEach((item) => {
-        if (data && data.toLowerCase().includes(item)) {
-          error = true;
-        }
-      });
-      if (error) {
-        return `<span class="text-danger">->${data}<br/></span> `;
-      }
-      return `<span class="text-primary">->${data}<br/></span> `;
-    },
-    pushDescription: function (data) {
-      if (!this.importDesc.includes(data)) {
-        this.importDesc.push(data);
-      }
-    },
-    clearLog: function () {
-      this.banksoption = null;
-      this.popupActive = false;
-      this.importDesc = [];
-      this.importStatus = "";
-      if (this.statuscheck) {
-        clearInterval(this.statuscheck);
-      }
-    },
-    checkStatusForImport: function (id) {
-      this.post("/omc/import_status", {
-        jobid: id,
-      })
-        .then((response) => {
-          var data = response.data;
-          if (data.success) {
-            var status = data.status;
-            this.pushDescription(status.description);
-            this.importStatus = status.status;
-            this.importDetails = status.details;
-            if (status.status.toLowerCase() == "completed") {
-              this.getReceipt();
-              clearInterval(this.statuscheck);
-              this.importStatus = "";
-              this.importDetails = "";
-            }
-            if (status.status.toLowerCase().includes("error")) {
-              clearInterval(this.statuscheck);
-              this.importStatus = "";
-            }
-          } else {
-            this.pushDescription(response.data.message);
-            this.importStatus = "";
-            clearInterval(this.statuscheck);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-  },
-};
+				if (value) {
+					this.records.forEach(function (record) {
+						selected.push(record.id)
+					})
+				}
+				this.selectedRecords = selected
+			}
+		},
+		sortedRecords () {
+			try {
+				return this.filterObj(this.records, this.search).sort((a, b) => {
+					let modifier = 1
+					if (this.currentSortDir === 'desc') modifier = -1
+					if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
+					if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
+					return 0
+				})
+			} catch (error) {
+				console.warn(error)
+			}
+		},
+		photo () {
+			return require('@/assets/images/portrait/small/default.png')
+		}
+	},
+	mounted () {
+		this.currentPage =
+      Number(mStorage.get(`${this.pkey}page${this.omcid}`)) || 1
+		this.getData()
+	},
+	watch: {
+		currentPage () {
+			mStorage.set(`${this.pkey}page${this.omcid}`, this.currentPage)
+			this.getReceipt()
+		},
+		search (newVal, oldVal) {
+			this.startSearch(newVal, oldVal)
+		},
+		pagination () {
+			this.numbering = this.pagination.start
+		}
+	},
+	methods: {
+		number (num) {
+			return this.numbering + num
+		},
+		startSearch (newVal, oldVal) {
+			if (this.search_timer) {
+				clearTimeout(this.search_timer)
+			}
+			const vm = this
+			this.search_timer = setTimeout(function () {
+				vm.getReceipt()
+			}, 800)
+		},
+		getReceipt () {
+			this.loading = true
+			this.post('/receipts/', {
+				result_per_page: this.result_per_page,
+				page: this.currentPage,
+				search: this.search,
+				id: this.omcid
+			})
+				.then((response) => {
+					this.loading = false
+					console.log(response.data)
+					if (response.data.success == true) {
+						this.message = ''
+						this.records = response.data.receipts
+					} else {
+						this.message = response.data.message
+						this.records = []
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							border: 'danger',
+							color: 'dark',
+							duration: null,
+							position: 'bottom-left'
+						})
+					}
+					this.pagination = response.data.pagination
+				})
+				.catch((error) => {
+					this.loading = false
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						border: 'danger',
+						color: 'dark',
+						duration: null,
+						position: 'bottom-left'
+					})
+				})
+		},
+		getData () {
+			this.showLoading('getting OMC infomation')
+			this.post('/omc/get', {
+				id: this.omcid
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.user_found = true
+						this.omc = response.data.omcs[0]
+						this.getReceipt()
+					} else {
+						this.user_not_found = true
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					this.user_not_found = true
+				})
+		},
+		removeReconcilationWarn () {
+			if (!this.canDelete()) {
+				return Swal.fire(
+					'Not Allowed!',
+					'You do not have permission to delete any record',
+					'error'
+				)
+			}
+			Swal.fire({
+				title: 'Are you sure?',
+				text: 'You won\'t be able to revert this!',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3cc879',
+				cancelButtonColor: '#ea5455',
+				confirmButtonText: 'Yes, remove it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					this.removeReconcilation()
+				}
+			})
+		},
+		removeReconcilation () {
+			this.showLoading('Removing OMC Reconciliation, hang on a bit...')
+			this.post('/receipts/remove_reconcilation', {
+				id: this.omcid
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						if (response.data.omc) {
+							this.omc = response.data.omc
+						}
+						Swal.fire(
+							'Removed!',
+							'The OMC Reconciliation has been removed.',
+							'success'
+						).then((result) => {
+							if (result.isConfirmed) {
+								// this.back();
+								this.getReceipt()
+							}
+						})
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		deleteWarnSingle () {
+			if (!this.canDelete()) {
+				return Swal.fire(
+					'Not Allowed!',
+					'You do not have permission to delete any record',
+					'error'
+				)
+			}
+			Swal.fire({
+				title: 'Are you sure?',
+				text: 'You won\'t be able to revert this!',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3cc879',
+				cancelButtonColor: '#ea5455',
+				confirmButtonText: 'Yes, remove them!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					this.delete()
+				}
+			})
+		},
+		delete () {
+			this.showLoading('Removing OMC Receipts, hang on a bit...')
+			this.post('/receipts/remove', {
+				id: this.omcid
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						Swal.fire(
+							'Removed!',
+							'The OMC Receipts has been deleted.',
+							'success'
+						).then((result) => {
+							if (result.isConfirmed) {
+								// this.back();
+								this.getReceipt()
+							}
+						})
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		//file import function starts here
+		uploadCompleted (data) {
+			if (data.success == true) {
+				this.pushDescription(data.message)
+				this.importStatus = 'Reading File Content'
+				this.checkImportStatus(data.jobid)
+			} else {
+				Swal.fire('Failed!', data.message, 'error')
+			}
+		},
+		checkImportStatus (id) {
+			const vm = this
+			this.statuscheck = setInterval(function () {
+				vm.checkStatusForImport(id)
+			}, 1200)
+		},
+		formatDesc (data) {
+			let error = false
+			this.errorStr.forEach((item) => {
+				if (data && data.toLowerCase().includes(item)) {
+					error = true
+				}
+			})
+			if (error) {
+				return `<span class="text-danger">->${data}<br/></span> `
+			}
+			return `<span class="text-primary">->${data}<br/></span> `
+		},
+		pushDescription (data) {
+			if (!this.importDesc.includes(data)) {
+				this.importDesc.push(data)
+			}
+		},
+		clearLog () {
+			this.banksoption = null
+			this.popupActive = false
+			this.importDesc = []
+			this.importStatus = ''
+			if (this.statuscheck) {
+				clearInterval(this.statuscheck)
+			}
+		},
+		checkStatusForImport (id) {
+			this.post('/omc/import_status', {
+				jobid: id
+			})
+				.then((response) => {
+					const data = response.data
+					if (data.success) {
+						const status = data.status
+						this.pushDescription(status.description)
+						this.importStatus = status.status
+						this.importDetails = status.details
+						if (status.status.toLowerCase() == 'completed') {
+							this.getReceipt()
+							clearInterval(this.statuscheck)
+							this.importStatus = ''
+							this.importDetails = ''
+						}
+						if (status.status.toLowerCase().includes('error')) {
+							clearInterval(this.statuscheck)
+							this.importStatus = ''
+						}
+					} else {
+						this.pushDescription(response.data.message)
+						this.importStatus = ''
+						clearInterval(this.statuscheck)
+					}
+				})
+				.catch((error) => {
+					console.log(error)
+				})
+		}
+	}
+}
 </script>
 
 <style lang="scss">

@@ -32,15 +32,15 @@
 
 <script>
 export default {
-  data() {
-    return {
-      prevRoute: '/',
-    };
-  },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.prevRoute = from;
-    });
-  },
-};
+	data () {
+		return {
+			prevRoute: '/'
+		}
+	},
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			vm.prevRoute = from
+		})
+	}
+}
 </script>

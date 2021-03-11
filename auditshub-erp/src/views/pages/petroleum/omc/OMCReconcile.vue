@@ -375,450 +375,450 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import mStorage from "@/store/storage.js";
+import Swal from 'sweetalert2'
+import mStorage from '@/store/storage.js'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  beforeRouteLeave(to, from, next) {
-    if (this.statuscheck) {
-      clearInterval(this.statuscheck);
-      this.statuscheck = null;
-    }
-    next();
-  },
-  props: {
-    omcid: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      user_not_found: false,
-      user_found: false,
-      omc: {},
-      //reconciliation datat section
-      popupActive: false,
-      canCloseModal: false,
-      reloadButton: false,
-      search_timer: null,
-      statuscheck: null,
-      jobid: null,
-      errorStr: ["unknown jobid", "error"],
-      importDesc: [],
-      reconcilationStatus: "",
-      reconcileDetails: "",
-      //receipt data list starts here
-      pkey: "omc-org-ren-receipt-list-key",
-      message: "",
-      numbering: 0,
-      currentPage: 1,
-      result_per_page: 20,
-      loading: true,
-      deletebutton: false,
-      pagination: {
-        haspages: false,
-        page: 0,
-        start: 0,
-        end: 0,
-        total: 0,
-        pages: 0,
-        hasNext: false,
-        hasPrevious: false,
-      },
-      reconcileWith: [],
-      selectedRecords: [],
-      search: "",
-      records: [],
-      search_timer: null,
-      bank_type: { value: "all", label: "All" },
-      bank_name: { value: "all", label: "All" },
-      category_group: [],
-      banks: [],
-      categories: [],
-      filter_category: { value: "all", label: "All" },
-    };
-  },
-  computed: {
-    selectAll: {
-      get: function () {
-        return this.records
-          ? this.selectedRecords.length == this.records.length
-          : false;
-      },
-      set: function (value) {
-        var selected = [];
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	beforeRouteLeave (to, from, next) {
+		if (this.statuscheck) {
+			clearInterval(this.statuscheck)
+			this.statuscheck = null
+		}
+		next()
+	},
+	props: {
+		omcid: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	data () {
+		return {
+			user_not_found: false,
+			user_found: false,
+			omc: {},
+			//reconciliation datat section
+			popupActive: false,
+			canCloseModal: false,
+			reloadButton: false,
+			search_timer: null,
+			statuscheck: null,
+			jobid: null,
+			errorStr: ['unknown jobid', 'error'],
+			importDesc: [],
+			reconcilationStatus: '',
+			reconcileDetails: '',
+			//receipt data list starts here
+			pkey: 'omc-org-ren-receipt-list-key',
+			message: '',
+			numbering: 0,
+			currentPage: 1,
+			result_per_page: 20,
+			loading: true,
+			deletebutton: false,
+			pagination: {
+				haspages: false,
+				page: 0,
+				start: 0,
+				end: 0,
+				total: 0,
+				pages: 0,
+				hasNext: false,
+				hasPrevious: false
+			},
+			reconcileWith: [],
+			selectedRecords: [],
+			search: '',
+			records: [],
+			search_timer: null,
+			bank_type: { value: 'all', label: 'All' },
+			bank_name: { value: 'all', label: 'All' },
+			category_group: [],
+			banks: [],
+			categories: [],
+			filter_category: { value: 'all', label: 'All' }
+		}
+	},
+	computed: {
+		selectAll: {
+			get () {
+				return this.records
+					? this.selectedRecords.length == this.records.length
+					: false
+			},
+			set (value) {
+				const selected = []
 
-        if (value) {
-          this.records.forEach(function (record) {
-            selected.push(record.id);
-          });
-        }
-        this.selectedRecords = selected;
-      },
-    },
-    sortedRecords: function () {
-      try {
-        return this.filterObj(this.records, this.search).sort((a, b) => {
-          var modifier = 1;
-          if (this.currentSortDir === "desc") modifier = -1;
-          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-          return 0;
-        });
-      } catch (error) {
-        console.warn(error);
-      }
-    },
-    photo() {
-      return require("@/assets/images/portrait/small/default.png");
-    },
-  },
-  mounted: function () {
-    this.currentPage = Number(mStorage.get(`${this.pkey}page${this.omcid}`)) || 1;
-    this.getData();
-  },
-  watch: {
-    currentPage: function () {
-      mStorage.set(`${this.pkey}page${this.omcid}`, this.currentPage);
-      this.loadAccounts();
-    },
-    result_per_page: function () {
-      this.loadAccounts(true);
-    },
-    bank_type: function (newVal, oldVal) {
-      this.loadAccounts(true);
-    },
-    bank_name: function (newVal, oldVal) {
-      this.loadAccounts(true);
-    },
-    filter_category: function (newVal, oldVal) {
-      this.loadAccounts(true);
-    },
-    search: function (newVal, oldVal) {
-      this.startSearch(newVal, oldVal);
-    },
-    pagination: function () {
-      this.numbering = this.pagination.start;
-    },
-    selectedRecords: function (newVal, oldVal) {
-      if (this.selectedRecords.length > 0) {
-        this.deletebutton = true;
-      } else {
-        this.deletebutton = false;
-      }
-    },
-  },
-  methods: {
-    number: function (num) {
-      return this.numbering + num;
-    },
-    startSearch: function (newVal, oldVal) {
-      if (this.search_timer) {
-        clearTimeout(this.search_timer);
-      }
-      const vm = this;
-      this.search_timer = setTimeout(function () {
-        vm.loadAccounts();
-      }, 800);
-    },
-    getData() {
-      this.showLoading("getting OMC infomation");
-      this.post("/omc/get", {
-        id: this.omcid,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.user_found = true;
-            this.omc = response.data.omcs[0];
-            this.loadAccounts();
-          } else {
-            this.user_not_found = true;
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.data.message}`,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          this.user_not_found = true;
-        });
-    },
-    //reconciliation starts here
-    loadAccounts: function (scroll) {
-      this.loading = true;
-      this.post("/omc/accounts", {
-        omcid: this.omcid,
-        access_type: this.AppActiveUser.access_level,
-        user_id: this.AppActiveUser.id,
-        page: this.currentPage,
-        result_per_page: this.result_per_page,
-        bank_type: this.bank_type.value,
-        bank_name: this.bank_name.label,
-        filter_category: this.filter_category.value,
-        search: this.search,
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.records = [];
-          this.loading = false;
-          this.message = response.data.message;
-          this.pagination = response.data.pagination;
-          if (response.data.success) {
-            this.records = response.data.bankaccounts;
-          }
-        })
-        .catch((error) => {
-          this.hasData = false;
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    startCheckReconcilationStatus: function () {
-      this.canCloseModal = false;
-      this.reloadButton = false;
-      const vm = this;
-      this.statuscheck = setInterval(function () {
-        vm.checkReconcilationStatus();
-      }, 1200);
-    },
-    formatDesc: function (data) {
-      var error = false;
-      this.errorStr.forEach((item) => {
-        if (data && data.toLowerCase().includes(item)) {
-          error = true;
-        }
-      });
-      if (error) {
-        return `<span class="text-danger">-> ${data}<br/></span> `;
-      }
-      return `<span class="text-primary">-> ${data}<br/></span> `;
-    },
-    pushDescription: function (data) {
-      if (!this.importDesc.includes(data)) {
-        this.importDesc.push(data);
-      }
-    },
-    clearLog: function () {
-      this.popupActive = false;
-      this.canCloseModal = false;
-      this.reloadButton = false;
-      this.jobid = null;
-      this.importDesc = [];
-      this.reconcilationStatus = "";
-      if (this.statuscheck) {
-        clearInterval(this.statuscheck);
-      }
-    },
-    checkReconcilationStatus: function () {
-      this.post("/omc/reconcilation_status", {
-        jobid: this.jobid,
-      })
-        .then((response) => {
-          console.log(response.data);
-          var data = response.data;
-          if (data.success) {
-            var status = data.status;
-            this.pushDescription(status.description);
-            this.reconcilationStatus = status.status;
-            this.reconcileDetails = status.details;
-            if (status.status.toLowerCase() == "completed") {
-              clearInterval(this.statuscheck);
-              this.reconcilationStatus = "";
-              this.canCloseModal = true;
-            }
-            if (status.status.toLowerCase().includes("error")) {
-              clearInterval(this.statuscheck);
-              this.reconcilationStatus = "";
-              this.canCloseModal = true;
-            }
-          } else {
-            this.pushDescription(response.data.message);
-            this.reconcilationStatus = "";
-            clearInterval(this.statuscheck);
-            this.canCloseModal = true;
-          }
-        })
-        .catch((error) => {
-          this.pushDescription("a network error has occured");
-          clearInterval(this.statuscheck);
-          this.reconcilationStatus = "";
-          this.canCloseModal = true;
-          this.reloadButton = true;
-          console.log(error);
-        });
-    },
-    map_account: function () {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You are about to map this account to current OMC",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, map it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.reconcileWith = this.selectedRecords;
-          this.showLoading("Mapping account to OMC");
-          this.post("/omc/map", {
-            account: this.omcid,
-            id: this.reconcileWith,
-            type: "omc",
-          })
-            .then((response) => {
-              this.closeLoading();
-              if (response.data.success == true) {
-                this.selectedRecords = [];
-                this.loadAccounts();
-                Swal.fire(
-                  "Account(s) mapped",
-                  response.data.message,
-                  "success"
-                );
-              } else {
-                Swal.fire("Failed!", response.data.message, "error");
-              }
-            })
-            .catch((error) => {
-              this.closeLoading();
-              Swal.fire("Failed!", error.message, "error");
-            });
-        }
-      });
-    },
-    unmap_account: function () {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "Do you realy want to unmap this account?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, unmap it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.reconcileWith = this.selectedRecords;
-          this.showLoading("Unmapping account from OMC");
-          this.post("/omc/unmap", {
-            account: this.omcid,
-            id: this.reconcileWith,
-            type: "omc",
-          })
-            .then((response) => {
-              this.closeLoading();
-              if (response.data.success == true) {
-                this.selectedRecords = [];
-                this.loadAccounts();
-                Swal.fire(
-                  "Account(s) unmapped",
-                  response.data.message,
-                  "success"
-                );
-              } else {
-                Swal.fire("Failed!", response.data.message, "error");
-              }
-            })
-            .catch((error) => {
-              this.closeLoading();
-              Swal.fire("Failed!", error.message, "error");
-            });
-        }
-      });
-    },
-    startReconcilationWarn: async function () {
-      var inputOptions = {
-        0: "Same Day Date",
-        1: "1 Day Interval",
-      };
-      for (let index = 2; index <= 100; index++) {
-        inputOptions[index] = index + " Days Interval";
-      }
-      var currentVal = this.interval != null ? this.interval : "";
-      const { value: interval, isDismissed: isDismissed } = await Swal.fire({
-        title: "Confirm Reconcilation",
-        text: "You are about to start reconciliation for this account!",
-        icon: "question",
-        input: "select",
-        inputOptions: inputOptions,
-        showCancelButton: true,
-        inputValue: currentVal,
-        confirmButtonColor: "#0d6723",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, continue!",
-        inputPlaceholder: "Select Date Interval",
-        inputValidator: (value) => {},
-      });
-      if (!isDismissed) {
-        this.interval = interval;
-        this.startReconcilation();
-      }
-    },
-    startReconcilation: function () {
-      var cat;
-      if (!this.hasdata(this.category_group)) {
-        cat = 0;
-      } else {
-        var catArray = [];
-        this.category_group.forEach((category) => {
-          catArray.push(category.value);
-        });
-        cat = catArray;
-      }
+				if (value) {
+					this.records.forEach(function (record) {
+						selected.push(record.id)
+					})
+				}
+				this.selectedRecords = selected
+			}
+		},
+		sortedRecords () {
+			try {
+				return this.filterObj(this.records, this.search).sort((a, b) => {
+					let modifier = 1
+					if (this.currentSortDir === 'desc') modifier = -1
+					if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
+					if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
+					return 0
+				})
+			} catch (error) {
+				console.warn(error)
+			}
+		},
+		photo () {
+			return require('@/assets/images/portrait/small/default.png')
+		}
+	},
+	mounted () {
+		this.currentPage = Number(mStorage.get(`${this.pkey}page${this.omcid}`)) || 1
+		this.getData()
+	},
+	watch: {
+		currentPage () {
+			mStorage.set(`${this.pkey}page${this.omcid}`, this.currentPage)
+			this.loadAccounts()
+		},
+		result_per_page () {
+			this.loadAccounts(true)
+		},
+		bank_type (newVal, oldVal) {
+			this.loadAccounts(true)
+		},
+		bank_name (newVal, oldVal) {
+			this.loadAccounts(true)
+		},
+		filter_category (newVal, oldVal) {
+			this.loadAccounts(true)
+		},
+		search (newVal, oldVal) {
+			this.startSearch(newVal, oldVal)
+		},
+		pagination () {
+			this.numbering = this.pagination.start
+		},
+		selectedRecords (newVal, oldVal) {
+			if (this.selectedRecords.length > 0) {
+				this.deletebutton = true
+			} else {
+				this.deletebutton = false
+			}
+		}
+	},
+	methods: {
+		number (num) {
+			return this.numbering + num
+		},
+		startSearch (newVal, oldVal) {
+			if (this.search_timer) {
+				clearTimeout(this.search_timer)
+			}
+			const vm = this
+			this.search_timer = setTimeout(function () {
+				vm.loadAccounts()
+			}, 800)
+		},
+		getData () {
+			this.showLoading('getting OMC infomation')
+			this.post('/omc/get', {
+				id: this.omcid
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.user_found = true
+						this.omc = response.data.omcs[0]
+						this.loadAccounts()
+					} else {
+						this.user_not_found = true
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					this.user_not_found = true
+				})
+		},
+		//reconciliation starts here
+		loadAccounts (scroll) {
+			this.loading = true
+			this.post('/omc/accounts', {
+				omcid: this.omcid,
+				access_type: this.AppActiveUser.access_level,
+				user_id: this.AppActiveUser.id,
+				page: this.currentPage,
+				result_per_page: this.result_per_page,
+				bank_type: this.bank_type.value,
+				bank_name: this.bank_name.label,
+				filter_category: this.filter_category.value,
+				search: this.search
+			})
+				.then((response) => {
+					console.log(response.data)
+					this.records = []
+					this.loading = false
+					this.message = response.data.message
+					this.pagination = response.data.pagination
+					if (response.data.success) {
+						this.records = response.data.bankaccounts
+					}
+				})
+				.catch((error) => {
+					this.hasData = false
+					this.loading = false
+					console.log(error)
+				})
+		},
+		startCheckReconcilationStatus () {
+			this.canCloseModal = false
+			this.reloadButton = false
+			const vm = this
+			this.statuscheck = setInterval(function () {
+				vm.checkReconcilationStatus()
+			}, 1200)
+		},
+		formatDesc (data) {
+			let error = false
+			this.errorStr.forEach((item) => {
+				if (data && data.toLowerCase().includes(item)) {
+					error = true
+				}
+			})
+			if (error) {
+				return `<span class="text-danger">-> ${data}<br/></span> `
+			}
+			return `<span class="text-primary">-> ${data}<br/></span> `
+		},
+		pushDescription (data) {
+			if (!this.importDesc.includes(data)) {
+				this.importDesc.push(data)
+			}
+		},
+		clearLog () {
+			this.popupActive = false
+			this.canCloseModal = false
+			this.reloadButton = false
+			this.jobid = null
+			this.importDesc = []
+			this.reconcilationStatus = ''
+			if (this.statuscheck) {
+				clearInterval(this.statuscheck)
+			}
+		},
+		checkReconcilationStatus () {
+			this.post('/omc/reconcilation_status', {
+				jobid: this.jobid
+			})
+				.then((response) => {
+					console.log(response.data)
+					const data = response.data
+					if (data.success) {
+						const status = data.status
+						this.pushDescription(status.description)
+						this.reconcilationStatus = status.status
+						this.reconcileDetails = status.details
+						if (status.status.toLowerCase() == 'completed') {
+							clearInterval(this.statuscheck)
+							this.reconcilationStatus = ''
+							this.canCloseModal = true
+						}
+						if (status.status.toLowerCase().includes('error')) {
+							clearInterval(this.statuscheck)
+							this.reconcilationStatus = ''
+							this.canCloseModal = true
+						}
+					} else {
+						this.pushDescription(response.data.message)
+						this.reconcilationStatus = ''
+						clearInterval(this.statuscheck)
+						this.canCloseModal = true
+					}
+				})
+				.catch((error) => {
+					this.pushDescription('a network error has occured')
+					clearInterval(this.statuscheck)
+					this.reconcilationStatus = ''
+					this.canCloseModal = true
+					this.reloadButton = true
+					console.log(error)
+				})
+		},
+		map_account () {
+			Swal.fire({
+				title: 'Are you sure?',
+				text: 'You are about to map this account to current OMC',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, map it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					this.reconcileWith = this.selectedRecords
+					this.showLoading('Mapping account to OMC')
+					this.post('/omc/map', {
+						account: this.omcid,
+						id: this.reconcileWith,
+						type: 'omc'
+					})
+						.then((response) => {
+							this.closeLoading()
+							if (response.data.success == true) {
+								this.selectedRecords = []
+								this.loadAccounts()
+								Swal.fire(
+									'Account(s) mapped',
+									response.data.message,
+									'success'
+								)
+							} else {
+								Swal.fire('Failed!', response.data.message, 'error')
+							}
+						})
+						.catch((error) => {
+							this.closeLoading()
+							Swal.fire('Failed!', error.message, 'error')
+						})
+				}
+			})
+		},
+		unmap_account () {
+			Swal.fire({
+				title: 'Are you sure?',
+				text: 'Do you realy want to unmap this account?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, unmap it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					this.reconcileWith = this.selectedRecords
+					this.showLoading('Unmapping account from OMC')
+					this.post('/omc/unmap', {
+						account: this.omcid,
+						id: this.reconcileWith,
+						type: 'omc'
+					})
+						.then((response) => {
+							this.closeLoading()
+							if (response.data.success == true) {
+								this.selectedRecords = []
+								this.loadAccounts()
+								Swal.fire(
+									'Account(s) unmapped',
+									response.data.message,
+									'success'
+								)
+							} else {
+								Swal.fire('Failed!', response.data.message, 'error')
+							}
+						})
+						.catch((error) => {
+							this.closeLoading()
+							Swal.fire('Failed!', error.message, 'error')
+						})
+				}
+			})
+		},
+		async startReconcilationWarn () {
+			const inputOptions = {
+				0: 'Same Day Date',
+				1: '1 Day Interval'
+			}
+			for (let index = 2; index <= 100; index++) {
+				inputOptions[index] = `${index  } Days Interval`
+			}
+			const currentVal = this.interval != null ? this.interval : ''
+			const { value: interval, isDismissed: isDismissed } = await Swal.fire({
+				title: 'Confirm Reconcilation',
+				text: 'You are about to start reconciliation for this account!',
+				icon: 'question',
+				input: 'select',
+				inputOptions,
+				showCancelButton: true,
+				inputValue: currentVal,
+				confirmButtonColor: '#0d6723',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, continue!',
+				inputPlaceholder: 'Select Date Interval',
+				inputValidator: (value) => {}
+			})
+			if (!isDismissed) {
+				this.interval = interval
+				this.startReconcilation()
+			}
+		},
+		startReconcilation () {
+			let cat
+			if (!this.hasdata(this.category_group)) {
+				cat = 0
+			} else {
+				const catArray = []
+				this.category_group.forEach((category) => {
+					catArray.push(category.value)
+				})
+				cat = catArray
+			}
 
-      this.showLoading("Sending Request For Reconcilation");
-      this.post("/omc/start_reconcilation", {
-        account: this.omcid,
-        interval: this.interval,
-        user_id: this.AppActiveUser.id,
-        access_type: this.AppActiveUser.access_level,
-        category_group: cat,
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.popupActive = true;
-            this.pushDescription(response.data.message);
-            this.reconcilationStatus = "Initializing";
-            this.jobid = response.data.jobid;
-            this.startCheckReconcilationStatus();
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-  },
-};
+			this.showLoading('Sending Request For Reconcilation')
+			this.post('/omc/start_reconcilation', {
+				account: this.omcid,
+				interval: this.interval,
+				user_id: this.AppActiveUser.id,
+				access_type: this.AppActiveUser.access_level,
+				category_group: cat
+			})
+				.then((response) => {
+					console.log(response.data)
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.popupActive = true
+						this.pushDescription(response.data.message)
+						this.reconcilationStatus = 'Initializing'
+						this.jobid = response.data.jobid
+						this.startCheckReconcilationStatus()
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		}
+	}
+}
 </script>
 
 <style lang="scss">

@@ -1,0 +1,588 @@
+REQUEST TIME: 11:23:32+00:00
+POST /gas/omc-api/omcfallout/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:23:34+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:23:34+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:30:00+00:00
+POST /gas/omc-api/omcfallout/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:30:03+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:30:03+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:33:09+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:33:10+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:34:18+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:34:18+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:36:01+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 16:36:01+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:39:42+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:39:43+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:51:46+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:51:46+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:51:49+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":99999999999,"page":1,"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:51:56+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:51:57+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:52:00+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":99999999999,"page":1,"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:52:19+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":99999999999,"page":1,"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:59:33+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:59:33+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:02+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":99999999999,"page":1,"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:18+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":99999999999,"page":1,"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:23+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:23+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:29+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpmOTFiNTRkMDM5ZWE=
+Host: localhost
+Connection: keep-alive
+Accept: application/json, text/plain, */*
+Dnt: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45
+Origin: http://localhost:8080
+Sec-Fetch-Site: same-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8080/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+
+Request body:
+{"result_per_page":99999999999,"page":1,"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+

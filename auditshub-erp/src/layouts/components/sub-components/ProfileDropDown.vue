@@ -36,16 +36,16 @@
 
 <script>
 export default {
-  props: {
-    profileLink: {
-      type: String,
-      default: ''
-    }
-  },
-  computed: {
-    activeUserInfo () {
-      return this.AppActiveUser;
-    }
-  }
+	props: {
+		profileLink: {
+			type: String,
+			default: ''
+		}
+	},
+	computed: {
+		activeUserInfo () {
+			return this.AppActiveUser
+		}
+	}
 }
 </script>

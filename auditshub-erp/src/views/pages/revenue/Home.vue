@@ -80,216 +80,216 @@
 </template>
 
 <script>
-import StatisticsCardLine from "@/components/statistics-cards/StatisticsCardLine.vue";
-import VueApexCharts from "vue-apexcharts";
+import StatisticsCardLine from '@/components/statistics-cards/StatisticsCardLine.vue'
+import VueApexCharts from 'vue-apexcharts'
 
 export default {
-  components: {
-    VueApexCharts,
-    StatisticsCardLine,
-  },
-  data() {
-    return {
-      bogunauth: 0,
-      otherunauth: 0,
-      totaltunauth: 0,
-      totalbogunauth: "0",
-      totalotherunauth: "0",
-      totalunauthbank: "0",
-      seriesA_details: {},
-      seriesB_details: {},
-      seriesA: [],
-      seriesB: [],
-      chartOptionsA: {
-        chart: {
-          toolbar: { show: false },
-          dropShadow: {
-            enabled: true,
-            top: 10,
-            left: 0,
-            blur: 4,
-            opacity: 0.1,
-          },
-        },
-        stroke: {
-          curve: "smooth",
-          width: 4,
-        },
-        grid: {
-          borderColor: "#ebebeb",
-        },
-        legend: {
-          show: false,
-        },
-        colors: ["#df87f2"],
-        fill: {
-          type: "gradient",
-          gradient: {
-            shade: "dark",
-            inverseColors: false,
-            gradientToColors: ["#7367F0"],
-            shadeIntensity: 1,
-            type: "horizontal",
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 100, 100, 100],
-          },
-        },
-        markers: {
-          size: 0,
-          hover: {
-            size: 5,
-          },
-        },
-        xaxis: {
-          labels: {
-            style: {
-              cssClass: "text-grey fill-current",
-            },
-          },
-          axisTicks: {
-            show: false,
-          },
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "July",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          axisBorder: {
-            show: false,
-          },
-        },
-        yaxis: {
-          tickAmount: 5,
-          labels: {
-            style: {
-              cssClass: "text-grey fill-current",
-            },
-            formatter(val) {
-              return val > 999 ? `${(val / 1000).toFixed(1)}k` : val;
-            },
-          },
-        },
-        tooltip: {
-          x: { show: false },
-        },
-      },
-      chartOptionsB: {
-        chart: {
-          toolbar: { show: false },
-          dropShadow: {
-            enabled: true,
-            top: 10,
-            left: 0,
-            blur: 4,
-            opacity: 0.1,
-          },
-        },
-        stroke: {
-          curve: "smooth",
-          dashArray: [0, 8],
-          width: [4, 2],
-        },
-        grid: {
-          borderColor: "#e7e7e7",
-        },
-        legend: {
-          show: false,
-        },
-        colors: ["#00db89"],
-        fill: {
-          type: "gradient",
-          gradient: {
-            shade: "dark",
-            inverseColors: false,
-            gradientToColors: ["#00b5b5"],
-            shadeIntensity: 1,
-            type: "horizontal",
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 100, 100, 100],
-          },
-        },
-        markers: {
-          size: 0,
-          hover: {
-            size: 5,
-          },
-        },
-        xaxis: {
-          labels: {
-            style: {
-              cssClass: "text-grey fill-current",
-            },
-          },
-          axisTicks: {
-            show: false,
-          },
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "July",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          axisBorder: {
-            show: false,
-          },
-        },
-        yaxis: {
-          tickAmount: 5,
-          labels: {
-            style: {
-              cssClass: "text-grey fill-current",
-            },
-            formatter(val) {
-              return val > 999 ? `${(val / 1000).toFixed(1)}k` : val;
-            },
-          },
-        },
-        tooltip: {
-          x: { show: false },
-        },
-      },
-    };
-  },
-  created() {
-    this.post("/home/", {
-      access_type: this.AppActiveUser.access_level,
-      user_id: this.AppActiveUser.id,
-    })
-      .then((response) => {
-        var data = response.data;
-        this.bogunauth = data.bogunauth;
-        this.otherunauth = data.otherunauth;
-        this.totaltunauth = data.totaltunauth;
-        this.totalbogunauth = data.totalbogunauth;
-        this.totalotherunauth = data.totalotherunauth;
-        this.totalunauthbank = data.totalunauthbank;
-        this.seriesA_details = data.statsbog;
-        this.seriesB_details = data.statsorg;
-        this.seriesA = data.statsbog.stats;
-        this.seriesB = data.statsorg.stats;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-};
+	components: {
+		VueApexCharts,
+		StatisticsCardLine
+	},
+	data () {
+		return {
+			bogunauth: 0,
+			otherunauth: 0,
+			totaltunauth: 0,
+			totalbogunauth: '0',
+			totalotherunauth: '0',
+			totalunauthbank: '0',
+			seriesA_details: {},
+			seriesB_details: {},
+			seriesA: [],
+			seriesB: [],
+			chartOptionsA: {
+				chart: {
+					toolbar: { show: false },
+					dropShadow: {
+						enabled: true,
+						top: 10,
+						left: 0,
+						blur: 4,
+						opacity: 0.1
+					}
+				},
+				stroke: {
+					curve: 'smooth',
+					width: 4
+				},
+				grid: {
+					borderColor: '#ebebeb'
+				},
+				legend: {
+					show: false
+				},
+				colors: ['#df87f2'],
+				fill: {
+					type: 'gradient',
+					gradient: {
+						shade: 'dark',
+						inverseColors: false,
+						gradientToColors: ['#7367F0'],
+						shadeIntensity: 1,
+						type: 'horizontal',
+						opacityFrom: 1,
+						opacityTo: 1,
+						stops: [0, 100, 100, 100]
+					}
+				},
+				markers: {
+					size: 0,
+					hover: {
+						size: 5
+					}
+				},
+				xaxis: {
+					labels: {
+						style: {
+							cssClass: 'text-grey fill-current'
+						}
+					},
+					axisTicks: {
+						show: false
+					},
+					categories: [
+						'Jan',
+						'Feb',
+						'Mar',
+						'Apr',
+						'May',
+						'Jun',
+						'July',
+						'Aug',
+						'Sep',
+						'Oct',
+						'Nov',
+						'Dec'
+					],
+					axisBorder: {
+						show: false
+					}
+				},
+				yaxis: {
+					tickAmount: 5,
+					labels: {
+						style: {
+							cssClass: 'text-grey fill-current'
+						},
+						formatter (val) {
+							return val > 999 ? `${(val / 1000).toFixed(1)}k` : val
+						}
+					}
+				},
+				tooltip: {
+					x: { show: false }
+				}
+			},
+			chartOptionsB: {
+				chart: {
+					toolbar: { show: false },
+					dropShadow: {
+						enabled: true,
+						top: 10,
+						left: 0,
+						blur: 4,
+						opacity: 0.1
+					}
+				},
+				stroke: {
+					curve: 'smooth',
+					dashArray: [0, 8],
+					width: [4, 2]
+				},
+				grid: {
+					borderColor: '#e7e7e7'
+				},
+				legend: {
+					show: false
+				},
+				colors: ['#00db89'],
+				fill: {
+					type: 'gradient',
+					gradient: {
+						shade: 'dark',
+						inverseColors: false,
+						gradientToColors: ['#00b5b5'],
+						shadeIntensity: 1,
+						type: 'horizontal',
+						opacityFrom: 1,
+						opacityTo: 1,
+						stops: [0, 100, 100, 100]
+					}
+				},
+				markers: {
+					size: 0,
+					hover: {
+						size: 5
+					}
+				},
+				xaxis: {
+					labels: {
+						style: {
+							cssClass: 'text-grey fill-current'
+						}
+					},
+					axisTicks: {
+						show: false
+					},
+					categories: [
+						'Jan',
+						'Feb',
+						'Mar',
+						'Apr',
+						'May',
+						'Jun',
+						'July',
+						'Aug',
+						'Sep',
+						'Oct',
+						'Nov',
+						'Dec'
+					],
+					axisBorder: {
+						show: false
+					}
+				},
+				yaxis: {
+					tickAmount: 5,
+					labels: {
+						style: {
+							cssClass: 'text-grey fill-current'
+						},
+						formatter (val) {
+							return val > 999 ? `${(val / 1000).toFixed(1)}k` : val
+						}
+					}
+				},
+				tooltip: {
+					x: { show: false }
+				}
+			}
+		}
+	},
+	created () {
+		this.post('/home/', {
+			access_type: this.AppActiveUser.access_level,
+			user_id: this.AppActiveUser.id
+		})
+			.then((response) => {
+				const data = response.data
+				this.bogunauth = data.bogunauth
+				this.otherunauth = data.otherunauth
+				this.totaltunauth = data.totaltunauth
+				this.totalbogunauth = data.totalbogunauth
+				this.totalotherunauth = data.totalotherunauth
+				this.totalunauthbank = data.totalunauthbank
+				this.seriesA_details = data.statsbog
+				this.seriesB_details = data.statsorg
+				this.seriesA = data.statsbog.stats
+				this.seriesB = data.statsorg.stats
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	}
+}
 </script>

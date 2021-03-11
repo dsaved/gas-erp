@@ -126,6 +126,46 @@ class OmcfalloutModel extends BaseModel
         $response["pagination"] = $this->paging->paging();
         return $response;
     }
+    
+    public function all_receipts()
+    {
+        $id = $this->http->json->id??null;
+        if (empty($id)) {
+            $this->http->_403("OMC id is required");
+        }
+
+        $response = array();
+
+        $receipts = $this->getReceipts($id);
+        $response['receipts'] = $receipts['receipts'];
+        $response['receipt_total_amount'] = number_format($receipts['total_amount'], 2);
+        return $response;
+    }
+
+    public function getReceipts($id){
+        $response = array();
+        $this->db->query("SELECT * FROM omc_receipt WHERE omc_id=$id AND status='flagged' ORDER By date");
+        $result = $this->db->results();
+        $total_amount = 0.0;
+        $jsonReceiptStr = [];
+        if (!empty($result)) {
+            foreach ($result as $key => &$value) {
+                $total_amount += (double)$value->amount;
+                if(!empty($jsonReceiptStr) && $value->date === $jsonReceiptStr[count($jsonReceiptStr)-1]['id']){
+                    $jsonReceiptStr[count($jsonReceiptStr)-1]['subtotal'] += (double)$value->amount;
+                    array_push($jsonReceiptStr[count($jsonReceiptStr)-1]['payments'], ["bank"=>$value->bank,"amount"=>number_format($value->amount, 2)]);
+                }else{
+                    array_push($jsonReceiptStr, array("id"=>$value->date,"name"=>$this->date->_human_date($value->date), "subtotal"=> $value->amount,"payments"=> [["bank"=>$value->bank,"amount"=>number_format($value->amount, 2)]]));
+                }
+            }
+            $response['receipts'] = $jsonReceiptStr;
+            $response['total_amount'] = $total_amount;
+        } else {
+            $response['receipts']  = [];
+            $response['total_amount'] = 0.0;
+        }
+        return $response;
+    }
 
     public function start_export(){
         $filename = $this->http->json->filename;

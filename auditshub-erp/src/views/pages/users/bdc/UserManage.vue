@@ -229,279 +229,277 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import { VTree, VSelectTree } from "vue-tree-halower";
+import Swal from 'sweetalert2'
+import { VTree, VSelectTree } from 'vue-tree-halower'
 
 // For custom error message
-import { Validator } from "vee-validate";
+import { Validator } from 'vee-validate'
 const dict = {
-  custom: {
-    __920939usn: {
-      required: "Please enter Username",
-      alpha_dash:
-        "The Username field may contain alpha-numeric characters as well as dashes and underscores",
-    },
-    __920939eml: {
-      required: "The Email field is required",
-      email: "The Email field must be a valid email",
-    },
-  },
-};
+	custom: {
+		__920939usn: {
+			required: 'Please enter Username',
+			alpha_dash:
+        'The Username field may contain alpha-numeric characters as well as dashes and underscores'
+		},
+		__920939eml: {
+			required: 'The Email field is required',
+			email: 'The Email field must be a valid email'
+		}
+	}
+}
 
 // register custom messages
-Validator.localize("en", dict);
+Validator.localize('en', dict)
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  props: {
-    userid: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      user: {
-        selectedPages: [],
-        username: "",
-        fullname: "",
-        email: "",
-        phone: "",
-        password: "",
-        photo: "",
-        baseurl: "/petroleum/icoms/declearations",
-        confirm_password: "",
-        tin: "",
-        location: "",
-        region: "",
-        district: "",
-        designation: "",
-        organization: 0,
-        role: 0,
-        access_level: "bdc",
-        user_type: "bdc",
-      },
-    };
-  },
-  components: {
-    VTree,
-    VSelectTree,
-  },
-  beforeMount: function () {},
-  mounted: function () {
-    if (this.isEdit()) {
-      this.getData();
-    }
-  },
-  computed: {
-    showRemoveImage: function () {
-      return this.hasdata(this.user.photo);
-    },
-    baseurl() {
-      return this.user.baseurl;
-    },
-    organization() {
-      return this.user.organization;
-    },
-    role() {
-      return this.user.role;
-    },
-  },
-  watch: {},
-  methods: {
-    setImage(photo) {
-      this.user.photo = photo;
-    },
-    search() {
-      this.$refs.tree.searchNodes(this.searchword);
-    },
-    isEdit() {
-      return Number(this.userid) !== 0;
-    },
-    getData() {
-      this.showLoading("getting user infomation");
-      this.post("/users/bdc/", {
-        id: this.userid,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.user = response.data.users[0];
-          } else {
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.data.message}`,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-            const vm = this;
-            setTimeout(function () {
-              // vm.back();
-            }, 2000);
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          const vm = this;
-          setTimeout(function () {
-            // vm.back();
-          }, 2000);
-        });
-    },
-    validateAndSubmit() {
-      if (this.isEdit()) {
-        if (!this.canUpdate()) {
-          return Swal.fire(
-            "Not Allowed!",
-            "You do not have permission to edit any record",
-            "error"
-          );
-        }
-      } else {
-        if (!this.canAdd()) {
-          return Swal.fire(
-            "Not Allowed!",
-            "You do not have permission to add any record",
-            "error"
-          );
-        }
-      }
-      console.log(this.user.selectedPages);
-      this.$validator.validateAll().then((result) => {
-        if (result) {
-          // if form have no errors
-          //check if active page is edit or add
-          if (!this.isEdit()) {
-            this.saveUser();
-          } else {
-            this.updateUser();
-          }
-        }
-      });
-    },
-    saveUser: function () {
-      this.showLoading("creating user");
-      this.post("/users/create/", {
-        username: this.user.username,
-        fullname: this.user.fullname,
-        email: this.user.email,
-        phone: this.user.phone,
-        password: this.user.password,
-        photo: this.user.photo,
-        baseurl: this.user.baseurl,
-        pages: this.user.selectedPages,
-        tin: this.user.tin,
-        location: this.user.location,
-        region: this.user.region,
-        district: this.user.district,
-        designation: this.user.designation,
-        organization: 0,
-        user_type: "bdc",
-        access_level: this.user.access_level,
-        role: 0,
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.closeLoading();
-          if (response.data.success == true) {
-            Swal.fire(
-              "Account Created!",
-              response.data.message,
-              "success"
-            ).then((result) => {
-              if (result.isConfirmed) {
-                this.back();
-              }
-            });
-            this.photo = null;
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-    updateUser: function () {
-      this.showLoading("creating user");
-      this.post("/users/update/", {
-        id: this.user.id,
-        username: this.user.username,
-        fullname: this.user.fullname,
-        email: this.user.email,
-        phone: this.user.phone,
-        password: this.user.password,
-        photo: this.user.photo,
-        baseurl: this.user.baseurl,
-        pages: this.user.selectedPages,
-        tin: this.user.tin,
-        location: this.user.location,
-        region: this.user.region,
-        district: this.user.district,
-        designation: this.user.designation,
-        organization: 0,
-        user_type: "bdc",
-        access_level: this.user.access_level,
-        role: 0,
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.closeLoading();
-          if (response.data.success == true) {
-            Swal.fire("Account Updated!", response.data.message, "success");
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-    deleteMedia: function () {
-      this.showLoading("Deleting photo, please wait");
-      this.post("/users/delete_file", {
-        oldfile: this.hasdata(this.user.photo) ? this.user.photo : null,
-        id: this.hasdata(this.userid) ? this.userid : null,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.user.photo = null;
-            Swal.fire("Deleted!", response.data.message, "success");
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          console.log(error);
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-  },
-};
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	props: {
+		userid: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	data () {
+		return {
+			user: {
+				selectedPages: [],
+				username: '',
+				fullname: '',
+				email: '',
+				phone: '',
+				password: '',
+				photo: '',
+				baseurl: '/petroleum/icoms/declearations',
+				confirm_password: '',
+				tin: '',
+				location: '',
+				region: '',
+				district: '',
+				designation: '',
+				organization: 0,
+				role: 0,
+				access_level: 'bdc',
+				user_type: 'bdc'
+			}
+		}
+	},
+	components: {
+		VTree,
+		VSelectTree
+	},
+	beforeMount () {},
+	mounted () {
+		if (this.isEdit()) {
+			this.getData()
+		}
+	},
+	computed: {
+		showRemoveImage () {
+			return this.hasdata(this.user.photo)
+		},
+		baseurl () {
+			return this.user.baseurl
+		},
+		organization () {
+			return this.user.organization
+		},
+		role () {
+			return this.user.role
+		}
+	},
+	watch: {},
+	methods: {
+		setImage (photo) {
+			this.user.photo = photo
+		},
+		search () {
+			this.$refs.tree.searchNodes(this.searchword)
+		},
+		isEdit () {
+			return Number(this.userid) !== 0
+		},
+		getData () {
+			this.showLoading('getting user infomation')
+			this.post('/users/bdc/', {
+				id: this.userid
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.user = response.data.users[0]
+					} else {
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+						const vm = this
+						setTimeout(function () {
+							// vm.back();
+						}, 2000)
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					const vm = this
+					setTimeout(function () {
+						// vm.back();
+					}, 2000)
+				})
+		},
+		validateAndSubmit () {
+			if (this.isEdit()) {
+				if (!this.canUpdate()) {
+					return Swal.fire(
+						'Not Allowed!',
+						'You do not have permission to edit any record',
+						'error'
+					)
+				}
+			} else if (!this.canAdd()) {
+				return Swal.fire(
+					'Not Allowed!',
+					'You do not have permission to add any record',
+					'error'
+				)
+			}
+			console.log(this.user.selectedPages)
+			this.$validator.validateAll().then((result) => {
+				if (result) {
+					// if form have no errors
+					//check if active page is edit or add
+					if (!this.isEdit()) {
+						this.saveUser()
+					} else {
+						this.updateUser()
+					}
+				}
+			})
+		},
+		saveUser () {
+			this.showLoading('creating user')
+			this.post('/users/create/', {
+				username: this.user.username,
+				fullname: this.user.fullname,
+				email: this.user.email,
+				phone: this.user.phone,
+				password: this.user.password,
+				photo: this.user.photo,
+				baseurl: this.user.baseurl,
+				pages: this.user.selectedPages,
+				tin: this.user.tin,
+				location: this.user.location,
+				region: this.user.region,
+				district: this.user.district,
+				designation: this.user.designation,
+				organization: 0,
+				user_type: 'bdc',
+				access_level: this.user.access_level,
+				role: 0
+			})
+				.then((response) => {
+					console.log(response.data)
+					this.closeLoading()
+					if (response.data.success == true) {
+						Swal.fire(
+							'Account Created!',
+							response.data.message,
+							'success'
+						).then((result) => {
+							if (result.isConfirmed) {
+								this.back()
+							}
+						})
+						this.photo = null
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		updateUser () {
+			this.showLoading('creating user')
+			this.post('/users/update/', {
+				id: this.user.id,
+				username: this.user.username,
+				fullname: this.user.fullname,
+				email: this.user.email,
+				phone: this.user.phone,
+				password: this.user.password,
+				photo: this.user.photo,
+				baseurl: this.user.baseurl,
+				pages: this.user.selectedPages,
+				tin: this.user.tin,
+				location: this.user.location,
+				region: this.user.region,
+				district: this.user.district,
+				designation: this.user.designation,
+				organization: 0,
+				user_type: 'bdc',
+				access_level: this.user.access_level,
+				role: 0
+			})
+				.then((response) => {
+					console.log(response.data)
+					this.closeLoading()
+					if (response.data.success == true) {
+						Swal.fire('Account Updated!', response.data.message, 'success')
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		deleteMedia () {
+			this.showLoading('Deleting photo, please wait')
+			this.post('/users/delete_file', {
+				oldfile: this.hasdata(this.user.photo) ? this.user.photo : null,
+				id: this.hasdata(this.userid) ? this.userid : null
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.user.photo = null
+						Swal.fire('Deleted!', response.data.message, 'success')
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					console.log(error)
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		}
+	}
+}
 </script>
 
 <style lang="scss">

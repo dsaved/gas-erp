@@ -68,193 +68,193 @@
 
 <script>
 export default{
-  props: {
-    placeholder: {
-      type: String,
-      default: 'Search..'
-    },
-    data: {
-      type: Object,
-      required: true
-    },
-    initalData: {
-      type: Object,
-      default: () => new Object
-    },
-    inputClassses: {
-      type: [String, Object, Array]
-    },
-    autoFocus: {
-      type: Boolean,
-      default: false
-    },
-    showPinned: {
-      type: Boolean,
-      default: false
-    },
-    searchLimit: {
-      type: Number,
-      default: 4
-    },
-    hideGroupTitle: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data () {
-    return {
-      searchQuery: '',
-      filteredData: {},
-      currentSelected: -1,
-      inputFocused: false,
-      insideSuggestions: false
-    }
-  },
-  watch: {
-    // UPDATE SUGGESTIONS LIST
-    searchQuery (val) {
-      this.$emit('input', val)
+	props: {
+		placeholder: {
+			type: String,
+			default: 'Search..'
+		},
+		data: {
+			type: Object,
+			required: true
+		},
+		initalData: {
+			type: Object,
+			default: () => new Object
+		},
+		inputClassses: {
+			type: [String, Object, Array]
+		},
+		autoFocus: {
+			type: Boolean,
+			default: false
+		},
+		showPinned: {
+			type: Boolean,
+			default: false
+		},
+		searchLimit: {
+			type: Number,
+			default: 4
+		},
+		hideGroupTitle: {
+			type: Boolean,
+			default: false
+		}
+	},
+	data () {
+		return {
+			searchQuery: '',
+			filteredData: {},
+			currentSelected: -1,
+			inputFocused: false,
+			insideSuggestions: false
+		}
+	},
+	watch: {
+		// UPDATE SUGGESTIONS LIST
+		searchQuery (val) {
+			this.$emit('input', val)
 
-      if (val === '') {
-        this.inputInit()
-      } else {
-        const queried_data = {}
-        const data_grps = Object.keys(this.data)
+			if (val === '') {
+				this.inputInit()
+			} else {
+				const queried_data = {}
+				const data_grps = Object.keys(this.data)
 
-        data_grps.forEach((grp, i) => {
-          queried_data[data_grps[i]] = this.filter_grp(this.data[grp])
-        })
+				data_grps.forEach((grp, i) => {
+					queried_data[data_grps[i]] = this.filter_grp(this.data[grp])
+				})
 
-        // Check if any of group has at least one queried item
-        if (!Object.values(queried_data).some(obj => obj.length)) {
-          this.currentSelected = -1
-        }
+				// Check if any of group has at least one queried item
+				if (!Object.values(queried_data).some(obj => obj.length)) {
+					this.currentSelected = -1
+				}
 
-        this.filteredData = queried_data
-      }
-    },
-    autoFocus (val) {
-      if (val) this.focusInput()
-      else this.searchQuery = ''
-    },
-    filteredData (val) {
-      // Auto Select first item if it's not item-404
-      let grp_index = null
+				this.filteredData = queried_data
+			}
+		},
+		autoFocus (val) {
+			if (val) this.focusInput()
+			else this.searchQuery = ''
+		},
+		filteredData (val) {
+			// Auto Select first item if it's not item-404
+			let grp_index = null
 
-      for (const [index, grp_suggestions] of Object.values(val).entries()) {
-        if (grp_suggestions.length) {
-          grp_index = index
-          break
-        }
-      }
+			for (const [index, grp_suggestions] of Object.values(val).entries()) {
+				if (grp_suggestions.length) {
+					grp_index = index
+					break
+				}
+			}
 
-      if (grp_index !== null) this.currentSelected = `${grp_index  }.0`
-    }
-  },
-  methods: {
-    escPressed () {
-      this.$emit('closeSearchbar')
-      this.searchQuery = ''
-    },
-    filter_grp (grp) {
-      const exactEle = grp.data.filter((item) => {
-        return item[grp.key].toLowerCase().startsWith(this.searchQuery.toLowerCase())
-      })
-      const containEle = grp.data.filter((item) => {
-        return !item[grp.key].toLowerCase().startsWith(this.searchQuery.toLowerCase()) && item[grp.key].toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1
-      })
-      return exactEle.concat(containEle).slice(0, this.searchLimit)
-    },
-    inputInit () {
-      if (Object.entries(this.initalData).length === 0 && this.initalData.constructor === Object) {
-        this.filteredData = {}
-      } else {
-        this.filteredData = this.initalData
-      }
-    },
-    updateInputFocus (val = true) {
-      if (val) {
-        if (this.searchQuery === '') this.inputInit()
-        setTimeout(() => {
-          this.inputFocused = true
-        }, 100)
-      } else {
-        if (this.insideSuggestions) return
-        setTimeout(() => {
-          this.inputFocused = false
-        }, 100)
-        this.escPressed()
-      }
-    },
-    suggestionSelected () {
-      if (this.currentSelected > -1) {
+			if (grp_index !== null) this.currentSelected = `${grp_index  }.0`
+		}
+	},
+	methods: {
+		escPressed () {
+			this.$emit('closeSearchbar')
+			this.searchQuery = ''
+		},
+		filter_grp (grp) {
+			const exactEle = grp.data.filter((item) => {
+				return item[grp.key].toLowerCase().startsWith(this.searchQuery.toLowerCase())
+			})
+			const containEle = grp.data.filter((item) => {
+				return !item[grp.key].toLowerCase().startsWith(this.searchQuery.toLowerCase()) && item[grp.key].toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1
+			})
+			return exactEle.concat(containEle).slice(0, this.searchLimit)
+		},
+		inputInit () {
+			if (Object.entries(this.initalData).length === 0 && this.initalData.constructor === Object) {
+				this.filteredData = {}
+			} else {
+				this.filteredData = this.initalData
+			}
+		},
+		updateInputFocus (val = true) {
+			if (val) {
+				if (this.searchQuery === '') this.inputInit()
+				setTimeout(() => {
+					this.inputFocused = true
+				}, 100)
+			} else {
+				if (this.insideSuggestions) return
+				setTimeout(() => {
+					this.inputFocused = false
+				}, 100)
+				this.escPressed()
+			}
+		},
+		suggestionSelected () {
+			if (this.currentSelected > -1) {
 
-        const [grp_index, item_index] = this.currentSelected.split('.')
+				const [grp_index, item_index] = this.currentSelected.split('.')
 
-        const grp_of_selected_item = Object.keys(this.data)[grp_index]
-        const selected_item = this.filteredData[grp_of_selected_item][item_index]
+				const grp_of_selected_item = Object.keys(this.data)[grp_index]
+				const selected_item = this.filteredData[grp_of_selected_item][item_index]
 
-        this.$emit('selected', {[grp_of_selected_item]: selected_item})
+				this.$emit('selected', {[grp_of_selected_item]: selected_item})
 
-        this.searchQuery = ''
-      }
-    },
-    increaseIndex (val = true) {
+				this.searchQuery = ''
+			}
+		},
+		increaseIndex (val = true) {
 
-      /* eslint-disable no-lonely-if */
+			/* eslint-disable no-lonely-if */
 
-      // If there's no matching items
-      if (!Object.values(this.filteredData).some(grp_items => grp_items.length)) return
+			// If there's no matching items
+			if (!Object.values(this.filteredData).some(grp_items => grp_items.length)) return
 
-      const [grp_i, item_i] = this.currentSelected.split('.')
+			const [grp_i, item_i] = this.currentSelected.split('.')
 
-      const grp_arr = Object.entries(this.filteredData)
-      const active_grp_total_items = grp_arr[grp_i][1].length
+			const grp_arr = Object.entries(this.filteredData)
+			const active_grp_total_items = grp_arr[grp_i][1].length
 
-      if (val) {
-        // If active item is not of last item in grp
-        if (active_grp_total_items - 1 > item_i) {
-          this.currentSelected = `${grp_i  }.${   Number(item_i) + 1}`
+			if (val) {
+				// If active item is not of last item in grp
+				if (active_grp_total_items - 1 > item_i) {
+					this.currentSelected = `${grp_i  }.${   Number(item_i) + 1}`
 
-        // If active item grp is not last in grp list
-        } else if (grp_i < grp_arr.length - 1) {
+					// If active item grp is not last in grp list
+				} else if (grp_i < grp_arr.length - 1) {
 
-          for (let i = Number(grp_i) + 1; i < grp_arr.length; i++) {
+					for (let i = Number(grp_i) + 1; i < grp_arr.length; i++) {
 
-            // If navigating group have items => Then move in that group
-            if (grp_arr[i][1].length > 0) {
-              this.currentSelected = `${Number(i)  }.0`
-              break
-            }
-          }
-        }
-      } else {
-        // If active item is not of first item in grp
-        if (Number(item_i)) {
-          this.currentSelected = `${grp_i  }.${   Number(item_i) - 1}`
+						// If navigating group have items => Then move in that group
+						if (grp_arr[i][1].length > 0) {
+							this.currentSelected = `${Number(i)  }.0`
+							break
+						}
+					}
+				}
+			} else {
+				// If active item is not of first item in grp
+				if (Number(item_i)) {
+					this.currentSelected = `${grp_i  }.${   Number(item_i) - 1}`
 
-        // If active item grp  is not first in grp list
-        } else if (Number(grp_i)) {
+					// If active item grp  is not first in grp list
+				} else if (Number(grp_i)) {
 
-          for (let i = Number(grp_i) - 1; i >= 0; i--) {
+					for (let i = Number(grp_i) - 1; i >= 0; i--) {
 
-            // If navigating group have items => Then move in that group
-            if (grp_arr[i][1].length > 0) {
-              this.currentSelected = `${i  }.${  grp_arr[i][1].length - 1}`
-              break
-            }
-          }
-        }
-      }
-      /* eslint-enable no-lonely-if */
-    },
-    focusInput () {
-      this.$refs.input.$el.querySelector('input').focus()
-    }
-  },
-  mounted () {
-    if (this.autoFocus) this.focusInput()
-  }
+						// If navigating group have items => Then move in that group
+						if (grp_arr[i][1].length > 0) {
+							this.currentSelected = `${i  }.${  grp_arr[i][1].length - 1}`
+							break
+						}
+					}
+				}
+			}
+			/* eslint-enable no-lonely-if */
+		},
+		focusInput () {
+			this.$refs.input.$el.querySelector('input').focus()
+		}
+	},
+	mounted () {
+		if (this.autoFocus) this.focusInput()
+	}
 }
 </script>
 

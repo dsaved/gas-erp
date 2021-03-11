@@ -99,87 +99,87 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  beforeRouteLeave(to, from, next) {
-    if (this.statuscheck) {
-      clearInterval(this.statuscheck);
-      this.statuscheck = null;
-    }
-    next();
-  },
-  props: {
-    omcid: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      user_not_found: false,
-      user_found: false,
-      omc: {},
-    };
-  },
-  computed: {
-    photo() {
-      return require("@/assets/images/portrait/small/default.png");
-    },
-  },
-  mounted: function () {
-    this.getData();
-  },
-  watch: { },
-  methods: {
-    getData() {
-      this.showLoading("getting OMC infomation");
-      this.post("/omc/get", {
-        id: this.omcid,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.user_found = true;
-            this.omc = response.data.omcs[0];
-          } else {
-            this.user_not_found = true;
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.data.message}`,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          this.user_not_found = true;
-        });
-    },
-  },
-};
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	beforeRouteLeave (to, from, next) {
+		if (this.statuscheck) {
+			clearInterval(this.statuscheck)
+			this.statuscheck = null
+		}
+		next()
+	},
+	props: {
+		omcid: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	data () {
+		return {
+			user_not_found: false,
+			user_found: false,
+			omc: {}
+		}
+	},
+	computed: {
+		photo () {
+			return require('@/assets/images/portrait/small/default.png')
+		}
+	},
+	mounted () {
+		this.getData()
+	},
+	watch: { },
+	methods: {
+		getData () {
+			this.showLoading('getting OMC infomation')
+			this.post('/omc/get', {
+				id: this.omcid
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.user_found = true
+						this.omc = response.data.omcs[0]
+					} else {
+						this.user_not_found = true
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					this.user_not_found = true
+				})
+		}
+	}
+}
 </script>
 
 <style lang="scss">

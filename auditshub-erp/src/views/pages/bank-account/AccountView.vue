@@ -83,156 +83,156 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import Datepicker from "vuejs-datepicker";
+import Swal from 'sweetalert2'
+import Datepicker from 'vuejs-datepicker'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  props: {
-    accountid: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  components: {
-    Datepicker,
-  },
-  data() {
-    return {
-      loading: false,
-      accoun_not_found: false,
-      accoun_found: false,
-      data: {
-        type: Object,
-        default: function () {
-          return {};
-        },
-      },
-    };
-  },
-  computed: {},
-  mounted: function () {
-    this.getData();
-  },
-  methods: {
-    notNull: function (data) {
-      if (null != data && data.label) {
-        return data.label;
-      }
-      return "";
-    },
-    accountNumbers: function (account) {
-      var acnts = ``;
-      if (this.hasdata(account.acc_num1) && this.hasdata(account.acc_num2)) {
-        acnts += account.acc_num1 + ` | ` + account.acc_num1;
-      } else if (this.hasdata(account.acc_num1)) {
-        acnts += account.acc_num1;
-      } else if (this.hasdata(account.acc_num2)) {
-        acnts += account.acc_num2;
-      }
-      if (account.status == "Inactive") {
-        acnts += ` - <span class="text-danger">Inactive</span> `;
-      } else {
-        acnts += ` - <span class="text-primary">Active</span> `;
-      }
-      return acnts;
-    },
-    getData() {
-      this.loading = true;
-      this.post("/bankaccounts/editbank", {
-        id: this.accountid,
-      })
-        .then((response) => {
-          this.loading = false;
-          if (response.data.success == true) {
-            this.accoun_found = true;
-            this.data = response.data.bankaccounts[0];
-          } else {
-            this.accoun_not_found = true;
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.data.message}`,
-              sticky: true,
-              border: "danger",
-              color: "dark",
-              duration: null,
-              position: "bottom-left",
-            });
-          }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            border: "danger",
-            color: "dark",
-            duration: null,
-            position: "bottom-left",
-          });
-          this.accoun_not_found = true;
-        });
-    },
-    deleteWarnSingle: function (id) {
-      if (!this.canDelete()) {
-        return Swal.fire(
-          "Not Allowed!",
-          "You do not have permission to delete any record",
-          "error"
-        );
-      }
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.delete([id]);
-        }
-      });
-    },
-    delete: function (ids) {
-      this.showLoading("Deleting Account, hang on a bit...");
-      this.post("/bankaccounts/delete", {
-        id: ids,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.$vs.notify({
-              title: "Error!!!",
-              text: "The Account has been deleted.",
-              sticky: true,
-              border: "danger",
-              color: "dark",
-              duration: null,
-              position: "bottom-left",
-            });
-            this.back();
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-  },
-};
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	props: {
+		accountid: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	components: {
+		Datepicker
+	},
+	data () {
+		return {
+			loading: false,
+			accoun_not_found: false,
+			accoun_found: false,
+			data: {
+				type: Object,
+				default () {
+					return {}
+				}
+			}
+		}
+	},
+	computed: {},
+	mounted () {
+		this.getData()
+	},
+	methods: {
+		notNull (data) {
+			if (null != data && data.label) {
+				return data.label
+			}
+			return ''
+		},
+		accountNumbers (account) {
+			let acnts = ''
+			if (this.hasdata(account.acc_num1) && this.hasdata(account.acc_num2)) {
+				acnts += `${account.acc_num1  } | ${  account.acc_num1}`
+			} else if (this.hasdata(account.acc_num1)) {
+				acnts += account.acc_num1
+			} else if (this.hasdata(account.acc_num2)) {
+				acnts += account.acc_num2
+			}
+			if (account.status == 'Inactive') {
+				acnts += ' - <span class="text-danger">Inactive</span> '
+			} else {
+				acnts += ' - <span class="text-primary">Active</span> '
+			}
+			return acnts
+		},
+		getData () {
+			this.loading = true
+			this.post('/bankaccounts/editbank', {
+				id: this.accountid
+			})
+				.then((response) => {
+					this.loading = false
+					if (response.data.success == true) {
+						this.accoun_found = true
+						this.data = response.data.bankaccounts[0]
+					} else {
+						this.accoun_not_found = true
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							border: 'danger',
+							color: 'dark',
+							duration: null,
+							position: 'bottom-left'
+						})
+					}
+				})
+				.catch((error) => {
+					this.loading = false
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						border: 'danger',
+						color: 'dark',
+						duration: null,
+						position: 'bottom-left'
+					})
+					this.accoun_not_found = true
+				})
+		},
+		deleteWarnSingle (id) {
+			if (!this.canDelete()) {
+				return Swal.fire(
+					'Not Allowed!',
+					'You do not have permission to delete any record',
+					'error'
+				)
+			}
+			Swal.fire({
+				title: 'Are you sure?',
+				text: 'You won\'t be able to revert this!',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					this.delete([id])
+				}
+			})
+		},
+		delete (ids) {
+			this.showLoading('Deleting Account, hang on a bit...')
+			this.post('/bankaccounts/delete', {
+				id: ids
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: 'The Account has been deleted.',
+							sticky: true,
+							border: 'danger',
+							color: 'dark',
+							duration: null,
+							position: 'bottom-left'
+						})
+						this.back()
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		}
+	}
+}
 </script>

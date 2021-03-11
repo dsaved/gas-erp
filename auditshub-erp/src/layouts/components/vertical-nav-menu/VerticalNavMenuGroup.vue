@@ -89,156 +89,156 @@
 import VNavMenuItem from './VerticalNavMenuItem.vue'
 
 export default {
-  name  : 'v-nav-menu-group',
-  props : {
-    openHover  : { type: Boolean, default: false },
-    page        : { type: String,                 required:true               },
-    open       : { type: Boolean, default: false },
-    group      : { type: Object },
-    groupIndex : { type: Number }
-  },
-  components: {
-    VNavMenuItem
-  },
-  data: () => ({
-    maxHeight : '0px',
-    openItems : false
-  }),
-  computed: {
-    verticalNavMenuItemsMin () { return this.$store.state.verticalNavMenuItemsMin },
-    styleItems () {
-      return { maxHeight: this.maxHeight }
-    },
-    itemIcon () {
-      return (index) => {
-        if (!((index.match(/\./g) || []).length > 1)) return 'CircleIcon'
-      }
-    },
-    isGroupActive () {
-      return (item) => {
-        const path        = this.$route.fullPath
-        let open          = false
-        const routeParent = this.$route.meta ? this.$route.meta.parent : undefined
+	name  : 'v-nav-menu-group',
+	props : {
+		openHover  : { type: Boolean, default: false },
+		page        : { type: String,                 required:true               },
+		open       : { type: Boolean, default: false },
+		group      : { type: Object },
+		groupIndex : { type: Number }
+	},
+	components: {
+		VNavMenuItem
+	},
+	data: () => ({
+		maxHeight : '0px',
+		openItems : false
+	}),
+	computed: {
+		verticalNavMenuItemsMin () { return this.$store.state.verticalNavMenuItemsMin },
+		styleItems () {
+			return { maxHeight: this.maxHeight }
+		},
+		itemIcon () {
+			return (index) => {
+				if (!((index.match(/\./g) || []).length > 1)) return 'CircleIcon'
+			}
+		},
+		isGroupActive () {
+			return (item) => {
+				const path        = this.$route.fullPath
+				let open          = false
+				const routeParent = this.$route.meta ? this.$route.meta.parent : undefined
 
-        const func = (item) => {
-          if (item.submenu) {
-            item.submenu.forEach((item) => {
-              if ((path === item.url || routeParent === item.slug) && item.url) { open = true } else if (item.submenu) { func(item) }
-            })
-          }
-        }
+				const func = (item) => {
+					if (item.submenu) {
+						item.submenu.forEach((item) => {
+							if ((path === item.url || routeParent === item.slug) && item.url) { open = true } else if (item.submenu) { func(item) }
+						})
+					}
+				}
 
-        func(item)
-        return open
-      }
-    },
-    pages(){
-      return this.AppActiveUser.pages
-    },
-    allowed(){
-      return this.allowed_pages;
-    }
-  },
-  watch: {
-    // OPEN & CLOSES DROPDOWN ON ROUTE CHANGE
-    '$route' () {
-      if (this.verticalNavMenuItemsMin) return
+				func(item)
+				return open
+			}
+		},
+		pages () {
+			return this.AppActiveUser.pages
+		},
+		allowed () {
+			return this.allowed_pages
+		}
+	},
+	watch: {
+		// OPEN & CLOSES DROPDOWN ON ROUTE CHANGE
+		'$route' () {
+			if (this.verticalNavMenuItemsMin) return
 
-      const scrollHeight = this.scrollHeight
+			const scrollHeight = this.scrollHeight
 
-      // Collapse Group
-      if (this.openItems && !this.open) {
+			// Collapse Group
+			if (this.openItems && !this.open) {
 
-        this.maxHeight = `${scrollHeight}px`
-        setTimeout(()  => {
-          this.maxHeight = `${0}px`
-        }, 50)
+				this.maxHeight = `${scrollHeight}px`
+				setTimeout(()  => {
+					this.maxHeight = `${0}px`
+				}, 50)
 
-      // Expand Group
-      } else if (this.open) {
+				// Expand Group
+			} else if (this.open) {
 
-        this.maxHeight = `${scrollHeight}px`
-        setTimeout(()  => {
-          this.maxHeight = 'none'
-        }, 300)
-      }
-    },
-    maxHeight () {
-      this.openItems = this.maxHeight !== '0px'
-    },
-    // OPEN AND CLOSES DROPDOWN MENU ON NavMenu COLLAPSE AND DEFAULT VIEW
-    '$store.state.verticalNavMenuItemsMin' (val) {
-      const scrollHeight = this.$refs.items.scrollHeight
+				this.maxHeight = `${scrollHeight}px`
+				setTimeout(()  => {
+					this.maxHeight = 'none'
+				}, 300)
+			}
+		},
+		maxHeight () {
+			this.openItems = this.maxHeight !== '0px'
+		},
+		// OPEN AND CLOSES DROPDOWN MENU ON NavMenu COLLAPSE AND DEFAULT VIEW
+		'$store.state.verticalNavMenuItemsMin' (val) {
+			const scrollHeight = this.$refs.items.scrollHeight
 
-      if (!val && this.open) {
+			if (!val && this.open) {
 
-        this.maxHeight = `${scrollHeight}px`
-        setTimeout(()  => {
-          this.maxHeight = 'none'
-        }, 300)
-      } else {
+				this.maxHeight = `${scrollHeight}px`
+				setTimeout(()  => {
+					this.maxHeight = 'none'
+				}, 300)
+			} else {
 
-        this.maxHeight = `${scrollHeight}px`
-        setTimeout(()  => {
-          this.maxHeight = '0px'
-        }, 50)
-      }
-      if (val && this.open) {
+				this.maxHeight = `${scrollHeight}px`
+				setTimeout(()  => {
+					this.maxHeight = '0px'
+				}, 50)
+			}
+			if (val && this.open) {
 
-        this.maxHeight = `${scrollHeight}px`
-        setTimeout(()  => {
-          this.maxHeight = '0px'
-        }, 250)
-      }
-    }
-  },
-  methods: {
-    clickGroup () {
-      if (!this.openHover) {
+				this.maxHeight = `${scrollHeight}px`
+				setTimeout(()  => {
+					this.maxHeight = '0px'
+				}, 250)
+			}
+		}
+	},
+	methods: {
+		clickGroup () {
+			if (!this.openHover) {
 
-        const thisScrollHeight = this.$refs.items.scrollHeight
+				const thisScrollHeight = this.$refs.items.scrollHeight
 
-        if (this.maxHeight === '0px') {
-          this.maxHeight = `${thisScrollHeight}px`
-          setTimeout(() => {
-            this.maxHeight = 'none'
-          }, 300)
+				if (this.maxHeight === '0px') {
+					this.maxHeight = `${thisScrollHeight}px`
+					setTimeout(() => {
+						this.maxHeight = 'none'
+					}, 300)
 
-        } else {
-          this.maxHeight = `${thisScrollHeight}px`
-          setTimeout(() => {
-            this.maxHeight = `${0}px`
-          }, 50)
-        }
+				} else {
+					this.maxHeight = `${thisScrollHeight}px`
+					setTimeout(() => {
+						this.maxHeight = `${0}px`
+					}, 50)
+				}
 
-        this.$parent.$children.map((child) => {
-          if (child.isGroupActive) {
-            if (child !== this && !child.open && child.maxHeight !== '0px') {
-              setTimeout(() => {
-                child.maxHeight = `${0}px`
-              }, 50)
-            }
-          }
-        })
-      }
-    },
-    mouseover () {
-      if (this.openHover) {
-        const scrollHeight = this.$refs.items.scrollHeight
-        this.maxHeight   = `${scrollHeight}px`
-      }
-    },
-    mouseout () {
-      if (this.openHover) {
-        const scrollHeight = 0
-        this.maxHeight   = `${scrollHeight}px`
-      }
-    }
-  },
-  mounted () {
-    this.openItems = this.open
-    if (this.open) { this.maxHeight = 'none' }
-  }
+				this.$parent.$children.map((child) => {
+					if (child.isGroupActive) {
+						if (child !== this && !child.open && child.maxHeight !== '0px') {
+							setTimeout(() => {
+								child.maxHeight = `${0}px`
+							}, 50)
+						}
+					}
+				})
+			}
+		},
+		mouseover () {
+			if (this.openHover) {
+				const scrollHeight = this.$refs.items.scrollHeight
+				this.maxHeight   = `${scrollHeight}px`
+			}
+		},
+		mouseout () {
+			if (this.openHover) {
+				const scrollHeight = 0
+				this.maxHeight   = `${scrollHeight}px`
+			}
+		}
+	},
+	mounted () {
+		this.openItems = this.open
+		if (this.open) { this.maxHeight = 'none' }
+	}
 }
 
 </script>

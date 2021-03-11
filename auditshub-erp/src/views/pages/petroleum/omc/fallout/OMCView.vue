@@ -85,6 +85,17 @@
               @click="exportWarn()"
               >Export</vs-button
             >
+            <vs-button
+              color="dark"
+              icon-pack="feather"
+              type="relief"
+              icon="icon-file"
+              v-if="sortedRecords"
+              class="ml-1"
+              @click="exportWarnPDF()"
+            >
+              PDF
+            </vs-button>
             <vs-spacer />
             <div
               class="flex flex-wrap-reverse items-center data-list-btn-container"
@@ -281,6 +292,10 @@
 import Swal from "sweetalert2";
 import mStorage from "@/store/storage.js";
 
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -347,13 +362,13 @@ export default {
   },
   computed: {
     selectAll: {
-      get: function () {
+      get() {
         return this.records
           ? this.selectedRecords.length == this.records.length
           : false;
       },
-      set: function (value) {
-        var selected = [];
+      set(value) {
+        const selected = [];
 
         if (value) {
           this.records.forEach(function (record) {
@@ -363,10 +378,10 @@ export default {
         this.selectedRecords = selected;
       },
     },
-    sortedRecords: function () {
+    sortedRecords() {
       try {
         return this.filterObj(this.records, this.search).sort((a, b) => {
-          var modifier = 1;
+          let modifier = 1;
           if (this.currentSortDir === "desc") modifier = -1;
           if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
           if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
@@ -380,28 +395,28 @@ export default {
       return require("@/assets/images/portrait/small/default.png");
     },
   },
-  mounted: function () {
+  mounted() {
     this.currentPage =
       Number(mStorage.get(`${this.pkey}page${this.omcid}`)) || 1;
     this.getData();
   },
   watch: {
-    currentPage: function () {
+    currentPage() {
       mStorage.set(`${this.pkey}page${this.omcid}`, this.currentPage);
       this.getReceipt();
     },
-    search: function (newVal, oldVal) {
+    search(newVal, oldVal) {
       this.startSearch(newVal, oldVal);
     },
-    pagination: function () {
+    pagination() {
       this.numbering = this.pagination.start;
     },
   },
   methods: {
-    number: function (num) {
+    number(num) {
       return this.numbering + num;
     },
-    startSearch: function (newVal, oldVal) {
+    startSearch(newVal, oldVal) {
       if (this.search_timer) {
         clearTimeout(this.search_timer);
       }
@@ -452,6 +467,191 @@ export default {
           });
         });
     },
+    async exportWarnPDF() {
+      const { value: filename } = await Swal.fire({
+        title: "Export OMC Receipts",
+        text: "You are about to export this receipts as PDF",
+        icon: "question",
+        input: "text",
+        showCancelButton: true,
+        confirmButtonColor: "#0d6723",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, continue!",
+        inputPlaceholder: "Save file as?",
+        inputValue: `${this.omc.name}-${new Date().getTime()}`,
+        inputValidator: (value) => {
+          if (!value) {
+            return "You need to write file name!";
+          }
+        },
+      });
+
+      if (filename) {
+        this._exportPDF(filename);
+      }
+    },
+    _exportPDF(filename) {
+      //get all receipts first
+      this.showLoading("getting all receipts");
+      this.post("/omcfallout/all_receipts/", {
+        result_per_page: 99999999999,
+        page: 1,
+        id: this.omcid,
+      })
+        .then((response) => {
+          this.closeLoading();
+          this.compute(response.data, filename);
+        })
+        .catch((error) => {
+          this.closeLoading();
+          this.$vs.notify({
+            title: "Error!!!",
+            text: `${error.message}`,
+            sticky: true,
+            border: "danger",
+            color: "dark",
+            duration: null,
+            position: "bottom-left",
+          });
+        });
+    },
+    compute(records, filename) {
+      this.showLoading("getting file ready for download");
+      const docDefinition = {
+        footer(currentPage, pageCount) {
+          return `${currentPage.toString()} of ${pageCount}`;
+        },
+        header(currentPage, pageCount, pageSize) {
+          return [
+            {
+              text: "GHANA AUDIT SERVICE",
+              alignment: "left",
+            },
+            {
+              canvas: [
+                {
+                  type: "rect",
+                  x: 170,
+                  y: 32,
+                  w: pageSize.width - 170,
+                  h: 40,
+                },
+              ],
+            },
+          ];
+        },
+        watermark: {
+          text: "GHANA AUDIT SERVICE",
+          color: "green",
+          opacity: 0.1,
+          bold: true,
+          italics: false,
+        },
+        content: [],
+        styles: {
+          header: {
+            fontSize: 17,
+            bold: true,
+          },
+          subheader: {
+            fontSize: 14,
+            bold: true,
+          },
+          quote: {
+            italics: true,
+          },
+          small: {
+            fontSize: 8,
+          },
+        },
+        defaultStyle: {
+          fontSize: 12,
+          bold: false,
+        },
+      };
+
+      // ADD OMC TILE TO DOCUMENT
+      docDefinition.content.push({
+        text: `${this.omc.name}\n\n`,
+        style: "header",
+      });
+
+      // ADD RECEPIT TILE TO DOCUMENT
+      docDefinition.content.push({
+        text: "RECEIPTS\n\n",
+        style: "header",
+      });
+
+      // ADD TAX TO DOCUMENT
+      records.receipts.forEach((receipt, index) => {
+        docDefinition.content.push({
+          text: receipt.name,
+          style: "subheader",
+        });
+        const table = {
+          table: {
+            widths: ["*", "auto"],
+            headerRows: 1,
+            body: [
+              [
+                { text: "Bank", bold: true },
+                { text: "Amount", bold: true },
+              ],
+            ],
+          },
+          layout: {
+            fillColor(rowIndex, node, columnIndex) {
+              return rowIndex === 0 ? "#CCCCCC" : null;
+            },
+          },
+        };
+        receipt.payments.forEach((payment, ind) => {
+          table.table.body.push([
+            payment.bank,
+            { text: `GHS ${payment.amount}`, noWrap: true },
+          ]);
+        });
+        table.table.body.push([
+          "Sub Total",
+          `GHS ${parseFloat(receipt.subtotal)
+            .toFixed(2)
+            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}`,
+        ]);
+        docDefinition.content.push(table);
+        //ADD LINE BREAKE
+        docDefinition.content.push({
+          text: "\n",
+        });
+      });
+
+      //ADD LINE BREAKE
+      docDefinition.content.push({
+        text: "\n\n",
+      });
+
+      // ADD TOTAL SECTION
+      docDefinition.content.push({
+        table: {
+          widths: ["*"],
+          headerRows: 1,
+          body: [
+            [{ text: "Receipt total", bold: true }],
+            [{ text: `GHS ${records.receipt_total_amount}` }],
+          ],
+        },
+        layout: {
+          fillColor(rowIndex, node, columnIndex) {
+            return rowIndex === 0 ? "#CCCCCC" : null;
+          },
+        },
+      });
+
+      const vm = this;
+      setTimeout(() => {
+        vm.closeLoading();
+        pdfMake.createPdf(docDefinition).download(filename);
+      }, 300);
+    },
     getData() {
       this.showLoading("getting OMC infomation");
       this.post("/omcfallout/get", {
@@ -489,7 +689,7 @@ export default {
         });
     },
     //reconciliation starts here
-    clearLog: function () {
+    clearLog() {
       this.popupActive = false;
       this.canCloseModal = false;
       this.reloadButton = false;
@@ -500,7 +700,7 @@ export default {
         clearInterval(this.statuscheck);
       }
     },
-    statusCheckFileExport: function () {
+    statusCheckFileExport() {
       this.canCloseModal = false;
       this.reloadButton = false;
       const vm = this;
@@ -508,8 +708,8 @@ export default {
         vm.checkStatus();
       }, 1200);
     },
-    formatDesc: function (data) {
-      var error = false;
+    formatDesc(data) {
+      let error = false;
       this.errorStr.forEach((item) => {
         if (data && data.toLowerCase().includes(item)) {
           error = true;
@@ -520,12 +720,12 @@ export default {
       }
       return `<span class="text-primary">->${data}<br/></span> `;
     },
-    pushDescription: function (data) {
+    pushDescription(data) {
       if (!this.importDesc.includes(data)) {
         this.importDesc.push(data);
       }
     },
-    exportWarn: async function () {
+    async exportWarn() {
       const { value: filename } = await Swal.fire({
         title: "Export OMC Receipts",
         text: "You are about to export this receipts",
@@ -536,7 +736,7 @@ export default {
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, continue!",
         inputPlaceholder: "Save file as?",
-        inputValue: this.omc.name+"-"+new Date().getTime(),
+        inputValue: `${this.omc.name}-${new Date().getTime()}`,
         inputValidator: (value) => {
           if (!value) {
             return "You need to write file name!";
@@ -548,11 +748,11 @@ export default {
         this.export(filename);
       }
     },
-    export: function (filename) {
+    export(filename) {
       this.showLoading("Sending Request For File Export");
       this.post("/omcfallout/start_export", {
         omc_id: this.omcid,
-        filename: filename,
+        filename,
       })
         .then((response) => {
           this.closeLoading();
@@ -572,14 +772,14 @@ export default {
           Swal.fire("Failed!", error.message, "error");
         });
     },
-    checkStatus: function () {
+    checkStatus() {
       this.post("/omcfallout/file_export_status", {
         jobid: this.jobid,
       })
         .then((response) => {
-          var data = response.data;
+          const data = response.data;
           if (data.success) {
-            var status = data.status;
+            const status = data.status;
             this.pushDescription(status.description);
             this.exportStatus = status.status;
             this.exportDetails = status.details;

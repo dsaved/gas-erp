@@ -213,331 +213,331 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import mStorage from "@/store/storage.js";
+import Swal from 'sweetalert2'
+import mStorage from '@/store/storage.js'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  data() {
-    return {
-      //receipt data list starts here
-      pkey: "org-unauthorized-list-key",
-      message: "",
-      numbering: 0,
-      currentPage: 1,
-      result_per_page: 20,
-      loading: true,
-      deletebutton: false,
-      pagination: {
-        haspages: false,
-        page: 0,
-        start: 0,
-        end: 0,
-        total: 0,
-        pages: 0,
-        hasNext: false,
-        hasPrevious: false,
-      },
-      selectedRecords: [],
-      search: "",
-      records: [],
-      search_timer: null,
-      bank_type: { value: "all", label: "All" },
-      bank_name: { value: "all", label: "All" },
-      category_group: [],
-      banks: [],
-      categories: [],
-      filter_category: { value: "all", label: "All" },
-      // export data starts here
-      popupActive: false,
-      canCloseModal: false,
-      reloadButton: false,
-      statuscheck: null,
-      jobid: null,
-      errorStr: ["unknown jobid", "error"],
-      importDesc: [],
-      exportStatus: "",
-      exportDetails: "",
-    };
-  },
-  computed: {
-    selectAll: {
-      get: function () {
-        return this.records
-          ? this.selectedRecords.length == this.records.length
-          : false;
-      },
-      set: function (value) {
-        var selected = [];
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	data () {
+		return {
+			//receipt data list starts here
+			pkey: 'org-unauthorized-list-key',
+			message: '',
+			numbering: 0,
+			currentPage: 1,
+			result_per_page: 20,
+			loading: true,
+			deletebutton: false,
+			pagination: {
+				haspages: false,
+				page: 0,
+				start: 0,
+				end: 0,
+				total: 0,
+				pages: 0,
+				hasNext: false,
+				hasPrevious: false
+			},
+			selectedRecords: [],
+			search: '',
+			records: [],
+			search_timer: null,
+			bank_type: { value: 'all', label: 'All' },
+			bank_name: { value: 'all', label: 'All' },
+			category_group: [],
+			banks: [],
+			categories: [],
+			filter_category: { value: 'all', label: 'All' },
+			// export data starts here
+			popupActive: false,
+			canCloseModal: false,
+			reloadButton: false,
+			statuscheck: null,
+			jobid: null,
+			errorStr: ['unknown jobid', 'error'],
+			importDesc: [],
+			exportStatus: '',
+			exportDetails: ''
+		}
+	},
+	computed: {
+		selectAll: {
+			get () {
+				return this.records
+					? this.selectedRecords.length == this.records.length
+					: false
+			},
+			set (value) {
+				const selected = []
 
-        if (value) {
-          this.records.forEach(function (record) {
-            selected.push(record.account_from);
-          });
-        }
-        this.selectedRecords = selected;
-      },
-    },
-    sortedRecords: function () {
-      try {
-        return this.filterObj(this.records, this.search).sort((a, b) => {
-          var modifier = 1;
-          if (this.currentSortDir === "desc") modifier = -1;
-          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-          return 0;
-        });
-      } catch (error) {
-        console.warn(error);
-      }
-    },
-    photo() {
-      return require("@/assets/images/portrait/small/default.png");
-    },
-  },
-  mounted: function () {
-    this.currentPage = Number(mStorage.get(`${this.pkey}page`)) || 1;
-    this.getData();
-  },
-  watch: {
-    currentPage: function () {
-      mStorage.set(`${this.pkey}page`, this.currentPage);
-      this.getData();
-    },
-    result_per_page: function () {
-      this.getData(true);
-    },
-    search: function (newVal, oldVal) {
-      this.startSearch(newVal, oldVal);
-    },
-    pagination: function () {
-      this.numbering = this.pagination.start;
-    },
-    selectedRecords: function (newVal, oldVal) {
-      if (this.selectedRecords.length > 0) {
-        this.deletebutton = true;
-      } else {
-        this.deletebutton = false;
-      }
-    },
-  },
-  methods: {
-    number: function (num) {
-      return this.numbering + num;
-    },
-    startSearch: function (newVal, oldVal) {
-      if (this.search_timer) {
-        clearTimeout(this.search_timer);
-      }
-      const vm = this;
-      this.search_timer = setTimeout(function () {
-        vm.getData();
-      }, 800);
-    },
-    //reconciliation starts here
-    getData: function (scroll) {
-      var user = this.AppActiveUser;
-      var isbog = user.types[1] == "organization" ? "true" : "false";
-      this.loading = true;
-      this.post("/unauthorized/", {
-        page: this.currentPage,
-        result_per_page: this.result_per_page,
-        access_type: user.access_level,
-        user_id: user.id,
-        search: this.search,
-        bank_type: "all",
-        isbog: isbog,
-      })
-        .then((response) => {
-          this.records = [];
-          this.loading = false;
-          this.message = response.data.message;
-          this.pagination = response.data.pagination;
-          if (response.data.success) {
-            this.records = response.data.unauthorized;
-          }
-        })
-        .catch((error) => {
-          this.hasData = false;
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    clearLog: function () {
-      this.popupActive = false;
-      this.canCloseModal = false;
-      this.reloadButton = false;
-      this.jobid = null;
-      this.importDesc = [];
-      this.exportStatus = "";
-      if (this.statuscheck) {
-        clearInterval(this.statuscheck);
-      }
-    },
-    statusCheckFileExport: function () {
-      this.canCloseModal = false;
-      this.reloadButton = false;
-      const vm = this;
-      this.statuscheck = setInterval(function () {
-        vm.checkStatus();
-      }, 1200);
-    },
-    formatDesc: function (data) {
-      var error = false;
-      this.errorStr.forEach((item) => {
-        if (data && data.toLowerCase().includes(item)) {
-          error = true;
-        }
-      });
-      if (error) {
-        return `<span class="text-danger">->${data}<br/></span> `;
-      }
-      return `<span class="text-primary">->${data}<br/></span> `;
-    },
-    pushDescription: function (data) {
-      if (!this.importDesc.includes(data)) {
-        this.importDesc.push(data);
-      }
-    },
-    exportWarn: async function () {
-      const { value: filename } = await Swal.fire({
-        title: "Export Account Responses",
-        text: "You are about to export responses in his account!",
-        icon: "question",
-        input: "text",
-        showCancelButton: true,
-        confirmButtonColor: "#0d6723",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, continue!",
-        inputPlaceholder: "Save file as?",
-        inputValidator: (value) => {
-          if (!value) {
-            return "You need to write file name!";
-          }
-        },
-      });
+				if (value) {
+					this.records.forEach(function (record) {
+						selected.push(record.account_from)
+					})
+				}
+				this.selectedRecords = selected
+			}
+		},
+		sortedRecords () {
+			try {
+				return this.filterObj(this.records, this.search).sort((a, b) => {
+					let modifier = 1
+					if (this.currentSortDir === 'desc') modifier = -1
+					if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
+					if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
+					return 0
+				})
+			} catch (error) {
+				console.warn(error)
+			}
+		},
+		photo () {
+			return require('@/assets/images/portrait/small/default.png')
+		}
+	},
+	mounted () {
+		this.currentPage = Number(mStorage.get(`${this.pkey}page`)) || 1
+		this.getData()
+	},
+	watch: {
+		currentPage () {
+			mStorage.set(`${this.pkey}page`, this.currentPage)
+			this.getData()
+		},
+		result_per_page () {
+			this.getData(true)
+		},
+		search (newVal, oldVal) {
+			this.startSearch(newVal, oldVal)
+		},
+		pagination () {
+			this.numbering = this.pagination.start
+		},
+		selectedRecords (newVal, oldVal) {
+			if (this.selectedRecords.length > 0) {
+				this.deletebutton = true
+			} else {
+				this.deletebutton = false
+			}
+		}
+	},
+	methods: {
+		number (num) {
+			return this.numbering + num
+		},
+		startSearch (newVal, oldVal) {
+			if (this.search_timer) {
+				clearTimeout(this.search_timer)
+			}
+			const vm = this
+			this.search_timer = setTimeout(function () {
+				vm.getData()
+			}, 800)
+		},
+		//reconciliation starts here
+		getData (scroll) {
+			const user = this.AppActiveUser
+			const isbog = user.types[1] == 'organization' ? 'true' : 'false'
+			this.loading = true
+			this.post('/unauthorized/', {
+				page: this.currentPage,
+				result_per_page: this.result_per_page,
+				access_type: user.access_level,
+				user_id: user.id,
+				search: this.search,
+				bank_type: 'all',
+				isbog
+			})
+				.then((response) => {
+					this.records = []
+					this.loading = false
+					this.message = response.data.message
+					this.pagination = response.data.pagination
+					if (response.data.success) {
+						this.records = response.data.unauthorized
+					}
+				})
+				.catch((error) => {
+					this.hasData = false
+					this.loading = false
+					console.log(error)
+				})
+		},
+		clearLog () {
+			this.popupActive = false
+			this.canCloseModal = false
+			this.reloadButton = false
+			this.jobid = null
+			this.importDesc = []
+			this.exportStatus = ''
+			if (this.statuscheck) {
+				clearInterval(this.statuscheck)
+			}
+		},
+		statusCheckFileExport () {
+			this.canCloseModal = false
+			this.reloadButton = false
+			const vm = this
+			this.statuscheck = setInterval(function () {
+				vm.checkStatus()
+			}, 1200)
+		},
+		formatDesc (data) {
+			let error = false
+			this.errorStr.forEach((item) => {
+				if (data && data.toLowerCase().includes(item)) {
+					error = true
+				}
+			})
+			if (error) {
+				return `<span class="text-danger">->${data}<br/></span> `
+			}
+			return `<span class="text-primary">->${data}<br/></span> `
+		},
+		pushDescription (data) {
+			if (!this.importDesc.includes(data)) {
+				this.importDesc.push(data)
+			}
+		},
+		async exportWarn () {
+			const { value: filename } = await Swal.fire({
+				title: 'Export Account Responses',
+				text: 'You are about to export responses in his account!',
+				icon: 'question',
+				input: 'text',
+				showCancelButton: true,
+				confirmButtonColor: '#0d6723',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, continue!',
+				inputPlaceholder: 'Save file as?',
+				inputValidator: (value) => {
+					if (!value) {
+						return 'You need to write file name!'
+					}
+				}
+			})
 
-      if (filename) {
-        this.export(filename);
-      }
-    },
-    export: function (filename) {
-      this.showLoading("Sending Request For File Export");
-      this.post("/unauthorized/start_export", {
-        id: this.selectedRecords,
-        filename: filename,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.selectedRecords = [];
-            this.popupActive = true;
-            this.pushDescription(response.data.message);
-            this.exportStatus = "Initializing";
-            this.jobid = response.data.jobid;
-            this.statusCheckFileExport();
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-    checkStatus: function () {
-      this.post("/unauthorized/file_export_status", {
-        jobid: this.jobid,
-      })
-        .then((response) => {
-          var data = response.data;
-          if (data.success) {
-            var status = data.status;
-            this.pushDescription(status.description);
-            this.exportStatus = status.status;
-            this.exportDetails = status.details;
-            if (status.status.toLowerCase() == "completed") {
-              clearInterval(this.statuscheck);
-              this.exportStatus = "";
-              this.canCloseModal = true;
-            }
-            if (status.status.toLowerCase().includes("error")) {
-              clearInterval(this.statuscheck);
-              this.exportStatus = "";
-              this.canCloseModal = true;
-            }
-          } else {
-            this.pushDescription(response.data.message);
-            this.exportStatus = "";
-            clearInterval(this.statuscheck);
-            this.canCloseModal = true;
-          }
-        })
-        .catch((error) => {
-          this.pushDescription("a network error has occured");
-          clearInterval(this.statuscheck);
-          this.exportStatus = "";
-          this.canCloseModal = true;
-          this.reloadButton = true;
-          console.log(error);
-        });
-    },
-    removeWarn() {
-      if (!this.canDelete()) {
-        return Swal.fire(
-          "Not Allowed!",
-          "You do not have permission to delete any record",
-          "error"
-        );
-      }
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3cc879",
-        cancelButtonColor: "#ea5455",
-        confirmButtonText: "Yes, remove it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.remove(this.selectedRecords);
-        }
-      });
-    },
-    remove: function (ids) {
-      this.showLoading("Removing reconcilations, please wait");
-      this.post("/unauthorized/remove_reconcilation", {
-        id: ids,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            Swal.fire(
-              "Deleted!",
-              "The Account(s) has been deleted.",
-              "success"
-            );
-            this.selectedRecords = [];
-            this.getData();
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-  },
-};
+			if (filename) {
+				this.export(filename)
+			}
+		},
+		export (filename) {
+			this.showLoading('Sending Request For File Export')
+			this.post('/unauthorized/start_export', {
+				id: this.selectedRecords,
+				filename
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.selectedRecords = []
+						this.popupActive = true
+						this.pushDescription(response.data.message)
+						this.exportStatus = 'Initializing'
+						this.jobid = response.data.jobid
+						this.statusCheckFileExport()
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		checkStatus () {
+			this.post('/unauthorized/file_export_status', {
+				jobid: this.jobid
+			})
+				.then((response) => {
+					const data = response.data
+					if (data.success) {
+						const status = data.status
+						this.pushDescription(status.description)
+						this.exportStatus = status.status
+						this.exportDetails = status.details
+						if (status.status.toLowerCase() == 'completed') {
+							clearInterval(this.statuscheck)
+							this.exportStatus = ''
+							this.canCloseModal = true
+						}
+						if (status.status.toLowerCase().includes('error')) {
+							clearInterval(this.statuscheck)
+							this.exportStatus = ''
+							this.canCloseModal = true
+						}
+					} else {
+						this.pushDescription(response.data.message)
+						this.exportStatus = ''
+						clearInterval(this.statuscheck)
+						this.canCloseModal = true
+					}
+				})
+				.catch((error) => {
+					this.pushDescription('a network error has occured')
+					clearInterval(this.statuscheck)
+					this.exportStatus = ''
+					this.canCloseModal = true
+					this.reloadButton = true
+					console.log(error)
+				})
+		},
+		removeWarn () {
+			if (!this.canDelete()) {
+				return Swal.fire(
+					'Not Allowed!',
+					'You do not have permission to delete any record',
+					'error'
+				)
+			}
+			Swal.fire({
+				title: 'Are you sure?',
+				text: 'You won\'t be able to revert this!',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3cc879',
+				cancelButtonColor: '#ea5455',
+				confirmButtonText: 'Yes, remove it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					this.remove(this.selectedRecords)
+				}
+			})
+		},
+		remove (ids) {
+			this.showLoading('Removing reconcilations, please wait')
+			this.post('/unauthorized/remove_reconcilation', {
+				id: ids
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						Swal.fire(
+							'Deleted!',
+							'The Account(s) has been deleted.',
+							'success'
+						)
+						this.selectedRecords = []
+						this.getData()
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		}
+	}
+}
 </script>

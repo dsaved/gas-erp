@@ -152,116 +152,116 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import mStorage from "@/store/storage.js";
-import Datepicker from "vuejs-datepicker";
+import Swal from 'sweetalert2'
+import mStorage from '@/store/storage.js'
+import Datepicker from 'vuejs-datepicker'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  components: {
-    Datepicker,
-  },
-  data() {
-    return {
-      pkey: "tax-schedule-page-key",
-      message: "",
-      total: "",
-      computes: [
-        {
-          litters: "",
-          taxdate: "",
-          product: [],
-        },
-      ],
-      numbering: 0,
-      currentPage: 1,
-      result_per_page: 20,
-      loading: false,
-      deletebutton: false,
-      pagination: {
-        haspages: false,
-        page: 0,
-        start: 0,
-        end: 0,
-        total: 0,
-        pages: 0,
-        hasNext: false,
-        hasPrevious: false,
-      },
-      selectedRecords: [],
-      records: [],
-      search_timer: null,
-    };
-  },
-  computed: {},
-  mounted: function () {},
-  watch: {
-    currentPage: function () {
-      mStorage.set(`${this.pkey}page`, this.currentPage);
-      this.getData();
-    },
-    search: function (newVal, oldVal) {
-      this.startSearch(newVal, oldVal);
-    },
-    pagination: function () {
-      this.numbering = this.pagination.start;
-    },
-    selectedRecords: function (newVal, oldVal) {
-      if (this.selectedRecords.length > 0) {
-        this.deletebutton = true;
-      } else {
-        this.deletebutton = false;
-      }
-    },
-  },
-  methods: {
-    addcompute: function () {
-      this.computes.push({
-        litters: "",
-        taxdate: "",
-        product: [],
-      });
-    },
-    removecompute: function (index) {
-      this.computes.splice(index, 1);
-    },
-    calculate() {
-      this.loading = true;
-      this.post("/compute/", {
-        computes: this.computes,
-      })
-        .then((response) => {
-          this.loading = false;
-          console.log(response.data);
-          this.message = "";
-          this.records = response.data.computes;
-          this.total = response.data.total;
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            border: "danger",
-            color: "dark",
-            duration: null,
-            position: "bottom-left",
-          });
-        });
-    },
-  },
-};
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	components: {
+		Datepicker
+	},
+	data () {
+		return {
+			pkey: 'tax-schedule-page-key',
+			message: '',
+			total: '',
+			computes: [
+				{
+					litters: '',
+					taxdate: '',
+					product: []
+				}
+			],
+			numbering: 0,
+			currentPage: 1,
+			result_per_page: 20,
+			loading: false,
+			deletebutton: false,
+			pagination: {
+				haspages: false,
+				page: 0,
+				start: 0,
+				end: 0,
+				total: 0,
+				pages: 0,
+				hasNext: false,
+				hasPrevious: false
+			},
+			selectedRecords: [],
+			records: [],
+			search_timer: null
+		}
+	},
+	computed: {},
+	mounted () {},
+	watch: {
+		currentPage () {
+			mStorage.set(`${this.pkey}page`, this.currentPage)
+			this.getData()
+		},
+		search (newVal, oldVal) {
+			this.startSearch(newVal, oldVal)
+		},
+		pagination () {
+			this.numbering = this.pagination.start
+		},
+		selectedRecords (newVal, oldVal) {
+			if (this.selectedRecords.length > 0) {
+				this.deletebutton = true
+			} else {
+				this.deletebutton = false
+			}
+		}
+	},
+	methods: {
+		addcompute () {
+			this.computes.push({
+				litters: '',
+				taxdate: '',
+				product: []
+			})
+		},
+		removecompute (index) {
+			this.computes.splice(index, 1)
+		},
+		calculate () {
+			this.loading = true
+			this.post('/compute/', {
+				computes: this.computes
+			})
+				.then((response) => {
+					this.loading = false
+					console.log(response.data)
+					this.message = ''
+					this.records = response.data.computes
+					this.total = response.data.total
+				})
+				.catch((error) => {
+					this.loading = false
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						border: 'danger',
+						color: 'dark',
+						duration: null,
+						position: 'bottom-left'
+					})
+				})
+		}
+	}
+}
 </script>
 
 <style lang="scss">

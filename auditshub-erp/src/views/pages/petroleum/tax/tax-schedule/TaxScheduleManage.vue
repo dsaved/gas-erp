@@ -136,198 +136,198 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import Datepicker from "vuejs-datepicker";
+import Swal from 'sweetalert2'
+import Datepicker from 'vuejs-datepicker'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  components: {
-    Datepicker,
-  },
-  props: {
-    taxscheduleid: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      loading: false,
-      tax_type: [],
-      tax_product: [],
-      rate: "",
-      date_from: "",
-      date_to: "",
-    };
-  },
-  watch: {
-    loading: function () {
-      if (this.loading) {
-        this.$loader = this.$vs.loading({
-          background: this.backgroundLoading,
-          color: this.colorLoading,
-          container: "#button-with-loading",
-          scale: 0.45,
-        });
-      } else {
-        this.$vs.loading.close("#button-with-loading > .con-vs-loading");
-      }
-    },
-  },
-  mounted: function () {
-    if (this.isEdit()) {
-      this.getData();
-    }
-  },
-  computed: {
-    datefrom() {
-      return String(this.date_from);
-    },
-    dateto() {
-      return String(this.date_to);
-    },
-  },
-  methods: {
-    isEdit() {
-      return Number(this.taxscheduleid) !== 0;
-    },
-    resetForm() {
-      this.name = "";
-      this.description = "";
-    },
-    getData() {
-      this.loading = true;
-      this.post("/taxschedule/get/", {
-        id: this.taxscheduleid,
-      })
-        .then((response) => {
-          this.loading = false;
-          if (response.data.success == true) {
-            const result = response.data.schedules[0];
-            this.tax_type = result.tax_type;
-            this.tax_product = result.tax_product;
-            this.rate = result.rate;
-            this.date_from = result.date_from;
-            this.date_to = result.date_to;
-          } else {
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.data.message}`,
-              sticky: true,
-              border: "danger",
-              color: "dark",
-              duration: null,
-              position: "bottom-left",
-            });
-          }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            border: "danger",
-            color: "dark",
-            duration: null,
-            position: "bottom-left",
-          });
-        });
-    },
-    submitForm() {
-      this.$validator.validateAll().then((result) => {
-        if (result) {
-          // if form have no errors
-          if (!this.loading) {
-            if (!this.canAdd()) {
-              return Swal.fire(
-                "Not Allowed!",
-                "You do not have permission to add any record",
-                "error"
-              );
-            }
-            this.showLoading("Adding tax schedule to system");
-            this.post("/taxschedule/add", {
-              tax_type: this.tax_type.value,
-              tax_product: this.tax_product.value,
-              rate: this.rate,
-              date_from: this.date_from,
-              date_to: this.date_to,
-            })
-              .then((result) => {
-                console.log(result.data);
-                this.closeLoading();
-                if (result.data.success == true) {
-                  Swal.fire(
-                    "Tax Schedule Added",
-                    result.data.message,
-                    "success"
-                  );
-                  this.resetForm();
-                } else {
-                  Swal.fire("Failed!", result.data.message, "error");
-                }
-              })
-              .catch((error) => {
-                this.closeLoading();
-                Swal.fire("Failed!", error.message, "error");
-              });
-          }
-        }
-      });
-    },
-    updateForm() {
-      this.$validator.validateAll().then((result) => {
-        if (result) {
-          // if form have no errors
-          if (!this.loading) {
-            if (!this.canUpdate()) {
-              return Swal.fire(
-                "Not Allowed!",
-                "You do not have permission to update any record",
-                "error"
-              );
-            }
-            this.showLoading("Updating current tax schedule");
-            this.post("/taxschedule/update", {
-              id: this.taxscheduleid,
-              tax_type: this.tax_type.value,
-              tax_product: this.tax_product.value,
-              rate: this.rate,
-              date_from: this.date_from,
-              date_to: this.date_to,
-            })
-              .then((result) => {
-                console.log(result.data);
-                this.closeLoading();
-                if (result.data.success == true) {
-                  Swal.fire(
-                    "Tax schedule Updated",
-                    result.data.message,
-                    "success"
-                  );
-                } else {
-                  Swal.fire("Failed!", result.data.message, "error");
-                }
-              })
-              .catch((error) => {
-                this.closeLoading();
-                Swal.fire("Failed!", error.message, "error");
-              });
-          }
-        }
-      });
-    },
-  },
-};
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	components: {
+		Datepicker
+	},
+	props: {
+		taxscheduleid: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	data () {
+		return {
+			loading: false,
+			tax_type: [],
+			tax_product: [],
+			rate: '',
+			date_from: '',
+			date_to: ''
+		}
+	},
+	watch: {
+		loading () {
+			if (this.loading) {
+				this.$loader = this.$vs.loading({
+					background: this.backgroundLoading,
+					color: this.colorLoading,
+					container: '#button-with-loading',
+					scale: 0.45
+				})
+			} else {
+				this.$vs.loading.close('#button-with-loading > .con-vs-loading')
+			}
+		}
+	},
+	mounted () {
+		if (this.isEdit()) {
+			this.getData()
+		}
+	},
+	computed: {
+		datefrom () {
+			return String(this.date_from)
+		},
+		dateto () {
+			return String(this.date_to)
+		}
+	},
+	methods: {
+		isEdit () {
+			return Number(this.taxscheduleid) !== 0
+		},
+		resetForm () {
+			this.name = ''
+			this.description = ''
+		},
+		getData () {
+			this.loading = true
+			this.post('/taxschedule/get/', {
+				id: this.taxscheduleid
+			})
+				.then((response) => {
+					this.loading = false
+					if (response.data.success == true) {
+						const result = response.data.schedules[0]
+						this.tax_type = result.tax_type
+						this.tax_product = result.tax_product
+						this.rate = result.rate
+						this.date_from = result.date_from
+						this.date_to = result.date_to
+					} else {
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							border: 'danger',
+							color: 'dark',
+							duration: null,
+							position: 'bottom-left'
+						})
+					}
+				})
+				.catch((error) => {
+					this.loading = false
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						border: 'danger',
+						color: 'dark',
+						duration: null,
+						position: 'bottom-left'
+					})
+				})
+		},
+		submitForm () {
+			this.$validator.validateAll().then((result) => {
+				if (result) {
+					// if form have no errors
+					if (!this.loading) {
+						if (!this.canAdd()) {
+							return Swal.fire(
+								'Not Allowed!',
+								'You do not have permission to add any record',
+								'error'
+							)
+						}
+						this.showLoading('Adding tax schedule to system')
+						this.post('/taxschedule/add', {
+							tax_type: this.tax_type.value,
+							tax_product: this.tax_product.value,
+							rate: this.rate,
+							date_from: this.date_from,
+							date_to: this.date_to
+						})
+							.then((result) => {
+								console.log(result.data)
+								this.closeLoading()
+								if (result.data.success == true) {
+									Swal.fire(
+										'Tax Schedule Added',
+										result.data.message,
+										'success'
+									)
+									this.resetForm()
+								} else {
+									Swal.fire('Failed!', result.data.message, 'error')
+								}
+							})
+							.catch((error) => {
+								this.closeLoading()
+								Swal.fire('Failed!', error.message, 'error')
+							})
+					}
+				}
+			})
+		},
+		updateForm () {
+			this.$validator.validateAll().then((result) => {
+				if (result) {
+					// if form have no errors
+					if (!this.loading) {
+						if (!this.canUpdate()) {
+							return Swal.fire(
+								'Not Allowed!',
+								'You do not have permission to update any record',
+								'error'
+							)
+						}
+						this.showLoading('Updating current tax schedule')
+						this.post('/taxschedule/update', {
+							id: this.taxscheduleid,
+							tax_type: this.tax_type.value,
+							tax_product: this.tax_product.value,
+							rate: this.rate,
+							date_from: this.date_from,
+							date_to: this.date_to
+						})
+							.then((result) => {
+								console.log(result.data)
+								this.closeLoading()
+								if (result.data.success == true) {
+									Swal.fire(
+										'Tax schedule Updated',
+										result.data.message,
+										'success'
+									)
+								} else {
+									Swal.fire('Failed!', result.data.message, 'error')
+								}
+							})
+							.catch((error) => {
+								this.closeLoading()
+								Swal.fire('Failed!', error.message, 'error')
+							})
+					}
+				}
+			})
+		}
+	}
+}
 </script>

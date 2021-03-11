@@ -230,311 +230,311 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import Datepicker from "vuejs-datepicker";
+import Swal from 'sweetalert2'
+import Datepicker from 'vuejs-datepicker'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  props: {
-    accountid: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  components: {
-    Datepicker,
-  },
-  data() {
-    return {
-      loading: false,
-      name: "",
-      bank_type: "",
-      acc_num1: "",
-      acc_num2: "",
-      status: "",
-      date_inactive: "",
-      owner: [],
-      bank: [],
-      category: [],
-      bogbank: {},
-      types: ["Bank Of Ghana", "Other Banks"],
-    };
-  },
-  computed: {
-    dateinactive() {
-      return String(this.date_inactive);
-    },
-  },
-  watch: {
-    bank_type: function () {
-      if (this.bank_type == this.types[0]) {
-        this.bank = this.bogbank;
-      }
-    },
-  },
-  mounted: function () {
-    this.loadOptions();
-    if (this.isEdit()) {
-      this.getData();
-    }
-  },
-  methods: {
-    isEdit() {
-      return Number(this.accountid) !== 0;
-    },
-    resetForm() {
-      this.name = "";
-    },
-    loadOptions: function () {
-      this.post("/bankaccounts/bogbank", {})
-        .then((response) => {
-          this.bogbank = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    getData() {
-      this.loading = true;
-      this.post("/bankaccounts/editbank", {
-        id: this.accountid,
-      })
-        .then((response) => {
-          this.loading = false;
-          if (response.data.success == true) {
-            var account = response.data.bankaccounts[0];
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	props: {
+		accountid: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	components: {
+		Datepicker
+	},
+	data () {
+		return {
+			loading: false,
+			name: '',
+			bank_type: '',
+			acc_num1: '',
+			acc_num2: '',
+			status: '',
+			date_inactive: '',
+			owner: [],
+			bank: [],
+			category: [],
+			bogbank: {},
+			types: ['Bank Of Ghana', 'Other Banks']
+		}
+	},
+	computed: {
+		dateinactive () {
+			return String(this.date_inactive)
+		}
+	},
+	watch: {
+		bank_type () {
+			if (this.bank_type == this.types[0]) {
+				this.bank = this.bogbank
+			}
+		}
+	},
+	mounted () {
+		this.loadOptions()
+		if (this.isEdit()) {
+			this.getData()
+		}
+	},
+	methods: {
+		isEdit () {
+			return Number(this.accountid) !== 0
+		},
+		resetForm () {
+			this.name = ''
+		},
+		loadOptions () {
+			this.post('/bankaccounts/bogbank', {})
+				.then((response) => {
+					this.bogbank = response.data
+				})
+				.catch((error) => {
+					console.log(error)
+				})
+		},
+		getData () {
+			this.loading = true
+			this.post('/bankaccounts/editbank', {
+				id: this.accountid
+			})
+				.then((response) => {
+					this.loading = false
+					if (response.data.success == true) {
+						const account = response.data.bankaccounts[0]
 
-            this.name = account.name;
-            this.acc_num1 = account.acc_num1;
-            this.acc_num2 = account.acc_num2;
-            this.status = account.status;
-            this.owner = account.owner;
-            this.category = account.category;
-            if (account.bank_type == this.types[0]) {
-              this.bogbank = account.bank;
-            }
-            this.bank_type = account.bank_type;
-            this.bank = account.bank;
-            this.date_inactive = account.date_inactive;
-          } else {
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.data.message}`,
-              sticky: true,
-              border: "danger",
-              color: "dark",
-              duration: null,
-              position: "bottom-left",
-            });
-          }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            border: "danger",
-            color: "dark",
-            duration: null,
-            position: "bottom-left",
-          });
-        });
-    },
-    submitForm() {
-      this.$validator.validateAll().then((result) => {
-        if (!this.hasdata(this.acc_num1) && !this.hasdata(this.acc_num2)) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide atleast one account number `,
-            sticky: true,
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        if (this.bank_type == this.types[0]) {
-          if (this.hasdata(this.acc_num1) && !this.acc_num1.startsWith("1")) {
-            this.$vs.notification({
-              title: "Error!!!",
-              text: `Invalid old account number `,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-            return;
-          }
-          if (this.hasdata(this.acc_num2) && !this.acc_num2.startsWith("1")) {
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `Invalid new account number `,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-            return;
-          }
-          if (!this.bank || !this.bank.value) {
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `No Bank of ghana exist`,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-            return;
-          }
-        }
+						this.name = account.name
+						this.acc_num1 = account.acc_num1
+						this.acc_num2 = account.acc_num2
+						this.status = account.status
+						this.owner = account.owner
+						this.category = account.category
+						if (account.bank_type == this.types[0]) {
+							this.bogbank = account.bank
+						}
+						this.bank_type = account.bank_type
+						this.bank = account.bank
+						this.date_inactive = account.date_inactive
+					} else {
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							border: 'danger',
+							color: 'dark',
+							duration: null,
+							position: 'bottom-left'
+						})
+					}
+				})
+				.catch((error) => {
+					this.loading = false
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						border: 'danger',
+						color: 'dark',
+						duration: null,
+						position: 'bottom-left'
+					})
+				})
+		},
+		submitForm () {
+			this.$validator.validateAll().then((result) => {
+				if (!this.hasdata(this.acc_num1) && !this.hasdata(this.acc_num2)) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide atleast one account number ',
+						sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				if (this.bank_type == this.types[0]) {
+					if (this.hasdata(this.acc_num1) && !this.acc_num1.startsWith('1')) {
+						this.$vs.notification({
+							title: 'Error!!!',
+							text: 'Invalid old account number ',
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+						return
+					}
+					if (this.hasdata(this.acc_num2) && !this.acc_num2.startsWith('1')) {
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: 'Invalid new account number ',
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+						return
+					}
+					if (!this.bank || !this.bank.value) {
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: 'No Bank of ghana exist',
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+						return
+					}
+				}
 
-        if (result) {
-          // if form have no errors
-          if (!this.loading) {
-            if (!this.canAdd()) {
-              return Swal.fire(
-                "Not Allowed!",
-                "You do not have permission to add any record",
-                "error"
-              );
-            }
-            this.showLoading("Adding Account  to system");
-            this.post("/bankaccounts/create", {
-              name: this.name,
-              bank_type: this.bank_type,
-              acc_num1: this.acc_num1,
-              acc_num2: this.acc_num2,
-              owner: this.owner.value,
-              bank: this.bank.value,
-              category: this.category.value,
-            })
-              .then((result) => {
-                console.log(result.data);
-                this.closeLoading();
-                if (result.data.success == true) {
-                  Swal.fire(
-                    "Account  Added",
-                    result.data.message,
-                    "success"
-                  );
-                  this.resetForm();
-                } else {
-                  Swal.fire("Failed!", result.data.message, "error");
-                }
-              })
-              .catch((error) => {
-                this.closeLoading();
-                Swal.fire("Failed!", error.message, "error");
-              });
-          }
-        }
-      });
-    },
-    updateForm() {
-      this.$validator.validateAll().then((result) => {
-        if (!this.hasdata(this.acc_num1) && !this.hasdata(this.acc_num2)) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide atleast one account number `,
-            sticky: true,
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        if (this.bank_type == this.types[0]) {
-          if (this.hasdata(this.acc_num1) && !this.acc_num1.startsWith("1")) {
-            this.$vs.notification({
-              title: "Error!!!",
-              text: `Invalid old account number `,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-            return;
-          }
-          if (this.hasdata(this.acc_num2) && !this.acc_num2.startsWith("1")) {
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `Invalid new account number `,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-            return;
-          }
-          if (!this.bank || !this.bank.value) {
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `No Bank of ghana exist`,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-            return;
-          }
-        }
+				if (result) {
+					// if form have no errors
+					if (!this.loading) {
+						if (!this.canAdd()) {
+							return Swal.fire(
+								'Not Allowed!',
+								'You do not have permission to add any record',
+								'error'
+							)
+						}
+						this.showLoading('Adding Account  to system')
+						this.post('/bankaccounts/create', {
+							name: this.name,
+							bank_type: this.bank_type,
+							acc_num1: this.acc_num1,
+							acc_num2: this.acc_num2,
+							owner: this.owner.value,
+							bank: this.bank.value,
+							category: this.category.value
+						})
+							.then((result) => {
+								console.log(result.data)
+								this.closeLoading()
+								if (result.data.success == true) {
+									Swal.fire(
+										'Account  Added',
+										result.data.message,
+										'success'
+									)
+									this.resetForm()
+								} else {
+									Swal.fire('Failed!', result.data.message, 'error')
+								}
+							})
+							.catch((error) => {
+								this.closeLoading()
+								Swal.fire('Failed!', error.message, 'error')
+							})
+					}
+				}
+			})
+		},
+		updateForm () {
+			this.$validator.validateAll().then((result) => {
+				if (!this.hasdata(this.acc_num1) && !this.hasdata(this.acc_num2)) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide atleast one account number ',
+						sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				if (this.bank_type == this.types[0]) {
+					if (this.hasdata(this.acc_num1) && !this.acc_num1.startsWith('1')) {
+						this.$vs.notification({
+							title: 'Error!!!',
+							text: 'Invalid old account number ',
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+						return
+					}
+					if (this.hasdata(this.acc_num2) && !this.acc_num2.startsWith('1')) {
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: 'Invalid new account number ',
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+						return
+					}
+					if (!this.bank || !this.bank.value) {
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: 'No Bank of ghana exist',
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+						return
+					}
+				}
 
-        if (result) {
-          // if form have no errors
-          if (!this.loading) {
-            if (!this.canUpdate()) {
-              return Swal.fire(
-                "Not Allowed!",
-                "You do not have permission to update any record",
-                "error"
-              );
-            }
-            this.showLoading("Updating current Account ");
-            this.post("/bankaccounts/update", {
-              id: this.accountid,
-              name: this.name,
-              bank_type: this.bank_type,
-              acc_num1: this.acc_num1,
-              acc_num2: this.acc_num2,
-              owner: this.owner.value,
-              bank: this.bank.value,
-              category: this.category.value,
-              status: this.status,
-              date_inactive: this.date_inactive,
-            })
-              .then((result) => {
-                console.log(result.data);
-                this.closeLoading();
-                if (result.data.success == true) {
-                  Swal.fire(
-                    "Account  Updated",
-                    result.data.message,
-                    "success"
-                  );
-                } else {
-                  Swal.fire("Failed!", result.data.message, "error");
-                }
-              })
-              .catch((error) => {
-                this.closeLoading();
-                Swal.fire("Failed!", error.message, "error");
-              });
-          }
-        }
-      });
-    },
-  },
-};
+				if (result) {
+					// if form have no errors
+					if (!this.loading) {
+						if (!this.canUpdate()) {
+							return Swal.fire(
+								'Not Allowed!',
+								'You do not have permission to update any record',
+								'error'
+							)
+						}
+						this.showLoading('Updating current Account ')
+						this.post('/bankaccounts/update', {
+							id: this.accountid,
+							name: this.name,
+							bank_type: this.bank_type,
+							acc_num1: this.acc_num1,
+							acc_num2: this.acc_num2,
+							owner: this.owner.value,
+							bank: this.bank.value,
+							category: this.category.value,
+							status: this.status,
+							date_inactive: this.date_inactive
+						})
+							.then((result) => {
+								console.log(result.data)
+								this.closeLoading()
+								if (result.data.success == true) {
+									Swal.fire(
+										'Account  Updated',
+										result.data.message,
+										'success'
+									)
+								} else {
+									Swal.fire('Failed!', result.data.message, 'error')
+								}
+							})
+							.catch((error) => {
+								this.closeLoading()
+								Swal.fire('Failed!', error.message, 'error')
+							})
+					}
+				}
+			})
+		}
+	}
+}
 </script>

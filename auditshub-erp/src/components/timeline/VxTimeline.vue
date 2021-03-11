@@ -25,13 +25,13 @@
 
 <script>
 export default {
-  name: 'vx-timeline',
-  props: {
-    data: {
-      type: Array,
-      required: true
-    }
-  }
+	name: 'vx-timeline',
+	props: {
+		data: {
+			type: Array,
+			required: true
+		}
+	}
 }
 </script>
 

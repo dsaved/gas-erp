@@ -104,139 +104,139 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import mStorage from "@/store/storage.js";
+import Swal from 'sweetalert2'
+import mStorage from '@/store/storage.js'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  props: {
-    accountid: {
-      type: String / Number,
-      default: 0,
-    },
-    transactionid: {
-      type: String / Number,
-      default: 0,
-    },
-    page: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      record_not_found: false,
-      record_found: false,
-      transactions: {},
-      //receipt transactions list starts here
-      currentPage: 1,
-      result_per_page: 1,
-      loading: true,
-      pagination: {
-        haspages: false,
-        page: 0,
-        start: 0,
-        end: 0,
-        total: 0,
-        pages: 0,
-        hasNext: false,
-        hasPrevious: false,
-      },
-      records: [],
-    };
-  },
-  computed: {},
-  mounted: function () {
-    if (this.page !== 0) {
-      this.currentPage = this.page;
-    } else {
-      this.getData();
-    }
-  },
-  watch: {
-    currentPage: function () {
-      this.getData();
-    },
-  },
-  methods: {
-    accountNumbers: function (account) {
-      var acnts = ``;
-      if (this.hasdata(account.acc_num1) && this.hasdata(account.acc_num2)) {
-        acnts += account.acc_num1 + ` | ` + account.acc_num1;
-      } else if (this.hasdata(account.acc_num1)) {
-        acnts += account.acc_num1;
-      } else if (this.hasdata(account.acc_num2)) {
-        acnts += account.acc_num2;
-      }
-      if (account.status == "Inactive") {
-        acnts += ` - <span class="text-danger">Inactive</span> `;
-      } else {
-        acnts += ` - <span class="text-primary">Active</span> `;
-      }
-      return acnts;
-    },
-    getData() {
-      this.showLoading("getting receipt infomation");
-      this.post("/statements/statement_account", {
-        result_per_page: this.result_per_page,
-        page: this.currentPage,
-        id: this.transactionid,
-        accountid: this.accountid,
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.closeLoading();
-          this.pagination = response.data.pagination;
-          if (response.data.success == true) {
-            this.transactions = response.data.transactions[0];
-            if (this.transactions.id !== this.transactionid) {
-              this.$router.replace({
-                name: "rview-bank-account-trans",
-                params: {
-                  accountid: this.accountid,
-                  transactionid: this.transactions.id,
-                  page: this.pagination.page,
-                },
-              });
-            }
-            this.record_found = true;
-          } else {
-            this.record_not_found = true;
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.transactions.message}`,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          this.record_not_found = true;
-        });
-    },
-  },
-};
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	props: {
+		accountid: {
+			type: String / Number,
+			default: 0
+		},
+		transactionid: {
+			type: String / Number,
+			default: 0
+		},
+		page: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	data () {
+		return {
+			record_not_found: false,
+			record_found: false,
+			transactions: {},
+			//receipt transactions list starts here
+			currentPage: 1,
+			result_per_page: 1,
+			loading: true,
+			pagination: {
+				haspages: false,
+				page: 0,
+				start: 0,
+				end: 0,
+				total: 0,
+				pages: 0,
+				hasNext: false,
+				hasPrevious: false
+			},
+			records: []
+		}
+	},
+	computed: {},
+	mounted () {
+		if (this.page !== 0) {
+			this.currentPage = this.page
+		} else {
+			this.getData()
+		}
+	},
+	watch: {
+		currentPage () {
+			this.getData()
+		}
+	},
+	methods: {
+		accountNumbers (account) {
+			let acnts = ''
+			if (this.hasdata(account.acc_num1) && this.hasdata(account.acc_num2)) {
+				acnts += `${account.acc_num1  } | ${  account.acc_num1}`
+			} else if (this.hasdata(account.acc_num1)) {
+				acnts += account.acc_num1
+			} else if (this.hasdata(account.acc_num2)) {
+				acnts += account.acc_num2
+			}
+			if (account.status == 'Inactive') {
+				acnts += ' - <span class="text-danger">Inactive</span> '
+			} else {
+				acnts += ' - <span class="text-primary">Active</span> '
+			}
+			return acnts
+		},
+		getData () {
+			this.showLoading('getting receipt infomation')
+			this.post('/statements/statement_account', {
+				result_per_page: this.result_per_page,
+				page: this.currentPage,
+				id: this.transactionid,
+				accountid: this.accountid
+			})
+				.then((response) => {
+					console.log(response.data)
+					this.closeLoading()
+					this.pagination = response.data.pagination
+					if (response.data.success == true) {
+						this.transactions = response.data.transactions[0]
+						if (this.transactions.id !== this.transactionid) {
+							this.$router.replace({
+								name: 'rview-bank-account-trans',
+								params: {
+									accountid: this.accountid,
+									transactionid: this.transactions.id,
+									page: this.pagination.page
+								}
+							})
+						}
+						this.record_found = true
+					} else {
+						this.record_not_found = true
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.transactions.message}`,
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					this.record_not_found = true
+				})
+		}
+	}
+}
 </script>
 
 <style lang="scss">

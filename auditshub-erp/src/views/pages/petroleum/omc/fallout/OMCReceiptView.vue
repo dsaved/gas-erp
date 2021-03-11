@@ -114,123 +114,123 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import mStorage from "@/store/storage.js";
+import Swal from 'sweetalert2'
+import mStorage from '@/store/storage.js'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  props: {
-    omcid: {
-      type: String / Number,
-      default: 0,
-    },
-    receiptid: {
-      type: String / Number,
-      default: 0,
-    },
-    page: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      user_not_found: false,
-      user_found: false,
-      receipts: {},
-      //receipt data list starts here
-      currentPage: 1,
-      result_per_page: 1,
-      loading: true,
-      pagination: {
-        haspages: false,
-        page: 0,
-        start: 0,
-        end: 0,
-        total: 0,
-        pages: 0,
-        hasNext: false,
-        hasPrevious: false,
-      },
-      records: [],
-    };
-  },
-  computed: {},
-  mounted: function () {
-    if (this.page !== 0) {
-      this.currentPage = this.page;
-    } else {
-      this.getData();
-    }
-  },
-  watch: {
-    currentPage: function () {
-      this.getData();
-    },
-  },
-  methods: {
-    getData() {
-      this.showLoading("getting receipt infomation");
-      this.post("/omcfallout/receipt_omc", {
-        result_per_page: this.result_per_page,
-        page: this.currentPage,
-        id: this.receiptid,
-        omcid: this.omcid,
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.closeLoading();
-          this.pagination = response.data.pagination;
-          if (response.data.success == true) {
-            this.receipts = response.data.receipts[0];
-            if (this.receipts.id !== this.receiptid) {
-              this.$router.replace({
-                name: "omc-view-receipt-fallout",
-                params: {
-                  omcid: this.omcid,
-                  receiptid: this.receipts.id,
-                  page: this.pagination.page,
-                },
-              });
-            }
-            this.user_found = true;
-          } else {
-            this.user_not_found = true;
-            this.$vs.notify({
-              title: "Error!!!",
-              text: `${response.data.message}`,
-              sticky: true,
-              color: "danger",
-              duration: null,
-              position: "bottom-left",
-            });
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          this.user_not_found = true;
-        });
-    },
-  },
-};
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	props: {
+		omcid: {
+			type: String / Number,
+			default: 0
+		},
+		receiptid: {
+			type: String / Number,
+			default: 0
+		},
+		page: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	data () {
+		return {
+			user_not_found: false,
+			user_found: false,
+			receipts: {},
+			//receipt data list starts here
+			currentPage: 1,
+			result_per_page: 1,
+			loading: true,
+			pagination: {
+				haspages: false,
+				page: 0,
+				start: 0,
+				end: 0,
+				total: 0,
+				pages: 0,
+				hasNext: false,
+				hasPrevious: false
+			},
+			records: []
+		}
+	},
+	computed: {},
+	mounted () {
+		if (this.page !== 0) {
+			this.currentPage = this.page
+		} else {
+			this.getData()
+		}
+	},
+	watch: {
+		currentPage () {
+			this.getData()
+		}
+	},
+	methods: {
+		getData () {
+			this.showLoading('getting receipt infomation')
+			this.post('/omcfallout/receipt_omc', {
+				result_per_page: this.result_per_page,
+				page: this.currentPage,
+				id: this.receiptid,
+				omcid: this.omcid
+			})
+				.then((response) => {
+					console.log(response.data)
+					this.closeLoading()
+					this.pagination = response.data.pagination
+					if (response.data.success == true) {
+						this.receipts = response.data.receipts[0]
+						if (this.receipts.id !== this.receiptid) {
+							this.$router.replace({
+								name: 'omc-view-receipt-fallout',
+								params: {
+									omcid: this.omcid,
+									receiptid: this.receipts.id,
+									page: this.pagination.page
+								}
+							})
+						}
+						this.user_found = true
+					} else {
+						this.user_not_found = true
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							color: 'danger',
+							duration: null,
+							position: 'bottom-left'
+						})
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					this.user_not_found = true
+				})
+		}
+	}
+}
 </script>
 
 <style lang="scss">

@@ -39,31 +39,31 @@
 
 <script>
 export default {
-  name: 'v-nav-menu-item',
-  props: {
-    icon        : { type: String,                 default: ''               },
-    page        : { type: String,                 required:true               },
-    iconSmall   : { type: Boolean,                default: false            },
-    iconPack    : { type: String,                 default: 'material-icons' },
-    href        : { type: [String, null],         default: '#'              },
-    to          : { type: [String, Object, null], default: null             },
-    slug        : { type: String,                 default: null             },
-    index       : { type: [String, Number],       default: null             },
-    featherIcon : { type: Boolean,                default: true             },
-    target      : { type: String,                 default: '_self'          },
-    isDisabled  : { type: Boolean,                default: false            }
-  },
-  computed: {
-    activeLink () {
-      return !!((this.to === this.$route.path || this.$route.meta.parent === this.slug) && this.to)
-    },
-    pages(){
-      return this.AppActiveUser.pages
-    },
-    allowed(){
-      return this.allowed_pages;
-    }
-  }
+	name: 'v-nav-menu-item',
+	props: {
+		icon        : { type: String,                 default: ''               },
+		page        : { type: String,                 required:true               },
+		iconSmall   : { type: Boolean,                default: false            },
+		iconPack    : { type: String,                 default: 'material-icons' },
+		href        : { type: [String, null],         default: '#'              },
+		to          : { type: [String, Object, null], default: null             },
+		slug        : { type: String,                 default: null             },
+		index       : { type: [String, Number],       default: null             },
+		featherIcon : { type: Boolean,                default: true             },
+		target      : { type: String,                 default: '_self'          },
+		isDisabled  : { type: Boolean,                default: false            }
+	},
+	computed: {
+		activeLink () {
+			return !!((this.to === this.$route.path || this.$route.meta.parent === this.slug) && this.to)
+		},
+		pages () {
+			return this.AppActiveUser.pages
+		},
+		allowed () {
+			return this.allowed_pages
+		}
+	}
 }
 
 </script>

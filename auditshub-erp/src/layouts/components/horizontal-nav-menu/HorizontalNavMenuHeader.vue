@@ -51,81 +51,81 @@ import HNavMenuGroup from './HorizontalNavMenuGroup.vue'
 import HNavMenuItem from './HorizontalNavMenuItem.vue'
 
 export default {
-  props: {
-    header: {
-      type: Object,
-      requried: true
-    },
-    openOnHover: {
-      type: Boolean,
-      default: true
-    }
-  },
-  components: {
-    HNavMenuGroup,
-    HNavMenuItem
-  },
-  data () {
-    return {
-      showChildren: false,
-      isHovered: false,
-      dropRight: false
-    }
-  },
-  computed: {
-    isHeaderActive () {
-      const path        = this.$route.fullPath
-      let active        = false
-      const routeParent = this.$route.meta ? this.$route.meta.parent : undefined
+	props: {
+		header: {
+			type: Object,
+			requried: true
+		},
+		openOnHover: {
+			type: Boolean,
+			default: true
+		}
+	},
+	components: {
+		HNavMenuGroup,
+		HNavMenuItem
+	},
+	data () {
+		return {
+			showChildren: false,
+			isHovered: false,
+			dropRight: false
+		}
+	},
+	computed: {
+		isHeaderActive () {
+			const path        = this.$route.fullPath
+			let active        = false
+			const routeParent = this.$route.meta ? this.$route.meta.parent : undefined
 
-      this.header.items.forEach((item) => {
+			this.header.items.forEach((item) => {
 
-        // If item is group
-        if (item.submenu) {
-          if (this.checkGrpChildrenActive(item)) { active = true }
-        } else if (item.url) {
-          if (path === item.url || routeParent === item.slug) { active = true }
-        }
-      })
+				// If item is group
+				if (item.submenu) {
+					if (this.checkGrpChildrenActive(item)) { active = true }
+				} else if (item.url) {
+					if (path === item.url || routeParent === item.slug) { active = true }
+				}
+			})
 
-      return active
-    }
-  },
-  watch: {
-    showChildren () {
-      this.$nextTick(() => {
-        if (this.showChildren) {
-          const dd = this.$refs.headerDropdown
-          if (dd.getBoundingClientRect().left + dd.offsetWidth - (window.innerWidth - 16) >= 0) {
-            this.dropRight = true
-          }
-        }
-      })
-    }
-  },
-  methods: {
-    checkGrpChildrenActive (group) {
+			return active
+		}
+	},
+	watch: {
+		showChildren () {
+			this.$nextTick(() => {
+				if (this.showChildren) {
+					const dd = this.$refs.headerDropdown
+					if (dd.getBoundingClientRect().left + dd.offsetWidth - (window.innerWidth - 16) >= 0) {
+						this.dropRight = true
+					}
+				}
+			})
+		}
+	},
+	methods: {
+		checkGrpChildrenActive (group) {
 
-      const path        = this.$route.fullPath
-      let active        = false
-      const routeParent = this.$route.meta ? this.$route.meta.parent : undefined
+			const path        = this.$route.fullPath
+			let active        = false
+			const routeParent = this.$route.meta ? this.$route.meta.parent : undefined
 
-      if (group.submenu) {
-        group.submenu.forEach((item) => {
-          if ((path === item.url || routeParent === item.slug) && item.slug) active = true
-          else if (item.submenu) { if (this.checkGrpChildrenActive(item)) active = true }
-        })
-      }
+			if (group.submenu) {
+				group.submenu.forEach((item) => {
+					if ((path === item.url || routeParent === item.slug) && item.slug) active = true
+					else if (item.submenu) { if (this.checkGrpChildrenActive(item)) active = true }
+				})
+			}
 
-      return active
-    },
-    hovered (val = true) {
-      this.isHovered = val
-      if (this.openOnHover) {
-        val ? this.showChildren = true : this.showChildren = false
-      }
-    }
-  }
+			return active
+		},
+		hovered (val = true) {
+			this.isHovered = val
+			if (this.openOnHover) {
+				val ? this.showChildren = true : this.showChildren = false
+			}
+		}
+	}
 }
 </script>
 

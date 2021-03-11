@@ -129,138 +129,138 @@
 </template>
 
 <script>
-import mStorage from "@/store/storage.js";
+import mStorage from '@/store/storage.js'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        if (!vm.allowed_pages.includes(to.meta.identity)) {
-          vm.pushReplacement(vm.AppActiveUser.baseUrl);
-        }
-      }
-    });
-  },
-  data() {
-    return {
-      //receipt data list starts here
-      pkey: "revenue-filedownload-list-key",
-      message: "",
-      numbering: 0,
-      currentPage: 1,
-      result_per_page: 20,
-      loading: true,
-      deletebutton: false,
-      pagination: {
-        haspages: false,
-        page: 0,
-        start: 0,
-        end: 0,
-        total: 0,
-        pages: 0,
-        hasNext: false,
-        hasPrevious: false,
-      },
-      selectedRecords: [],
-      search: "",
-      records: [],
-      search_timer: null,
-    };
-  },
-  computed: {
-    selectAll: {
-      get: function () {
-        return this.records
-          ? this.selectedRecords.length == this.records.length
-          : false;
-      },
-      set: function (value) {
-        var selected = [];
+			) {
+				if (!vm.allowed_pages.includes(to.meta.identity)) {
+					vm.pushReplacement(vm.AppActiveUser.baseUrl)
+				}
+			}
+		})
+	},
+	data () {
+		return {
+			//receipt data list starts here
+			pkey: 'revenue-filedownload-list-key',
+			message: '',
+			numbering: 0,
+			currentPage: 1,
+			result_per_page: 20,
+			loading: true,
+			deletebutton: false,
+			pagination: {
+				haspages: false,
+				page: 0,
+				start: 0,
+				end: 0,
+				total: 0,
+				pages: 0,
+				hasNext: false,
+				hasPrevious: false
+			},
+			selectedRecords: [],
+			search: '',
+			records: [],
+			search_timer: null
+		}
+	},
+	computed: {
+		selectAll: {
+			get () {
+				return this.records
+					? this.selectedRecords.length == this.records.length
+					: false
+			},
+			set (value) {
+				const selected = []
 
-        if (value) {
-          this.records.forEach(function (record) {
-            selected.push(record.account_id_from);
-          });
-        }
-        this.selectedRecords = selected;
-      },
-    },
-    sortedRecords: function () {
-      try {
-        return this.filterObj(this.records, this.search).sort((a, b) => {
-          var modifier = 1;
-          if (this.currentSortDir === "desc") modifier = -1;
-          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-          return 0;
-        });
-      } catch (error) {
-        console.warn(error);
-      }
-    },
-  },
-  mounted: function () {
-    this.currentPage = Number(mStorage.get(`${this.pkey}page`)) || 1;
-    this.getData();
-  },
-  watch: {
-    currentPage: function () {
-      mStorage.set(`${this.pkey}page`, this.currentPage);
-      this.getData();
-    },
-    result_per_page: function () {
-      this.getData(true);
-    },
-    search: function (newVal, oldVal) {
-      this.startSearch(newVal, oldVal);
-    },
-    pagination: function () {
-      this.numbering = this.pagination.start;
-    },
-  },
-  methods: {
-    startSearch: function (newVal, oldVal) {
-      if (this.search_timer) {
-        clearTimeout(this.search_timer);
-      }
-      const vm = this;
-      this.search_timer = setTimeout(function () {
-        vm.getData();
-      }, 800);
-    },
-    download: function (file) {
-      var link = file.link.replace("../api/", "");
-      var win = window.open(this.site_link + "/" + link, "_blank");
-      win.focus();
-    },
-    //reconciliation starts here
-    getData: function (scroll) {
-      var user = this.AppActiveUser;
-      this.loading = true;
-      this.post("/runningjobs/files", {
-        page: this.currentPage,
-        result_per_page: this.result_per_page,
-        search: this.search,
-      })
-        .then((response) => {
-          this.records = [];
-          this.loading = false;
-          this.message = response.data.message;
-          this.pagination = response.data.pagination;
-          if (response.data.success) {
-            this.records = response.data.files;
-          }
-        })
-        .catch((error) => {
-          this.hasData = false;
-          this.loading = false;
-          console.log(error);
-        });
-    },
-  },
-};
+				if (value) {
+					this.records.forEach(function (record) {
+						selected.push(record.account_id_from)
+					})
+				}
+				this.selectedRecords = selected
+			}
+		},
+		sortedRecords () {
+			try {
+				return this.filterObj(this.records, this.search).sort((a, b) => {
+					let modifier = 1
+					if (this.currentSortDir === 'desc') modifier = -1
+					if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
+					if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
+					return 0
+				})
+			} catch (error) {
+				console.warn(error)
+			}
+		}
+	},
+	mounted () {
+		this.currentPage = Number(mStorage.get(`${this.pkey}page`)) || 1
+		this.getData()
+	},
+	watch: {
+		currentPage () {
+			mStorage.set(`${this.pkey}page`, this.currentPage)
+			this.getData()
+		},
+		result_per_page () {
+			this.getData(true)
+		},
+		search (newVal, oldVal) {
+			this.startSearch(newVal, oldVal)
+		},
+		pagination () {
+			this.numbering = this.pagination.start
+		}
+	},
+	methods: {
+		startSearch (newVal, oldVal) {
+			if (this.search_timer) {
+				clearTimeout(this.search_timer)
+			}
+			const vm = this
+			this.search_timer = setTimeout(function () {
+				vm.getData()
+			}, 800)
+		},
+		download (file) {
+			const link = file.link.replace('../omc-api/', '')
+			const win = window.open(`${this.site_link  }/${  link}`, '_blank')
+			win.focus()
+		},
+		//reconciliation starts here
+		getData (scroll) {
+			const user = this.AppActiveUser
+			this.loading = true
+			this.post('/runningjobs/files', {
+				page: this.currentPage,
+				result_per_page: this.result_per_page,
+				search: this.search
+			})
+				.then((response) => {
+					this.records = []
+					this.loading = false
+					this.message = response.data.message
+					this.pagination = response.data.pagination
+					if (response.data.success) {
+						this.records = response.data.files
+					}
+				})
+				.catch((error) => {
+					this.hasData = false
+					this.loading = false
+					console.log(error)
+				})
+		}
+	}
+}
 </script>

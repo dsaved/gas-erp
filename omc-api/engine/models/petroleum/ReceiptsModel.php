@@ -234,18 +234,17 @@ class ReceiptsModel extends BaseModel
     {
         $response = array();
         $omc_id = $this->http->json->id;
-        $done = $this->db->query("UPDATE omc_receipt SET omc_receipt.status='' WHERE omc_receipt.omc_id = {$omc_id}");
+        $done = $this->db->query("UPDATE omc_receipt SET omc_receipt.status='' WHERE omc_receipt.omc_id = {$omc_id};UPDATE omc SET reconciled='0' WHERE id = {$omc_id};UPDATE statements SET receipt_status='' WHERE account_id IN (IFNULL((SELECT account_id FROM audits_logs_omc WHERE `omc_id`={$omc_id}), 0));");
         if ($done) {
-            $this->db->query("UPDATE statements SET receipt_status='' WHERE account_id IN (SELECT account_id FROM audits_logs_omc WHERE `omc_id`={$omc_id});DELETE FROM audits_logs_omc WHERE `omc_id` = {$omc_id}");
-            $this->db->query("UPDATE omc SET reconciled='0' WHERE id = {$omc_id}");
-            $this->paging->table("omc");
-            $this->paging->result_per_page(1);
-            $this->paging->pageNum(1);
-            $this->paging->condition("WHERE `id`={$omc_id} Order By `name`");
-            $this->paging->execute();
-            $this->paging->reset();
+            $paging = new Pagination();
+            $paging->table("omc");
+            $paging->result_per_page(1);
+            $paging->pageNum(1);
+            $paging->condition("WHERE `id`={$omc_id} Order By `name`");
+            $paging->execute();
+            $paging->reset();
             
-            $result = $this->paging->results();
+            $result = $paging->results();
             if (!empty($result)) {
                 $response["omc"] = $result[0];
             } 

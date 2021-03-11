@@ -86,111 +86,111 @@ import mStorage from '@/store/storage.js'
 import router from '../../router'
 
 export default {
-  data() {
-    return {
-      identification: "",
-      access: "",
-      response: "",
-      backgroundLoading: "primary",
-      colorLoading: "#fff",
-      loading: false,
-    };
-  },
-  watch: {
-    loading() {
-      if (this.loading) {
-        this.$vs.loading({
-          background: this.backgroundLoading,
-          color: this.colorLoading,
-          container: "#button-with-loading",
-          scale: 0.45,
-        });
-      } else {
-        this.$vs.loading.close("#button-with-loading > .con-vs-loading");
-      }
-    },
-  },
-  computed: {},
-  methods: {
-    login() {
-      if (!this.loading) {
-        this.response = "";
-        if (!this.hasdata(this.identification)) {
-          setTimeout(() => {
-            this.response =
-              "<span style='color:red'>Please provide user Identity</span>";
-          }, 200);
-          return false;
-        }
+	data () {
+		return {
+			identification: '',
+			access: '',
+			response: '',
+			backgroundLoading: 'primary',
+			colorLoading: '#fff',
+			loading: false
+		}
+	},
+	watch: {
+		loading () {
+			if (this.loading) {
+				this.$vs.loading({
+					background: this.backgroundLoading,
+					color: this.colorLoading,
+					container: '#button-with-loading',
+					scale: 0.45
+				})
+			} else {
+				this.$vs.loading.close('#button-with-loading > .con-vs-loading')
+			}
+		}
+	},
+	computed: {},
+	methods: {
+		login () {
+			if (!this.loading) {
+				this.response = ''
+				if (!this.hasdata(this.identification)) {
+					setTimeout(() => {
+						this.response =
+              '<span style=\'color:red\'>Please provide user Identity</span>'
+					}, 200)
+					return false
+				}
 
-        if (!this.hasdata(this.access)) {
-          setTimeout(() => {
-            this.response =
-              "<span style='color:red'>Password Is Required</span>";
-          }, 200);
-          return false;
-        }
-        this.loading = true;
-        this.post_no_secure("/userauth/login", {
-            user: this.identification,
-            password: this.access
-          })
-          .then((result) => {
-            console.log(result.data);
-            this.loading = false;
-            if (result.data.success == true) {
-              if (this.hasdata(result.data.authorization_token)) {
-                mStorage.set(
-                  this.storage_key + "gas_authorization",
-                  result.data.authorization_token
-                );
-              }
-              var user = result.data.user;
-              this.response =
-                "<span style='color:green'>" +
-                result.data.message +
-                " " +
-                user.username +
-                "</span>";
+				if (!this.hasdata(this.access)) {
+					setTimeout(() => {
+						this.response =
+              '<span style=\'color:red\'>Password Is Required</span>'
+					}, 200)
+					return false
+				}
+				this.loading = true
+				this.post_no_secure('/userauth/login', {
+					user: this.identification,
+					password: this.access
+				})
+					.then((result) => {
+						console.log(result.data)
+						this.loading = false
+						if (result.data.success == true) {
+							if (this.hasdata(result.data.authorization_token)) {
+								mStorage.set(
+									`${this.storage_key  }gas_authorization`,
+									result.data.authorization_token
+								)
+							}
+							const user = result.data.user
+							this.response =
+                `<span style='color:green'>${ 
+                	result.data.message 
+                } ${ 
+                	user.username 
+                }</span>`
 
-                const userData = {
-                  id:user.id,
-                  name: user.fullname,
-                  username: user.username,
-                  email: user.email,
-                  photo: user.photo,
-                  access_level: user.access_level,
-                  baseUrl: user.baseurl,
-                  types: result.data.types,
-                  permissions: user.permissions,
-                  pages: user.pages,
-                }
-              this.setUser(userData);
-              setTimeout(() => {
-                router.replace(userData.baseUrl);
-              }, 1000);
-            } else {
-              this.response =
-                "<span style='color:red'>" + result.data.message + "</span>";
-            }
-          })
-          .catch((error) => {
-            var e;
-            if (error.response) {
-              e = error.response.data;
-            } else if (error.request) {
-              // The request was made but no response was received
-              e = { success: false, message: error.request };
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              e = { success: false, message: error.message };
-            }
-            this.loading = false;
-            this.response = "<span style='color:red'>" + e.message + "</span>";
-            console.log(error);
-          });
-      }
-    },
-  },
-};
+							const userData = {
+								id:user.id,
+								name: user.fullname,
+								username: user.username,
+								email: user.email,
+								photo: user.photo,
+								access_level: user.access_level,
+								baseUrl: user.baseurl,
+								types: result.data.types,
+								permissions: user.permissions,
+								pages: user.pages
+							}
+							this.setUser(userData)
+							setTimeout(() => {
+								router.replace(userData.baseUrl)
+							}, 1000)
+						} else {
+							this.response =
+                `<span style='color:red'>${  result.data.message  }</span>`
+						}
+					})
+					.catch((error) => {
+						let e
+						if (error.response) {
+							e = error.response.data
+						} else if (error.request) {
+							// The request was made but no response was received
+							e = { success: false, message: error.request }
+						} else {
+							// Something happened in setting up the request that triggered an Error
+							e = { success: false, message: error.message }
+						}
+						this.loading = false
+						this.response = `<span style='color:red'>${  e.message  }</span>`
+						console.log(error)
+					})
+			}
+		}
+	}
+}
 </script>

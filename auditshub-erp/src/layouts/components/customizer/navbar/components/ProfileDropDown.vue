@@ -36,18 +36,18 @@
 
 <script>
 export default {
-  computed: {
-    activeUserInfo () {
-      return this.$store.state.AppActiveUser
-    }
-  },
-  methods: {
-    logout () {
-      localStorage.removeItem('userInfo')
+	computed: {
+		activeUserInfo () {
+			return this.$store.state.AppActiveUser
+		}
+	},
+	methods: {
+		logout () {
+			localStorage.removeItem('userInfo')
 
-      // This is just for demo Purpose. If user clicks on logout -> redirect
-      this.$router.push('/pages/login').catch(() => {})
-    }
-  }
+			// This is just for demo Purpose. If user clicks on logout -> redirect
+			this.$router.push('/pages/login').catch(() => {})
+		}
+	}
 }
 </script>

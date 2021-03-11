@@ -20,11 +20,11 @@
 
 <script>
 export default {
-  name: 'vx-input-group',
-  props: {
-    prependClasses : { type: String },
-    appendClasses  : { type: String }
-  }
+	name: 'vx-input-group',
+	props: {
+		prependClasses : { type: String },
+		appendClasses  : { type: String }
+	}
 }
 </script>
 

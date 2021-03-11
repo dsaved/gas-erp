@@ -605,625 +605,625 @@
 
 <script>
 // Import Swal
-import Swal from "sweetalert2";
-import mStorage from "@/store/storage.js";
-import Datepicker from "vuejs-datepicker";
+import Swal from 'sweetalert2'
+import mStorage from '@/store/storage.js'
+import Datepicker from 'vuejs-datepicker'
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (
-        to.meta &&
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-      ) {
-        vm.pushReplacement(vm.AppActiveUser.baseUrl);
-      }
-    });
-  },
-  props: {
-    accountid: {
-      type: String / Number,
-      default: 0,
-    },
-    stmid: {
-      type: String / Number,
-      default: 0,
-    },
-    page: {
-      type: String / Number,
-      default: 0,
-    },
-  },
-  components: {
-    Datepicker,
-  },
-  data() {
-    return {
-      record_not_found: false,
-      record_found: false,
-      reviews: [],
-      record: {
-        type: Object,
-        default: function () {
-          return {};
-        },
-      },
-      //transaction record list starts here
-      currentPage: 1,
-      result_per_page: 1,
-      loading: true,
-      pagination: {
-        haspages: false,
-        page: 0,
-        start: 0,
-        end: 0,
-        total: 0,
-        pages: 0,
-        hasNext: false,
-        hasPrevious: false,
-      },
-      isbog: false,
-      review_type: null,
-      reference_no: "", //BTA / Warrant / Advice (Reference No)
-      date: "",
-      comments: "",
-      account_name: "",
-      account_number: "",
-      user_id: 0,
-      responseID: null,
-      file: "",
-      canshowBtn: false,
-      isEdited: false,
-      imageuploading: false, //only for file upload
-      progress_width: 0, //only for file upload
-      error: false, //only for file upload
-      responded: false,
-      //bog review section
-      review_type_bog: null,
-      reference_no_bog: "", //BTA / Warrant / Advice (Reference No)
-      date_bog: "",
-      comments_bog: "",
-      account_name_bog: "",
-      account_number_bog: "",
-      canshowBtn_bog: false,
-      isEdited_bog: false,
-      responseID_bog: null,
-      file_bog: "",
-      imageuploading_bog: false, //only for file upload
-      progress_width_bog: 0, //only for file upload
-      error_bog: false, //only for file upload
-      responded_bog: false,
-    };
-  },
-  computed: {
-    showRemoveImage: function () {
-      return this.hasdata(this.file);
-    },
-    showRemoveImage_bog: function () {
-      return this.hasdata(this.file_bog);
-    },
-  },
-  created() {
-    this.isbog = this.AppActiveUser.types[1] == "organization" ? true : false;
-  },
-  mounted: function () {
-    if (this.page !== 0) {
-      this.currentPage = this.page;
-    } else {
-      this.getData();
-    }
-  },
-  watch: {
-    reviews: function (newVal, oldVal) {
-      this.currentUserId = this.AppActiveUser.id;
-      const indexORG = this.reviews.findIndex((el) => el.reviewedby === "org");
-      if (indexORG > -1) {
-        this.canshowBtn = true;
-        this.responded = true;
-        this.isEdited = true;
-        var found = this.reviews[indexORG];
-        this.review_type = found["type"];
-        this.responseID = found["id"];
-        this.reference_no = found["reference_no"];
-        this.date = found["date"];
-        this.comments = found["comment"];
-        this.user_id = found["user_id"];
-        this.account_name = found["account_name"];
-        this.account_number = found["account_number"];
-        this.file = found["file"];
-      }
-      const indexBOG = this.reviews.findIndex((el) => el.reviewedby === "bog");
-      if (indexBOG > -1) {
-        this.canshowBtn_bog = true;
-        this.responded_bog = true;
-        this.isEdited_bog = true;
-        var found = this.reviews[indexBOG];
-        this.review_type_bog = found["type"];
-        this.responseID_bog = found["id"];
-        this.reference_no_bog = found["reference_no"];
-        this.date_bog = found["date"];
-        this.comments_bog = found["comment"];
-        this.account_name_bog = found["account_name"];
-        this.account_number_bog = found["account_number"];
-        this.file_bog = found["file"];
-      }
-    },
-    currentPage: function () {
-      this.resetData();
-      this.getData();
-    },
-  },
-  methods: {
-    isDate: function (date) {
-      return null != date && date != "" && date != "0000-00-00";
-    },
-    resetData: function () {
-      this.canshowBtn = false;
-      this.responded = false;
-      this.isEdited = false;
-      this.canshowBtn_bog = false;
-      this.responded_bog = false;
-      this.isEdited_bog = false;
-      this.reference_no = "";
-      this.review_type = null;
-      this.review_type_bog = null;
-      this.date = "";
-      this.comments = "";
-      this.account_name = "";
-      this.account_number = "";
-      this.file = "";
-      this.reference_no_bog = "";
-      this.date_bog = "";
-      this.comments_bog = "";
-      this.account_name_bog = "";
-      this.account_number_bog = "";
-      this.file_bog = "";
-    },
-    download: function (file) {
-      var win = window.open(this.site_link + "/" + file, "_blank");
-      win.focus();
-    },
-    accountNumbers: function (account) {
-      var acnts = ``;
-      if (this.hasdata(account.acc_num1) && this.hasdata(account.acc_num2)) {
-        acnts += account.acc_num1 + ` | ` + account.acc_num1;
-      } else if (this.hasdata(account.acc_num1)) {
-        acnts += account.acc_num1;
-      } else if (this.hasdata(account.acc_num2)) {
-        acnts += account.acc_num2;
-      }
-      if (account.status == "Inactive") {
-        acnts += ` - <span class="text-danger">Inactive</span> `;
-      } else {
-        acnts += ` - <span class="text-primary">Active</span> `;
-      }
-      return acnts;
-    },
-    getData: function (scroll) {
-      var user = this.AppActiveUser;
-      var isbog = user.types[1] == "organization" ? "true" : "false";
-      this.showLoading("getting transaction infomation");
-      this.post("/unauthorized/response_transactions/", {
-        page: this.currentPage,
-        result_per_page: this.result_per_page,
-        account_id: this.accountid,
-        access_type: user.access_level,
-        user_id: user.id,
-        search: this.search,
-        isbog: isbog,
-        stmid: this.stmid,
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.record = [];
-          this.closeLoading();
-          this.message = response.data.message;
-          this.pagination = response.data.pagination;
-          if (response.data.success) {
-            this.record = response.data.transactions[0];
-            this.reviews = this.record.reviews;
-            if (this.record.statement_id !== this.stmid) {
-              this.$router.replace(
-                `/revenue/responses/${this.accountid}/${this.record.statement_id}/${this.pagination.page}`
-              );
-            }
-            this.record_found = true;
-          } else {
-            this.record_not_found = true;
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          console.log(error);
-        });
-    },
-    submitResponse: function () {
-      if (!this.hasdata(this.review_type)) {
-        this.$vs.notify({
-          title: "Error!!!",
-          text: `Please select response type`,
-          sticky: true,
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	props: {
+		accountid: {
+			type: String / Number,
+			default: 0
+		},
+		stmid: {
+			type: String / Number,
+			default: 0
+		},
+		page: {
+			type: String / Number,
+			default: 0
+		}
+	},
+	components: {
+		Datepicker
+	},
+	data () {
+		return {
+			record_not_found: false,
+			record_found: false,
+			reviews: [],
+			record: {
+				type: Object,
+				default () {
+					return {}
+				}
+			},
+			//transaction record list starts here
+			currentPage: 1,
+			result_per_page: 1,
+			loading: true,
+			pagination: {
+				haspages: false,
+				page: 0,
+				start: 0,
+				end: 0,
+				total: 0,
+				pages: 0,
+				hasNext: false,
+				hasPrevious: false
+			},
+			isbog: false,
+			review_type: null,
+			reference_no: '', //BTA / Warrant / Advice (Reference No)
+			date: '',
+			comments: '',
+			account_name: '',
+			account_number: '',
+			user_id: 0,
+			responseID: null,
+			file: '',
+			canshowBtn: false,
+			isEdited: false,
+			imageuploading: false, //only for file upload
+			progress_width: 0, //only for file upload
+			error: false, //only for file upload
+			responded: false,
+			//bog review section
+			review_type_bog: null,
+			reference_no_bog: '', //BTA / Warrant / Advice (Reference No)
+			date_bog: '',
+			comments_bog: '',
+			account_name_bog: '',
+			account_number_bog: '',
+			canshowBtn_bog: false,
+			isEdited_bog: false,
+			responseID_bog: null,
+			file_bog: '',
+			imageuploading_bog: false, //only for file upload
+			progress_width_bog: 0, //only for file upload
+			error_bog: false, //only for file upload
+			responded_bog: false
+		}
+	},
+	computed: {
+		showRemoveImage () {
+			return this.hasdata(this.file)
+		},
+		showRemoveImage_bog () {
+			return this.hasdata(this.file_bog)
+		}
+	},
+	created () {
+		this.isbog = this.AppActiveUser.types[1] == 'organization'
+	},
+	mounted () {
+		if (this.page !== 0) {
+			this.currentPage = this.page
+		} else {
+			this.getData()
+		}
+	},
+	watch: {
+		reviews (newVal, oldVal) {
+			this.currentUserId = this.AppActiveUser.id
+			const indexORG = this.reviews.findIndex((el) => el.reviewedby === 'org')
+			if (indexORG > -1) {
+				this.canshowBtn = true
+				this.responded = true
+				this.isEdited = true
+				var found = this.reviews[indexORG]
+				this.review_type = found['type']
+				this.responseID = found['id']
+				this.reference_no = found['reference_no']
+				this.date = found['date']
+				this.comments = found['comment']
+				this.user_id = found['user_id']
+				this.account_name = found['account_name']
+				this.account_number = found['account_number']
+				this.file = found['file']
+			}
+			const indexBOG = this.reviews.findIndex((el) => el.reviewedby === 'bog')
+			if (indexBOG > -1) {
+				this.canshowBtn_bog = true
+				this.responded_bog = true
+				this.isEdited_bog = true
+				var found = this.reviews[indexBOG]
+				this.review_type_bog = found['type']
+				this.responseID_bog = found['id']
+				this.reference_no_bog = found['reference_no']
+				this.date_bog = found['date']
+				this.comments_bog = found['comment']
+				this.account_name_bog = found['account_name']
+				this.account_number_bog = found['account_number']
+				this.file_bog = found['file']
+			}
+		},
+		currentPage () {
+			this.resetData()
+			this.getData()
+		}
+	},
+	methods: {
+		isDate (date) {
+			return null != date && date != '' && date != '0000-00-00'
+		},
+		resetData () {
+			this.canshowBtn = false
+			this.responded = false
+			this.isEdited = false
+			this.canshowBtn_bog = false
+			this.responded_bog = false
+			this.isEdited_bog = false
+			this.reference_no = ''
+			this.review_type = null
+			this.review_type_bog = null
+			this.date = ''
+			this.comments = ''
+			this.account_name = ''
+			this.account_number = ''
+			this.file = ''
+			this.reference_no_bog = ''
+			this.date_bog = ''
+			this.comments_bog = ''
+			this.account_name_bog = ''
+			this.account_number_bog = ''
+			this.file_bog = ''
+		},
+		download (file) {
+			const win = window.open(`${this.site_link  }/${  file}`, '_blank')
+			win.focus()
+		},
+		accountNumbers (account) {
+			let acnts = ''
+			if (this.hasdata(account.acc_num1) && this.hasdata(account.acc_num2)) {
+				acnts += `${account.acc_num1  } | ${  account.acc_num1}`
+			} else if (this.hasdata(account.acc_num1)) {
+				acnts += account.acc_num1
+			} else if (this.hasdata(account.acc_num2)) {
+				acnts += account.acc_num2
+			}
+			if (account.status == 'Inactive') {
+				acnts += ' - <span class="text-danger">Inactive</span> '
+			} else {
+				acnts += ' - <span class="text-primary">Active</span> '
+			}
+			return acnts
+		},
+		getData (scroll) {
+			const user = this.AppActiveUser
+			const isbog = user.types[1] == 'organization' ? 'true' : 'false'
+			this.showLoading('getting transaction infomation')
+			this.post('/unauthorized/response_transactions/', {
+				page: this.currentPage,
+				result_per_page: this.result_per_page,
+				account_id: this.accountid,
+				access_type: user.access_level,
+				user_id: user.id,
+				search: this.search,
+				isbog,
+				stmid: this.stmid
+			})
+				.then((response) => {
+					console.log(response.data)
+					this.record = []
+					this.closeLoading()
+					this.message = response.data.message
+					this.pagination = response.data.pagination
+					if (response.data.success) {
+						this.record = response.data.transactions[0]
+						this.reviews = this.record.reviews
+						if (this.record.statement_id !== this.stmid) {
+							this.$router.replace(
+								`/revenue/responses/${this.accountid}/${this.record.statement_id}/${this.pagination.page}`
+							)
+						}
+						this.record_found = true
+					} else {
+						this.record_not_found = true
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					console.log(error)
+				})
+		},
+		submitResponse () {
+			if (!this.hasdata(this.review_type)) {
+				this.$vs.notify({
+					title: 'Error!!!',
+					text: 'Please select response type',
+					sticky: true,
 
-          color: "danger",
-          duration: null,
-          position: "bottom-left",
-        });
-        return;
-      }
-      if (this.review_type == "Authorized Transfer") {
-        if (!this.hasdata(this.account_name)) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide account name`,
-            sticky: true,
+					color: 'danger',
+					duration: null,
+					position: 'bottom-left'
+				})
+				return
+			}
+			if (this.review_type == 'Authorized Transfer') {
+				if (!this.hasdata(this.account_name)) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide account name',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        if (!this.hasdata(this.account_number)) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide account number`,
-            sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				if (!this.hasdata(this.account_number)) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide account number',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        } else if (this.account_number.indexOf("-") !== -1) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide valid account number`,
-            sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				} else if (this.account_number.indexOf('-') !== -1) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide valid account number',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        if (!this.hasdata(String(this.date))) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide date`,
-            sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				if (!this.hasdata(String(this.date))) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide date',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        this.reference_no = "";
-      } else if (this.review_type == "Reversal") {
-        if (!this.hasdata(this.reference_no)) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide reference number`,
-            sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				this.reference_no = ''
+			} else if (this.review_type == 'Reversal') {
+				if (!this.hasdata(this.reference_no)) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide reference number',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        if (!this.hasdata(String(this.date))) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please select credit date`,
-            sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				if (!this.hasdata(String(this.date))) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please select credit date',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        this.account_name = "";
-        this.account_number = "";
-      } else {
-        this.reference_no = "";
-        this.date = "";
-        this.comments = "";
-        this.account_name = "";
-        this.account_number = "";
-      }
-      var link = "submitresponse";
-      if (this.isEdited) {
-        link = "updateresponse";
-      }
-      this.showLoading("Submiting response, please wait");
-      this.post("/unauthorized/" + link, {
-        id: this.responseID,
-        stmid: this.record.statement_id,
-        file: this.file,
-        account_name: this.account_name,
-        account_number: this.account_number,
-        user_id: this.AppActiveUser.id,
-        account_from: this.accountid,
-        review_type: this.review_type,
-        reference_no: this.reference_no,
-        date: this.date,
-        reviewedby: "org",
-        comments: this.comments,
-      })
-        .then((response) => {
-          console.log(response.data);
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.responded = true;
-            this.canshowBtn = true;
-            this.isEdited = true;
-            this.reviews = response.data.reviews;
-            Swal.fire("Response submited!", response.data.message, "success");
-            this.currentPage++;
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-          console.log(error);
-        });
-    },
-    deleteMedia: function () {
-      this.showLoading("Deleting file, please wait");
-      this.post("/unauthorized/delete_file", {
-        oldfile: this.hasdata(this.file) ? this.file : null,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.file = null;
-            Swal.fire("Removed!", response.data.message, "success");
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          console.log(error);
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-    submitResponse_bog: function () {
-      if (!this.hasdata(this.review_type_bog)) {
-        this.$vs.notify({
-          title: "Error!!!",
-          text: `Please select response type`,
-          sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				this.account_name = ''
+				this.account_number = ''
+			} else {
+				this.reference_no = ''
+				this.date = ''
+				this.comments = ''
+				this.account_name = ''
+				this.account_number = ''
+			}
+			let link = 'submitresponse'
+			if (this.isEdited) {
+				link = 'updateresponse'
+			}
+			this.showLoading('Submiting response, please wait')
+			this.post(`/unauthorized/${  link}`, {
+				id: this.responseID,
+				stmid: this.record.statement_id,
+				file: this.file,
+				account_name: this.account_name,
+				account_number: this.account_number,
+				user_id: this.AppActiveUser.id,
+				account_from: this.accountid,
+				review_type: this.review_type,
+				reference_no: this.reference_no,
+				date: this.date,
+				reviewedby: 'org',
+				comments: this.comments
+			})
+				.then((response) => {
+					console.log(response.data)
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.responded = true
+						this.canshowBtn = true
+						this.isEdited = true
+						this.reviews = response.data.reviews
+						Swal.fire('Response submited!', response.data.message, 'success')
+						this.currentPage++
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+					console.log(error)
+				})
+		},
+		deleteMedia () {
+			this.showLoading('Deleting file, please wait')
+			this.post('/unauthorized/delete_file', {
+				oldfile: this.hasdata(this.file) ? this.file : null
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.file = null
+						Swal.fire('Removed!', response.data.message, 'success')
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					console.log(error)
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		submitResponse_bog () {
+			if (!this.hasdata(this.review_type_bog)) {
+				this.$vs.notify({
+					title: 'Error!!!',
+					text: 'Please select response type',
+					sticky: true,
 
-          color: "danger",
-          duration: null,
-          position: "bottom-left",
-        });
-        return;
-      }
-      if (this.review_type_bog == "Authorized Transfer") {
-        if (!this.hasdata(this.account_name_bog)) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide account name`,
-            sticky: true,
+					color: 'danger',
+					duration: null,
+					position: 'bottom-left'
+				})
+				return
+			}
+			if (this.review_type_bog == 'Authorized Transfer') {
+				if (!this.hasdata(this.account_name_bog)) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide account name',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        if (!this.hasdata(this.account_number_bog)) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide account number`,
-            sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				if (!this.hasdata(this.account_number_bog)) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide account number',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        } else if (this.account_number_bog.indexOf("-") !== -1) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide valid account number`,
-            sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				} else if (this.account_number_bog.indexOf('-') !== -1) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide valid account number',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        if (!this.hasdata(String(this.date_bog))) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide date`,
-            sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				if (!this.hasdata(String(this.date_bog))) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide date',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        this.reference_no_bog = "";
-      } else if (this.review_type_bog == "Reversal") {
-        if (!this.hasdata(this.reference_no_bog)) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please provide reference number`,
-            sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				this.reference_no_bog = ''
+			} else if (this.review_type_bog == 'Reversal') {
+				if (!this.hasdata(this.reference_no_bog)) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please provide reference number',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        if (!this.hasdata(String(this.date_bog))) {
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `Please select credit date`,
-            sticky: true,
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				if (!this.hasdata(String(this.date_bog))) {
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: 'Please select credit date',
+						sticky: true,
 
-            color: "danger",
-            duration: null,
-            position: "bottom-left",
-          });
-          return;
-        }
-        this.account_name_bog = "";
-        this.account_number_bog = "";
-      } else {
-        this.reference_no_bog = "";
-        this.date_bog = "";
-        this.comments_bog = "";
-        this.account_name_bog = "";
-        this.account_number_bog = "";
-      }
-      var link = "submitresponse";
-      if (this.isEdited_bog) {
-        link = "updateresponse";
-      }
-      this.showLoading("Submiting response, please wait");
-      this.post("/unauthorized/" + link, {
-        id: this.responseID_bog,
-        stmid: this.record.statement_id,
-        file: this.file_bog,
-        account_name: this.account_name_bog,
-        account_number: this.account_number_bog,
-        user_id: this.AppActiveUser.id,
-        account_from: this.accountid,
-        review_type: this.review_type_bog,
-        reference_no: this.reference_no_bog,
-        date: this.date_bog,
-        reviewedby: "bog",
-        comments: this.comments_bog,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.responded_bog = true;
-            this.canshowBtn_bog = true;
-            this.isEdited_bog = true;
-            this.reviews = response.data.reviews;
-            Swal.fire("Response submited!", response.data.message, "success");
-            this.currentPage++;
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-          console.log(error);
-        });
-    },
-    uploadCompleted: function (data) {
-      if (data.success == true) {
-        this.file = data.relative;
-        Swal.fire("Uploaded!", data.message, "success");
-      } else {
-        Swal.fire("Failed!", data.message, "error");
-      }
-    },
-    uploadCompleted_bog: function (data) {
-      if (data.success == true) {
-        this.file_bog = data.relative;
-        Swal.fire("Uploaded!", data.message, "success");
-      } else {
-        Swal.fire("Failed!", data.message, "error");
-      }
-    },
-    deleteMedia_bog: function () {
-      this.showLoading("Deleting file, please wait");
-      this.post("/unauthorized/delete_file", {
-        oldfile: this.hasdata(this.file_bog) ? this.file_bog : null,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            this.file = null;
-            Swal.fire("Removed!", response.data.message, "success");
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          console.log(error);
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-    sendtobogNow: function () {
-      this.showLoading("Sendong infraction to BOG, please wait");
-      this.post("/unauthorized/send_to_bog", {
-        stmid: this.record.statement_id,
-        acc_id: this.accountid,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            Swal.fire("Completed!", "Infraction sent to BOG.", "success");
-            this.getData();
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-    hideWarn: function () {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "This Infraction won't be available to organizations!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, hide it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.hide([this.record.statement_id]);
-        }
-      });
-    },
-    hide: function (ids) {
-      this.showLoading("Hidding unauthorized Infraction(s), please wait");
-      this.post("/unauthorized/hide", {
-        id: ids,
-      })
-        .then((response) => {
-          this.closeLoading();
-          if (response.data.success == true) {
-            Swal.fire(
-              "Done!",
-              "The unauthorized Inraction  has been hidden",
-              "success"
-            );
-            this.selectedRecords = [];
-            this.getData();
-          } else {
-            Swal.fire("Failed!", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          this.closeLoading();
-          Swal.fire("Failed!", error.message, "error");
-        });
-    },
-  },
-};
+						color: 'danger',
+						duration: null,
+						position: 'bottom-left'
+					})
+					return
+				}
+				this.account_name_bog = ''
+				this.account_number_bog = ''
+			} else {
+				this.reference_no_bog = ''
+				this.date_bog = ''
+				this.comments_bog = ''
+				this.account_name_bog = ''
+				this.account_number_bog = ''
+			}
+			let link = 'submitresponse'
+			if (this.isEdited_bog) {
+				link = 'updateresponse'
+			}
+			this.showLoading('Submiting response, please wait')
+			this.post(`/unauthorized/${  link}`, {
+				id: this.responseID_bog,
+				stmid: this.record.statement_id,
+				file: this.file_bog,
+				account_name: this.account_name_bog,
+				account_number: this.account_number_bog,
+				user_id: this.AppActiveUser.id,
+				account_from: this.accountid,
+				review_type: this.review_type_bog,
+				reference_no: this.reference_no_bog,
+				date: this.date_bog,
+				reviewedby: 'bog',
+				comments: this.comments_bog
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.responded_bog = true
+						this.canshowBtn_bog = true
+						this.isEdited_bog = true
+						this.reviews = response.data.reviews
+						Swal.fire('Response submited!', response.data.message, 'success')
+						this.currentPage++
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+					console.log(error)
+				})
+		},
+		uploadCompleted (data) {
+			if (data.success == true) {
+				this.file = data.relative
+				Swal.fire('Uploaded!', data.message, 'success')
+			} else {
+				Swal.fire('Failed!', data.message, 'error')
+			}
+		},
+		uploadCompleted_bog (data) {
+			if (data.success == true) {
+				this.file_bog = data.relative
+				Swal.fire('Uploaded!', data.message, 'success')
+			} else {
+				Swal.fire('Failed!', data.message, 'error')
+			}
+		},
+		deleteMedia_bog () {
+			this.showLoading('Deleting file, please wait')
+			this.post('/unauthorized/delete_file', {
+				oldfile: this.hasdata(this.file_bog) ? this.file_bog : null
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						this.file = null
+						Swal.fire('Removed!', response.data.message, 'success')
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					console.log(error)
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		sendtobogNow () {
+			this.showLoading('Sendong infraction to BOG, please wait')
+			this.post('/unauthorized/send_to_bog', {
+				stmid: this.record.statement_id,
+				acc_id: this.accountid
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						Swal.fire('Completed!', 'Infraction sent to BOG.', 'success')
+						this.getData()
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		hideWarn () {
+			Swal.fire({
+				title: 'Are you sure?',
+				text: 'This Infraction won\'t be available to organizations!',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, hide it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					this.hide([this.record.statement_id])
+				}
+			})
+		},
+		hide (ids) {
+			this.showLoading('Hidding unauthorized Infraction(s), please wait')
+			this.post('/unauthorized/hide', {
+				id: ids
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success == true) {
+						Swal.fire(
+							'Done!',
+							'The unauthorized Inraction  has been hidden',
+							'success'
+						)
+						this.selectedRecords = []
+						this.getData()
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		}
+	}
+}
 </script>
 
 <style lang="scss">
