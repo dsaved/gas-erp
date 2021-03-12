@@ -1,0 +1,291 @@
+<template>
+  <vx-card title="Banks">
+    <p></p>
+    <div class="vs-component vs-con-table stripe vs-table-primary">
+      <header class="header-table vs-table--header my-3">
+        <vs-spacer />
+        <div
+          class="flex flex-wrap-reverse items-center data-list-btn-container"
+        >
+          <vs-input
+            id="text"
+            :clearable="false"
+            type="text"
+            class="mx-1"
+            v-model="search"
+            placeholder="Search banks , date"
+          />
+          <v-select
+            placeholder="Result count"
+            :options="[
+              '10',
+              '20',
+              '30',
+              '40',
+              '50',
+              '60',
+              '70',
+              '80',
+              '90',
+              '100',
+            ]"
+            v-model="result_per_page"
+          />
+        </div>
+      </header>
+      <div class="con-tablex vs-table--content">
+        <div class="vs-con-tbody vs-table--tbody">
+          <table class="vs-table vs-table--tbody-table">
+            <thead class="vs-table--thead">
+              <tr>
+                <th scope="col" class="td-check">
+                  <vs-checkbox v-model="selectAll">#</vs-checkbox>
+                </th>
+                <th scope="col">Date</th>
+                <th scope="col">Bank</th>
+                <th scope="col">No. Of Receipts</th>
+                <th scope="col" class="text-right">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(record, index) in sortedRecords"
+                :key="index"
+                v-on:click="linkto('/petroleum/omc/unreconciled/' + record.bankid + '/'+record.date)"
+                class="tr-values vs-table--tr tr-table-state-null selected"
+              >
+                <td scope="row" @click.stop="">
+                  <vs-checkbox
+                    v-model="selectedRecords"
+                    :vs-value="record.id"
+                    >{{ number(index) }}</vs-checkbox
+                  >
+                </td>
+                <td>
+                  {{ record.date }}
+                </td>
+                <td>
+                  {{ record.bank }}
+                </td>
+                <td>
+                  {{ record.total }}
+                </td>
+                <td class="text-right">
+                  {{ record.amount }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 class="text-center" v-show="message">{{ message }}</h3>
+        <div v-show="loading">
+          <div style="margin-top: 1.5rem" class="loading">
+            <div class="effect-1 effects"></div>
+            <div class="effect-2 effects"></div>
+            <div class="effect-3 effects"></div>
+          </div>
+        </div>
+        <!---->
+        <div class="con-pagination-table vs-table--pagination">
+          <div
+            class="vs-row"
+            style="justify-content: space-between; display: flex; width: 100%"
+          >
+            <div
+              class="vs-col vs-pagination--mb vs-xs-12 vs-sm-12 vs-lg-6"
+              style="
+                justify-content: flex-start;
+                display: flex;
+                align-items: center;
+                margin-left: 0%;
+                width: 100%;
+              "
+            ></div>
+            <div
+              class="vs-col vs-pagination--mb vs-xs-12 vs-sm-12 vs-lg-12"
+              style="
+                justify-content: flex-end;
+                display: flex;
+                align-items: center;
+                margin-left: 0%;
+                width: 100%;
+              "
+            >
+              <div class="text-muted">
+                Page {{ pagination.page }} of {{ pagination.pages }}.
+                {{ pagination.start }} - {{ pagination.end }} of
+                {{ pagination.total }} Results &nbsp;
+              </div>
+              <div class="con-vs-pagination vs-pagination-primary">
+                <vs-pagination
+                  color="danger"
+                  v-if="pagination.haspages"
+                  v-model="currentPage"
+                  :total="pagination.pages"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </vx-card>
+</template>
+
+<script>
+// Import Swal
+import Swal from 'sweetalert2'
+import mStorage from '@/store/storage.js'
+
+export default {
+	beforeRouteEnter (to, from, next) {
+		next((vm) => {
+			if (
+				to.meta &&
+        to.meta.identity &&
+        !vm.AppActiveUser.pages.includes(to.meta.identity)
+			) {
+				vm.pushReplacement(vm.AppActiveUser.baseUrl)
+			}
+		})
+	},
+	data () {
+		return {
+			pkey: 'omc-national-summary-unreconciled-list-page-key',
+			message: '',
+			numbering: 0,
+			currentPage: 1,
+			result_per_page: 20,
+			loading: true,
+			deletebutton: false,
+			pagination: {
+				haspages: false,
+				page: 0,
+				start: 0,
+				end: 0,
+				total: 0,
+				pages: 0,
+				hasNext: false,
+				hasPrevious: false
+			},
+			selectedRecords: [],
+			search: '',
+			records: [],
+			search_timer: null
+		}
+	},
+	computed: {
+		selectAll: {
+			get () {
+				return this.records
+					? this.selectedRecords.length == this.records.length
+					: false
+			},
+			set (value) {
+				const selected = []
+
+				if (value) {
+					this.records.forEach(function (record) {
+						selected.push(record.id)
+					})
+				}
+				this.selectedRecords = selected
+			}
+		},
+		sortedRecords () {
+			try {
+				return this.filterObj(this.records, this.search).sort((a, b) => {
+					let modifier = 1
+					if (this.currentSortDir === 'desc') modifier = -1
+					if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
+					if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
+					return 0
+				})
+			} catch (error) {
+				console.warn(error)
+			}
+		}
+	},
+	mounted () {
+		this.currentPage = Number(mStorage.get(`${this.pkey}page`)) || 1
+		this.getData()
+	},
+	watch: {
+		currentPage () {
+			mStorage.set(`${this.pkey}page`, this.currentPage)
+			this.getData()
+		},
+		result_per_page () {
+			this.getData()
+		},
+		search (newVal, oldVal) {
+			this.startSearch(newVal, oldVal)
+		},
+		pagination () {
+			this.numbering = this.pagination.start
+		},
+		selectedRecords (newVal, oldVal) {
+			if (this.selectedRecords.length > 0) {
+				this.deletebutton = true
+			} else {
+				this.deletebutton = false
+			}
+		}
+	},
+	methods: {
+		number (num) {
+			return this.numbering + num
+		},
+		startSearch (newVal, oldVal) {
+			if (this.search_timer) {
+				clearTimeout(this.search_timer)
+			}
+			const vm = this
+			this.search_timer = setTimeout(function () {
+				vm.getData()
+			}, 800)
+		},
+		getData () {
+			this.loading = true
+			this.post('/nationalsummary/unreconciled', {
+				result_per_page: this.result_per_page,
+				page: this.currentPage,
+				search: this.search
+			})
+				.then((response) => {
+					this.loading = false
+					console.log(response.data)
+					if (response.data.success == true) {
+						this.message = ''
+						this.records = response.data.banks
+					} else {
+						this.message = response.data.message
+						this.records = []
+						this.$vs.notify({
+							title: 'Error!!!',
+							text: `${response.data.message}`,
+							sticky: true,
+							border: 'danger',
+							color: 'dark',
+							duration: null,
+							position: 'bottom-left'
+						})
+					}
+					this.pagination = response.data.pagination
+				})
+				.catch((error) => {
+					this.loading = false
+					this.$vs.notify({
+						title: 'Error!!!',
+						text: `${error.message}`,
+						sticky: true,
+						border: 'danger',
+						color: 'dark',
+						duration: null,
+						position: 'bottom-left'
+					})
+				})
+		},
+	}
+}
+</script>

@@ -234,7 +234,7 @@ class ReceiptsModel extends BaseModel
     {
         $response = array();
         $omc_id = $this->http->json->id;
-        $done = $this->db->query("UPDATE omc_receipt SET omc_receipt.status='' WHERE omc_receipt.omc_id = {$omc_id};UPDATE omc SET reconciled='0' WHERE id = {$omc_id};UPDATE statements SET receipt_status='' WHERE account_id IN (IFNULL((SELECT account_id FROM audits_logs_omc WHERE `omc_id`={$omc_id}), 0));");
+        $done = $this->db->query("UPDATE omc_receipt SET omc_receipt.status='' WHERE omc_receipt.omc_id = {$omc_id};UPDATE omc SET reconciled='0' WHERE id = {$omc_id};UPDATE statements SET receipt_status='' WHERE account_id IN (IFNULL((SELECT account_id FROM audits_logs_omc WHERE `omc_id`={$omc_id}), 0));DELETE FROM audits_logs_omc WHERE omc_id = {$omc_id};");
         if ($done) {
             $paging = new Pagination();
             $paging->table("omc");

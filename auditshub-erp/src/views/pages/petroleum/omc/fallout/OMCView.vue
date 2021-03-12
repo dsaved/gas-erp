@@ -563,6 +563,9 @@ export default {
           small: {
             fontSize: 8,
           },
+          paragraphtext: {
+            fontSize: 10,
+          },
         },
         defaultStyle: {
           fontSize: 12,
@@ -576,9 +579,23 @@ export default {
         style: "header",
       });
 
+      docDefinition.content.push({
+        text: "AUDIT OBSERVATIONS",
+        style: "subheader",
+      });
+      docDefinition.content.push({
+        text:
+          "Our reconciliation of your receipts against the Bank statements revealed fall out of receipts not found in the Bank statement",
+      });
+
+      //ADD LINE BREAKE
+      docDefinition.content.push({
+        text: "\n\n",
+      });
+
       // ADD RECEPIT TILE TO DOCUMENT
       docDefinition.content.push({
-        text: "RECEIPTS\n\n",
+        text: "FALL OUT RECEIPTS\n\n",
         style: "header",
       });
 
@@ -644,6 +661,83 @@ export default {
             return rowIndex === 0 ? "#CCCCCC" : null;
           },
         },
+      });
+
+      //ADD LINE BREAKE
+      docDefinition.content.push({
+        text: "\n\n",
+      });
+
+      docDefinition.content.push({
+        text: "OMC Certification",
+        style: "subheader",
+      });
+      docDefinition.content.push({
+        text:
+          "I stand by all the receipts presented and agree to be held liable if any of the receipts is proven Fraudulent or contain duplicates.",
+      });
+      docDefinition.content.push({
+        text: "\n",
+      });
+      docDefinition.content.push({
+        text: "Name: .........................................",
+        style: "paragraphtext",
+      });
+      docDefinition.content.push({
+        text: "\n",
+      });
+      docDefinition.content.push({
+        text: "Designation: .........................................",
+        style: "paragraphtext",
+      });
+      docDefinition.content.push({
+        text: "\n",
+      });
+      docDefinition.content.push({
+        text: "Date: .........................................",
+        style: "paragraphtext",
+      });
+      docDefinition.content.push({
+        text: "\n",
+      });
+      docDefinition.content.push({
+        text: "Signature: .........................................",
+        style: "paragraphtext",
+      });
+      docDefinition.content.push({
+        text: "\n",
+      });
+      docDefinition.content.push({
+        text: "Witness",
+        style: "subheader",
+      });
+      docDefinition.content.push({
+        text: "\n",
+      });
+      docDefinition.content.push({
+        text: "Name: .........................................",
+        style: "paragraphtext",
+      });
+      docDefinition.content.push({
+        text: "\n",
+      });
+      docDefinition.content.push({
+        text: "Designation: .........................................",
+        style: "paragraphtext",
+      });
+      docDefinition.content.push({
+        text: "\n",
+      });
+      docDefinition.content.push({
+        text: "Date: .........................................",
+        style: "paragraphtext",
+      });
+      docDefinition.content.push({
+        text: "\n",
+      });
+      docDefinition.content.push({
+        text: "Signature: .........................................",
+        style: "paragraphtext",
       });
 
       const vm = this;

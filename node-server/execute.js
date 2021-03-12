@@ -470,7 +470,8 @@ exports.reconcileOMC = function(data, callback) {
                         let creadit_date = $found.post_date;
                         let intVal = data.intval;
                         //Transaction found, therefor lock that childs account transaction
-                        var sql = `UPDATE statements SET statements.receipt_status='locked' WHERE statements.id = ${$found.id};`;
+                        var sql = `UPDATE omc_receipt SET omc_receipt.status='done' WHERE omc_receipt.id = ${receipts.id};`;
+                        sql += `UPDATE statements SET statements.receipt_status='locked' WHERE statements.id = ${$found.id};`;
                         sql += "INSERT INTO `audits_logs_omc`( `amount`, `date`, `omc`, `bank`, `bank_id`, `account`, `account_id`, `account_number`, `description`, `credit_amount`, `creadit_date`, `intval`, `omc_id`) ";
                         sql += `VALUES (${omc_amount},'${omc_date}','${omc}','${bank}',${bank_id},'${account}',${account_id},'${account_number}','${description}',${credit_amount},'${creadit_date}',${intVal},${omc_id})`;
                         console.log(sql)
