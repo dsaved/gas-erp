@@ -307,7 +307,6 @@ export default {
 				photo: this.user.photo
 			})
 				.then((response) => {
-					console.log(response.data)
 					this.closeLoading()
 					if (response.data.success == true) {
 						Swal.fire(
@@ -337,7 +336,6 @@ export default {
 				password: this.new_password
 			})
 				.then((response) => {
-					console.log(response.data)
 					this.closeLoading()
 					if (response.data.success == true) {
 						Swal.fire(

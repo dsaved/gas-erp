@@ -584,7 +584,6 @@ export default {
 				search: this.search
 			})
 				.then((response) => {
-					console.log(response.data)
 					this.records = []
 					this.loading = false
 					this.message = response.data.message
@@ -800,7 +799,6 @@ export default {
 				category_group: cat
 			})
 				.then((response) => {
-					console.log(response.data)
 					this.closeLoading()
 					if (response.data.success == true) {
 						this.popupActive = true

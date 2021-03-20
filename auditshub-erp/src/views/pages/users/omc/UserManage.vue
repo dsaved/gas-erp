@@ -415,7 +415,6 @@ export default {
 				role: 0
 			})
 				.then((response) => {
-					console.log(response.data)
 					this.closeLoading()
 					if (response.data.success == true) {
 						Swal.fire(
@@ -460,7 +459,6 @@ export default {
 				role: 0
 			})
 				.then((response) => {
-					console.log(response.data)
 					this.closeLoading()
 					if (response.data.success == true) {
 						Swal.fire('Account Updated!', response.data.message, 'success')

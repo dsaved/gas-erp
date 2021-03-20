@@ -1,0 +1,1550 @@
+REQUEST TIME: 10:43:42+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:43:47+00:00
+POST /gas/omc-api/nationalsummary/unreconciled HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:43:53+00:00
+POST /gas/omc-api/nationalsummary/getsingle_unreconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2018-10-11
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2018-10-11","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:43:58+00:00
+POST /gas/omc-api/nationalsummary/unreconciled HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:44:01+00:00
+POST /gas/omc-api/nationalsummary/getsingle_unreconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:44:09+00:00
+POST /gas/omc-api/nationalsummary/unreconciled HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:44:33+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:46:08+00:00
+POST /gas/omc-api/nationalsummary/unreconciled HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:46:12+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:46:14+00:00
+POST /gas/omc-api/nationalsummary/unreconciled HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:47:50+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:47:56+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-08-26
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-08-26","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:48:00+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:49:10+00:00
+POST /gas/omc-api/nationalsummary/unreconciled HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:49:12+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:49:14+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-08-26
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-08-26","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:49:23+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:50:18+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+Cache-Control: max-age=0
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:53:59+00:00
+POST /gas/omc-api/users/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:54:03+00:00
+POST /gas/omc-api/users/options HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users/1
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:54:03+00:00
+POST /gas/omc-api/users/get/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users/1
+
+Request body:
+{"id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:54:15+00:00
+POST /gas/omc-api/users/update/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users/1
+
+Request body:
+{"id":"1","username":"dsaved","fullname":"Daniel Vincent Johnson","organization":0,"email":"dsaved8291@gmail.com","phone":"0543848378","user_type":"system","access_level":"admin","password":"admin","photo":"http://localhost/gas/api/uploads/image/20201106d2c1dfbf5d07f661ec454a151115b91856.png","baseurl":"/","pages":["Home","Revenue","Regimes","Petroleume","Accounts","BDC users","OMC users","System Users","System User Role","Petroleume Home","Tax","Tax Type","Tax Products","Tax Schedule","Exemptions","Compute Tax Schedule","OMCs","Reconcile","SML - NPA Reconcilations","NPA - ICOMS Reconcilations","NPA - NPA Reconcilations","NPA","NPA Reconcilation Reports","NPA Daily Liftings","ICOMS (CEPS)","ICOMS Declearations","ICOMS Payments","ICOMS Differences","SML","SML Daily Liftings","Banks","Accounts (Bank)","Organizations","Bank Accounts","Bank Account","Account Categories","Audit Logs","Audit Responses","Revenue Bank Accounts","Unauthorized","Unauthorized Bank of Ghana","Unauthorized Other Banks","Unauthorized Hidden Transactions","Accounts","OMC Organization Manage","Assets","Confirmed Assets","Disposed Assets","New Assets","Transfered Assets","Unknown Assets","Projects","GOG COA","Institutes","Funding","Organization","Location","Natural Accounts","Assets Validation","Assets Validations List","Assets Validations Completed","Reports","Petroleum Home","Regimes","Petroleum","Reconciled Receipts","Unreconciled Receipts","Surcharges","Rates","Penalty","OMC","All OMC","Fall Out Receipts","Reconcilation Log","National Summary","National Summary","All"],"role":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:54:36+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:54:41+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-08-26
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-08-26","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:55:20+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-08-26
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-08-26","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:55:41+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:55:51+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-08-26
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-08-26","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:58:15+00:00
+POST /gas/omc-api/omcfallout/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/fallouts
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:58:17+00:00
+POST /gas/omc-api/omcfallout/get HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/fallouts/2/view
+
+Request body:
+{"id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:58:17+00:00
+POST /gas/omc-api/omcfallout/receipts/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/fallouts/2/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"2","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:58:22+00:00
+POST /gas/omc-api/omclog/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/logs
+
+Request body:
+{"page":1,"result_per_page":20,"access_type":"admin","user_id":"1","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:58:25+00:00
+POST /gas/omc-api/omclog/transactions/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/logs/2
+
+Request body:
+{"page":1,"result_per_page":20,"user_id":"1","account_id":"2","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:58:32+00:00
+POST /gas/omc-api/omclog/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/logs
+
+Request body:
+{"page":1,"result_per_page":20,"access_type":"admin","user_id":"1","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 10:59:24+00:00
+POST /gas/omc-api/omclog/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/logs
+
+Request body:
+{"page":1,"result_per_page":20,"access_type":"admin","user_id":"1","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:02:39+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:04:55+00:00
+POST /gas/omc-api/nationalsummary/unreconciled HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:04:56+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:05:05+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-08-26
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-08-26","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:05:09+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:06:07+00:00
+POST /gas/omc-api/runningjobs/files HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/downloads
+
+Request body:
+{"page":1,"result_per_page":20,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:07:52+00:00
+POST /gas/omc-api/home/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue
+
+Request body:
+{"access_type":"admin","user_id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:07:55+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:07:55+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:38:20+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:38:25+00:00
+POST /gas/omc-api/nationalsummary/unreconciled HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:38:30+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:40:26+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:50:20+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:51:04+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:51:29+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:51:39+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:51:53+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 11:52:52+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+Cache-Control: max-age=0
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:02:53+00:00
+POST /gas/omc-api/users/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:02:55+00:00
+POST /gas/omc-api/users/options HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users/1
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:02:56+00:00
+POST /gas/omc-api/users/get/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users/1
+
+Request body:
+{"id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:03:10+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:12:35+00:00
+POST /gas/omc-api/users/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:12:38+00:00
+POST /gas/omc-api/users/options HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users/1
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:12:38+00:00
+POST /gas/omc-api/users/get/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users/1
+
+Request body:
+{"id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:12:46+00:00
+POST /gas/omc-api/users/update/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTozNjQ3NzNjNDRlODc=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/accounts/users/1
+
+Request body:
+{"id":"1","username":"dsaved","fullname":"Daniel Vincent Johnson","organization":0,"email":"dsaved8291@gmail.com","phone":"0543848378","user_type":"system","access_level":"admin","password":"admin","photo":"http://localhost/gas/api/uploads/image/20201106d2c1dfbf5d07f661ec454a151115b91856.png","baseurl":"/","pages":["Home","Revenue","Regimes","Petroleume","Accounts","BDC users","OMC users","System Users","System User Role","Petroleume Home","Tax","Tax Type","Tax Products","Tax Schedule","Exemptions","Compute Tax Schedule","OMCs","Reconcile","SML - NPA Reconcilations","NPA - ICOMS Reconcilations","NPA - NPA Reconcilations","NPA","NPA Reconcilation Reports","NPA Daily Liftings","ICOMS (CEPS)","ICOMS Declearations","ICOMS Payments","ICOMS Differences","SML","SML Daily Liftings","Banks","Accounts (Bank)","Organizations","Bank Accounts","Bank Account","Account Categories","Audit Logs","Audit Responses","Revenue Bank Accounts","Unauthorized","Unauthorized Bank of Ghana","Unauthorized Other Banks","Unauthorized Hidden Transactions","Accounts","OMC Organization Manage","Assets","Confirmed Assets","Disposed Assets","New Assets","Transfered Assets","Unknown Assets","Projects","GOG COA","Institutes","Funding","Organization","Location","Natural Accounts","Assets Validation","Assets Validations List","Assets Validations Completed","Reports","Petroleum Home","Regimes","Petroleum","Reconciled Receipts","Unreconciled Receipts","Surcharges","Rates","Penalty","OMC","All OMC","Fall Out Receipts","Reconcilation Log","National Summary","National Summary","All","National Summary","All Receipts","National Summary"],"role":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:13:14+00:00
+POST /gas/omc-api/nationalsummary/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:13:18+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:16:16+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+Cache-Control: max-age=0
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:17:44+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:17:58+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:18:49+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:19:08+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:22:40+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:22:51+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:23:07+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:24:39+00:00
+POST /gas/omc-api/nationalsummary/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"filename":"Summary-1616243078258","config_data":"{\"id\":\"4\",\"date\":\"2020-12-06\",\"flagged\":false}","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:24:41+00:00
+POST /gas/omc-api/nationalsummary/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"jobid":"EXP1616243079","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:24:42+00:00
+POST /gas/omc-api/nationalsummary/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"jobid":"EXP1616243079","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:24:43+00:00
+POST /gas/omc-api/nationalsummary/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"jobid":"EXP1616243079","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:24:59+00:00
+POST /gas/omc-api/runningjobs/files HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/downloads
+
+Request body:
+{"page":1,"result_per_page":20,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:25:21+00:00
+POST /gas/omc-api/nationalsummary/getsingle_reconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/reconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:28:06+00:00
+POST /gas/omc-api/nationalsummary/unreconciled HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:28:09+00:00
+POST /gas/omc-api/nationalsummary/getsingle_unreconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-12-06
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-12-06","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:28:14+00:00
+POST /gas/omc-api/nationalsummary/unreconciled HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:28:17+00:00
+POST /gas/omc-api/nationalsummary/getsingle_unreconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-02-12
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-02-12","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:29:03+00:00
+POST /gas/omc-api/nationalsummary/getsingle_unreconciled/ HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-02-12
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"4","date":"2020-02-12","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:29:10+00:00
+POST /gas/omc-api/nationalsummary/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-02-12
+
+Request body:
+{"filename":"Unreconciled-Summary-1616243346802","config_data":"{\"id\":\"4\",\"date\":\"2020-02-12\",\"flagged\":true}","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:29:12+00:00
+POST /gas/omc-api/nationalsummary/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-02-12
+
+Request body:
+{"jobid":"EXP1616243350","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:29:13+00:00
+POST /gas/omc-api/nationalsummary/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-02-12
+
+Request body:
+{"jobid":"EXP1616243350","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:29:14+00:00
+POST /gas/omc-api/nationalsummary/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-02-12
+
+Request body:
+{"jobid":"EXP1616243350","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:32:00+00:00
+POST /gas/omc-api/nationalsummary/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-02-12
+
+Request body:
+{"filename":"Unreconciled-Summary-1616243519433","config_data":"{\"id\":\"4\",\"date\":\"2020-02-12\",\"flagged\":true}","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:32:02+00:00
+POST /gas/omc-api/nationalsummary/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-02-12
+
+Request body:
+{"jobid":"EXP1616243521","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:32:40+00:00
+POST /gas/omc-api/nationalsummary/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-02-12
+
+Request body:
+{"filename":"Unreconciled-Summary-1616243559191","config_data":"{\"id\":\"4\",\"date\":\"2020-02-12\",\"flagged\":true}","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:32:41+00:00
+POST /gas/omc-api/nationalsummary/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/omc/unreconciled/4/2020-02-12
+
+Request body:
+{"jobid":"EXP1616243560","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 12:32:47+00:00
+POST /gas/omc-api/runningjobs/files HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTpiNDI4ODE3NDQyZGI=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/petroleum/downloads
+
+Request body:
+{"page":1,"result_per_page":20,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+

@@ -950,10 +950,10 @@ const router = new Router({
                     component: () =>
                         import ('./views/pages/petroleum/omc/national-summary/reconciled/Banks.vue'),
                     meta: {
-                        identity: 'Reconciled Receipts',
+                        identity: 'All Receipts',
                         breadcrumb: [
                             { title: 'Home', url: '/petroleum' },
-                            { title: 'Reconciled Receipts', active: true }
+                            { title: 'All Receipts', active: true }
                         ],
                         homeurl: '/petroleum',
                         pageTitle: 'NATIONAL SUMMARY'
@@ -965,10 +965,10 @@ const router = new Router({
                     component: () =>
                         import ('./views/pages/petroleum/omc/national-summary/reconciled/BYOMC.vue'),
                     meta: {
-                        identity: 'Reconciled Receipts',
+                        identity: 'All Receipts',
                         breadcrumb: [
                             { title: 'Home', url: '/petroleum' },
-                            { title: 'Reconciled Receipts', url: '/petroleum/omc/reconciled' },
+                            { title: 'All Receipts', url: '/petroleum/omc/reconciled' },
                             { title: 'View', active: true }
                         ],
                         homeurl: '/petroleum',
@@ -1346,6 +1346,89 @@ const router = new Router({
                     props: true
                 },
                 // =============================================================================
+                // SURCHARGE START HERE
+                // =============================================================================
+                {
+                    path: '/revenue/rates',
+                    name: 'Rates',
+                    component: () =>
+                        import ('./views/pages/revenue/surcharge/Rates.vue'),
+                    meta: {
+                        identity: 'Rates',
+                        breadcrumb: [
+                            { title: 'Home' },
+                            { title: 'Rates', active: true }
+                        ],
+                        homeurl: '/revenue',
+                        pageTitle: 'Surcharge'
+                    }
+                },
+                {
+                    path: '/revenue/rates/add',
+                    name: 'add-tax-schedule',
+                    component: () =>
+                        import ('./views/pages/revenue/surcharge/RatesManage.vue'),
+                    meta: {
+                        identity: 'Rates', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home' },
+                            { title: 'Surcharge Rate', url: '/revenue/rates' },
+                            { title: 'Add', active: true }
+                        ],
+                        homeurl: '/revenue',
+                        pageTitle: 'Surcharge'
+                    }
+                },
+                {
+                    path: '/revenue/rates/:rateid',
+                    name: 'edit-tax-schedule',
+                    component: () =>
+                        import ('./views/pages/revenue/surcharge/RatesManage.vue'),
+                    meta: {
+                        identity: 'Rates', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home' },
+                            { title: 'Surcharge Rate', url: '/revenue/rates' },
+                            { title: 'Edit', active: true }
+                        ],
+                        homeurl: '/',
+                        pageTitle: 'Surcharge'
+                    },
+                    props: true
+                },
+                // ******************************************************************************************
+                {
+                    path: '/revenue/penalty',
+                    name: 'Penalty',
+                    component: () =>
+                        import ('./views/pages/revenue/surcharge/Penalties.vue'),
+                    meta: {
+                        identity: 'Penalty',
+                        breadcrumb: [
+                            { title: 'Home' },
+                            { title: 'Penalty', active: true }
+                        ],
+                        homeurl: '/',
+                        pageTitle: 'Surcharge'
+                    }
+                }, {
+                    path: '/revenue/penalty/:accountid/view',
+                    name: 'Penalty-view',
+                    component: () =>
+                        import ('./views/pages/revenue/surcharge/PenaltyView.vue'),
+                    meta: {
+                        identity: 'Penalty',
+                        breadcrumb: [
+                            { title: 'Home' },
+                            { title: 'Penalty', url: '/revenue/penalty' },
+                            { title: 'View', active: true }
+                        ],
+                        homeurl: '/',
+                        pageTitle: 'Surcharge'
+                    },
+                    props: true
+                },
+                // =============================================================================
                 // BOG UNAUTHORIZED START HERE
                 // =============================================================================
                 {
@@ -1362,7 +1445,8 @@ const router = new Router({
                         homeurl: '/revenue',
                         pageTitle: 'BOG Unauthorized'
                     }
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/bog/:accountid',
                     name: 'bog-account-unauthorized',
                     component: () =>
@@ -1378,7 +1462,8 @@ const router = new Router({
                         pageTitle: 'BOG Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/bog/:accountid/list/:offset_account',
                     name: 'bog-account-unauthorized-offset',
                     component: () =>
@@ -1395,7 +1480,8 @@ const router = new Router({
                         pageTitle: 'BOG Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/bog/:accountid/list',
                     name: 'bog-account-unauthorized-nooffset',
                     component: () =>
@@ -1412,7 +1498,8 @@ const router = new Router({
                         pageTitle: 'BOG Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/bog/:accountid/list/:offset_account/v/:page/:stmid',
                     name: 'bog-account-unauthorized-view-statement',
                     component: () =>
@@ -1430,7 +1517,8 @@ const router = new Router({
                         pageTitle: 'BOG Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/bog/:accountid/list//v/:page/:stmid',
                     name: 'bog-account-unauthorized-view-statemant-nooffset',
                     component: () =>
@@ -1466,7 +1554,8 @@ const router = new Router({
                         homeurl: '/revenue',
                         pageTitle: 'Org Unauthorized'
                     }
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/org/:accountid',
                     name: 'org-account-unauthorized',
                     component: () =>
@@ -1482,7 +1571,8 @@ const router = new Router({
                         pageTitle: 'Org Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/org/:accountid/list/:offset_account',
                     name: 'org-account-unauthorized-offset',
                     component: () =>
@@ -1499,7 +1589,8 @@ const router = new Router({
                         pageTitle: 'Org Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/org/:accountid/list',
                     name: 'org-account-unauthorized-nooffset',
                     component: () =>
@@ -1516,7 +1607,8 @@ const router = new Router({
                         pageTitle: 'Org Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/org/:accountid/list/:offset_account/v/:page/:stmid',
                     name: 'org-account-unauthorized-view-statement',
                     component: () =>
@@ -1534,7 +1626,8 @@ const router = new Router({
                         pageTitle: 'Org Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/org/:accountid/list//v/:page/:stmid',
                     name: 'org-account-unauthorized-view-statemant-nooffset',
                     component: () =>
@@ -1570,7 +1663,8 @@ const router = new Router({
                         homeurl: '/revenue',
                         pageTitle: 'Hidden Unauthorized'
                     }
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/hidden/:accountid',
                     name: 'hidden-account-unauthorized',
                     component: () =>
@@ -1586,7 +1680,8 @@ const router = new Router({
                         pageTitle: 'Hidden Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/hidden/:accountid/list/:offset_account',
                     name: 'hidden-account-unauthorized-offset',
                     component: () =>
@@ -1603,7 +1698,8 @@ const router = new Router({
                         pageTitle: 'Hidden Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/hidden/:accountid/list',
                     name: 'hidden-account-unauthorized-nooffset',
                     component: () =>
@@ -1620,7 +1716,8 @@ const router = new Router({
                         pageTitle: 'Hidden Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/hidden/:accountid/list/:offset_account/v/:page/:stmid',
                     name: 'hidden-account-unauthorized-view-statement',
                     component: () =>
@@ -1638,7 +1735,8 @@ const router = new Router({
                         pageTitle: 'Hidden Unauthorized'
                     },
                     props: true
-                }, {
+                },
+                {
                     path: '/revenue/unauthorized/hidden/:accountid/list//v/:page/:stmid',
                     name: 'hidden-account-unauthorized-view-statemant-nooffset',
                     component: () =>
@@ -1674,7 +1772,8 @@ const router = new Router({
                         homeurl: '/revenue',
                         pageTitle: 'Audit Logs'
                     }
-                }, {
+                },
+                {
                     path: '/revenue/logs/:accountid',
                     name: 'audits-logs-transactions',
                     component: () =>
@@ -1726,7 +1825,8 @@ const router = new Router({
                         homeurl: '/revenue',
                         pageTitle: 'System'
                     }
-                }, {
+                },
+                {
                     path: '/revenue/downloads',
                     name: 'revenue-file-download',
                     component: () =>

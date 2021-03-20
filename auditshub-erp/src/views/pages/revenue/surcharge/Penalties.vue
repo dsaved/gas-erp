@@ -5,19 +5,56 @@
       <vx-card title="Bank Accounts">
         <p></p>
         <div class="vs-component vs-con-table stripe vs-table-secondary">
-          <header class="header-table vs-table--header my-3">$condition = "WHERE ( ac.`name` LIKE '%$search%' OR  ac.`acc_num1` LIKE '%$search%' OR  ac.`acc_num2` LIKE '%$search%')";
+          <header class="header-table vs-table--header my-3">
+            <vs-button
+              type="relief"
+              color="primary"
+              icon-pack="feather"
+              icon="icon-file-minus"
+              @click="compileWarn()"
+              >Compile Penalties</vs-button
+            >
             <vs-spacer />
-            <div class="w-1/5 mx-1 px-2">
-              <span>Search Accounts</span>
-              <vs-input
-                id="text"
-                type="text"
-                class="mx-1"
-                v-model="search"
-                placeholder="Search accounts"
+            <vs-button
+              type="relief"
+              color="warning"
+              icon-pack="feather"
+              icon="icon-file-text"
+              v-if="AppActiveUser.access_level === 'admin'"
+              @click="exportWarn()"
+              >Export</vs-button
+            >
+          </header>
+          <div class="w-full flex mb-4">
+            <div class="w-1/4 px-2">
+              <span>Bank Type</span>
+              <ajax-select
+                placeholder="Select bank type"
+                :options="[
+                  { value: 'all', label: 'All' },
+                  { value: 'bank of ghana', label: 'Bank of Ghana' },
+                  { value: 'other banks', label: 'Other Banks' },
+                ]"
+                :clearable="false"
+                :dir="$vs.rtl ? 'rtl' : 'ltr'"
+                :selected="bank_type"
+                v-on:update:data="bank_type = $event"
               />
             </div>
-            <div class="w-1/6 ml-2 px-2">
+            <div class="w-1/4 px-2">
+              <span>Bank Name</span>
+              <ajax-select
+                placeholder="Select bank name"
+                :options="[]"
+                url="/bankaccounts/options_otherbanks"
+                :clearable="false"
+                :include="[{ value: 'all', label: 'All' }]"
+                :dir="$vs.rtl ? 'rtl' : 'ltr'"
+                :selected="bank_name"
+                v-on:update:data="bank_name = $event"
+              />
+            </div>
+            <div class="w-1/4 px-2">
               <span>Result per page</span>
               <v-select
                 placeholder="Result count"
@@ -37,7 +74,17 @@
                 v-model="result_per_page"
               />
             </div>
-          </header>
+            <div class="w-1/4 px-2">
+              <span>Search accounts</span>
+              <vs-input
+                id="text"
+                type="text"
+                class="w-full mx-1"
+                v-model="search"
+                placeholder="Search ..."
+              />
+            </div>
+          </div>
           <div class="con-tablex vs-table--content">
             <div class="vs-con-tbody vs-table--tbody">
               <table class="vs-table vs-table--tbody-table">
@@ -47,9 +94,10 @@
                       <vs-checkbox v-model="selectAll">#</vs-checkbox>
                     </th>
                     <th scope="col">Account</th>
-                    <th scope="col">Infractions</th>
-                    <th scope="col" class="text-right">Amount</th>
+                    <th scope="col">Owner</th>
                     <th scope="col">Bank</th>
+                    <th scope="col">Surcharges</th>
+                    <th scope="col" class="text-right">Total Penalty</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -57,14 +105,14 @@
                     v-for="(record, index) in sortedRecords"
                     :key="index"
                     v-on:click="
-                      linkto('/revenue/responses/' + record.account_from)
+                      linkto('/revenue/penalty/' + record.account_id + '/view')
                     "
                     class="tr-values vs-table--tr tr-table-state-null selected"
                   >
                     <td scope="row" @click.stop="">
                       <vs-checkbox
                         v-model="selectedRecords"
-                        :vs-value="record.account_from"
+                        :vs-value="record.id"
                         >{{ number(index) }}</vs-checkbox
                       >
                     </td>
@@ -74,13 +122,16 @@
                       {{ record.acc_num2 }}
                     </td>
                     <td>
-                      {{ record.infraction_count }}
-                    </td>
-                    <td class="text-right">
-                      {{ record.amount }}
+                      {{ record.owner_name }}
                     </td>
                     <td>
                       {{ record.bank_name }}
+                    </td>
+                    <td>
+                      {{ record.surcharge }}
+                    </td>
+                    <td class="text-right">
+                      {{ record.penalty }}
                     </td>
                   </tr>
                 </tbody>
@@ -149,12 +200,70 @@
       background-color="rgba(200,200,200,.8)"
       persistent
       :button-close-hidden="true"
+      title="Compilation In Progress"
+      :active.sync="popupCompileActive"
+    >
+      <p>
+        Compiling all account penalties.
+      </p>
+      <p>
+        <span
+          v-for="(desc, index) in compileDesc"
+          :key="index"
+          v-html="formatDesc(desc)"
+          ><br
+        /></span>
+      </p>
+      <p v-if="hasdata(compilationStatus)" class="text-info loadingDot">
+        {{ compilationStatus }}
+      </p>
+
+      <p>
+        <span class="text-secondary"
+          ><b>{{ compilationDetails }}</b></span
+        >
+      </p>
+      <vs-row>
+        <vs-col
+          vs-offset="8"
+          vs-type="flex"
+          vs-justify="center"
+          vs-align="center"
+          vs-w="4"
+        >
+          <vs-button
+            v-if="compilationReloadButton"
+            color="primary"
+            icon-pack="feather"
+            icon="icon-refresh-cw"
+            @click="startCheckReconcilationStatus()"
+            class="mx-1"
+            >reload</vs-button
+          >
+
+          <vs-button
+            v-if="canCloseCompileModal"
+            color="danger"
+            icon-pack="feather"
+            icon="icon-x"
+            @click="clearCompilationLog()"
+            class="mx-1"
+            >Close</vs-button
+          >
+        </vs-col>
+      </vs-row>
+    </vs-popup>
+
+    <vs-popup
+      background-color="rgba(200,200,200,.8)"
+      persistent
+      :button-close-hidden="true"
       title="File Export In Progress"
       :active.sync="popupActive"
     >
       <p>
         <span
-          v-for="(desc, index) in importDesc"
+          v-for="(desc, index) in exportDesc"
           :key="index"
           v-html="formatDesc(desc)"
           ><br
@@ -221,8 +330,27 @@ export default {
 	},
 	data () {
 		return {
+			// export data starts here
+			popupActive: false,
+			canCloseModal: false,
+			reloadButton: false,
+			statuscheck: null,
+			jobid: null,
+			exportDesc: [],
+			exportStatus: '',
+			exportDetails: '',
+			//compilation datat section
+			popupCompileActive: false,
+			canCloseCompileModal: false,
+			compilationReloadButton: false,
+			compileststuscheck: null,
+			compileJobid: null,
+			errorStr: ['unknown jobid', 'error'],
+			compileDesc: [],
+			compilationStatus: '',
+			compilationDetails: '',
 			//receipt data list starts here
-			pkey: 'org-unauthorized-list-key',
+			pkey: 'rev-account-bank-list-key',
 			message: '',
 			numbering: 0,
 			currentPage: 1,
@@ -247,33 +375,20 @@ export default {
 			bank_name: { value: 'all', label: 'All' },
 			category_group: [],
 			banks: [],
-			categories: [],
-			filter_category: { value: 'all', label: 'All' },
-			// export data starts here
-			popupActive: false,
-			canCloseModal: false,
-			reloadButton: false,
-			statuscheck: null,
-			jobid: null,
-			errorStr: ['unknown jobid', 'error'],
-			importDesc: [],
-			exportStatus: '',
-			exportDetails: ''
+			categories: []
 		}
 	},
 	computed: {
 		selectAll: {
 			get () {
-				return this.records
-					? this.selectedRecords.length == this.records.length
-					: false
+				return this.records ? this.selectedRecords.length === this.records.length : false
 			},
 			set (value) {
 				const selected = []
 
 				if (value) {
 					this.records.forEach(function (record) {
-						selected.push(record.account_from)
+						selected.push(record.id)
 					})
 				}
 				this.selectedRecords = selected
@@ -308,13 +423,19 @@ export default {
 		result_per_page () {
 			this.getData(true)
 		},
+		bank_type () {
+			this.getData(true)
+		},
+		bank_name () {
+			this.getData(true)
+		},
 		search (newVal, oldVal) {
 			this.startSearch(newVal, oldVal)
 		},
 		pagination () {
 			this.numbering = this.pagination.start
 		},
-		selectedRecords (newVal, oldVal) {
+		selectedRecords () {
 			if (this.selectedRecords.length > 0) {
 				this.deletebutton = true
 			} else {
@@ -326,7 +447,7 @@ export default {
 		number (num) {
 			return this.numbering + num
 		},
-		startSearch (newVal, oldVal) {
+		startSearch () {
 			if (this.search_timer) {
 				clearTimeout(this.search_timer)
 			}
@@ -335,27 +456,23 @@ export default {
 				vm.getData()
 			}, 800)
 		},
-		//reconciliation starts here
 		getData () {
-			const user = this.AppActiveUser
-			const isbog = user.types[1] === 'organization' ? 'true' : 'false'
 			this.loading = true
-			this.post('/unauthorized/', {
+			this.post('/surcharge/accounts', {
 				page: this.currentPage,
 				result_per_page: this.result_per_page,
-				access_type: user.access_level,
-				user_id: user.id,
-				search: this.search,
-				bank_type: 'all',
-				isbog
+				bank_type: this.bank_type.value,
+				bank_name: this.bank_name.label,
+				search: this.search
 			})
 				.then((response) => {
+					console.log(response.data)
 					this.records = []
 					this.loading = false
 					this.message = response.data.message
 					this.pagination = response.data.pagination
 					if (response.data.success) {
-						this.records = response.data.unauthorized
+						this.records = response.data.surcharge
 					}
 				})
 				.catch((error) => {
@@ -364,12 +481,124 @@ export default {
 					console.log(error)
 				})
 		},
+		//compilation  starts here
+		compileWarn () {
+			Swal.fire({
+				title: 'Are you sure?',
+				text: 'Penalties will be recompiled if compiled before!',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, compile!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					this.compile()
+				}
+			})
+		},
+		compile () {
+			this.showLoading('Sending compile request, hang on a bit')
+			this.post('/surcharge/compile', {
+				user_id: this.AppActiveUser.id
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success === true) {
+						this.popupCompileActive = true
+						this.compileDescription(response.data.message)
+						this.compilationStatus = 'Initializing'
+						this.compileJobid = response.data.jobid
+						this.initCompileStatusCheck()
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		initCompileStatusCheck () {
+			this.canCloseCompileModal = false
+			this.compilationReloadButton = false
+			const vm = this
+			this.compileststuscheck = setInterval(function () {
+				vm.compileStatusCheck()
+			}, 1200)
+		},
+		formatDesc (data) {
+			let error = false
+			this.errorStr.forEach((item) => {
+				if (data && data.toLowerCase().includes(item)) {
+					error = true
+				}
+			})
+			if (error) {
+				return `<span class="text-danger">-> ${data}<br/></span> `
+			}
+			return `<span class="text-primary">-> ${data}<br/></span> `
+		},
+		compileDescription (data) {
+			if (!this.compileDesc.includes(data)) {
+				this.compileDesc.push(data)
+			}
+		},
+		clearCompilationLog () {
+			this.popupCompileActive = false
+			this.canCloseCompileModal = false
+			this.compilationReloadButton = false
+			this.compileJobid = null
+			this.compileDesc = []
+			this.compilationStatus = ''
+			if (this.compileststuscheck) {
+				clearInterval(this.compileststuscheck)
+			}
+		},
+		compileStatusCheck () {
+			this.post('/surcharge/compilation_status', {
+				jobid: this.compileJobid
+			})
+				.then((response) => {
+					const data = response.data
+					if (data.success) {
+						const status = data.status
+						this.compileDescription(status.description)
+						this.compilationStatus = status.status
+						this.compilationDetails = status.details
+						if (status.status.toLowerCase() === 'completed') {
+							clearInterval(this.compileststuscheck)
+							this.compilationStatus = ''
+							this.canCloseCompileModal = true
+						}
+						if (status.status.toLowerCase().includes('error')) {
+							clearInterval(this.compileststuscheck)
+							this.compilationStatus = ''
+							this.canCloseCompileModal = true
+						}
+					} else {
+						this.compileDescription(response.data.message)
+						this.compilationStatus = ''
+						clearInterval(this.compileststuscheck)
+						this.canCloseCompileModal = true
+					}
+				})
+				.catch((error) => {
+					this.compileDescription('a network error has occured')
+					clearInterval(this.compileststuscheck)
+					this.compilationStatus = ''
+					this.canCloseCompileModal = true
+					this.compilationReloadButton = true
+					console.log(error)
+				})
+		},
+		//reconciliation starts here
 		clearLog () {
 			this.popupActive = false
 			this.canCloseModal = false
 			this.reloadButton = false
 			this.jobid = null
-			this.importDesc = []
+			this.exportDesc = []
 			this.exportStatus = ''
 			if (this.statuscheck) {
 				clearInterval(this.statuscheck)
@@ -383,27 +612,15 @@ export default {
 				vm.checkStatus()
 			}, 1200)
 		},
-		formatDesc (data) {
-			let error = false
-			this.errorStr.forEach((item) => {
-				if (data && data.toLowerCase().includes(item)) {
-					error = true
-				}
-			})
-			if (error) {
-				return `<span class="text-danger">->${data}<br/></span> `
-			}
-			return `<span class="text-primary">->${data}<br/></span> `
-		},
 		pushDescription (data) {
-			if (!this.importDesc.includes(data)) {
-				this.importDesc.push(data)
+			if (!this.exportDesc.includes(data)) {
+				this.exportDesc.push(data)
 			}
 		},
 		async exportWarn () {
 			const { value: filename } = await Swal.fire({
-				title: 'Export Account Responses',
-				text: 'You are about to export responses in his account!',
+				title: 'Export Penalties',
+				text: 'You are about to export all penalties',
 				icon: 'question',
 				input: 'text',
 				showCancelButton: true,
@@ -411,6 +628,7 @@ export default {
 				cancelButtonColor: '#d33',
 				confirmButtonText: 'Yes, continue!',
 				inputPlaceholder: 'Save file as?',
+				inputValue: `Penalties-${new Date().getTime()}`,
 				inputValidator: (value) => {
 					if (!value) {
 						return 'You need to write file name!'
@@ -424,13 +642,12 @@ export default {
 		},
 		export (filename) {
 			this.showLoading('Sending Request For File Export')
-			this.post('/unauthorized/start_export', {
-				id: this.selectedRecords,
+			this.post('/surcharge/start_export', {
 				filename
 			})
 				.then((response) => {
 					this.closeLoading()
-					if (response.data.success == true) {
+					if (response.data.success === true) {
 						this.selectedRecords = []
 						this.popupActive = true
 						this.pushDescription(response.data.message)
@@ -447,7 +664,7 @@ export default {
 				})
 		},
 		checkStatus () {
-			this.post('/unauthorized/file_export_status', {
+			this.post('/surcharge/file_export_status', {
 				jobid: this.jobid
 			})
 				.then((response) => {
@@ -457,7 +674,7 @@ export default {
 						this.pushDescription(status.description)
 						this.exportStatus = status.status
 						this.exportDetails = status.details
-						if (status.status.toLowerCase() == 'completed') {
+						if (status.status.toLowerCase() === 'completed') {
 							clearInterval(this.statuscheck)
 							this.exportStatus = ''
 							this.canCloseModal = true
@@ -482,53 +699,16 @@ export default {
 					this.reloadButton = true
 					console.log(error)
 				})
-		},
-		removeWarn () {
-			if (!this.canDelete()) {
-				return Swal.fire(
-					'Not Allowed!',
-					'You do not have permission to delete any record',
-					'error'
-				)
-			}
-			Swal.fire({
-				title: 'Are you sure?',
-				text: 'You won\'t be able to revert this!',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3cc879',
-				cancelButtonColor: '#ea5455',
-				confirmButtonText: 'Yes, remove it!'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					this.remove(this.selectedRecords)
-				}
-			})
-		},
-		remove (ids) {
-			this.showLoading('Removing reconcilations, please wait')
-			this.post('/unauthorized/remove_reconcilation', {
-				id: ids
-			})
-				.then((response) => {
-					this.closeLoading()
-					if (response.data.success == true) {
-						Swal.fire(
-							'Deleted!',
-							'The Account(s) has been deleted.',
-							'success'
-						)
-						this.selectedRecords = []
-						this.getData()
-					} else {
-						Swal.fire('Failed!', response.data.message, 'error')
-					}
-				})
-				.catch((error) => {
-					this.closeLoading()
-					Swal.fire('Failed!', error.message, 'error')
-				})
 		}
 	}
 }
 </script>
+
+<style lang="scss">
+.loadingDot:after {
+  content: " .";
+  font-size: 50px;
+  line-height: 0;
+  animation: dots 1s steps(5, end) infinite;
+}
+</style>

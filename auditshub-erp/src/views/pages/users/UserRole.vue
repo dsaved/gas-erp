@@ -282,7 +282,6 @@ export default {
 			})
 				.then((response) => {
 					this.loading = false
-					console.log(response.data)
 					if (response.data.success == true) {
 						this.message = ''
 						this.records = response.data.roles

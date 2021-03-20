@@ -191,7 +191,6 @@ export default {
 					this.closeLoading()
 					if (response.data.success == true) {
 						this.user_found = true
-						console.log(response.data)
 						this.user = response.data.users[0]
 					} else {
 						this.user_not_found = true

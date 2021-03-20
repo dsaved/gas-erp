@@ -32,21 +32,11 @@
             <b>Bank Type:</b> <br />
             <small>{{ data.bank_type }}</small>
           </h6>
-          <br />
-          <h6>
-            <b>Bank:</b> <br />
-            <small>{{ notNull(data.bank) }}</small>
-          </h6>
         </div>
         <div class="vx-col sm:w-1/4 w-full mb-2">
           <h6>
-            <b>status:</b><br />
-            <small>{{ data.status }}</small>
-          </h6>
-          <br />
-          <h6>
-            <b>Inactive Date:</b><br />
-            <small>{{ data.date_inactive }}</small>
+            <b>Bank:</b> <br />
+            <small>{{ notNull(data.bank) }}</small>
           </h6>
         </div>
         <div class="vx-col sm:w-1/3 w-full mb-2">
@@ -54,41 +44,15 @@
             <b>Balance:</b><br />
             <small>{{ data.balance }}</small>
           </h6>
-          <br />
-          <h6>
-            <b>Date:</b><br />
-            <small>{{ data.post_date }}</small>
-          </h6>
-        </div>
-        <div class="vx-col sm:w-1/1 w-full mb-2 flex">
-          <vs-spacer />
-          <vs-button
-            color="dark"
-            class="mx-1 mt-5 block"
-            v-if="canAdd()"
-            @click="linkto('/revenue/accounts/' + accountid + '/reconcile')"
-            >Use For Reconcilation</vs-button
-          >
         </div>
       </div>
     </vx-card>
 
-    <vx-card :title="data.name + ' Transactions'" class="mt-5">
+    <vx-card :title="'Total Surcharges: ' +total_surcharge" class="mt-5">
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <header class="header-table vs-table--header my-3">
-          <div
-            class="flex flex-wrap-reverse items-center data-list-btn-container"
-          >
-            <vs-button
-              color="warning"
-              icon-pack="feather"
-              v-if="canAdd()"
-              @click="popupActive = true"
-              icon="icon-upload-cloud"
-              >Upload Statements</vs-button
-            >
-          </div>
+		<vs-spacer />
           <div
             class="flex flex-wrap-reverse items-center data-list-btn-container"
           >
@@ -97,7 +61,7 @@
               type="text"
               class="mx-1"
               v-model="search"
-              placeholder="Search transactions"
+              placeholder="Search date"
             />
           </div>
         </header>
@@ -109,29 +73,18 @@
                   <th scope="col" class="td-check">
                     <vs-checkbox v-model="selectAll">#</vs-checkbox>
                   </th>
-                  <th scope="col">Post Date</th>
-                  <th scope="col">Reference</th>
-                  <th scope="col" class="text-right">Debit</th>
-                  <th scope="col" class="text-right">credit</th>
-                  <th scope="col" class="text-right">Balance</th>
-                  <th scope="col">Offset Acc.</th>
-                  <th scope="col">Created</th>
+                  <th scope="col">Date</th>
+                  <th scope="col" class="text-right">Penalty</th>
+                  <th scope="col" class="text-right">Total Credit</th>
+                  <th scope="col" class="text-right">Total Debit</th>
+                  <th scope="col" class="text-right">Previous Cumulative balance</th>
+                  <th scope="col" class="text-right">Untransfered Funds</th>
                 </tr>
               </thead>
               <tbody>
                 <tr
                   v-for="(record, index) in sortedRecords"
                   :key="index"
-                  v-on:click="
-                    linkto(
-                      '/revenue/accounts/' +
-                        accountid +
-                        '/view/transaction/' +
-                        record.id +
-                        '/' +
-                        number(index)
-                    )
-                  "
                   class="tr-values vs-table--tr tr-table-state-null selected"
                 >
                   <td scope="row" @click.stop="">
@@ -142,25 +95,22 @@
                     >
                   </td>
                   <td>
-                    {{ record.post_date }}
-                  </td>
-                  <td>
-                    {{ record.reference }}
+                    {{ record.date  }}
                   </td>
                   <td class="text-right">
-                    {{ record.debit_amount }}
+                    {{ record.penalty }}
                   </td>
                   <td class="text-right">
-                    {{ record.credit_amount }}
+                    {{ record.total_credit }}
                   </td>
                   <td class="text-right">
-                    {{ record.balance }}
+                    {{ record.total_debit }}
                   </td>
-                  <td>
-                    {{ record.offset_acc_no }}
+                  <td class="text-right">
+                    {{ record.comulative_balnace_previous }}
                   </td>
-                  <td>
-                    {{ record.created }}
+                  <td class="text-right">
+                    {{ record.untransfered_founds }}
                   </td>
                 </tr>
               </tbody>
@@ -219,72 +169,6 @@
         </div>
       </div>
     </vx-card>
-
-    <vs-popup
-      background-color="rgba(200,200,200,.8)"
-      persistent
-      :title="'Upload Statement for ' + data.name"
-      :active.sync="popupActive"
-    >
-      <p v-if="hasdata(importStatus)">
-        <vs-progress
-          indeterminate
-          color="rgb(164, 69, 15)"
-          :height="2"
-        ></vs-progress>
-      </p>
-      <p>
-        Please select the file containing the list of <b>statements</b> you wish
-        to import.
-      </p>
-      <p v-if="hasdata(importDesc)">
-        <span
-          v-for="(desc, index) in importDesc"
-          :key="index"
-          v-html="formatDesc(desc)"
-          ><br
-        /></span>
-      </p>
-      <p v-if="hasdata(importStatus)" class="text-secondary loadingDot">
-        {{ importStatus }}
-      </p>
-
-      <p class="mt-4">
-        <ds-file-upload
-          upload-button-lable="Upload Statements"
-          type="relief"
-          color="primary"
-          max-size="3072"
-          :file-id="accountid"
-          description="Allowed XLSX and XLX, Max size of 3MB"
-          upload-url="/statements/import/"
-          allowed-file-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-          v-on:completed="uploadCompleted"
-        />
-      </p>
-      <p>
-        <span class="text-secondary"
-          ><b>{{ importDetails }}</b></span
-        >
-      </p>
-      <vs-row>
-        <vs-col
-          vs-offset="10"
-          vs-type="flex"
-          vs-justify="center"
-          vs-align="center"
-          vs-w="2"
-        >
-          <vs-button
-            color="danger"
-            icon-pack="feather"
-            @click="clearLog()"
-            icon="icon-x"
-            >Close</vs-button
-          >
-        </vs-col>
-      </vs-row>
-    </vs-popup>
   </div>
 </template>
 
@@ -332,17 +216,11 @@ export default {
 					return {}
 				}
 			},
-			//file import section
-			popupActive: false,
-			statuscheck: null,
-			errorStr: ['unknown jobid', 'error'],
-			importDesc: [],
-			importDetails: '',
-			importStatus: '',
 			//receipt data list starts here
-			pkey: 'stm-trans-list-key',
+			pkey: 'surcharge-trans-list-key',
 			message: '',
 			numbering: 0,
+			total_surcharge: '0.0',
 			currentPage: 1,
 			result_per_page: 20,
 			loading: true,
@@ -366,9 +244,7 @@ export default {
 	computed: {
 		selectAll: {
 			get () {
-				return this.records
-					? this.selectedRecords.length == this.records.length
-					: false
+				return this.records ? this.selectedRecords.length === this.records.length : false
 			},
 			set (value) {
 				const selected = []
@@ -416,7 +292,7 @@ export default {
 		number (num) {
 			return this.numbering + num
 		},
-		startSearch (newVal, oldVal) {
+		startSearch () {
 			if (this.search_timer) {
 				clearTimeout(this.search_timer)
 			}
@@ -427,7 +303,7 @@ export default {
 		},
 		getReceipt () {
 			this.loading = true
-			this.post('/statements/account_statement', {
+			this.post('/surcharge/charges', {
 				result_per_page: this.result_per_page,
 				page: this.currentPage,
 				search: this.search,
@@ -435,10 +311,10 @@ export default {
 			})
 				.then((response) => {
 					this.loading = false
-					console.log(response.data)
-					if (response.data.success == true) {
-						this.message = ''
-						this.records = response.data.transactions
+					this.message = ''
+					if (response.data.success === true) {
+						this.records = response.data.surcharge
+						this.total_surcharge = response.data.total_surcharge
 					} else {
 						this.message = response.data.message
 						this.records = []
@@ -468,7 +344,7 @@ export default {
 				})
 		},
 		notNull (data) {
-			if (null != data && data.label) {
+			if (null !== data && data.label) {
 				return data.label
 			}
 			return ''
@@ -482,7 +358,7 @@ export default {
 			} else if (this.hasdata(account.acc_num2)) {
 				acnts += account.acc_num2
 			}
-			if (account.status == 'Inactive') {
+			if (account.status === 'Inactive') {
 				acnts += ' - <span class="text-danger">Inactive</span> '
 			} else {
 				acnts += ' - <span class="text-primary">Active</span> '
@@ -496,7 +372,7 @@ export default {
 			})
 				.then((response) => {
 					this.loading = false
-					if (response.data.success == true) {
+					if (response.data.success === true) {
 						this.accoun_found = true
 						this.data = response.data.bankaccounts[0]
 						this.getReceipt()
@@ -556,7 +432,7 @@ export default {
 			})
 				.then((response) => {
 					this.closeLoading()
-					if (response.data.success == true) {
+					if (response.data.success === true) {
 						this.$vs.notify({
 							title: 'Error!!!',
 							text: 'The Account has been deleted.',
@@ -574,78 +450,6 @@ export default {
 				.catch((error) => {
 					this.closeLoading()
 					Swal.fire('Failed!', error.message, 'error')
-				})
-		},
-		//file import function starts here
-		uploadCompleted (data) {
-			if (data.success == true) {
-				this.pushDescription(data.message)
-				this.importStatus = 'Reading File Content'
-				this.checkImportStatus(data.jobid)
-			} else {
-				Swal.fire('Failed!', data.message, 'error')
-			}
-		},
-		checkImportStatus (id) {
-			const vm = this
-			this.statuscheck = setInterval(function () {
-				vm.checkStatusForImport(id)
-			}, 1200)
-		},
-		formatDesc (data) {
-			let error = false
-			this.errorStr.forEach((item) => {
-				if (data && data.toLowerCase().includes(item)) {
-					error = true
-				}
-			})
-			if (error) {
-				return `<span class="text-danger">->${data}<br/></span> `
-			}
-			return `<span class="text-primary">->${data}<br/></span> `
-		},
-		pushDescription (data) {
-			if (!this.importDesc.includes(data)) {
-				this.importDesc.push(data)
-			}
-		},
-		clearLog () {
-			this.popupActive = false
-			this.importDesc = []
-			this.importStatus = ''
-			if (this.statuscheck) {
-				clearInterval(this.statuscheck)
-			}
-		},
-		checkStatusForImport (id) {
-			this.post('/statements/import_status', {
-				jobid: id
-			})
-				.then((response) => {
-					const data = response.data
-					if (data.success) {
-						const status = data.status
-						this.pushDescription(status.description)
-						this.importStatus = status.status
-						this.importDetails = status.details
-						if (status.status.toLowerCase() == 'completed') {
-							this.getReceipt()
-							clearInterval(this.statuscheck)
-							this.importStatus = ''
-							this.importDetails = ''
-						}
-						if (status.status.toLowerCase().includes('error')) {
-							clearInterval(this.statuscheck)
-							this.importStatus = ''
-						}
-					} else {
-						this.pushDescription(response.data.message)
-						this.importStatus = ''
-						clearInterval(this.statuscheck)
-					}
-				})
-				.catch((error) => {
-					console.log(error)
 				})
 		}
 	}

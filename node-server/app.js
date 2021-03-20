@@ -2,7 +2,7 @@ var module = require('./config');
 var config = module.configs;
 var mysql = require('mysql');
 var workerFarm = require('worker-farm'),
-    workers = workerFarm(require.resolve('./execute'), ['reconcile', 'reconcileOMC', 'importFile', 'exportFile', 'exportFileFallout', 'exportFileLog', 'importReceiptFile']),
+    workers = workerFarm(require.resolve('./execute'), ['reconcile', 'reconcileOMC', 'importFile', 'exportFile', 'exportFileFallout', 'exportFileNASummary', 'compilePenalty', 'exportFilePenalty', 'exportFileLog', 'importReceiptFile']),
     maxJob = 4,
     currentJobR = 0,
     currentJobExport = 0,
@@ -63,6 +63,12 @@ function startReconcilation() {
                                     }
                                 })
                                 currentJobR++;
+                            } else if (childJobDescription.bank_type === "compile") {
+                                workers.compilePenalty(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                    }
+                                })
                             } else {
                                 workers.reconcile(childJobDescription, function(err, result) {
                                     if (result.isDone) {
@@ -157,6 +163,20 @@ function fileExport() {
                         } else {
                             if (childJobDescription.export_type === "OMC-FALLOUT") {
                                 workers.exportFileFallout(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else if (childJobDescription.export_type === "PENALTY") {
+                                workers.exportFilePenalty(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else if (childJobDescription.export_type === "NA-SUMARY") {
+                                workers.exportFileNASummary(childJobDescription, function(err, result) {
                                     if (result.isDone) {
                                         process.kill(result.id);
                                         currentJobExport--;

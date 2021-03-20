@@ -89,10 +89,10 @@ export default [{
                 i18n: 'National Summary',
                 submenu: [{
                     url: '/petroleum/omc/reconciled',
-                    name: 'Reconciled',
-                    page: 'Reconciled Receipts',
-                    slug: 'Reconciled Receipts',
-                    i18n: 'Reconciled Receipts',
+                    name: 'All Receipts',
+                    page: 'All Receipts',
+                    slug: 'All Receipts',
+                    i18n: 'All Receipts',
                 }, {
                     url: '/petroleum/omc/unreconciled',
                     name: 'Unreconciled',

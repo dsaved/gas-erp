@@ -20,6 +20,15 @@
         <p></p>
         <div class="vs-component vs-con-table stripe vs-table-secondary">
           <header class="header-table vs-table--header my-3">
+            <vs-button
+              type="relief"
+              color="warning"
+              icon-pack="feather"
+              icon="icon-file-text"
+              v-if="AppActiveUser.access_level === 'admin'"
+              @click="exportWarn()"
+              >Export</vs-button
+            >
             <vs-spacer />
             <div
               class="flex flex-wrap-reverse items-center data-list-btn-container"
@@ -140,6 +149,60 @@
       </vx-card>
     </div>
 
+    <vs-popup
+      background-color="rgba(200,200,200,.8)"
+      persistent
+      :button-close-hidden="true"
+      title="File Export In Progress"
+      :active.sync="popupActive"
+    >
+      <p>
+        <span
+          v-for="(desc, index) in exportDesc"
+          :key="index"
+          v-html="formatDesc(desc)"
+          ><br
+        /></span>
+      </p>
+      <p v-if="hasdata(exportStatus)" class="text-info loadingDot">
+        {{ exportStatus }}
+      </p>
+
+      <p>
+        <span class="text-secondary"
+          ><b>{{ exportDetails }}</b></span
+        >
+      </p>
+      <vs-row>
+        <vs-col
+          vs-offset="8"
+          vs-type="flex"
+          vs-justify="center"
+          vs-align="center"
+          vs-w="4"
+        >
+          <vs-button
+            v-if="reloadButton"
+            color="primary"
+            icon-pack="feather"
+            icon="icon-refresh-cw"
+            @click="statusCheckFileExport()"
+            class="mx-1"
+            >reload</vs-button
+          >
+
+          <vs-button
+            v-if="canCloseModal"
+            color="danger"
+            icon-pack="feather"
+            icon="icon-x"
+            @click="clearLog()"
+            class="mx-1"
+            >Close</vs-button
+          >
+        </vs-col>
+      </vs-row>
+    </vs-popup>
   </div>
 </template>
 
@@ -185,7 +248,17 @@ export default {
     return {
       user_not_found: false,
       user_found: false,
-      bank: "",
+      bank: '',
+			// export data starts here
+			popupActive: false,
+			canCloseModal: false,
+			reloadButton: false,
+			statuscheck: null,
+			jobid: null,
+			errorStr: ['unknown jobid', 'error'],
+			exportDesc: [],
+			exportStatus: '',
+			exportDetails: '',
       //receipt data list starts here
       pkey: "omc-nationalsummary-bd-receipt-list-key",
       message: "",
@@ -275,7 +348,7 @@ export default {
         vm.getReceipt();
       }, 800);
     },
-    getData() {
+    getData () {
       this.showLoading("getting infomation");
       this.post("/nationalsummary/getsingle_reconciled/", {
         result_per_page: this.result_per_page,
@@ -321,6 +394,127 @@ export default {
           });
         });
     },
+    //Export starts here
+		formatDesc (data) {
+			let error = false
+			this.errorStr.forEach((item) => {
+				if (data && data.toLowerCase().includes(item)) {
+					error = true
+				}
+			})
+			if (error) {
+				return `<span class="text-danger">-> ${data}<br/></span> `
+			}
+			return `<span class="text-primary">-> ${data}<br/></span> `
+		},
+		clearLog () {
+			this.popupActive = false
+			this.canCloseModal = false
+			this.reloadButton = false
+			this.jobid = null
+			this.exportDesc = []
+			this.exportStatus = ''
+			if (this.statuscheck) {
+				clearInterval(this.statuscheck)
+			}
+		},
+		statusCheckFileExport () {
+			this.canCloseModal = false
+			this.reloadButton = false
+			const vm = this
+			this.statuscheck = setInterval(function () {
+				vm.checkStatus()
+			}, 1200)
+		},
+		pushDescription (data) {
+			if (!this.exportDesc.includes(data)) {
+				this.exportDesc.push(data)
+			}
+		},
+		async exportWarn () {
+			const { value: filename } = await Swal.fire({
+				title: 'Export Summary',
+				text: 'You are about to export this summaries',
+				icon: 'question',
+				input: 'text',
+				showCancelButton: true,
+				confirmButtonColor: '#0d6723',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, continue!',
+				inputPlaceholder: 'Save file as?',
+				inputValue: `Summary-${new Date().getTime()}`,
+				inputValidator: (value) => {
+					if (!value) {
+						return 'You need to write file name!'
+					}
+				}
+			})
+
+			if (filename) {
+				this.export(filename)
+			}
+		},
+		export (filename) {
+			this.showLoading('Sending Request For File Export')
+			this.post('/nationalsummary/start_export', {
+				filename: filename,
+        config_data: JSON.stringify({id:this.bankid, date:this.date, flagged:false})
+			})
+				.then((response) => {
+					this.closeLoading()
+					if (response.data.success === true) {
+						this.selectedRecords = []
+						this.popupActive = true
+						this.pushDescription(response.data.message)
+						this.exportStatus = 'Initializing'
+						this.jobid = response.data.jobid
+						this.statusCheckFileExport()
+					} else {
+						Swal.fire('Failed!', response.data.message, 'error')
+					}
+				})
+				.catch((error) => {
+					this.closeLoading()
+					Swal.fire('Failed!', error.message, 'error')
+				})
+		},
+		checkStatus () {
+			this.post('/nationalsummary/file_export_status', {
+				jobid: this.jobid
+			})
+				.then((response) => {
+					const data = response.data
+					if (data.success) {
+						const status = data.status
+						this.pushDescription(status.description)
+						this.exportStatus = status.status
+						this.exportDetails = status.details
+						if (status.status.toLowerCase() === 'completed') {
+							clearInterval(this.statuscheck)
+							this.exportStatus = ''
+							this.canCloseModal = true
+						}
+						if (status.status.toLowerCase().includes('error')) {
+							clearInterval(this.statuscheck)
+							this.exportStatus = ''
+							this.canCloseModal = true
+						}
+					} else {
+						this.pushDescription(response.data.message)
+						this.exportStatus = ''
+						clearInterval(this.statuscheck)
+						this.canCloseModal = true
+					}
+				})
+				.catch((error) => {
+					this.pushDescription('a network error has occured')
+					clearInterval(this.statuscheck)
+					this.exportStatus = ''
+					this.canCloseModal = true
+					this.reloadButton = true
+					console.log(error)
+				})
+		}
   },
 };
 </script>

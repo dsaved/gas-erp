@@ -177,9 +177,7 @@ export default {
 	computed: {
 		selectAll: {
 			get () {
-				return this.records
-					? this.selectedRecords.length == this.records.length
-					: false
+				return this.records ? this.selectedRecords.length === this.records.length : false
 			},
 			set (value) {
 				const selected = []
@@ -224,7 +222,7 @@ export default {
 		pagination () {
 			this.numbering = this.pagination.start
 		},
-		selectedRecords (newVal, oldVal) {
+		selectedRecords () {
 			if (this.selectedRecords.length > 0) {
 				this.deletebutton = true
 			} else {
@@ -236,7 +234,7 @@ export default {
 		number (num) {
 			return this.numbering + num
 		},
-		startSearch (newVal, oldVal) {
+		startSearch () {
 			if (this.search_timer) {
 				clearTimeout(this.search_timer)
 			}
@@ -255,7 +253,7 @@ export default {
 				.then((response) => {
 					this.loading = false
 					console.log(response.data)
-					if (response.data.success == true) {
+					if (response.data.success === true) {
 						this.message = ''
 						this.records = response.data.banks
 					} else {
@@ -285,7 +283,7 @@ export default {
 						position: 'bottom-left'
 					})
 				})
-		},
+		}
 	}
 }
 </script>

@@ -1334,6 +1334,361 @@ exports.exportFileFallout = function(data, callback) {
  * @param data is a variable holding the current job
  * @param callback this is a method called when the job is finished in otherto terminate the process.
  */
+exports.exportFileNASummary = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export fallout: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            const exportData = JSON.parse(data.ids);
+            const bank_id = exportData.id;
+            const export_date = exportData.date;
+            const is_flagged = exportData.flagged;
+            var dataHeaders = [
+                "OMC",
+                "DATE",
+                "MODE OF PAYMENT",
+                "AMOUNT"
+            ];
+            var AuthorizedData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Summary",
+                Author: "Ghana Audit Service",
+                Company: "Ghana Audit Service",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push(export_date);
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+            var other = "";
+            if (is_flagged) {
+                other = "AND omc_r.status='flagged' ";
+            }
+            var sqlQuery = `SELECT b.name as bank_name, o.name, omc_r.mode_of_payment, omc_r.bank, omc_r.date, omc_r.amount, omc_r.id FROM omc_receipt as omc_r LEFT JOIN omc as o ON o.id=omc_r.omc_id LEFT JOIN banks as b ON b.id=omc_r.bank_id WHERE omc_r.bank_id = ${bank_id} AND omc_r.date='${export_date}'  ${other}`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var newObject = [
+                    exportData.name,
+                    exportData.date,
+                    exportData.mode_of_payment,
+                    exportData.amount,
+                ];
+                AuthorizedData.push(newObject);
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(AuthorizedData)
+
+            workbook.Sheets[export_date] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.exportFilePenalty = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export penalty: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            var dataHeaders = [
+                "Date",
+                "Transactions",
+                "Total Credit",
+                "Total Debit",
+                "Cumulative Previous Balance",
+                "future Date",
+                "Total Cash Available",
+                "Cash Available",
+                "Total Debit Cash",
+                "Untransfered Funds",
+                "Penalty",
+                "Calculation",
+            ];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Surcharges",
+                Author: "Ghana Audit Service",
+                Company: "Ghana Audit Service",
+                CreatedDate: new Date(),
+            }
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering transactions and responses','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+            var sqlQuery = "SELECT ac.id, ac.name,ac.acc_num1,ac.acc_num2,ac.status, ac.date_inactive, su.*  FROM surcharge as su LEFT JOIN `accounts` as ac on ac.id=su.account_id Order By `name`";
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected account from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering transactions and responses - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            var sheets = [];
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                if (!workbook.SheetNames.includes(exportData.name)) {
+                    workbook.SheetNames.push(exportData.name);
+                    sheets.push({ name: exportData.name, fields: dataHeaders, data: [] });
+                }
+            });
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var newObject = [
+                    exportData.date,
+                    exportData.transactions,
+                    exportData.total_credit,
+                    exportData.total_debit,
+                    exportData.comulative_balnace_previous,
+                    exportData.intwodays_date,
+                    exportData.total_cash_available,
+                    exportData.cash_available,
+                    exportData.total_debit_cash,
+                    exportData.untransfered_founds,
+                    exportData.penalty,
+                    exportData.calculation,
+                ];
+
+                let indx = sheets.findIndex((el) => el.name === exportData.name);
+                if (indx != -1) {
+                    sheets[indx].data.push(newObject);
+                }
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+
+            await asyncForEach(sheets, async(sheet, index) => {
+                if (sheet.data) {
+                    let fileData = [sheet.fields].concat(sheet.data);
+                    console.log(sheets)
+                    console.log(workbook.Sheets[sheet.name])
+                    workbook.Sheets[sheet.name] = XLSX.utils.aoa_to_sheet(fileData);
+                }
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error adding sheets to workbook - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
 exports.exportFileLog = function(data, callback) {
     var module = require('./config');
     var config = module.configs;
@@ -1754,6 +2109,260 @@ exports.importReceiptFile = function(data, callback) {
      * sql statemen query
      * @param sqlQuery raw query
      */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+}
+
+//Compile Penalty Section
+exports.compilePenalty = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var totalAccount = 0;
+    var workingOn = 0;
+    var proccessID = process.pid;
+    var reconcilingWith = "";
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for compilation: ' + data.id);
+            start();
+        });
+    });
+
+    const start = async() => {
+        try {
+            /**
+             * get the omc receipts for the main accounts
+             * @param mainReceiptsData this hold all the receipts of 
+             * the main omc with offset account
+             */
+            var sqlQuery = "SELECT COUNT(id) transactions, SUM(credit_amount) total_credit, SUM(debit_amount) total_debit, SUM(balance) total_balance, stm.* FROM `statements` stm WHERE stm.status !='flagged' GROUP by account_id, post_date ORDER by post_date";
+            var mainReceiptsData = await query(sqlQuery).catch(error => {
+                config.log(error);
+                updateStatus("error", "job error: cannot read account statements", "completed");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            if (typeof(mainReceiptsData) == "undefined") {
+                updateStatus("Error", "error: no statements found  - " + getTime(), "completed");
+                config.log("error:  no statements found - " + getTime());
+                return callback(null, { isDone: true, id: proccessID });
+            }
+
+            await updateStatus("processing statements", "compilation started - " + getTime());
+            config.log("compilation started - " + getTime());
+            config.log("processing statements");
+            totalAccount = mainReceiptsData.length;
+            workingOn = 0;
+            var previous_balance = 0.0;
+            await asyncForEach(mainReceiptsData, async(statement, index) => {
+                workingOn = index + 1;
+                update("reconcilation_status", "id", data.id, {
+                    proccessing_account: workingOn,
+                    total_account: totalAccount,
+                });
+                // config.log("processing statements: " + receipts.id);
+
+                //set variables for computation
+                const account_id = statement.account_id
+                const total_credit = statement.total_credit;
+                const total_debit = statement.total_debit;
+                const total_balance = statement.total_balance;
+                const transactions = statement.transactions;
+                const comulative_balnace_previous = previous_balance;
+
+                //get the current date
+                const today_date = statement.post_date;
+                var currentDate = new Date(today_date);
+                // console.log("current date", today_date);
+                const _gMonth = currentDate.getMonth() + 1;
+                const _month = _gMonth < 10 ? "0" + _gMonth : _gMonth;
+                const _day = currentDate.getDate() < 10 ? "0" + currentDate.getDate() : currentDate.getDate();
+                const todays_date = currentDate.getFullYear() + "-" + _month + "-" + _day;
+                // console.log("current date", currentDate.getFullYear() + "-" + _month + "-" + _day);
+
+                currentDate.setDate(currentDate.getDate() + 2);
+                const gMonth = currentDate.getMonth() + 1;
+                const month = gMonth < 10 ? "0" + gMonth : gMonth;
+                const day = currentDate.getDate() < 10 ? "0" + currentDate.getDate() : currentDate.getDate();
+                const intwodays_date = currentDate.getFullYear() + "-" + month + "-" + day;
+                // console.log("in two days date", intwodays_date);
+
+                //set the previouse balance to avoid querying db again
+                previous_balance = total_balance;
+                const total_cash_available = total_credit + comulative_balnace_previous;
+                const cash_available = total_cash_available - total_debit;
+
+                const found = mainReceiptsData.find(el => el.post_date === intwodays_date && el.account_id === account_id);
+                console.log(found)
+                var total_debit_cash = 0.0;
+                if (found) {
+                    total_debit_cash = found.total_debit;
+                }
+
+                const untransfered_founds = cash_available - total_debit_cash;
+                var stm = `SELECT rate FROM surcharge_rate  WHERE date_from <= '${todays_date}' AND date_to >= '${todays_date}'`;
+                var rateResult = await query(stm).catch(error => {
+                    config.log(error);
+                    updateStatus("error", "job error: internal query failed, cannot get rate", "completed");
+                    callback(null, { isDone: true, id: proccessID });
+                });
+                if (rateResult != null && typeof(rateResult[0]) != "undefined" && rateResult[0] != null) {
+                    const surcharge_rate = rateResult[0].rate;
+                    const penalty = untransfered_founds * surcharge_rate;
+                    const calculation = `(((${total_credit} + ${comulative_balnace_previous}) - ${total_debit}) - ${total_debit_cash}) * ${surcharge_rate}`;
+                    // console.log(calculation);
+                    // console.log(penalty);
+                    // console.log((((994262.5 + 102098315.58) - 1166234.74) - 0) * 0.0871);
+                    const dataToInsert = {
+                        date: todays_date,
+                        account_id: account_id,
+                        total_credit: total_credit,
+                        total_debit: total_debit,
+                        comulative_balnace_previous: comulative_balnace_previous,
+                        transactions: transactions,
+                        intwodays_date: intwodays_date,
+                        total_cash_available: total_cash_available,
+                        cash_available: cash_available,
+                        total_debit_cash: total_debit_cash,
+                        untransfered_founds: untransfered_founds,
+                        penalty: penalty,
+                        calculation: calculation,
+                    }
+                    await insert("surcharge", dataToInsert);
+                }
+            });
+
+            await updateStatus("completed", " compilatiion completed - " + getTime(), "completed");
+            config.log("compilatiion completed - " + getTime());
+        } catch (error) {
+            console.error(error);
+            await updateStatus("Error", "error occured: " + error.message + " - " + getTime(), "completed");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    // updateStatus("error", "account not found in current job", "completed");
+    async function updateStatus(status, desc, jobstatus) {
+        await update("reconcilation_status", "id", data.id, {
+            description: desc || "",
+            reconciling_with: reconcilingWith,
+            proccessing_account: workingOn,
+            total_account: totalAccount,
+            status: status || "",
+            processing: jobstatus || "processing"
+        });
+    }
+
+    function bgQuery(sqlQuery) {
+        sqlConn.query(sqlQuery, function(err, result, fields) {
+            if (err) {
+                config.log(err)
+            }
+        });
+    }
+
+    /**
+     * update in to the database
+     * @param {String} table The name of the table to insert into
+     * @param {String} column the column in the db to mach
+     * @param val value used to match the column
+     * @param {Object} data the object containing key and values to insert
+     */
+    async function update(table, column, val, data) {
+        // set up an empty array to contain the WHERE conditions
+        let values = [];
+        // Iterate over each key / value in the object
+        Object.keys(data).forEach(function(key) {
+            // if the value is an empty string, do not use
+            if ('' === data[key]) {
+                return;
+            }
+            // if we've made it this far, add the clause to the array of conditions
+            values.push(`\`${key}\` = '${data[key]}'`);
+        });
+        // convert the where array into a string of , clauses
+        values = values.join(' , ');
+        // check the val type is string and set it as string 
+        if (typeof(val) == "string") {
+            val = `'${val}'`;
+        }
+
+        const sql = `UPDATE \`${table}\` SET ${values} WHERE \`${column}\`= ${val}`;
+        await query(sql).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: update error", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * insert in to the database
+     * @param {String} table The name of the table to insert into
+     * @param {Object} data the object containing key and values to insert
+     */
+    async function insert(table, data) {
+        if (!table) return;
+        if (!data) return;
+        // set up an empty array to contain the  columns and values
+        let columns = [];
+        let values = [];
+        // Iterate over each key / value in the object
+        Object.keys(data).forEach(function(key) {
+            // if the value is an empty string, do not use
+            if ('' === data[key]) {
+                return;
+            }
+            // if we've made it this far, add the clause to the array of conditions
+            columns.push(`\`${key}\``);
+            values.push(`'${data[key]}'`);
+        });
+        // convert the columns array into a string of
+        columns = "(" + columns.join(' , ') + ")";
+        // convert the values array into a string 
+        values = "VALUES (" + values.join(' , ') + ");";
+        //construct the insert statement
+        const sql = `INSERT INTO \`${table}\`${columns} ${values}`;
+        await query(sql).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: " + error, "completed");
+            callback(null, { isDone: true, id: proccessID });
+        })
+    }
+
     function query(sqlQuery) {
         return new Promise(function(resolve, reject) {
             sqlConn.query(sqlQuery, function(err, result, fields) {

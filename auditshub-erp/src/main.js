@@ -58,10 +58,10 @@ Vue.mixin({
             data() {
                 return {
                     development: true,
-                    site_link: 'https://omc-api.auditshub.com',
-                    storage_key: 'gas-storage',
-                    // site_link: 'http://localhost/gas/omc-api',
-                    // storage_key: 'gas-storage-local',
+                    // site_link: 'https://omc-api.auditshub.com',
+                    // storage_key: 'gas-storage',
+                    site_link: 'http://localhost/gas/omc-api',
+                    storage_key: 'gas-storage-local',
                     axiosCancelSource: null,
                     allowed_pages: ['neutral']
                 }

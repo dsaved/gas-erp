@@ -1,0 +1,4403 @@
+REQUEST TIME: 09:51:28+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:51:29+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:51:38+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:51:38+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:51:48+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:51:48+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:52:11+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:52:11+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:52:20+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 09:52:20+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:14:13+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+,"request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:16:22+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:16:22+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:18:21+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:18:21+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:19:19+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:19:19+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:20:21+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:20:22+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:22:22+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/accounts/1/view
+
+Request body:
+{"id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:22:22+00:00
+POST /gas/omc-api/statements/account_statement HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/accounts/1/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:29:31+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:29:31+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:32:02+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:32:02+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:32:42+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:32:42+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:33:26+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:33:26+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:33:28+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/1/view
+
+Request body:
+{"id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:33:28+00:00
+POST /gas/omc-api/statements/account_statement HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/1/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:17+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:20+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/1/view
+
+Request body:
+{"id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:20+00:00
+POST /gas/omc-api/statements/account_statement HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/1/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:23+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:23+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:25+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/1/view
+
+Request body:
+{"id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:25+00:00
+POST /gas/omc-api/statements/account_statement HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/1/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:27+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:27+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:31+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:31+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:33+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:34+00:00
+POST /gas/omc-api/statements/account_statement HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:37+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:37+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:39+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:36:39+00:00
+POST /gas/omc-api/statements/account_statement HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:38:42+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:38:43+00:00
+POST /gas/omc-api/surcharge/account_statement HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:38:43+00:00
+POST /gas/omc-api/surcharge/account_statement HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:38:49+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:38:49+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:39:02+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:39:03+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:39:41+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:39:41+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:42:22+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:42:22+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:42:47+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:42:47+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:44:07+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:44:07+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:44:12+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:44:12+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:45:50+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:45:51+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:46:17+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:46:17+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:46:21+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:46:21+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:48:23+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:48:24+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:48:34+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:48:34+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:49:08+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:49:08+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:49:12+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:49:12+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:50:53+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:50:53+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:50:56+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:50:56+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:52:11+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:52:11+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:52:15+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:52:15+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:56:04+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:56:04+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:56:11+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:56:11+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:58:24+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:58:24+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:58:26+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 14:58:26+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:04:22+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:04:23+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:04:46+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:04:46+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:05:27+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:05:28+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:05:40+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:05:40+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:06:07+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:06:07+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:06:36+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:06:36+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:06:37+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:06:37+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:09:00+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"2016","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:09:07+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"2016-","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:09:10+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"2016-05-11","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:09:18+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"2016-02-11","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:09:20+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"2016-02411","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:09:21+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"2016-0241","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:09:23+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"2016-021","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:09:25+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"2016-02-11","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:10:28+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"2016-05-03","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:11:11+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:11:37+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:11:37+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:11:43+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":43,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:11:51+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:11:56+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:11:56+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:44:45+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:45:06+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:45:06+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:45:20+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:45:20+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:45:32+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:45:32+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:46:46+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:46:46+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:47:34+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:47:34+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:55:58+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:55:58+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+Cache-Control: max-age=0
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:58:48+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:58:48+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:59:06+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 15:59:06+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:10+00:00
+POST /gas/omc-api/surcharge/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"filename":"Penalties-1616183588353","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:11+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:12+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:13+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:15+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:16+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:17+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:18+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:19+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:21+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:22+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:23+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:24+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:25+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:27+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:28+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:29+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:30+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:31+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:33+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:34+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:35+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:36+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:38+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:39+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:40+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:41+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:42+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:44+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:45+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:46+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:47+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:48+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:50+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:51+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:52+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:54+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:55+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:56+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:57+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:53:58+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:54:00+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:54:01+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:54:02+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:54:03+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:54:05+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183590","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:54:09+00:00
+POST /gas/omc-api/surcharge/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"filename":"Penalties-1616183648794","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:54:11+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183649","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:54:12+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183649","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:57:14+00:00
+POST /gas/omc-api/surcharge/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"filename":"Penalties-1616183833005","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:57:15+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183834","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:57:16+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183834","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:57:18+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183834","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:57:19+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183834","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:58:59+00:00
+POST /gas/omc-api/surcharge/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"filename":"Penalties-1616183937948","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:59:00+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183939","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:59:01+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183939","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 19:59:03+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616183939","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:01:27+00:00
+POST /gas/omc-api/surcharge/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"filename":"Penalties-1616184086262","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:01:28+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184087","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:01:30+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184087","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:01:31+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184087","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:01:32+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184087","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:09+00:00
+POST /gas/omc-api/surcharge/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"filename":"Penalties-1616184128862","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:11+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184129","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:12+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184129","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:13+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184129","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:50+00:00
+POST /gas/omc-api/surcharge/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"filename":"Penalties-1616184169361","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:51+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184170","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:53+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184170","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:02:54+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184170","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:03:39+00:00
+POST /gas/omc-api/runningjobs/files HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/downloads
+
+Request body:
+{"page":1,"result_per_page":20,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:04:37+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:04:37+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:04:39+00:00
+POST /gas/omc-api/surcharge/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"filename":"Penalties-1616184278403","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:04:40+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184279","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:04:42+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184279","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:04:43+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184279","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:04:44+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184279","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:04:48+00:00
+POST /gas/omc-api/runningjobs/files HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/downloads
+
+Request body:
+{"page":1,"result_per_page":20,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:28+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:28+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:31+00:00
+POST /gas/omc-api/surcharge/compile HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"user_id":"1","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:33+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:34+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:35+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:37+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:38+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:39+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:40+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:41+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:43+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:44+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:45+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:46+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:47+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:49+00:00
+POST /gas/omc-api/surcharge/compilation_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"CMP1616184451","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:54+00:00
+POST /gas/omc-api/surcharge/start_export HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"filename":"Penalties-1616184472848","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:55+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184474","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:56+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184474","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:57+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184474","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:07:59+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184474","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:08:00+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184474","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:08:01+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184474","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:08:02+00:00
+POST /gas/omc-api/surcharge/file_export_status HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"jobid":"EXP1616184474","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:08:09+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:08:09+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/7/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"7","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:08:14+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:08:14+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:08:25+00:00
+POST /gas/omc-api/runningjobs/files HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/downloads
+
+Request body:
+{"page":1,"result_per_page":20,"search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:09:26+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:09:26+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:09:37+00:00
+POST /gas/omc-api/bankaccounts/editbank HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/13/view
+
+Request body:
+{"id":"13","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:09:37+00:00
+POST /gas/omc-api/surcharge/charges HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty/13/view
+
+Request body:
+{"result_per_page":20,"page":1,"search":"","id":"13","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:10:07+00:00
+POST /gas/omc-api/bankaccounts/options_otherbanks HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+
+REQUEST TIME: 20:10:07+00:00
+POST /gas/omc-api/surcharge/accounts HTTP/1.1
+
+HTTP headers:
+Authorization: Bearer MTo0N2VlMmJiNjdlMDQ=
+Host: localhost
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://localhost:8080
+Connection: keep-alive
+Referer: http://localhost:8080/revenue/penalty
+
+Request body:
+{"page":1,"result_per_page":20,"bank_type":"all","bank_name":"All","search":"","request_madeby_name":"Daniel Vincent Johnson","request_madeby_id":"1","request_madeby_access_level":"admin"}
+

@@ -270,7 +270,7 @@ export default {
 
 				if (value) {
 					this.records.forEach(function (record) {
-						selected.push(record.account_id_from)
+						selected.push(record.omc_id)
 					})
 				}
 				this.selectedRecords = selected

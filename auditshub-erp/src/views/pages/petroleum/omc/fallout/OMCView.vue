@@ -239,7 +239,7 @@
     >
       <p>
         <span
-          v-for="(desc, index) in importDesc"
+          v-for="(desc, index) in exportDesc"
           :key="index"
           v-html="formatDesc(desc)"
           ><br
@@ -333,7 +333,7 @@ export default {
       statuscheck: null,
       jobid: null,
       errorStr: ["unknown jobid", "error"],
-      importDesc: [],
+      exportDesc: [],
       exportStatus: "",
       exportDetails: "",
       //receipt data list starts here
@@ -788,7 +788,7 @@ export default {
       this.canCloseModal = false;
       this.reloadButton = false;
       this.jobid = null;
-      this.importDesc = [];
+      this.exportDesc = [];
       this.exportStatus = "";
       if (this.statuscheck) {
         clearInterval(this.statuscheck);
@@ -815,8 +815,8 @@ export default {
       return `<span class="text-primary">->${data}<br/></span> `;
     },
     pushDescription(data) {
-      if (!this.importDesc.includes(data)) {
-        this.importDesc.push(data);
+      if (!this.exportDesc.includes(data)) {
+        this.exportDesc.push(data);
       }
     },
     async exportWarn() {
