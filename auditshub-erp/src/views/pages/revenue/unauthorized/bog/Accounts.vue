@@ -13,10 +13,18 @@
               icon="icon-shuffle"
               v-if="deletebutton && canDelete()"
               @click="removeWarn()"
-              >Remove Reconcilation</vs-button
+              >Remove Reconciliation</vs-button
+            >
+            <vs-button
+              icon-pack="feather"
+              icon="icon-mail"
+              title="Send to BOG"
+              v-if="deletebutton"
+              @click="sendtobog()"
+              >Send to BOG</vs-button
             >
             <vs-spacer />
-            <div class="w-1/5 mx-1 px-2" >
+            <div class="w-1/5 mx-1 px-2">
               <span>Search Accounts</span>
               <vs-input
                 id="text"
@@ -58,6 +66,7 @@
                     <th scope="col">Account</th>
                     <th scope="col">Infractions</th>
                     <th scope="col" class="text-right">Amount</th>
+                    <th scope="col">Bank</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -86,6 +95,9 @@
                     </td>
                     <td class="text-right">
                       {{ record.amount }}
+                    </td>
+                    <td>
+                      {{ record.bank_name }}
                     </td>
                   </tr>
                 </tbody>
@@ -154,203 +166,239 @@
 
 <script>
 // Import Swal
-import Swal from 'sweetalert2'
-import mStorage from '@/store/storage.js'
+import Swal from "sweetalert2";
+import mStorage from "../../../../../store/storage";
 
 export default {
-	beforeRouteEnter (to, from, next) {
-		next((vm) => {
-			if (
-				to.meta &&
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (
+        to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-			) {
-				vm.pushReplacement(vm.AppActiveUser.baseUrl)
-			}
-		})
-	},
-	data () {
-		return {
-			//receipt data list starts here
-			pkey: 'bog-unauthorized-list-key',
-			message: '',
-			numbering: 0,
-			currentPage: 1,
-			result_per_page: 20,
-			loading: true,
-			deletebutton: false,
-			pagination: {
-				haspages: false,
-				page: 0,
-				start: 0,
-				end: 0,
-				total: 0,
-				pages: 0,
-				hasNext: false,
-				hasPrevious: false
-			},
-			selectedRecords: [],
-			search: '',
-			records: [],
-			search_timer: null,
-			bank_type: { value: 'all', label: 'All' },
-			bank_name: { value: 'all', label: 'All' },
-			category_group: [],
-			banks: [],
-			categories: [],
-			filter_category: { value: 'all', label: 'All' }
-		}
-	},
-	computed: {
-		selectAll: {
-			get () {
-				return this.records
-					? this.selectedRecords.length == this.records.length
-					: false
-			},
-			set (value) {
-				const selected = []
+      ) {
+        vm.pushReplacement(vm.AppActiveUser.baseUrl);
+      }
+    });
+  },
+  data() {
+    return {
+      //receipt data list starts here
+      pkey: "org-unauthorized-list-key",
+      message: "",
+      numbering: 0,
+      currentPage: 1,
+      result_per_page: 20,
+      loading: true,
+      deletebutton: false,
+      pagination: {
+        haspages: false,
+        page: 0,
+        start: 0,
+        end: 0,
+        total: 0,
+        pages: 0,
+        hasNext: false,
+        hasPrevious: false,
+      },
+      selectedRecords: [],
+      search: "",
+      records: [],
+      search_timer: null,
+      bank_type: { value: "all", label: "All" },
+      bank_name: { value: "all", label: "All" },
+      category_group: [],
+      banks: [],
+      categories: [],
+      filter_category: { value: "all", label: "All" },
+    };
+  },
+  computed: {
+    selectAll: {
+      get: function () {
+        return this.records
+          ? this.selectedRecords.length == this.records.length
+          : false;
+      },
+      set: function (value) {
+        var selected = [];
 
-				if (value) {
-					this.records.forEach(function (record) {
-						selected.push(record.account_from)
-					})
-				}
-				this.selectedRecords = selected
-			}
-		},
-		sortedRecords () {
-			try {
-				return this.filterObj(this.records, this.search).sort((a, b) => {
-					let modifier = 1
-					if (this.currentSortDir === 'desc') modifier = -1
-					if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
-					if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
-					return 0
-				})
-			} catch (error) {
-				console.warn(error)
-			}
-		},
-		photo () {
-			return require('@/assets/images/portrait/small/default.png')
-		}
-	},
-	mounted () {
-		this.currentPage = Number(mStorage.get(`${this.pkey}page`)) || 1
-		this.getData()
-	},
-	watch: {
-		currentPage () {
-			mStorage.set(`${this.pkey}page`, this.currentPage)
-			this.getData()
-		},
-		result_per_page () {
-			this.getData(true)
-		},
-		search (newVal, oldVal) {
-			this.startSearch(newVal, oldVal)
-		},
-		pagination () {
-			this.numbering = this.pagination.start
-		},
-		selectedRecords (newVal, oldVal) {
-			if (this.selectedRecords.length > 0) {
-				this.deletebutton = true
-			} else {
-				this.deletebutton = false
-			}
-		}
-	},
-	methods: {
-		number (num) {
-			return this.numbering + num
-		},
-		startSearch (newVal, oldVal) {
-			if (this.search_timer) {
-				clearTimeout(this.search_timer)
-			}
-			const vm = this
-			this.search_timer = setTimeout(function () {
-				vm.getData()
-			}, 800)
-		},
-		//reconciliation starts here
-		getData (scroll) {
-			const user = this.AppActiveUser
-			const isbog = user.types[1] == 'organization' ? 'true' : 'false'
-			this.loading = true
-			this.post('/unauthorized/', {
-				page: this.currentPage,
-				result_per_page: this.result_per_page,
-				access_type: user.access_level,
-				user_id: user.id,
-				search: this.search,
-				bank_type: 'Bank Of Ghana',
-				isbog
-			})
-				.then((response) => {
-					console.log(response.data)
-					this.records = []
-					this.loading = false
-					this.message = response.data.message
-					this.pagination = response.data.pagination
-					if (response.data.success) {
-						this.records = response.data.unauthorized
-					}
-				})
-				.catch((error) => {
-					this.hasData = false
-					this.loading = false
-					console.log(error)
-				})
-		},
-		removeWarn () {
-			if (!this.canDelete()) {
-				return Swal.fire(
-					'Not Allowed!',
-					'You do not have permission to delete any record',
-					'error'
-				)
-			}
-			Swal.fire({
-				title: 'Are you sure?',
-				text: 'You won\'t be able to revert this!',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3cc879',
-				cancelButtonColor: '#ea5455',
-				confirmButtonText: 'Yes, remove it!'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					this.remove(this.selectedRecords)
-				}
-			})
-		},
-		remove (ids) {
-			this.showLoading('Removing reconcilations, please wait')
-			this.post('/unauthorized/remove_reconcilation', {
-				id: ids
-			})
-				.then((response) => {
-					this.closeLoading()
-					if (response.data.success == true) {
-						Swal.fire(
-							'Deleted!',
-							'The Account(s) has been deleted.',
-							'success'
-						)
-						this.selectedRecords = []
-						this.getData()
-					} else {
-						Swal.fire('Failed!', response.data.message, 'error')
-					}
-				})
-				.catch((error) => {
-					this.closeLoading()
-					Swal.fire('Failed!', error.message, 'error')
-				})
-		}
-	}
-}
+        if (value) {
+          this.records.forEach(function (record) {
+            selected.push(record.account_from);
+          });
+        }
+        this.selectedRecords = selected;
+      },
+    },
+    sortedRecords: function () {
+      try {
+        return this.filterObj(this.records, this.search).sort((a, b) => {
+          var modifier = 1;
+          if (this.currentSortDir === "desc") modifier = -1;
+          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+          return 0;
+        });
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+    photo() {
+      return require("@/assets/images/portrait/small/default.png");
+    },
+  },
+  mounted: function () {
+    this.currentPage = Number(mStorage.get(`${this.pkey}page`)) || 1;
+    this.getData();
+  },
+  watch: {
+    currentPage: function () {
+      mStorage.set(`${this.pkey}page`, this.currentPage);
+      this.getData();
+    },
+    result_per_page: function () {
+      this.getData(true);
+    },
+    search: function (newVal, oldVal) {
+      this.startSearch(newVal, oldVal);
+    },
+    pagination: function () {
+      this.numbering = this.pagination.start;
+    },
+    selectedRecords: function (newVal, oldVal) {
+      if (this.selectedRecords.length > 0) {
+        this.deletebutton = true;
+      } else {
+        this.deletebutton = false;
+      }
+    },
+  },
+  methods: {
+    number: function (num) {
+      return this.numbering + num;
+    },
+    startSearch: function (newVal, oldVal) {
+      if (this.search_timer) {
+        clearTimeout(this.search_timer);
+      }
+      const vm = this;
+      this.search_timer = setTimeout(function () {
+        vm.getData();
+      }, 800);
+    },
+    //Reconciliation starts here
+    getData: function (scroll) {
+      var user = this.AppActiveUser;
+      var isbog = user.types[1] == "organization" ? "true" : "false";
+      this.loading = true;
+      this.post("/unauthorized/", {
+        page: this.currentPage,
+        result_per_page: this.result_per_page,
+        access_type: user.access_level,
+        user_id: user.id,
+        search: this.search,
+        bank_type: "Bank Of Ghana",
+        isbog: isbog,
+      })
+        .then((response) => {
+          console.log(response.data);
+          this.records = [];
+          this.loading = false;
+          this.message = response.data.message;
+          this.pagination = response.data.pagination;
+          if (response.data.success) {
+            this.records = response.data.unauthorized;
+          }
+        })
+        .catch((error) => {
+          this.hasData = false;
+          this.loading = false;
+          console.log(error);
+        });
+    },
+    removeWarn() {
+      if (!this.canDelete()) {
+        return Swal.fire(
+          "Not Allowed!",
+          "You do not have permission to delete any record",
+          "error"
+        );
+      }
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3cc879",
+        cancelButtonColor: "#ea5455",
+        confirmButtonText: "Yes, remove it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.remove(this.selectedRecords);
+        }
+      });
+    },
+    remove: function (ids) {
+      this.showLoading("Removing Reconciliations, please wait");
+      this.post("/unauthorized/remove_reconcilation", {
+        id: ids,
+      })
+        .then((response) => {
+          this.closeLoading();
+          if (response.data.success == true) {
+            Swal.fire(
+              "Deleted!",
+              "The Account(s) has been deleted.",
+              "success"
+            );
+            this.selectedRecords = [];
+            this.getData();
+          } else {
+            Swal.fire("Failed!", response.data.message, "error");
+          }
+        })
+        .catch((error) => {
+          this.closeLoading();
+          Swal.fire("Failed!", error.message, "error");
+        });
+    },
+    sendtobog: function () {
+      Swal.fire({
+        title: "Are you sure?",
+        text:
+          "You are about to send all the infractions in the selected account to BOG",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, send!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.sendtobogNow();
+        }
+      });
+    },
+    sendtobogNow: function () {
+      app.showLoading("Sending infractions to BOG, please wait");
+      this.post("unauthorized/send_all_to_bog", {
+        acc_id: this.selectedRecords,
+      })
+        .then((response) => {
+          app.closeLoading();
+          if (response.data.success == true) {
+            Swal.fire("Conpleted!", "Infractions sent to BOG.", "success");
+            this.selectedRecords = [];
+            this.loadUnauthorized(false);
+          } else {
+            Swal.fire("Failed!", response.data.message, "error");
+          }
+        })
+        .catch((error) => {
+          app.closeLoading();
+          Swal.fire("Failed!", error.message, "error");
+        });
+    },
+  },
+};
 </script>
