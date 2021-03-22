@@ -31,7 +31,7 @@ class NationalsummaryModel extends BaseModel
                 $condition .= " AND (b.`name` LIKE '%$search%' OR omc_r.date = '$search') ";
             }
         }
-        $this->paging->rawQuery("SELECT b.name as bank,b.id as bankid, omc_r.date, SUM(omc_r.amount) as amount, COUNT(omc_r.id) as total FROM `omc_receipt`as omc_r LEFT JOIN `banks` as b ON b.id=omc_r.bank_id $condition GROUP BY omc_r.date, omc_r.bank_id ORDER BY omc_r.`date` DESC ");
+        $this->paging->rawQuery("SELECT b.name as bank,b.id as bankid, omc_r.date, SUM(omc_r.amount) as amount, COUNT(omc_r.id) as total FROM `omc_receipt`as omc_r LEFT JOIN `banks` as b ON b.id=omc_r.bank_id $condition GROUP BY omc_r.date, omc_r.bank_id ORDER BY omc_r.`date`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();

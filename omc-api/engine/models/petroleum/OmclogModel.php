@@ -62,7 +62,7 @@ class OmclogModel extends BaseModel
         $this->paging->table("audits_logs_omc");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
-        $this->paging->condition("$condition Order By `id` DESC");
+        $this->paging->condition("$condition Order By `date`");
         $this->paging->execute();
         $this->paging->reset();
 

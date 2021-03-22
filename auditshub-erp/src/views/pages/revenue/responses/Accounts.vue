@@ -5,7 +5,16 @@
       <vx-card title="Bank Accounts">
         <p></p>
         <div class="vs-component vs-con-table stripe vs-table-secondary">
-          <header class="header-table vs-table--header my-3">$condition = "WHERE ( ac.`name` LIKE '%$search%' OR  ac.`acc_num1` LIKE '%$search%' OR  ac.`acc_num2` LIKE '%$search%')";
+          <header class="header-table vs-table--header my-3">
+            <vs-button
+              type="relief"
+              color="warning"
+              icon-pack="feather"
+              icon="icon-file-text"
+              v-if="deletebutton && AppActiveUser.access_level==='admin'"
+              @click="exportWarn()"
+              >Export</vs-button
+            >
             <vs-spacer />
             <div class="w-1/5 mx-1 px-2">
               <span>Search Accounts</span>

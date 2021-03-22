@@ -45,7 +45,7 @@ class ReceiptsModel extends BaseModel
         $result_per_page = $this->http->json->result_per_page??20;
         $page = $this->http->json->page??1;
 
-        $this->paging->rawQuery("SELECT ".self::$table.".*, omc.name,omc.phone,omc.location,omc.region,omc.email,omc.district FROM ".self::$table." JOIN omc ON ".self::$table.".omc_id = omc.id $condition Order By ".self::$table.".`id` DESC");
+        $this->paging->rawQuery("SELECT ".self::$table.".*, omc.name,omc.phone,omc.location,omc.region,omc.email,omc.district FROM ".self::$table." JOIN omc ON ".self::$table.".omc_id = omc.id $condition Order By ".self::$table.".`date`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();
@@ -83,7 +83,7 @@ class ReceiptsModel extends BaseModel
         $this->paging->table(self::$table);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
-        $this->paging->condition("$condition Order By `id` DESC");
+        $this->paging->condition("$condition Order By `date`");
         $this->paging->execute();
         $this->paging->reset();
 

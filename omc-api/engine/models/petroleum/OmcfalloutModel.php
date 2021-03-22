@@ -35,7 +35,7 @@ class OmcfalloutModel extends BaseModel
                 $condition .= " AND (o.`name` LIKE '%$search%') ";
             }
         }
-        $this->paging->rawQuery("SELECT o.name,o.phone,o.email,o.location,o.region,o.district,o.id,SUM(omc_r.amount) as amount, COUNT(omc_r.id) as total FROM `omc_receipt`as omc_r LEFT JOIN `omc` as o ON o.id=omc_r.omc_id $condition GROUP BY o.name ORDER BY omc_r.`status` ASC ");
+        $this->paging->rawQuery("SELECT o.name,o.phone,o.email,o.location,o.region,o.district,o.id,SUM(omc_r.amount) as amount, COUNT(omc_r.id) as total FROM `omc_receipt`as omc_r LEFT JOIN `omc` as o ON o.id=omc_r.omc_id $condition GROUP BY o.name ORDER BY omc_r.`date` ");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();
@@ -71,7 +71,7 @@ class OmcfalloutModel extends BaseModel
         $this->paging->table("omc_receipt");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
-        $this->paging->condition("$condition Order By `id` DESC");
+        $this->paging->condition("$condition Order By `date`");
         $this->paging->execute();
         $this->paging->reset();
 
@@ -105,7 +105,7 @@ class OmcfalloutModel extends BaseModel
             $this->http->_403("OMC id is required");
         }
 
-        $this->paging->rawQuery("SELECT ".self::$table.".*, omc.name,omc.phone,omc.location,omc.region,omc.email,omc.district FROM ".self::$table." JOIN omc ON ".self::$table.".omc_id = omc.id WHERE ".self::$table.".`status`= 'flagged' AND ".self::$table.".`omc_id`= $omcid Order By ".self::$table.".`id` DESC");
+        $this->paging->rawQuery("SELECT ".self::$table.".*, omc.name,omc.phone,omc.location,omc.region,omc.email,omc.district FROM ".self::$table." JOIN omc ON ".self::$table.".omc_id = omc.id WHERE ".self::$table.".`status`= 'flagged' AND ".self::$table.".`omc_id`= $omcid Order By ".self::$table.".`date`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();
