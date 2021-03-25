@@ -442,7 +442,6 @@ export default {
 			selectedRecords: [],
 			search: '',
 			records: [],
-			search_timer: null,
 			bank_type: { value: 'all', label: 'All' },
 			bank_name: { value: 'all', label: 'All' },
 			category_group: [],
@@ -454,9 +453,7 @@ export default {
 	computed: {
 		selectAll: {
 			get () {
-				return this.records
-					? this.selectedRecords.length == this.records.length
-					: false
+				return this.records ? this.selectedRecords.length === this.records.length : false
 			},
 			set (value) {
 				const selected = []
@@ -499,13 +496,13 @@ export default {
 		result_per_page () {
 			this.loadAccounts(true)
 		},
-		bank_type (newVal, oldVal) {
+		bank_type () {
 			this.loadAccounts(true)
 		},
-		bank_name (newVal, oldVal) {
+		bank_name () {
 			this.loadAccounts(true)
 		},
-		filter_category (newVal, oldVal) {
+		filter_category () {
 			this.loadAccounts(true)
 		},
 		search (newVal, oldVal) {
@@ -514,7 +511,7 @@ export default {
 		pagination () {
 			this.numbering = this.pagination.start
 		},
-		selectedRecords (newVal, oldVal) {
+		selectedRecords () {
 			if (this.selectedRecords.length > 0) {
 				this.deletebutton = true
 			} else {
@@ -524,7 +521,7 @@ export default {
 	},
 	methods: {
 		notNull (data) {
-			if (null != data && data.label) {
+			if (null !== data && data.label) {
 				return data.label
 			}
 			return ''
@@ -538,7 +535,7 @@ export default {
 			} else if (this.hasdata(account.acc_num2)) {
 				acnts += account.acc_num2
 			}
-			if (account.status == 'Inactive') {
+			if (account.status === 'Inactive') {
 				acnts += ' - <span class="text-danger">Inactive</span> '
 			} else {
 				acnts += ' - <span class="text-primary">Active</span> '
@@ -548,7 +545,7 @@ export default {
 		number (num) {
 			return this.numbering + num
 		},
-		startSearch (newVal, oldVal) {
+		startSearch () {
 			if (this.search_timer) {
 				clearTimeout(this.search_timer)
 			}
@@ -564,7 +561,7 @@ export default {
 			})
 				.then((response) => {
 					this.closeLoading()
-					if (response.data.success == true) {
+					if (response.data.success === true) {
 						this.record_found = true
 						this.data = response.data.bankaccounts[0]
 						this.loadAccounts()
@@ -594,7 +591,7 @@ export default {
 				})
 		},
 		//reconciliation starts here
-		loadAccounts (scroll) {
+		loadAccounts () {
 			this.loading = true
 			this.post('/bankaccounts/reconcile', {
 				bid: this.accountid,
@@ -671,7 +668,7 @@ export default {
 						this.pushDescription(status.description)
 						this.reconcilationStatus = status.status
 						this.reconcileDetails = status.details
-						if (status.status.toLowerCase() == 'completed') {
+						if (status.status.toLowerCase() === 'completed') {
 							clearInterval(this.statuscheck)
 							this.reconcilationStatus = ''
 							this.canCloseModal = true
@@ -717,7 +714,7 @@ export default {
 					})
 						.then((response) => {
 							this.closeLoading()
-							if (response.data.success == true) {
+							if (response.data.success === true) {
 								this.selectedRecords = []
 								this.loadAccounts()
 								Swal.fire(
@@ -756,7 +753,7 @@ export default {
 					})
 						.then((response) => {
 							this.closeLoading()
-							if (response.data.success == true) {
+							if (response.data.success === true) {
 								this.selectedRecords = []
 								this.loadAccounts()
 								Swal.fire(
@@ -783,7 +780,7 @@ export default {
 			for (let index = 2; index <= 100; index++) {
 				inputOptions[index] = `${index  } Days Interval`
 			}
-			const currentVal = this.interval != null ? this.interval : ''
+			const currentVal = this.interval !== null ? this.interval : ''
 			const { value: interval, isDismissed: isDismissed } = await Swal.fire({
 				title: 'Confirm Reconcilation',
 				text: 'You are about to start reconciliation for this account!',
@@ -796,7 +793,7 @@ export default {
 				cancelButtonColor: '#d33',
 				confirmButtonText: 'Yes, continue!',
 				inputPlaceholder: 'Select Date Interval',
-				inputValidator: (value) => {}
+				inputValidator: () => {}
 			})
 			if (!isDismissed) {
 				this.interval = interval
@@ -824,7 +821,7 @@ export default {
 				cancelButtonColor: '#d33',
 				confirmButtonText: 'Yes, continue!',
 				inputPlaceholder: 'Select type',
-				inputValidator: (value) => {}
+				inputValidator: () => {}
 			})
 			if (!isDismissed) {
 				this.transType = transactionType
@@ -832,7 +829,7 @@ export default {
 			}
 		},
 		startReconcilation () {
-			let cat
+			let cat = 0
 			if (!this.hasdata(this.category_group)) {
 				cat = 0
 			} else {
@@ -855,7 +852,7 @@ export default {
 				.then((response) => {
 					console.log(response.data)
 					this.closeLoading()
-					if (response.data.success == true) {
+					if (response.data.success === true) {
 						this.popupActive = true
 						this.pushDescription(response.data.message)
 						this.reconcilationStatus = 'Initializing'

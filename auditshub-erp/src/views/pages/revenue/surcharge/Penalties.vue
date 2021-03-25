@@ -375,7 +375,8 @@ export default {
 			bank_name: { value: 'all', label: 'All' },
 			category_group: [],
 			banks: [],
-			categories: []
+			categories: [],
+			bank_accounts: {}
 		}
 	},
 	computed: {
@@ -471,6 +472,7 @@ export default {
 					this.loading = false
 					this.message = response.data.message
 					this.pagination = response.data.pagination
+					this.bank_accounts = response.data.bank_accounts
 					if (response.data.success) {
 						this.records = response.data.surcharge
 					}
@@ -493,14 +495,33 @@ export default {
 				confirmButtonText: 'Yes, compile!'
 			}).then((result) => {
 				if (result.isConfirmed) {
-					this.compile()
+					this.chooseAccount()
 				}
 			})
 		},
-		compile () {
+		async chooseAccount () {
+			const { value: account, isDismissed: isDismissed } = await Swal.fire({
+				title: 'Select Account',
+				text: 'Select the account to compute penalty',
+				icon: 'question',
+				input: 'select',
+				inputOptions: this.bank_accounts,
+				showCancelButton: true,
+				confirmButtonColor: '#0d6723',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, continue!',
+				inputPlaceholder: 'Select Account',
+				inputValidator: () => {}
+			})
+			if (!isDismissed && account) {
+				this.compile(account)
+			}
+		},
+		compile (account) {
 			this.showLoading('Sending compile request, hang on a bit')
 			this.post('/surcharge/compile', {
-				user_id: this.AppActiveUser.id
+				user_id: this.AppActiveUser.id,
+				account_id: account
 			})
 				.then((response) => {
 					this.closeLoading()
@@ -567,6 +588,7 @@ export default {
 						this.compilationStatus = status.status
 						this.compilationDetails = status.details
 						if (status.status.toLowerCase() === 'completed') {
+							this.getData()
 							clearInterval(this.compileststuscheck)
 							this.compilationStatus = ''
 							this.canCloseCompileModal = true

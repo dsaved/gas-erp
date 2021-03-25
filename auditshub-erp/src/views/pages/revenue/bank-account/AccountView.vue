@@ -254,7 +254,7 @@
           upload-button-lable="Upload Statements"
           type="relief"
           color="primary"
-          max-size="3072"
+          max-size="12343072"
           :file-id="accountid"
           description="Allowed XLSX and XLX, Max size of 3MB"
           upload-url="/statements/import/"

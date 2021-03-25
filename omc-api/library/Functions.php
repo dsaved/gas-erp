@@ -335,3 +335,16 @@ function savelog($log_type, $content){
 		}
 	}
 }
+
+function deleteOldFiles() {
+    $db = (new DB)->getInstance();
+    $db->query("SELECT * FROM file_download WHERE created < CURDATE()");
+	foreach ($db->results() as $key => $value) {
+        $link = str_replace("../omc-api/", "./", $value->link);
+        $link = str_replace("../api/", "./", $link);
+        $db->query("DELETE FROM file_download WHERE id={$value->id}");
+		if(file_exists($link)){
+			@unlink($link);
+		}
+	}
+}

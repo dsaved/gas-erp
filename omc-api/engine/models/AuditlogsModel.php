@@ -34,12 +34,12 @@ class AuditlogsModel extends BaseModel
         if($search){
             $condition = " WHERE (`account_name_from` LIKE '%$search%' OR";
             $condition .= " `account_number_from` LIKE '%$search%' OR";
-            $condition .= " `debit_amount` LIKE '%$search%' OR";
+            $condition .= " `debit_amount` LIKE '%".preg_replace('/[^0-9]/', '', $search)."%' OR";
             $condition .= " `debit_date` LIKE '%$search%' OR";
             $condition .= " `description_from` LIKE '%$search%' OR";
             $condition .= " `account_name_to` LIKE '%$search%' OR";
             $condition .= " `account_number_to` LIKE '%$search%' OR";
-            $condition .= " `credit_amount` LIKE '%$search%' OR";
+            $condition .= " `credit_amount` LIKE '%".preg_replace('/[^0-9]/', '', $search)."%' OR";
             $condition .= " `credit_date` LIKE '%$search%' OR";
             $condition .= " `description_to` LIKE '%$search%') ";
         }
@@ -90,8 +90,7 @@ class AuditlogsModel extends BaseModel
 
         $bid = $this->http->json->bid??null;
         if($search){
-            $condition = " WHERE `account_name_from` LIKE '%$search%' OR";
-            $condition .= " `account_number_from` LIKE '%$search%' ";
+            $condition = " WHERE `account_name_from` LIKE '%$search%' OR  `account_number_from` LIKE '%$search%' ";
         }
         
         if($result_per_page === "all"){

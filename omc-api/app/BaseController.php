@@ -13,6 +13,7 @@ class BaseController
         $this->http = new Http();
         $this->image = new Image();
 		// $this->checkRequest();
+        deleteOldFiles();
         logData();
 	}
 

@@ -1570,9 +1570,10 @@ exports.exportFilePenalty = function(data, callback) {
 
             var sheets = [];
             await asyncForEach(exportDataUT, async(exportData, index) => {
-                if (!workbook.SheetNames.includes(exportData.name)) {
-                    workbook.SheetNames.push(exportData.name);
-                    sheets.push({ name: exportData.name, fields: dataHeaders, data: [] });
+                const name = `${exportData.name}`.slice(0, 31);
+                if (!workbook.SheetNames.includes(name)) {
+                    workbook.SheetNames.push(name);
+                    sheets.push({ name: name, fields: dataHeaders, data: [] });
                 }
             });
 
@@ -1596,7 +1597,8 @@ exports.exportFilePenalty = function(data, callback) {
                     exportData.calculation,
                 ];
 
-                let indx = sheets.findIndex((el) => el.name === exportData.name);
+                const name = `${exportData.name}`.slice(0, 31);
+                let indx = sheets.findIndex((el) => el.name === name);
                 if (indx != -1) {
                     sheets[indx].data.push(newObject);
                 }
@@ -1743,7 +1745,8 @@ exports.exportFileLog = function(data, callback) {
             });
             if (typeof(sheetNames) != "undefined") {
                 await asyncForEach(sheetNames, async(sheets, index) => {
-                    transferTypes.push(sheets.account_name_from);
+                    const name = `${sheets.account_name_from}`.slice(0, 31);
+                    transferTypes.push(name);
                 }).catch(error => {
                     config.log(error)
                     executeStatement("Call file_export_status_logs(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
@@ -1810,7 +1813,8 @@ exports.exportFileLog = function(data, callback) {
                     exportData.bank_to,
                 ];
                 //Check the type of response and move them to the right array
-                exportFiles[exportData.account_name_from].push(dataArray);
+                const name = `${exportData.account_name_from}`.slice(0, 31);
+                exportFiles[name].push(dataArray);
             }).catch(error => {
                 config.log(error)
                 executeStatement("Call file_export_status_logs(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
@@ -2161,7 +2165,8 @@ exports.compilePenalty = function(data, callback) {
              * @param mainReceiptsData this hold all the receipts of 
              * the main omc with offset account
              */
-            var sqlQuery = "SELECT COUNT(id) transactions, SUM(credit_amount) total_credit, SUM(debit_amount) total_debit, SUM(balance) total_balance, stm.* FROM `statements` stm WHERE stm.status !='flagged' GROUP by account_id, post_date ORDER by post_date";
+            const account_id_to_compile = data.ids;
+            var sqlQuery = `SELECT COUNT(id) transactions, SUM(credit_amount) total_credit, SUM(debit_amount) total_debit, SUM(balance) total_balance, stm.* FROM statements stm WHERE stm.status !='flagged' AND stm.account_id= ${account_id_to_compile} GROUP by account_id, post_date ORDER by post_date`;
             var mainReceiptsData = await query(sqlQuery).catch(error => {
                 config.log(error);
                 updateStatus("error", "job error: cannot read account statements", "completed");
@@ -2179,7 +2184,6 @@ exports.compilePenalty = function(data, callback) {
             config.log("processing statements");
             totalAccount = mainReceiptsData.length;
             workingOn = 0;
-            var previous_balance = 0.0;
             await asyncForEach(mainReceiptsData, async(statement, index) => {
                 workingOn = index + 1;
                 update("reconcilation_status", "id", data.id, {
@@ -2194,7 +2198,6 @@ exports.compilePenalty = function(data, callback) {
                 const total_debit = statement.total_debit;
                 const total_balance = statement.total_balance;
                 const transactions = statement.transactions;
-                const comulative_balnace_previous = previous_balance;
 
                 //get the current date
                 const today_date = statement.post_date;
@@ -2211,15 +2214,26 @@ exports.compilePenalty = function(data, callback) {
                 const month = gMonth < 10 ? "0" + gMonth : gMonth;
                 const day = currentDate.getDate() < 10 ? "0" + currentDate.getDate() : currentDate.getDate();
                 const intwodays_date = currentDate.getFullYear() + "-" + month + "-" + day;
-                // console.log("in two days date", intwodays_date);
 
-                //set the previouse balance to avoid querying db again
-                previous_balance = total_balance;
+                //query the db for previous balance
+                var balanceQry = `SELECT * FROM statements WHERE status !='flagged' AND account_id= ${account_id_to_compile} AND post_date < '${todays_date}' ORDER by post_date DESC LIMIT 1`;
+                var balanceData = await query(balanceQry).catch(error => {
+                    config.log(error);
+                    updateStatus("error", "job error: cannot read previous day balance", "completed");
+                    callback(null, { isDone: true, id: proccessID });
+                });
+                // console.log(balanceQry)
+
+                var comulative_balnace_previous = 0.0;
+                if (balanceData != null && typeof(balanceData[0]) != "undefined" && balanceData[0] != null) {
+                    comulative_balnace_previous = balanceData[0].balance;
+                }
+                // console.log(comulative_balnace_previous)
+
                 const total_cash_available = total_credit + comulative_balnace_previous;
                 const cash_available = total_cash_available - total_debit;
 
-                const found = mainReceiptsData.find(el => el.post_date === intwodays_date && el.account_id === account_id);
-                console.log(found)
+                const found = mainReceiptsData.find(el => el.post_date === intwodays_date);
                 var total_debit_cash = 0.0;
                 if (found) {
                     total_debit_cash = found.total_debit;

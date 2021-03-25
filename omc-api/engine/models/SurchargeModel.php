@@ -93,6 +93,16 @@ class SurchargeModel extends BaseModel
         }
 
         $response["pagination"] = $this->paging->paging();
+        $response["bank_accounts"] =  [];
+
+        $this->db->query("SELECT * FROM accounts ORDER BY name");
+        $results = $this->db->results();
+        if (!empty($results)) {
+            foreach ($results as $data) {
+                $response["bank_accounts"][$data->id] = $data->name;
+            }
+        }
+
         return $response;
     }
     
@@ -317,15 +327,16 @@ class SurchargeModel extends BaseModel
     
     public function compile()
     {
-        $this->db->query("TRUNCATE `surcharge`;");
         $user_id = $this->http->json->user_id;
+        $account_id = $this->http->json->account_id;
+        $this->db->query("DELETE FROM `surcharge` WHERE account_id=$account_id;");
         $jobid = "CMP".time();
         $data = array(
             'jobid' =>  $jobid,
             'user_id' =>  $user_id,
             'bank_type' =>  "compile",
             'account' =>  0,
-            'ids' =>  0,
+            'ids' =>  $account_id,
             'intval' =>  0,
             'reconcile_with' =>  "few",
             'reconciling_with' =>  "",
