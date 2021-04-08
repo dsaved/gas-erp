@@ -365,28 +365,28 @@ export default {
 					return
 				}
 				if (this.bank_type == this.types[0]) {
-					if (this.hasdata(this.acc_num1) && !this.acc_num1.startsWith('1')) {
-						this.$vs.notification({
-							title: 'Error!!!',
-							text: 'Invalid old account number ',
-							sticky: true,
-							color: 'danger',
-							duration: null,
-							position: 'bottom-left'
-						})
-						return
-					}
-					if (this.hasdata(this.acc_num2) && !this.acc_num2.startsWith('1')) {
-						this.$vs.notify({
-							title: 'Error!!!',
-							text: 'Invalid new account number ',
-							sticky: true,
-							color: 'danger',
-							duration: null,
-							position: 'bottom-left'
-						})
-						return
-					}
+					// if (this.hasdata(this.acc_num1) && !this.acc_num1.startsWith('1')) {
+					// 	this.$vs.notification({
+					// 		title: 'Error!!!',
+					// 		text: 'Invalid old account number ',
+					// 		sticky: true,
+					// 		color: 'danger',
+					// 		duration: null,
+					// 		position: 'bottom-left'
+					// 	})
+					// 	return
+					// }
+					// if (this.hasdata(this.acc_num2) && !this.acc_num2.startsWith('1')) {
+					// 	this.$vs.notify({
+					// 		title: 'Error!!!',
+					// 		text: 'Invalid new account number ',
+					// 		sticky: true,
+					// 		color: 'danger',
+					// 		duration: null,
+					// 		position: 'bottom-left'
+					// 	})
+					// 	return
+					// }
 					if (!this.bank || !this.bank.value) {
 						this.$vs.notify({
 							title: 'Error!!!',
@@ -456,28 +456,28 @@ export default {
 					return
 				}
 				if (this.bank_type == this.types[0]) {
-					if (this.hasdata(this.acc_num1) && !this.acc_num1.startsWith('1')) {
-						this.$vs.notification({
-							title: 'Error!!!',
-							text: 'Invalid old account number ',
-							sticky: true,
-							color: 'danger',
-							duration: null,
-							position: 'bottom-left'
-						})
-						return
-					}
-					if (this.hasdata(this.acc_num2) && !this.acc_num2.startsWith('1')) {
-						this.$vs.notify({
-							title: 'Error!!!',
-							text: 'Invalid new account number ',
-							sticky: true,
-							color: 'danger',
-							duration: null,
-							position: 'bottom-left'
-						})
-						return
-					}
+					// if (this.hasdata(this.acc_num1) && !this.acc_num1.startsWith('1')) {
+					// 	this.$vs.notification({
+					// 		title: 'Error!!!',
+					// 		text: 'Invalid old account number ',
+					// 		sticky: true,
+					// 		color: 'danger',
+					// 		duration: null,
+					// 		position: 'bottom-left'
+					// 	})
+					// 	return
+					// }
+					// if (this.hasdata(this.acc_num2) && !this.acc_num2.startsWith('1')) {
+					// 	this.$vs.notify({
+					// 		title: 'Error!!!',
+					// 		text: 'Invalid new account number ',
+					// 		sticky: true,
+					// 		color: 'danger',
+					// 		duration: null,
+					// 		position: 'bottom-left'
+					// 	})
+					// 	return
+					// }
 					if (!this.bank || !this.bank.value) {
 						this.$vs.notify({
 							title: 'Error!!!',

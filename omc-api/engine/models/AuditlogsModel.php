@@ -34,12 +34,12 @@ class AuditlogsModel extends BaseModel
         if($search){
             $condition = " WHERE (`account_name_from` LIKE '%$search%' OR";
             $condition .= " `account_number_from` LIKE '%$search%' OR";
-            $condition .= " `debit_amount` LIKE '%".preg_replace('/[^0-9]/', '', $search)."%' OR";
+            $condition .= " `debit_amount` = ".str_replace(',', '', $search)." OR";
             $condition .= " `debit_date` LIKE '%$search%' OR";
             $condition .= " `description_from` LIKE '%$search%' OR";
             $condition .= " `account_name_to` LIKE '%$search%' OR";
             $condition .= " `account_number_to` LIKE '%$search%' OR";
-            $condition .= " `credit_amount` LIKE '%".preg_replace('/[^0-9]/', '', $search)."%' OR";
+            $condition .= " `credit_amount` = ".str_replace(',', '', $search)." OR";
             $condition .= " `credit_date` LIKE '%$search%' OR";
             $condition .= " `description_to` LIKE '%$search%') ";
         }
@@ -69,6 +69,7 @@ class AuditlogsModel extends BaseModel
             $response['success'] = true;
             $response["auditlogs"] = $result;
         } else {
+            // var_dump($this->paging);exit;
             $response['success'] = false;
             $response['message'] = Msg::$no_auditlogs;
         }
