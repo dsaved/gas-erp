@@ -61,7 +61,7 @@ export default {
 		this.toggleClassInBody(themeConfig.theme)
 		this.$store.commit('UPDATE_WINDOW_WIDTH', window.innerWidth)
 		this.$vs.theme({
-			primary:'rgb(5, 173, 88)' // my new color
+			primary:'#036C82' // my new color
 		})
 		const vh = window.innerHeight * 0.01
 		// Then we set the value in the --vh custom property to the root of the document

@@ -1,5 +1,5 @@
 {
-    "name": "GAS",
+    "name": "SML",
     "version": "4.0.0",
     "private": true,
     "scripts": {
@@ -59,10 +59,12 @@
         "vue-tour": "^1.1.0",
         "vue-tree-halower": "^1.8.0",
         "vue-video-player": "^5.0.2",
+        "vue2-daterange-picker": "^0.6.5",
         "vue2-google-maps": "^0.10.6",
         "vue2-hammer": "^2.1.2",
         "vuedraggable": "^2.21.0",
         "vuejs-datepicker": "^1.5.4",
+        "vuejs-progress-bar": "^1.2.7",
         "vuesax": "jd-0001/vuesax#feat-vs-popup-persistence",
         "vuex": "^3.1.1",
         "xlsx": "^0.16.9"

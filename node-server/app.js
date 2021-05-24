@@ -1,8 +1,24 @@
 var module = require('./config');
 var config = module.configs;
 var mysql = require('mysql');
+const helpers = require('./functions/helper.js')
 var workerFarm = require('worker-farm'),
-    workers = workerFarm(require.resolve('./execute'), ['reconcile', 'reconcileOMC', 'importFile', 'exportFile', 'exportFileFallout', 'exportFileNASummary', 'compilePenalty', 'exportFilePenalty', 'exportFileLog', 'importReceiptFile']),
+    workers = workerFarm(require.resolve('./execute'), [
+        'reconcile',
+        'reconcileOMC',
+        'compilePenalty',
+        'importFile',
+        'importReceiptFile',
+        'importManifest',
+        'importDeclaration',
+        'importOrders',
+        'importPreorders',
+        'exportFile',
+        'exportFileFallout',
+        'exportFileNASummary',
+        'exportFilePenalty',
+        'exportFileLog'
+    ]),
     maxJob = 4,
     currentJobR = 0,
     currentJobExport = 0,
@@ -11,6 +27,7 @@ var workerFarm = require('worker-farm'),
 
 var isSqlConnected = false;
 var sqlConn;
+const Type = { IN: 0, OUT: 1 }
 
 var fs = require('fs')
 var path = require('path')
@@ -28,7 +45,38 @@ fs.readFile(configPath, (error, db_config) => {
         setInterval(() => {
             initialize();
         }, 2000);
+        // setInterval(() => {
+        //     pump_product(Type.IN);
+        // }, 5000);
+        // setInterval(() => {
+        //     pump_product(Type.OUT);
+        // }, 8000);
         config.log('worker thread initialized');
+
+
+        //check missing or undeclared products
+        var checkingundcl = false;
+        var checkingmissing = false;
+        setInterval(async() => {
+            if (!checkingmissing) {
+                checkingmissing = true;
+                await helpers.missingProduct(sqlConn);
+                checkingmissing = false;
+            }
+            if (!checkingundcl) {
+                checkingundcl = true;
+                await helpers.undeclaredProduct(sqlConn);
+                checkingundcl = false;
+            }
+        }, 1000 * 3);
+
+        //alert no sell for a week
+        setInterval(() => {
+            var time = getTime()
+            if (time === "06:00:00") {
+                helpers.alarmNosaleInWeek(sqlConn);
+            }
+        }, 10000);
     });
 });
 
@@ -125,21 +173,87 @@ function fileReceiptImport() {
             } else {
                 if (typeof(chatsHid[0]) != "undefined" && chatsHid[0] != null) {
                     var childJobDescription = chatsHid[0];
-                    var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
-                        getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
-                    sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
-                        if (err) {
-                            config.log(err);
-                        } else {
-                            workers.importReceiptFile(childJobDescription, function(err, result) {
-                                if (result.isDone) {
-                                    process.kill(result.id);
-                                    currentReceiptJobIm--;
-                                }
-                            })
-                            currentReceiptJobIm++;
-                        }
-                    });
+                    if (childJobDescription.type === "receipt") {
+                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
+                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
+                        sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                            if (err) {
+                                config.log(err);
+                            } else {
+                                workers.importReceiptFile(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentReceiptJobIm--;
+                                    }
+                                })
+                                currentReceiptJobIm++;
+                            }
+                        });
+                    } else if (childJobDescription.type === "manifest_imp") {
+                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
+                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
+                        sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                            if (err) {
+                                config.log(err);
+                            } else {
+                                workers.importManifest(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentReceiptJobIm--;
+                                    }
+                                })
+                                currentReceiptJobIm++;
+                            }
+                        });
+                    } else if (childJobDescription.type === "declaration_imp") {
+                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
+                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
+                        sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                            if (err) {
+                                config.log(err);
+                            } else {
+                                workers.importDeclaration(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentReceiptJobIm--;
+                                    }
+                                })
+                                currentReceiptJobIm++;
+                            }
+                        });
+                    } else if (childJobDescription.type === "petroleum_order_imp") {
+                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
+                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
+                        sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                            if (err) {
+                                config.log(err);
+                            } else {
+                                workers.importOrders(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentReceiptJobIm--;
+                                    }
+                                })
+                                currentReceiptJobIm++;
+                            }
+                        });
+                    } else if (childJobDescription.type === "petroleum_preorder_imp") {
+                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
+                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
+                        sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                            if (err) {
+                                config.log(err);
+                            } else {
+                                workers.importPreorders(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentReceiptJobIm--;
+                                    }
+                                })
+                                currentReceiptJobIm++;
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -229,8 +343,150 @@ function fileExportLog() {
     }
 }
 
-function getTime() {
+function pump_product(type) {
+    var XLSX = require('xlsx');
+    var excelData = [];
+    var workbook = XLSX.readFile('inlet-outlet-test.xlsx', {
+        // dateNF: "DD-MMM-YYYY",
+        header: 1,
+        defval: "",
+        cellDates: true,
+        cellNF: true,
+        raw: true,
+        dateNF: 'yyyy-mm-dd;@'
+    });
+    var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
+        // console.log(excelRow);
+        /**
+         * modify array headers and remove special characters.
+         * add the location of the array in the excel file for latter access,
+         * incase an error occures
+         */
+    for (var index = 0; index < excelRow.length; index++) {
+        var excel = excelRow[index];
+        var newObject = {};
+        for (var j in excel) {
+            var newIndx = set_header(j);
+            var value = excel[j].replace(/,/g, '');
+            newObject[newIndx] = value;
+            var today = new Date();
+            today.setMinutes(today.getMinutes() + index);
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            if (newIndx === "date") {
+                value = value.split("/");
+                newObject[newIndx] = value[2] + "-" + value[0] + "-" + value[1] + " " + time;
+            }
+        }
+        excelData.push(newObject);
+    };
+
+    if (type === Type.IN) {
+        console.log("in flow detected");
+        var deportsQty = [];
+        for (var dd = 0; dd < excelData.length; dd++) {
+            var data = excelData[dd];
+            var nodepot = true;
+            for (let index = 0; index < deportsQty.length; index++) {
+                const element = deportsQty[index];
+                if (element.identifyer === `${data.depot}-${data.product_type}`) {
+                    nodepot = false;
+                    deportsQty[index].volume = Number(element.volume) + Number(data.volume)
+                }
+            }
+            if (nodepot) {
+                deportsQty.push({ identifyer: `${data.depot}-${data.product_type}`, product: data.product_type, depot: data.depot, volume: Number(data.volume) })
+            }
+            var sqlQuery = "INSERT INTO `petroleum_inlet`(`datetime`, `depot`, `bdc`, `product_type`, `volume`)";
+            sqlQuery += " VALUES ('" + data.date + "','" + data.depot + "','" + data.bdc + "','" + data.product_type + "'," + data.volume + ")";
+            sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                if (err) console.log(err)
+            });
+        }
+
+        //create or update Tank for Depot
+        for (let deportIndex = 0; deportIndex < deportsQty.length; deportIndex++) {
+            const element = deportsQty[deportIndex];
+            var size = 90000000;
+            var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,product,volume,full) VALUES ('${element.identifyer}','${element.depot}','${element.product}',${element.volume}, ${size})ON DUPLICATE KEY UPDATE full= ${size},volume = volume + ${element.volume};`;
+            sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                if (err) console.log(err)
+            });
+        }
+    }
+
+    if (type === Type.OUT) {
+        console.log("out flow detected");
+        var deportsQty = [];
+        for (var dd = 0; dd < excelData.length; dd++) {
+            var data = excelData[dd];
+            var nodepot = true;
+            for (let index = 0; index < deportsQty.length; index++) {
+                const element = deportsQty[index];
+                if (element.identifyer === `${data.depot}-${data.product_type}`) {
+                    nodepot = false;
+                    deportsQty[index].volume = Number(element.volume) + Number(data.volume)
+                    deportsQty[index].time = data.date
+                }
+            }
+            if (nodepot) {
+                deportsQty.push({ identifyer: `${data.depot}-${data.product_type}`, product: data.product_type, depot: data.depot, volume: Number(data.volume) })
+            }
+            var sqlQuery = "INSERT INTO `petroleum_outlet`(`datetime`, `depot`, `bdc`, `product_type`, `volume`)";
+            sqlQuery += " VALUES ('" + data.date + "','" + data.depot + "','" + data.bdc + "','" + data.product_type + "'," + data.volume + ")";
+            sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                if (err) console.log(err)
+            });
+        }
+
+        //create or update Tank for Depot
+        for (let deportIndex = 0; deportIndex < deportsQty.length; deportIndex++) {
+            const element = deportsQty[deportIndex];
+
+            // get the depot pumping the product and check if the tank is empty
+            var sqlQuery = `SELECT * FROM petroleum_tanks WHERE identifyer = '${element.identifyer}' AND volume >= ${element.volume} LIMIT 1`;
+            sqlConn.query(sqlQuery, function(err, tank, fields) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    // console.log(tank)
+                    if (tank.length == 0 || typeof(tank[0]) == "undefined" || tank[0] == null) {
+                        //Pumping from empty tank
+                        // console.log("Pumping from empty tank", element)
+                        var alarmQry = `INSERT INTO petroleum_alarm_notification(time, type, message,depot, product, volume) VALUES ('${element.time}','discharge from empty tank','There was a discharge from an empty tank','${element.depot}','${element.product}',${element.volume})`;
+                        sqlConn.query(alarmQry, function(err, tank, fields) {
+                            if (err) {
+                                console.log(err)
+                            }
+                        });
+                    }
+                }
+            });
+
+            var size = 90000000;
+            var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,product,volume,full) VALUES ('${element.identifyer}','${element.depot}','${element.product}',0,${size})ON DUPLICATE KEY UPDATE full= ${size}, volume = IF(volume > 0, volume - ${element.volume}, 0);`;
+            sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                if (err) console.log(err)
+            });
+        }
+    }
+}
+
+function set_header(value) {
+    value = value.toString().trim();
+    value = value.split(" ").join("_");
+    value = value.split("-").join("_");
+    value = value.replace(/\./, '');
+    return value.toLowerCase();
+}
+
+function getTime(dateTime) {
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    if (dateTime) {
+        var today = new Date();
+        var time = [pad(today.getFullYear()), pad(today.getMonth() + 1), today.getDate()].join('-') + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
     var today = new Date();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var time = pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds());
     return time;
 }

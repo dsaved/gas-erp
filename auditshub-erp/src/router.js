@@ -41,7 +41,7 @@ const router = new Router({
                         identity: 'Home', //this should match then page in navMainMenuItems.js
                         breadcrumb: [{ title: 'Home', active: true }],
                         homeurl: '/',
-                        pageTitle: 'Ghana Audit Service'
+                        pageTitle: 'Strategic Mobilisation Ghana Limited'
                     }
                 },
                 // =============================================================================
@@ -109,6 +109,144 @@ const router = new Router({
                             { title: 'Details', active: true }
                         ],
                         homeurl: '/',
+                        pageTitle: 'Accounts'
+                    },
+                    props: true
+                },
+                // =============================================================================
+                // DEPOT MANGE MENU START HERE
+                // =============================================================================
+
+                {
+                    path: '/accounts/depot',
+                    name: 'depot-list',
+                    component: () =>
+                        import ('./views/pages/depot/Depot.vue'),
+                    meta: {
+                        identity: 'OMC Organization Manage', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Depots', active: true }
+                        ],
+                        homeurl: '/accounts',
+                        pageTitle: 'Accounts'
+                    }
+                },
+                {
+                    path: '/accounts/depot/add',
+                    name: 'depot-add',
+                    component: () =>
+                        import ('./views/pages/depot/DepotManage.vue'),
+                    meta: {
+                        identity: 'OMC Organization Manage', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Depots', url: '/accounts/depot' },
+                            { title: 'Add', active: true }
+                        ],
+                        homeurl: '/accounts',
+                        pageTitle: 'Accounts'
+                    }
+                },
+                {
+                    path: '/accounts/depot/:depotid',
+                    name: 'depot-edit',
+                    component: () =>
+                        import ('./views/pages/depot/DepotManage.vue'),
+                    meta: {
+                        identity: 'OMC Organization Manage', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Depots', url: '/accounts/depot' },
+                            { title: 'Edit', active: true }
+                        ],
+                        homeurl: '/accounts',
+                        pageTitle: 'Accounts'
+                    },
+                    props: true
+                },
+                {
+                    path: '/accounts/depot/:depotid/view',
+                    name: 'depot-view',
+                    component: () =>
+                        import ('./views/pages/depot/DepotView.vue'),
+                    meta: {
+                        identity: 'OMC Organization Manage', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Depots', url: '/accounts/depot' },
+                            { title: 'Veiw', active: true }
+                        ],
+                        homeurl: '/accounts',
+                        pageTitle: 'Accounts'
+                    },
+                    props: true
+                },
+                // =============================================================================
+                // BDC ORGANIZATION MANGE MENU START HERE
+                // =============================================================================
+
+                {
+                    path: '/accounts/bdc-org',
+                    name: 'bdc-org-list',
+                    component: () =>
+                        import ('./views/pages/bdc-organization/BDC.vue'),
+                    meta: {
+                        identity: 'OMC Organization Manage', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'BDCs', active: true }
+                        ],
+                        homeurl: '/accounts',
+                        pageTitle: 'Accounts'
+                    }
+                },
+                {
+                    path: '/accounts/bdc-org/add',
+                    name: 'bdc-org-add',
+                    component: () =>
+                        import ('./views/pages/bdc-organization/BDCManage.vue'),
+                    meta: {
+                        identity: 'OMC Organization Manage', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'BDCs', url: '/accounts/bdc-org' },
+                            { title: 'Add', active: true }
+                        ],
+                        homeurl: '/accounts',
+                        pageTitle: 'Accounts'
+                    }
+                },
+                {
+                    path: '/accounts/bdc-org/:bdcid',
+                    name: 'bdc-org-edit',
+                    component: () =>
+                        import ('./views/pages/bdc-organization/BDCManage.vue'),
+                    meta: {
+                        identity: 'OMC Organization Manage', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'BDCs', url: '/accounts/bdc-org' },
+                            { title: 'Edit', active: true }
+                        ],
+                        homeurl: '/accounts',
+                        pageTitle: 'Accounts'
+                    },
+                    props: true
+                },
+                {
+                    path: '/accounts/bdc-org/:bdcid/view',
+                    name: 'bdc-org-view',
+                    component: () =>
+                        import ('./views/pages/bdc-organization/BDCView.vue'),
+                    meta: {
+                        identity: 'OMC Organization Manage', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'BDCs', url: '/accounts/bdc-org' },
+                            { title: 'Veiw', active: true }
+                        ],
+                        homeurl: '/accounts',
                         pageTitle: 'Accounts'
                     },
                     props: true
@@ -1109,8 +1247,8 @@ const router = new Router({
                         import ('./views/pages/petroleum/reconcile/SmlNpa.vue')
                 },
                 {
-                    path: '/petroleum/rcn/npa-icoms',
-                    name: 'npa-icoms',
+                    path: '/petroleum/rcn/npa-icums',
+                    name: 'npa-icums',
                     component: () =>
                         import ('./views/pages/petroleum/reconcile/NpaIcoms.vue')
                 },
@@ -1124,46 +1262,217 @@ const router = new Router({
                 // NPA MENU START HERE
                 // =============================================================================
                 {
-                    path: '/petroleum/npa/reconciliation-report',
-                    name: 'reconciliation-report',
+                    path: '/petroleum/npa/analytics',
+                    name: 'npa-analytics',
                     component: () =>
-                        import ('./views/pages/petroleum/npa/ReconcilationReport.vue')
+                        import ('./views/pages/petroleum/npa/Analytics.vue'),
+                    meta: {
+                        identity: 'NPA Analytics', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Analytics', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Analytics'
+                    }
+                }, {
+                    path: '/petroleum/npa/preorders',
+                    name: 'npa-preorders',
+                    component: () =>
+                        import ('./views/pages/petroleum/npa/Preorders.vue'),
+                    meta: {
+                        identity: 'Preorders', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Preorders', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Preorders'
+                    }
                 },
                 {
-                    path: '/petroleum/npa/daily-liftings',
-                    name: 'npa daily-liftings',
+                    path: '/petroleum/npa/orders',
+                    name: 'npa-orders',
                     component: () =>
-                        import ('./views/pages/petroleum/npa/DailyLiftings.vue')
+                        import ('./views/pages/petroleum/npa/Orders.vue'),
+                    meta: {
+                        identity: 'Orders', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Orders', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Orders'
+                    }
+                },
+                // =============================================================================
+                // INPUT MODEL MENU START HERE
+                // =============================================================================
+                {
+                    path: '/petroleum/input/analytics',
+                    name: 'input-analytics',
+                    component: () =>
+                        import ('./views/pages/petroleum/input/Analytics.vue'),
+                    meta: {
+                        identity: 'Input Analytics', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Input Analytics', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Input Analytics'
+                    }
+                }, {
+                    path: '/petroleum/input/manifest',
+                    name: 'input-manifest',
+                    component: () =>
+                        import ('./views/pages/petroleum/input/Manifest.vue'),
+                    meta: {
+                        identity: 'Manifest', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Manifest', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Manifest'
+                    }
+                }, {
+                    path: '/petroleum/input/declaration',
+                    name: 'input-declaration',
+                    component: () =>
+                        import ('./views/pages/petroleum/input/Declearations.vue'),
+                    meta: {
+                        identity: 'Declaration', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Declaration', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Declaration'
+                    }
+                }, {
+                    path: '/petroleum/input/reconciliation',
+                    name: 'input-declearations',
+                    component: () =>
+                        import ('./views/pages/petroleum/input/Reconciliation.vue'),
+                    meta: {
+                        identity: 'Reconciliation', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Reconciliation', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Reconciliation'
+                    }
                 },
                 // =============================================================================
                 // ICOMS-CEPS MENU START HERE
                 // =============================================================================
                 {
-                    path: '/petroleum/icoms/declearations',
+                    path: '/petroleum/icums/declearations',
                     name: 'declearations',
                     component: () =>
-                        import ('./views/pages/petroleum/icoms/Declearations.vue')
+                        import ('./views/pages/petroleum/icums/Declearations.vue')
                 },
                 {
-                    path: '/petroleum/icoms/payments',
+                    path: '/petroleum/icums/payments',
                     name: 'payments',
                     component: () =>
-                        import ('./views/pages/petroleum/icoms/Payments.vue')
+                        import ('./views/pages/petroleum/icums/Payments.vue')
                 },
                 {
-                    path: '/petroleum/icoms/differences',
+                    path: '/petroleum/icums/differences',
                     name: 'differences',
                     component: () =>
-                        import ('./views/pages/petroleum/icoms/Differences.vue')
+                        import ('./views/pages/petroleum/icums/Differences.vue')
                 },
                 // =============================================================================
                 // SML MENU START HERE
                 // =============================================================================
                 {
-                    path: '/petroleum/sml/daily-liftings',
-                    name: 'sml daily-liftings',
+                    path: '/petroleum/sml/inlet',
+                    name: 'sml-inlet',
                     component: () =>
-                        import ('./views/pages/petroleum/icoms/Declearations.vue')
+                        import ('./views/pages/petroleum/sml/Inlet.vue'),
+                    meta: {
+                        identity: 'Inlet', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Inlet', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'SML'
+                    }
+                }, {
+                    path: '/petroleum/sml/inlet-report',
+                    name: 'sml-inlet-report',
+                    component: () =>
+                        import ('./views/pages/petroleum/sml/InletReport.vue'),
+                    meta: {
+                        identity: 'Inlet Report', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Inlet Report', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'SML'
+                    }
+                }, {
+                    path: '/petroleum/sml/outlet',
+                    name: 'sml-outlet',
+                    component: () =>
+                        import ('./views/pages/petroleum/sml/Outlet.vue'),
+                    meta: {
+                        identity: 'Outlet', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Outlet', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'SML'
+                    }
+                }, {
+                    path: '/petroleum/sml/outlet-report',
+                    name: 'sml-outlet-report',
+                    component: () =>
+                        import ('./views/pages/petroleum/sml/OutletReport.vue'),
+                    meta: {
+                        identity: 'Outlet Report', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Outlet Report', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'SML'
+                    }
+                }, {
+                    path: '/petroleum/sml/undeclared-product',
+                    name: 'sml-undeclared-product',
+                    component: () =>
+                        import ('./views/pages/petroleum/sml/UndeclaredProducts.vue'),
+                    meta: {
+                        identity: 'Undeclared Products', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Undeclared Products', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'SML'
+                    }
+                }, {
+                    path: '/petroleum/sml/missing-product',
+                    name: 'sml-missing-product',
+                    component: () =>
+                        import ('./views/pages/petroleum/sml/MissingProducts.vue'),
+                    meta: {
+                        identity: 'Missing Products', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Missing Products', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'SML'
+                    }
                 },
                 // =============================================================================
                 // COMPUTE MENU START HERE
@@ -1182,6 +1491,58 @@ const router = new Router({
                         homeurl: '/petroleum',
                         pageTitle: 'Compute'
                     }
+                },
+                // =============================================================================
+                // STOCK MANAGEMENT MENU START HERE
+                // =============================================================================
+                {
+                    path: '/petroleum/stock-management',
+                    name: 'stock-management',
+                    component: () =>
+                        import ('./views/pages/petroleum/StockManagement.vue'),
+                    meta: {
+                        identity: 'Stock Management', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Stock Management', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Compute'
+                    }
+                },
+                {
+                    path: '/petroleum/stock-management/:depot',
+                    name: 'stock-management-depot',
+                    component: () =>
+                        import ('./views/pages/petroleum/StockManagementDepot.vue'),
+                    meta: {
+                        identity: 'Stock Management', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Stock Management', url: '/petroleum/stock-management' },
+                            { title: 'Products', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Compute'
+                    },
+                    props: true
+                },
+                {
+                    path: '/petroleum/stock-management/invalid/:depot/:product',
+                    name: 'stock-management-depot',
+                    component: () =>
+                        import ('./views/pages/petroleum/StockManagementInvalid.vue'),
+                    meta: {
+                        identity: 'Stock Management', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Stock Management', url: '/petroleum/stock-management' },
+                            { title: 'Invalid Discharge', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Compute'
+                    },
+                    props: true
                 },
                 // =============================================================================
                 // USERS PROFILE START HERE
@@ -1226,7 +1587,7 @@ const router = new Router({
                         identity: 'Home', //this should match then page in navMainMenuItems.js
                         breadcrumb: [{ title: 'Home', active: true }],
                         homeurl: '/revenue',
-                        pageTitle: 'Ghana Audit Service'
+                        pageTitle: 'Strategic Mobilisation Ghana Limited'
                     }
                 },
                 // =============================================================================

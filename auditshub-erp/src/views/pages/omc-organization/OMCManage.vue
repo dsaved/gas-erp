@@ -1,6 +1,6 @@
 <template>
   <div class="cl">
-    <vx-card title="Create tax type">
+    <vx-card title="Create OMC">
       <p>
         create an
         <b>Oil Marketing Company</b>. You can always modify the data later.

@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
-        name: "GAS App",
+        name: "SML App",
         script: "./app.js",
         watch: true,
         env: {

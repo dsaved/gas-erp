@@ -18,6 +18,13 @@ class Taxproducts extends SecureController {
       )->json();
     }
 
+    public function options_list(){
+      $options = $this->model->options_list();
+      $this->http->reply(
+          $options
+      )->json();
+    }
+
     public function get(){
       $taxsType = $this->model->get();
       $this->http->reply(

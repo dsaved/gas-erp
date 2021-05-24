@@ -60,7 +60,7 @@ class Strings{
 	/*
 		change all media elements found in a string to its resperctive type
 	*/
-	public function str_to_mediatag($value='',$start,$end)
+	public function str_to_mediatag($value='',$start = '',$end = '')
 	{
 		$value3 = '';
 		$str_arr = $this->get_string_between($value,$start, $end);

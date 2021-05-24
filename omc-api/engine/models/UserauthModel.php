@@ -19,6 +19,10 @@ class UserauthModel extends BaseModel
         if($user===null){
             $this->http->_403(Msg::$provide_user);
         }
+
+        if(preg_match('/[\'^£$%&*()}{#~?><>,|=+¬-]/', $user)){
+            $this->http->_403("Invalid user identity");
+        }
         
         $password= $this->http->json->password??$password;
         if($password===null){

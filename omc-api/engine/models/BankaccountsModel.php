@@ -159,7 +159,7 @@ class BankaccountsModel extends BaseModel
             }
         }
         
-        if ($bank_name) {
+        if ($bank_name && strtolower($bank_name)!=="all") {
             $this->db->query("SELECT id FROM `banks` WHERE `name` LIKE '%$bank_name%' GROUP BY `name`");
             if ($this->db->results() && $this->db->count > 0) {
                 $bankID = array();
@@ -275,7 +275,7 @@ class BankaccountsModel extends BaseModel
             }
         }
         
-        if ($bank_name) {
+        if ($bank_name && strtolower($bank_name)!=="all") {
             $this->db->query("SELECT id FROM `banks` WHERE `name` LIKE '%$bank_name%' GROUP BY `name`");
             if ($this->db->results() && $this->db->count > 0) {
                 $bankID = array();

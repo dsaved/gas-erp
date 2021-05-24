@@ -65,7 +65,7 @@ function getErrorType($errno){
     return $type;
 }
 
-function dsavedErrorHandler($errno, $errstr,$location,$line,$op) {
+function dsavedErrorHandler($errno, $errstr,$location,$line) {
     $message = array();
     $type = getErrorType($errno);
     $message['title'] = 'ERROR';

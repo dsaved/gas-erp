@@ -449,8 +449,8 @@ export default {
 			workbook.Props = {
 				Title: this.omc.name,
 				Subject: 'OMC REPORT',
-				Author: 'Ghana Audit Service',
-				Company: 'Ghana Audit Service',
+				Author: 'Strategic Mobilisation Ghana Limited',
+				Company: 'Strategic Mobilisation Ghana Limited',
 				CreatedDate: new Date()
 			}
 			workbook.SheetNames.push('report')

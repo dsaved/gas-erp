@@ -15,7 +15,7 @@ import App from './App.vue'
 import Vuesax from 'vuesax'
 import 'material-icons/iconfont/material-icons.css' //Material Icons
 import 'vuesax/dist/vuesax.css' // Vuesax
-Vue.use(Vuesax)
+// Vue.use(Vuesax)
 
 
 // axios
@@ -58,10 +58,10 @@ Vue.mixin({
             data() {
                 return {
                     development: true,
-                    site_link: 'https://omc-api.auditshub.com',
-                    storage_key: 'gas-storage',
-                    // site_link: 'http://localhost/gas/omc-api',
-                    // storage_key: 'gas-storage-local',
+                    // site_link: 'https://api.smlexperion.net',
+                    // storage_key: 'gas-storage',
+                    site_link: 'http://localhost/gas/omc-api',
+                    storage_key: 'gas-storage-local',
                     axiosCancelSource: null,
                     allowed_pages: ['neutral']
                 }
