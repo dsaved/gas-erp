@@ -17,12 +17,12 @@ module.exports = {
                             } else {
                                 // console.log(lastSold)
                                 if (lastSold.length > 0) {
-                                    var lastSoldData = lastSold[0];
+                                    const lastSoldData = lastSold[0];
                                     const lastSellDate = new Date(lastSoldData.datetime);
                                     const today = new Date();
                                     var diff = getDateDiff(today, lastSellDate);
                                     if (diff >= 7) {
-                                        var alarmQry = `INSERT INTO petroleum_alarm_notification(time,type, message,depot,product) VALUES ('${getTime(true)}','not sold for a week','This Depot has not sold ${depot.product} for a week','${depot.name}','${depot.product}')`;
+                                        var alarmQry = `INSERT INTO petroleum_alarm_notification(time,type, message,depot,bdc,product) VALUES ('${getTime(true)}','not sold for a week','This Depot has not sold ${depot.product} for a week','${depot.name}','${lastSoldData.bdc}','${depot.product}')`;
                                         sqlConn.query(alarmQry, function(err, tank, fields) {
                                             if (err) {
                                                 console.log(err)

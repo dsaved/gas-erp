@@ -376,7 +376,7 @@ class Date
 		if(empty($unix_date)) {    
 			return "Invalide date";
 		}
-		return date("d", $unix_date);
+		return date("jS", $unix_date);
 	}
 
 	/**

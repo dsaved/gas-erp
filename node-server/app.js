@@ -13,6 +13,7 @@ var workerFarm = require('worker-farm'),
         'importDeclaration',
         'importOrders',
         'importPreorders',
+        'importWaybills',
         'exportFile',
         'exportFileFallout',
         'exportFileNASummary',
@@ -48,9 +49,9 @@ fs.readFile(configPath, (error, db_config) => {
         // setInterval(() => {
         //     pump_product(Type.IN);
         // }, 5000);
-        // setInterval(() => {
-        //     pump_product(Type.OUT);
-        // }, 8000);
+        setInterval(() => {
+            pump_product(Type.OUT);
+        }, 5000);
         config.log('worker thread initialized');
 
 
@@ -253,6 +254,22 @@ function fileReceiptImport() {
                                 currentReceiptJobIm++;
                             }
                         });
+                    } else if (childJobDescription.type === "waybill_imp") {
+                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
+                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
+                        sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                            if (err) {
+                                config.log(err);
+                            } else {
+                                workers.importWaybills(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentReceiptJobIm--;
+                                    }
+                                })
+                                currentReceiptJobIm++;
+                            }
+                        });
                     }
                 }
             }
@@ -386,15 +403,23 @@ function pump_product(type) {
         for (var dd = 0; dd < excelData.length; dd++) {
             var data = excelData[dd];
             var nodepot = true;
+            var noBDC = true;
             for (let index = 0; index < deportsQty.length; index++) {
                 const element = deportsQty[index];
                 if (element.identifyer === `${data.depot}-${data.product_type}`) {
                     nodepot = false;
                     deportsQty[index].volume = Number(element.volume) + Number(data.volume)
                 }
+                if (element.identifyer === `${data.bdc}-${data.product_type}`) {
+                    noBDC = false;
+                    deportsQty[index].volume = Number(element.volume) + Number(data.volume)
+                }
             }
             if (nodepot) {
-                deportsQty.push({ identifyer: `${data.depot}-${data.product_type}`, product: data.product_type, depot: data.depot, volume: Number(data.volume) })
+                deportsQty.push({ tank: "depot", identifyer: `${data.depot}-${data.product_type}`, product: data.product_type, depot: data.depot, bdc: data.bdc, volume: Number(data.volume) })
+            }
+            if (noBDC) {
+                deportsQty.push({ tank: "bdc", identifyer: `${data.bdc}-${data.product_type}`, product: data.product_type, depot: data.depot, bdc: data.bdc, volume: Number(data.volume) })
             }
             var sqlQuery = "INSERT INTO `petroleum_inlet`(`datetime`, `depot`, `bdc`, `product_type`, `volume`)";
             sqlQuery += " VALUES ('" + data.date + "','" + data.depot + "','" + data.bdc + "','" + data.product_type + "'," + data.volume + ")";
@@ -407,7 +432,7 @@ function pump_product(type) {
         for (let deportIndex = 0; deportIndex < deportsQty.length; deportIndex++) {
             const element = deportsQty[deportIndex];
             var size = 90000000;
-            var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,product,volume,full) VALUES ('${element.identifyer}','${element.depot}','${element.product}',${element.volume}, ${size})ON DUPLICATE KEY UPDATE full= ${size},volume = volume + ${element.volume};`;
+            var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,bdc,tank,product,volume,full) VALUES ('${element.identifyer}','${element.depot}','${element.bdc}','${element.tank}','${element.product}',${element.volume}, ${size})ON DUPLICATE KEY UPDATE full= ${size},volume = volume + ${element.volume};`;
             sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
                 if (err) console.log(err)
             });
@@ -420,6 +445,7 @@ function pump_product(type) {
         for (var dd = 0; dd < excelData.length; dd++) {
             var data = excelData[dd];
             var nodepot = true;
+            var noBDC = true;
             for (let index = 0; index < deportsQty.length; index++) {
                 const element = deportsQty[index];
                 if (element.identifyer === `${data.depot}-${data.product_type}`) {
@@ -427,9 +453,17 @@ function pump_product(type) {
                     deportsQty[index].volume = Number(element.volume) + Number(data.volume)
                     deportsQty[index].time = data.date
                 }
+                if (element.identifyer === `${data.bdc}-${data.product_type}`) {
+                    noBDC = false;
+                    deportsQty[index].volume = Number(element.volume) + Number(data.volume)
+                    deportsQty[index].time = data.date
+                }
             }
             if (nodepot) {
-                deportsQty.push({ identifyer: `${data.depot}-${data.product_type}`, product: data.product_type, depot: data.depot, volume: Number(data.volume) })
+                deportsQty.push({ alarm: "depot", identifyer: `${data.depot}-${data.product_type}`, product: data.product_type, depot: data.depot, bdc: data.bdc, volume: Number(data.volume) })
+            }
+            if (noBDC) {
+                deportsQty.push({ alarm: "bdc", identifyer: `${data.bdc}-${data.product_type}`, product: data.product_type, depot: data.depot, bdc: data.bdc, volume: Number(data.volume) })
             }
             var sqlQuery = "INSERT INTO `petroleum_outlet`(`datetime`, `depot`, `bdc`, `product_type`, `volume`)";
             sqlQuery += " VALUES ('" + data.date + "','" + data.depot + "','" + data.bdc + "','" + data.product_type + "'," + data.volume + ")";
@@ -452,7 +486,7 @@ function pump_product(type) {
                     if (tank.length == 0 || typeof(tank[0]) == "undefined" || tank[0] == null) {
                         //Pumping from empty tank
                         // console.log("Pumping from empty tank", element)
-                        var alarmQry = `INSERT INTO petroleum_alarm_notification(time, type, message,depot, product, volume) VALUES ('${element.time}','discharge from empty tank','There was a discharge from an empty tank','${element.depot}','${element.product}',${element.volume})`;
+                        var alarmQry = `INSERT INTO petroleum_alarm_notification(time, type, message,depot, bdc, alarm, product, volume) VALUES ('${element.time}','discharge from empty tank','There was a discharge from an empty tank','${element.depot}','${element.bdc}','${element.alarm}','${element.product}',${element.volume})`;
                         sqlConn.query(alarmQry, function(err, tank, fields) {
                             if (err) {
                                 console.log(err)
@@ -463,7 +497,7 @@ function pump_product(type) {
             });
 
             var size = 90000000;
-            var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,product,volume,full) VALUES ('${element.identifyer}','${element.depot}','${element.product}',0,${size})ON DUPLICATE KEY UPDATE full= ${size}, volume = IF(volume > 0, volume - ${element.volume}, 0);`;
+            var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,bdc,tank,product,volume,full) VALUES ('${element.identifyer}','${element.depot}','${element.bdc}','${element.tank}','${element.product}',0,${size})ON DUPLICATE KEY UPDATE full= ${size}, volume = IF(volume > 0, volume - ${element.volume}, 0);`;
             sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
                 if (err) console.log(err)
             });

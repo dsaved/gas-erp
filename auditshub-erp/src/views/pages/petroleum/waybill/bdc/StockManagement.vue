@@ -2,17 +2,17 @@
   <div id="pag-tax-list">
     <div class="vx-col w-full my-5">
       <div class="flex">
-        <vs-spacer /> 
-         <div class="w-1/5 px-2">
-          <span>Depot</span>
+        <vs-spacer />
+        <div class="w-1/5 px-2">
+          <span>BDC</span>
           <ajax-select
-            placeholder="Select depot"
-            url="/depot/options"
+            placeholder="Select bdc"
+            url="/bdc/options"
             :include="['All']"
             :clearable="false"
             :dir="$vs.rtl ? 'rtl' : 'ltr'"
-            :selected="depot"
-            v-on:update:data="depot = $event"
+            :selected="bdc"
+            v-on:update:data="bdc = $event"
           />
         </div>
         <div class="w-1/5 px-2">
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <vx-card title="DEPOT LIST" class="mt-5">
+    <vx-card title="BDC LIST" class="mt-5">
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <div class="con-tablex vs-table--content">
@@ -49,7 +49,7 @@
                   <th scope="col" class="td-check">
                     <vs-checkbox v-model="selectAll">#</vs-checkbox>
                   </th>
-                  <th scope="col">Depot</th>
+                  <th scope="col">BDC</th>
                   <th scope="col">Products</th>
                   <th scope="col">Level</th>
                   <th scope="col">Total Quantity</th>
@@ -60,7 +60,11 @@
                   v-for="(record, index) in sortedRecords"
                   :key="index"
                   class="tr-values vs-table--tr tr-table-state-null selected"
-                  v-on:click="linkto('/petroleum/stock-management/'+record.depot)"
+                  v-on:click="
+                    linkto(
+                      '/petroleum/waybill/stock-management/' + record.bdc
+                    )
+                  "
                 >
                   <td scope="row" @click.stop="">
                     <vs-checkbox
@@ -70,7 +74,7 @@
                     >
                   </td>
                   <td>
-                    {{ record.depot }}
+                    {{ record.bdc }}
                   </td>
                   <td>
                     {{ record.product }}
@@ -206,7 +210,7 @@ export default {
       exportStatus: "",
       exportDetails: "",
       //receipt data list starts here
-      pkey: "petroleum-sm-list",
+      pkey: "waybill-stock-mg-list",
       message: "",
       numbering: 0,
       currentPage: 1,
@@ -225,7 +229,7 @@ export default {
       },
       selectedRecords: [],
       search: "",
-      depot: "All",
+      bdc: "All",
       records: [],
       search_timer: null,
     };
@@ -267,7 +271,7 @@ export default {
     this.getData();
     const vm = this;
     this.getDataInterval = setInterval(function () {
-      vm.getData();
+      vm.getData(true);
     }, 1300);
   },
   watch: {
@@ -275,7 +279,7 @@ export default {
       mStorage.set(`${this.pkey}page`, this.currentPage);
       this.getData();
     },
-    depot: function () {
+    bdc: function () {
       this.getData();
     },
     result_per_page: function () {
@@ -298,12 +302,14 @@ export default {
         vm.getData();
       }, 800);
     },
-    getData() {
-      this.loading = true;
-      this.post("/tanks", {
+    getData(background) {
+      if (!background) {
+        this.loading = true;
+      }
+      this.post("/tanks/bdcs", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
-        depot: this.depot,
+        bdc: this.bdc,
       })
         .then((response) => {
           this.loading = false;
@@ -316,9 +322,25 @@ export default {
             this.assets_not_found = true;
             this.message = response.data.message;
             this.records = [];
+            if (!background) {
+              this.$vs.notify({
+                title: "Error!!!",
+                text: `${response.data.message}`,
+                sticky: true,
+                border: "danger",
+                color: "dark",
+                duration: null,
+                position: "bottom-left",
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          if (!background) {
             this.$vs.notify({
               title: "Error!!!",
-              text: `${response.data.message}`,
+              text: `${error.message}`,
               sticky: true,
               border: "danger",
               color: "dark",
@@ -326,18 +348,6 @@ export default {
               position: "bottom-left",
             });
           }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            border: "danger",
-            color: "dark",
-            duration: null,
-            position: "bottom-left",
-          });
         });
     },
     beforeDestroy() {

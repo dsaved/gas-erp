@@ -47,7 +47,7 @@
           <div class="vx-row">
             <div class="vx-col w-1/3">
               <h5 class="mb-2" :style="'color:#192155'">
-                {{ record.depot }}
+                {{ record.bdc }}
               </h5>
               <progress-bar
                 :options="{
@@ -86,7 +86,7 @@
                 <router-link
                   v-if="record.invalidpump"
                   class="mt-4 p-1 mr-2 shadow-lg w-full text-danger"
-                  :to="'invalid/' + record.depot + '/' + record.product"
+                  :to="'invalid/' + record.bdc + '/' + record.product"
                   >Invalid discharge detected</router-link
                 >
                 <p v-else class="mt-4 p-1 mr-2 shadow-lg w-full text-primary">
@@ -181,7 +181,7 @@ export default {
     next();
   },
   props: {
-    depot: {
+    bdc: {
       type: String,
       required: true,
     },
@@ -209,7 +209,7 @@ export default {
       exportStatus: "",
       exportDetails: "",
       //receipt data list starts here
-      pkey: "petroleum-sm-list",
+      pkey: "waybill-stock-mg-sm-list",
       message: "",
       numbering: 0,
       currentPage: 1,
@@ -293,10 +293,10 @@ export default {
       if (!background) {
         this.loading = true;
       }
-      this.post("/tanks/depot", {
+      this.post("/tanks/bdcs_tank", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
-        depot: this.depot,
+        bdc: this.bdc,
         product_type: this.product_type,
       })
         .then((response) => {
@@ -310,9 +310,25 @@ export default {
             this.assets_not_found = true;
             this.message = response.data.message;
             this.records = [];
+            if (!background) {
+              this.$vs.notify({
+                title: "Error!!!",
+                text: `${response.data.message}`,
+                sticky: true,
+                border: "danger",
+                color: "dark",
+                duration: null,
+                position: "bottom-left",
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          if (!background) {
             this.$vs.notify({
               title: "Error!!!",
-              text: `${response.data.message}`,
+              text: `${error.message}`,
               sticky: true,
               border: "danger",
               color: "dark",
@@ -320,18 +336,6 @@ export default {
               position: "bottom-left",
             });
           }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            border: "danger",
-            color: "dark",
-            duration: null,
-            position: "bottom-left",
-          });
         });
     },
     beforeDestroy() {

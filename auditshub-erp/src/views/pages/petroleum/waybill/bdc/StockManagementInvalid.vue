@@ -1,44 +1,43 @@
 <template>
-  <div id="pag-tax-list">
-    <div class="vx-col w-full my-5">
-      <div class="flex">
-        <vs-spacer /> 
-         <div class="w-1/5 px-2">
-          <span>Depot</span>
-          <ajax-select
-            placeholder="Select depot"
-            url="/depot/options"
-            :include="['All']"
-            :clearable="false"
-            :dir="$vs.rtl ? 'rtl' : 'ltr'"
-            :selected="depot"
-            v-on:update:data="depot = $event"
-          />
-        </div>
-        <div class="w-1/5 px-2">
-          <span>Result per page</span>
-          <v-select
-            placeholder="Result count"
-            :clearable="false"
-            :options="[
-              '10',
-              '20',
-              '30',
-              '40',
-              '50',
-              '60',
-              '70',
-              '80',
-              '90',
-              '100',
-            ]"
-            v-model="result_per_page"
-          />
+  <div>
+    <div class="flex">
+      <div class="w-1/3 px-2">
+        <span>Date Range</span>
+        <div class="w-full">
+          <date-range-picker
+            :opens="'right'"
+            :closeOnEsc="true"
+            :locale-data="{ firstDay: 1, format: 'dd-m-yyyy' }"
+            :singleDatePicker="false"
+            :linked-calendars="false"
+            :showWeekNumbers="false"
+            :showDropdowns="true"
+            :autoApply="true"
+            :alwaysShowCalendars="true"
+            :appendToBody="true"
+            v-model="date_range"
+            class="w-full"
+          >
+            <template v-slot:input="picker">
+              {{ picker.startDate | date(true) }} -
+              {{ picker.endDate | date(true) }}
+            </template>
+          </date-range-picker>
         </div>
       </div>
+      <!-- <vs-button
+        type="filled"
+        @click.prevent="exportWarn"
+        class="mt-5"
+        color="primary"
+        id="button-with-loading"
+        icon-pack="feather"
+        icon="icon-file"
+        >Export Excel</vs-button
+      > -->
+      <vs-spacer />
     </div>
-
-    <vx-card title="DEPOT LIST" class="mt-5">
+    <vx-card title="RESULT VIEW" class="mt-5">
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <div class="con-tablex vs-table--content">
@@ -49,10 +48,11 @@
                   <th scope="col" class="td-check">
                     <vs-checkbox v-model="selectAll">#</vs-checkbox>
                   </th>
-                  <th scope="col">Depot</th>
-                  <th scope="col">Products</th>
-                  <th scope="col">Level</th>
-                  <th scope="col">Total Quantity</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">BDC</th>
+                  <th scope="col">Message</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Volume</th>
                 </tr>
               </thead>
               <tbody>
@@ -60,7 +60,6 @@
                   v-for="(record, index) in sortedRecords"
                   :key="index"
                   class="tr-values vs-table--tr tr-table-state-null selected"
-                  v-on:click="linkto('/petroleum/stock-management/'+record.depot)"
                 >
                   <td scope="row" @click.stop="">
                     <vs-checkbox
@@ -70,34 +69,16 @@
                     >
                   </td>
                   <td>
-                    {{ record.depot }}
+                    {{ record.time }}
+                  </td>
+                  <td>
+                    {{ record.bdc }}
+                  </td>
+                  <td>
+                    {{ record.message }}
                   </td>
                   <td>
                     {{ record.product }}
-                  </td>
-                  <td>
-                    <progress-bar
-                      :options="{
-                        progress: {
-                          color:
-                            record.percent > 80
-                              ? '#036C82'
-                              : record.percent < 20
-                              ? '#B92510'
-                              : '#192155',
-                          backgroundColor: '#E6E6E6',
-                          inverted: false,
-                        },
-                        layout: {
-                          verticalTextAlign: 61,
-                          horizontalTextAlign: 35,
-                          zeroOffset: 0,
-                          strokeWidth: 30,
-                          progressPadding: 0,
-                        },
-                      }"
-                      :value="parseFloat(record.level)"
-                    />
                   </td>
                   <td>
                     {{ record.volume }}
@@ -147,8 +128,10 @@
 
 <script>
 // Import Swal
+import Swal from "sweetalert2";
 import mStorage from "@/store/storage.js";
-import ProgressBar from "vuejs-progress-bar";
+import DateRangePicker from "vue2-daterange-picker";
+import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -171,48 +154,40 @@ export default {
       }
     });
   },
-  beforeRouteLeave(to, from, next) {
-    if (this.getDataInterval) {
-      clearInterval(this.getDataInterval);
-      this.getDataInterval = null;
-    }
-    if (this.statuscheckExport) {
-      clearInterval(this.statuscheckExport);
-      this.statuscheckExport = null;
-    }
-    next();
+  props: {
+    bdc: {
+      type: String,
+      required: true,
+    },
+    product: {
+      type: String,
+      required: true,
+    },
   },
-  props: {},
-  components: { ProgressBar },
+  components: {
+    DateRangePicker,
+  },
   data() {
     return {
-      loading: false,
-      assets_not_found: false,
-      accoun_found: false,
       data: {
         type: Object,
         default: function () {
           return {};
         },
       },
-      getDataInterval: null,
-      // export data starts here
-      popupActiveExport: false,
-      canCloseModalExport: false,
-      reloadButtonExport: false,
-      statuscheckExport: null,
-      jobid: null,
-      exportDesc: [],
-      exportStatus: "",
-      exportDetails: "",
-      //receipt data list starts here
-      pkey: "petroleum-sm-list",
+      //file import section
+      popupActive: false,
+      statuscheck: null,
+      errorStr: ["unknown jobid", "error"],
+      importDesc: [],
+      importDetails: "",
+      importStatus: "",
+      //preorder data list starts here
+      pkey: "waybill-stock-mg-model-list",
       message: "",
       numbering: 0,
       currentPage: 1,
       result_per_page: 20,
-      loading: true,
-      deletebutton: false,
       pagination: {
         haspages: false,
         page: 0,
@@ -224,8 +199,10 @@ export default {
         hasPrevious: false,
       },
       selectedRecords: [],
-      search: "",
-      depot: "All",
+      date_range: {
+        startDate: null,
+        endDate: null,
+      },
       records: [],
       search_timer: null,
     };
@@ -250,7 +227,7 @@ export default {
     },
     sortedRecords: function () {
       try {
-        return this.filterObj(this.records, this.search).sort((a, b) => {
+        return this.filterObj(this.records, "").sort((a, b) => {
           var modifier = 1;
           if (this.currentSortDir === "desc") modifier = -1;
           if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
@@ -262,56 +239,44 @@ export default {
       }
     },
   },
-  mounted: function () {
+  mounted() {
     this.currentPage = Number(mStorage.get(`${this.pkey}page`)) || 1;
     this.getData();
-    const vm = this;
-    this.getDataInterval = setInterval(function () {
-      vm.getData();
-    }, 1300);
   },
   watch: {
     currentPage: function () {
       mStorage.set(`${this.pkey}page`, this.currentPage);
       this.getData();
     },
-    depot: function () {
+    pagination: function () {
+      this.numbering = this.pagination.start;
+    },
+    date_range: function () {
       this.getData();
     },
     result_per_page: function () {
       this.getData();
-    },
-    pagination: function () {
-      this.numbering = this.pagination.start;
     },
   },
   methods: {
     number: function (num) {
       return this.numbering + num;
     },
-    startSearch: function (newVal, oldVal) {
-      if (this.search_timer) {
-        clearTimeout(this.search_timer);
-      }
-      const vm = this;
-      this.search_timer = setTimeout(function () {
-        vm.getData();
-      }, 800);
-    },
     getData() {
-      this.loading = true;
-      this.post("/tanks", {
+      this.showLoading("Getting results...");
+      this.post("/tanks/bdc_invalid_pump", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
-        depot: this.depot,
+        product: this.product,
+        bdc: this.bdc,
+        date_range: this.date_range,
       })
         .then((response) => {
-          this.loading = false;
+          this.closeLoading();
           this.pagination = response.data.pagination;
           if (response.data.success == true) {
-            this.assets_not_found = false;
             this.message = "";
-            this.records = response.data.tanks;
+            this.records = response.data.reports;
           } else {
             this.assets_not_found = true;
             this.message = response.data.message;
@@ -328,7 +293,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.loading = false;
+          this.closeLoading();
           this.$vs.notify({
             title: "Error!!!",
             text: `${error.message}`,
@@ -340,19 +305,14 @@ export default {
           });
         });
     },
-    beforeDestroy() {
-      this.charts.forEach((chart) => {
-        if (chart) {
-          chart.dispose();
-        }
-      });
-    },
   },
 };
 </script>
-<style scoped>
-.hello {
-  width: 100%;
-  height: 500px;
+
+<style lang="css" scoped>
+.form-control.reportrange-text {
+  padding: 8px 10px !important;
+  border: 1px solid rgba(60, 60, 60, 0.26) !important;
+  border-radius: 4px !important;
 }
 </style>

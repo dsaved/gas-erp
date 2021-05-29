@@ -7,7 +7,7 @@
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 
-
+``
 export default [{
         url: '/petroleum',
         name: 'Home',
@@ -45,6 +45,13 @@ export default [{
                 page: 'Exemptions',
                 slug: 'exemptions',
                 i18n: 'Exemptions'
+            },
+            {
+                url: '/petroleum/tax-window',
+                name: 'Tax Window',
+                page: 'Tax Window',
+                slug: 'tax-window',
+                i18n: 'TaxWindow'
             }
         ]
     }, {
@@ -112,21 +119,21 @@ export default [{
     //     submenu: [{
     //             url: '/petroleum/rcn/sml-npa',
     //             name: 'SML - NPA',
-    //             page: 'SML - NPA Reconcilations',
+    //             page: 'SML - NPA Reconciliations',
     //             slug: 'sml-npa-reconciliation',
     //             i18n: 'SML - NPA'
     //         },
     //         {
     //             url: '/petroleum/rcn/npa-icums',
     //             name: 'NPA - ICUMS',
-    //             page: 'NPA - ICOMS Reconcilations',
+    //             page: 'NPA - ICOMS Reconciliations',
     //             slug: 'npa-icums-reconciliation',
     //             i18n: 'NPA ICOMS'
     //         },
     //         {
     //             url: '/petroleum/rcn/npa-npa',
     //             name: 'NPA - NPA',
-    //             page: 'NPA - NPA Reconcilations',
+    //             page: 'NPA - NPA Reconciliations',
     //             slug: 'npa-npa-reconciliation',
     //             i18n: 'NPA - NPA'
     //         }
@@ -216,13 +223,6 @@ export default [{
                 i18n: 'Declearations'
             },
             {
-                url: '/petroleum/icums/payments',
-                name: 'Payments',
-                page: 'ICOMS Payments',
-                slug: 'icom-payments',
-                i18n: 'Payments'
-            },
-            {
                 url: '/petroleum/icums/differences',
                 name: 'Differences',
                 page: 'ICOMS Differences',
@@ -273,6 +273,67 @@ export default [{
             page: 'Missing Products',
             slug: 'Missing Products',
             i18n: 'Missing Products'
+        }, ]
+    },
+    {
+        url: null,
+        name: 'Waybill',
+        page: 'Waybill',
+        icon: 'FileMinusIcon',
+        i18n: 'Waybill',
+        submenu: [{
+                url: '/petroleum/waybills',
+                name: 'Waybills',
+                page: 'Waybills',
+                slug: 'Waybills',
+                i18n: 'Waybills'
+            }, {
+                url: '/petroleum/waybill/analytics',
+                name: 'Analytics',
+                page: 'Waybill Analytics',
+                slug: 'Analytics',
+                i18n: 'Analytics'
+            }, {
+                url: '/petroleum/waybill/reconcile',
+                name: 'Reconcile',
+                page: 'Waybill Reconciliations',
+                slug: 'Waybill-reconciliation',
+                i18n: 'Waybill'
+            },
+            {
+                url: '/petroleum/waybill/expected-declaration',
+                name: 'Expected Declaration',
+                page: 'Waybill Expected Declaration',
+                slug: 'expected-declaration',
+                i18n: 'Expected Declaration'
+            }, {
+                url: '/petroleum/waybill/stock-management',
+                name: 'Stock Management',
+                page: 'Waybill Stock Management',
+                slug: 'Stock Management',
+                icon: 'DatabaseIcon',
+                i18n: 'Stock Management'
+            },
+        ]
+    },
+    {
+        url: null,
+        name: 'Ghana.gov',
+        page: 'Ghana.gov',
+        icon: 'StopCircleIcon',
+        i18n: 'Ghana.gov',
+        submenu: [{
+            url: '/petroleum/ghana.gov/reciepts',
+            name: 'Reciepts',
+            page: 'Ghana.gov Reciepts',
+            slug: 'Ghana.gov Reciepts',
+            i18n: 'Ghana.gov Reciepts'
+        }, {
+            url: '/petroleum/ghana.gov/standing',
+            name: 'Dept Potfolio / Good Standing',
+            page: 'Dept Potfolio / Good Standing',
+            slug: 'Dept Potfolio / Good Standing',
+            i18n: 'Dept Potfolio / Good Standing'
         }, ]
     }
 ]

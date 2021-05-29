@@ -914,6 +914,54 @@ const router = new Router({
                     props: true
                 },
                 {
+                    path: '/petroleum/tax-window',
+                    name: 'Tax Schadules',
+                    component: () =>
+                        import ('./views/pages/petroleum/tax/tax-window/TaxWindows.vue'),
+                    meta: {
+                        identity: 'Tax Window', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Tax Windows', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Tax'
+                    }
+                },
+                {
+                    path: '/petroleum/tax-window/add',
+                    name: 'add-tax-window',
+                    component: () =>
+                        import ('./views/pages/petroleum/tax/tax-window/TaxWindowManage.vue'),
+                    meta: {
+                        identity: 'Tax Window', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Tax Windows', url: '/petroleum/tax-window' },
+                            { title: 'Add', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Tax'
+                    }
+                },
+                {
+                    path: '/petroleum/tax-window/:taxwindowid',
+                    name: 'edit-tax-window',
+                    component: () =>
+                        import ('./views/pages/petroleum/tax/tax-window/TaxWindowManage.vue'),
+                    meta: {
+                        identity: 'Tax Window', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Tax Windows', url: '/petroleum/tax-window' },
+                            { title: 'Edit', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Tax'
+                    },
+                    props: true
+                },
+                {
                     path: '/petroleum/exemptions',
                     name: 'Exemptions',
                     component: () =>
@@ -1375,12 +1423,6 @@ const router = new Router({
                         import ('./views/pages/petroleum/icums/Declearations.vue')
                 },
                 {
-                    path: '/petroleum/icums/payments',
-                    name: 'payments',
-                    component: () =>
-                        import ('./views/pages/petroleum/icums/Payments.vue')
-                },
-                {
                     path: '/petroleum/icums/differences',
                     name: 'differences',
                     component: () =>
@@ -1472,6 +1514,161 @@ const router = new Router({
                         ],
                         homeurl: '/petroleum',
                         pageTitle: 'SML'
+                    }
+                },
+                // =============================================================================
+                // WAYBILL MENU START HERE
+                // =============================================================================
+                {
+                    path: '/petroleum/waybills',
+                    name: 'waybill',
+                    component: () =>
+                        import ('./views/pages/petroleum/waybill/Waybills.vue'),
+                    meta: {
+                        identity: 'Waybills', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Waybill'
+                    }
+                }, {
+                    path: '/petroleum/waybill/analytics',
+                    name: 'waybill-analytics',
+                    component: () =>
+                        import ('./views/pages/petroleum/waybill/Analytics.vue'),
+                    meta: {
+                        identity: 'Waybill Analytics', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Analytics', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Waybill'
+                    }
+                }, {
+                    path: '/petroleum/waybill/reconcile',
+                    name: 'waybill-reconcilations',
+                    component: () =>
+                        import ('./views/pages/petroleum/waybill/Reconciliations.vue'),
+                    meta: {
+                        identity: 'Waybill Reconciliations', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Reconcilation', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Waybill'
+                    }
+                }, {
+                    path: '/petroleum/waybill/expected-declaration',
+                    name: 'waybill-expected-declaration',
+                    component: () =>
+                        import ('./views/pages/petroleum/waybill/ExpectedDeclaration.vue'),
+                    meta: {
+                        identity: 'Waybill Expected Declaration', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Expected Declaration', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Waybill'
+                    }
+                }, {
+                    path: '/petroleum/waybill/expected-declaration/:name',
+                    name: 'waybill-expected-declaration-dcl',
+                    component: () =>
+                        import ('./views/pages/petroleum/waybill/OMCComputeLiftings.vue'),
+                    meta: {
+                        identity: 'Waybill Expected Declaration', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Expected Declaration', url: "/petroleum/waybill/expected-declaration" },
+                            { title: 'Declaration', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Waybill'
+                    },
+                    props: true
+                }, {
+                    path: '/petroleum/waybill/stock-management',
+                    name: 'waybill-stock-management',
+                    component: () =>
+                        import ('./views/pages/petroleum/waybill/bdc/StockManagement.vue'),
+                    meta: {
+                        identity: 'Waybill Stock Management', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Waybill Stock Management', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Waybill'
+                    }
+                },
+                {
+                    path: '/petroleum/waybill/stock-management/:bdc',
+                    name: 'waybill-stock-management-bdc',
+                    component: () =>
+                        import ('./views/pages/petroleum/waybill/bdc/StockManagementDepot.vue'),
+                    meta: {
+                        identity: 'Waybill Stock Management', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Waybill Stock Management', url: '/petroleum/waybill/stock-management' },
+                            { title: 'Products', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Waybill'
+                    },
+                    props: true
+                },
+                {
+                    path: '/petroleum/waybill/stock-management/invalid/:bdc/:product',
+                    name: 'waybill-stock-management-bdc',
+                    component: () =>
+                        import ('./views/pages/petroleum/waybill/bdc/StockManagementInvalid.vue'),
+                    meta: {
+                        identity: 'Waybill Stock Management', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Waybill Stock Management', url: '/petroleum/waybill/stock-management' },
+                            { title: 'Invalid Discharge', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Waybill'
+                    },
+                    props: true
+                },
+                // =============================================================================
+                // GHANA.GOV MENU START HERE
+                // =============================================================================
+                {
+                    path: '/petroleum/ghana.gov/reciepts',
+                    name: 'compute',
+                    component: () =>
+                        import ('./views/pages/petroleum/ghana.gov/Reciepts.vue'),
+                    meta: {
+                        identity: 'Ghana.gov Reciepts', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Reciepts', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Ghana.gov'
+                    }
+                }, {
+                    path: '/petroleum/ghana.gov/standing',
+                    name: 'ghana.gov-standing',
+                    component: () =>
+                        import ('./views/pages/petroleum/ghana.gov/Standing.vue'),
+                    meta: {
+                        identity: 'Dept Potfolio / Good Standing', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Dept Potfolio / Good Standing', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Ghana.gov'
                     }
                 },
                 // =============================================================================
@@ -1726,7 +1923,7 @@ const router = new Router({
                 },
                 {
                     path: '/revenue/rates/add',
-                    name: 'add-tax-schedule',
+                    name: 'add-tax-rates',
                     component: () =>
                         import ('./views/pages/revenue/surcharge/RatesManage.vue'),
                     meta: {
@@ -1742,7 +1939,7 @@ const router = new Router({
                 },
                 {
                     path: '/revenue/rates/:rateid',
-                    name: 'edit-tax-schedule',
+                    name: 'edit-tax-rates',
                     component: () =>
                         import ('./views/pages/revenue/surcharge/RatesManage.vue'),
                     meta: {
