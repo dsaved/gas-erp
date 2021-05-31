@@ -414,7 +414,7 @@ export default {
     },
     delete() {
       this.showLoading("Removing OMC Receipts, hang on a bit...");
-      this.post("/ghana_gov/remove", {
+      this.post("/ghana_gov/delete", {
         id: this.omcid,
       })
         .then((response) => {

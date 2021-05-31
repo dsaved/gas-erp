@@ -4,7 +4,7 @@
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <div class="w-full flex mb-4">
-          <div class="w-1/3 px-2">
+          <div class="w-1/4 px-2">
             <span>Date Range</span>
             <div class="w-full">
               <date-range-picker
@@ -30,7 +30,7 @@
               </date-range-picker>
             </div>
           </div>
-          <div class="w-1/5 px-2">
+          <div class="w-1/4 px-2">
             <span>OMC</span>
             <ajax-select
               placeholder="Select Condition"

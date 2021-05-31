@@ -1293,9 +1293,47 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
         if (isNaN(data.amount)) {
             data.amount = 0;
         }
+        await insertIgnore("omc", { name: data.omc });
         var sqlQuery = "INSERT INTO `" + table + "`(`bank`, `omc`, `date`, `mode_of_payment`,`amount`)  " +
             "VALUES('" + data.bank + "','" + data.omc + "','" + data.date + "','" + data.mode_of_payment + "'," + data.amount + "); ";
         return sqlQuery;
+    }
+
+    /**
+     * insert in to the database
+     * @param {String} table The name of the table to insert into
+     * @param {Object} data the object containing key and values to insert
+     */
+    async function insertIgnore(table, data) {
+        if (!table) return;
+        if (!data) return;
+        // set up an empty array to contain the  columns and values
+        let columns = [];
+        let values = [];
+        // Iterate over each key / value in the object
+        Object.keys(data).forEach(function(key) {
+            // if the value is an empty string, do not use
+            if ('' === data[key]) {
+                return;
+            }
+            // if we've made it this far, add the clause to the array of conditions
+            columns.push(`\`${key}\``);
+            values.push(`'${data[key]}'`);
+        });
+        // convert the columns array into a string of
+        columns = "(" + columns.join(' , ') + ")";
+        // convert the values array into a string 
+        values = "VALUES (" + values.join(' , ') + ");";
+        //construct the insert statement
+        const sql = `INSERT IGNORE INTO \`${table}\`${columns} ${values}`;
+        const results = await query(sql).catch(error => {
+            console.log('\x1b[31m%s\x1b[0m', error)
+            callback(null, {
+                isDone: true,
+                id: proccessID
+            });
+        })
+        return results.insertId;
     }
 
     async function executeStatement(sqlQuery) {
@@ -1533,7 +1571,6 @@ exports.importManifest = function(data, callback) {
         return await insert(table, insertData);
     }
 
-
     /**
      * insert in to the database
      * @param {String} table The name of the table to insert into
@@ -1570,7 +1607,6 @@ exports.importManifest = function(data, callback) {
         })
         return results.insertId;
     }
-
 
     /**
      * insert in to the database

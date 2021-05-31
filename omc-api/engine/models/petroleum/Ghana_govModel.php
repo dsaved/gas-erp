@@ -121,13 +121,14 @@ class Ghana_govModel extends BaseModel
         $status = $this->http->json->status??null;
         $nagatives = $this->http->json->nagatives??null;
         $dateRang = "";
+        $on = "";
 
         if ($date_range) {
             if ($date_range->endDate && $date_range->startDate) {
                 $startDate = $this->date->sql_date($date_range->startDate);
                 $endDate = $this->date->sql_date($date_range->endDate);
                 $condition .= " AND (rep.date  BETWEEN '$startDate' AND '$endDate') ";
-                $condition .= " AND (icum_dcl.date  BETWEEN '$startDate' AND '$endDate') ";
+                $on = " AND (icum_dcl.date  BETWEEN '$startDate' AND '$endDate') ";
                 $dateRang = $this->date->month_year_day($startDate) ." - ". $this->date->month_year_day($endDate);
             }
         }
@@ -139,7 +140,7 @@ class Ghana_govModel extends BaseModel
         $HAVING=" HAVING 1";
         if ($status && $status!="All") {
             if ($status==="Flagged") {
-                $HAVING .= " AND SUM(rep.amount) <> SUM(icum_dcl.amount) ";
+                $HAVING .= " AND (SUM(rep.amount) <> SUM(icum_dcl.amount) OR SUM(icum_dcl.amount) IS NULL)";
             }
             if ($status==="Not Flagged") {
                 $HAVING .= " AND SUM(rep.amount) = SUM(icum_dcl.amount) ";
@@ -151,11 +152,11 @@ class Ghana_govModel extends BaseModel
                 $HAVING .= " AND SUM(rep.amount) - SUM(icum_dcl.amount)  < 0 ";
             }
             if ($nagatives==="Positives") {
-                $HAVING .= " AND SUM(rep.amount) - SUM(icum_dcl.amount)  >= 0 ";
+                $HAVING .= " AND (SUM(rep.amount) - SUM(icum_dcl.amount)  >= 0 OR SUM(icum_dcl.amount) IS NULL) ";
             }
         }
 
-        $query = "SELECT 'All time' date, rep.omc, SUM(rep.amount) amount, icum_dcl.omc dcl_omc, SUM(icum_dcl.amount) dcl_amount FROM ".self::$table." rep JOIN petroleum_icums_declaration icum_dcl ON rep.omc=icum_dcl.omc $condition GROUP BY rep.omc $HAVING ORDER BY rep.id";
+        $query = "SELECT 'All time' date, rep.omc, SUM(rep.amount) amount, icum_dcl.omc dcl_omc, SUM(icum_dcl.amount) dcl_amount FROM ".self::$table." rep LEFT JOIN petroleum_icums_declaration icum_dcl ON rep.omc=icum_dcl.omc $on $condition GROUP BY rep.omc $HAVING ORDER BY rep.id";
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
