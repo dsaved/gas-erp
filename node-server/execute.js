@@ -1092,6 +1092,248 @@ exports.importReceiptFile = function(data, callback) {
  * @param data is a variable holding the current job
  * @param callback this is a method called when the job is finished in otherto terminate the process.
  */
+exports.importReceiptFileGhanaGov = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var XLSX = require('xlsx');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child reconcile: ' + data.id);
+            start();
+        });
+    });
+
+    var excelData = [];
+    var excelDataToInsert = [];
+    var filePath = data.path;
+
+    const start = async() => {
+        try {
+            var workbook = XLSX.readFile(filePath, {
+                // dateNF: "DD-MMM-YYYY",
+                header: 1,
+                defval: "",
+                cellDates: true,
+                cellNF: true,
+                raw: true,
+                dateNF: 'yyyy-mm-dd;@'
+            });
+            var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
+            await updateStatus("Cleaning data", "File read successfully - " + getTime());
+
+            /**
+             * modify array headers and remove special characters.
+             * add the location of the array in the excel file for latter access,
+             * incase an error occures
+             */
+            await asyncForEach(excelRow, async(excel, index) => {
+                var newObject = {};
+                for (var i in excel) {
+                    var newIndx = set_header(i);
+
+                    var value = excel[i].replace(/,/g, '');
+                    newObject[newIndx] = value;
+                    if (newIndx == "amount") {
+                        var value = excel[i].replace(/,/g, '');
+                        value = value.split(" ").join("");
+                        if (value.includes("(") && value.includes(")")) {
+                            value = value.split("(").join("-");
+                            value = value.split(")").join("");
+                        }
+                        newObject[newIndx] = value;
+                    }
+                    newObject["location"] = index + 2;
+                }
+                excelData.push(newObject);
+            }).catch(error => {
+                config.log(error)
+                updateStatus("Error", "error cleaning file, it may contain invalid characters");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            /**
+             * Delete the uploaded file.
+             * reason is for saving space
+             */
+            fs.unlink(filePath, (err) => {
+                if (err) config.log(' Error deleting file:: ' + err);
+            });
+            await updateStatus("Analyzing data", "done cleaning data - " + getTime());
+
+            var noErrorInFile = true,
+                lastKey = 0,
+                i = 0;
+            for (i = 0; i < excelData.length; i++) {
+                /**
+                 *validate accounting_date and account must not be empty
+                 */
+                var newDate = await convertDate(excelData[i]['date']);
+                // if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
+                //     noErrorInFile = false;
+                //     await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
+                //     return false;
+                // }
+                excelData[i]['date'] = newDate;
+                excelDataToInsert.push(excelData[i]);
+                lastKey++
+            }
+            await updateStatus("Validating file", "Analyzing succesful - " + getTime());
+
+            if (noErrorInFile) {
+                total = excelDataToInsert.length;
+
+                await updateStatus("Creating Receipts", "Validation successful - " + getTime());
+                await asyncForEach(excelDataToInsert, async(insertal, index) => {
+                    current = index + 1;
+                    //insert data to db
+                    var sqlStm1 = await updateSql("file_upload_receipt_status", "id", data.id, { current: current, total: total });
+                    var sqlStm2 = await insertSql("ghana_gov_omc_receipt", insertal);
+                    await executeStatement(sqlStm1.toString() + sqlStm2.toString());
+                });
+                await updateStatus("completed", "All done - " + getTime(), "completed");
+            }
+        } catch (error) {
+            console.error(error);
+            await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
+        } finally {
+            callback(null, { isDone: true, id: proccessID });
+            config.log("task done ");
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function convertDate(inputDate) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var d = new Date(inputDate)
+        return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
+    }
+
+    /**
+     * Set the excel header to approprate format 
+     * @param value the value of the header that needs formating
+     */
+    function set_header(value) {
+        value = value.toString().trim();
+        value = value.split(" ").join("_");
+        value = value.split("-").join("_");
+        value = value.replace(/\./, '');
+        return value.toLowerCase();
+    }
+
+    async function updateSql(table, column, val, data) {
+        // set up an empty array to contain the WHERE conditions
+        let values = [];
+        // Iterate over each key / value in the object
+        Object.keys(data).forEach(function(key) {
+            // if the value is an empty string, do not use
+            if ('' === data[key]) {
+                return;
+            }
+            // if we've made it this far, add the clause to the array of conditions
+            values.push(`\`${key}\` = '${data[key]}'`);
+        });
+        // convert the where array into a string of , clauses
+        values = values.join(' , ');
+        // check the val type is string and set it as string 
+        if (typeof(val) == "string") {
+            val = `'${val}'`;
+        }
+        const sql = `UPDATE \`${table}\` SET ${values} WHERE \`${column}\`= ${val};`;
+        return sql;
+    }
+
+    /**
+     * update the current job status
+     * @param status the current status of the job
+     * @param jobstatus the overall status of the job
+     */
+    async function updateStatus(status, desc, jobstatus) {
+        var status = status || "",
+            desc = desc || "",
+            jobstatus = jobstatus || "processing",
+            sqlQuery = "UPDATE `file_upload_receipt_status` SET " + " `description` = '" + desc + "',  `status` = '" + status + "',  `total` = '" + total + "',  `current` = '" + current + "' , `processing` = '" + jobstatus + "' WHERE `id`=" + data.id;
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: " + error, "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * db insert statement
+     * @param table the name of the table to insert the record to 
+     * @param dbData the data to insert
+     */
+    async function insertSql(table, dbData) {
+        var data = dbData;
+        if (isNaN(data.amount)) {
+            data.amount = 0;
+        }
+        var sqlQuery = "INSERT INTO `" + table + "`(`bank`, `omc`, `date`, `mode_of_payment`,`amount`)  " +
+            "VALUES('" + data.bank + "','" + data.omc + "','" + data.date + "','" + data.mode_of_payment + "'," + data.amount + "); ";
+        return sqlQuery;
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+}
+
+/**
+ * import model for file import
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
 exports.importManifest = function(data, callback) {
     var module = require('./config');
     var config = module.configs;
@@ -2450,7 +2692,6 @@ exports.importPreorders = function(data, callback) {
     }
 }
 
-
 /**
  * import model for file import
  * @param data is a variable holding the current job
@@ -2655,6 +2896,338 @@ exports.importWaybills = function(data, callback) {
         await insertIgnore("bdc", { name: data.bdc });
         await insertIgnore("omc", { name: data.omc });
         await insertIgnore("depot", { name: data.depot });
+        return await insert(table, insertData);
+    }
+
+
+    /**
+     * insert in to the database
+     * @param {String} table The name of the table to insert into
+     * @param {Object} data the object containing key and values to insert
+     */
+    async function insert(table, data) {
+        if (!table) return;
+        if (!data) return;
+        // set up an empty array to contain the  columns and values
+        let columns = [];
+        let values = [];
+        // Iterate over each key / value in the object
+        Object.keys(data).forEach(function(key) {
+            // if the value is an empty string, do not use
+            if ('' === data[key]) {
+                return;
+            }
+            // if we've made it this far, add the clause to the array of conditions
+            columns.push(`\`${key}\``);
+            values.push(`'${data[key]}'`);
+        });
+        // convert the columns array into a string of
+        columns = "(" + columns.join(' , ') + ")";
+        // convert the values array into a string 
+        values = "VALUES (" + values.join(' , ') + ");";
+        //construct the insert statement
+        const sql = `INSERT INTO \`${table}\`${columns} ${values}`;
+        const results = await query(sql).catch(error => {
+            console.log('\x1b[31m%s\x1b[0m', error)
+            callback(null, {
+                isDone: true,
+                id: proccessID
+            });
+        })
+        return results.insertId;
+    }
+
+
+    /**
+     * insert in to the database
+     * @param {String} table The name of the table to insert into
+     * @param {Object} data the object containing key and values to insert
+     */
+    async function insertIgnore(table, data) {
+        if (!table) return;
+        if (!data) return;
+        // set up an empty array to contain the  columns and values
+        let columns = [];
+        let values = [];
+        // Iterate over each key / value in the object
+        Object.keys(data).forEach(function(key) {
+            // if the value is an empty string, do not use
+            if ('' === data[key]) {
+                return;
+            }
+            // if we've made it this far, add the clause to the array of conditions
+            columns.push(`\`${key}\``);
+            values.push(`'${data[key]}'`);
+        });
+        // convert the columns array into a string of
+        columns = "(" + columns.join(' , ') + ")";
+        // convert the values array into a string 
+        values = "VALUES (" + values.join(' , ') + ");";
+        //construct the insert statement
+        const sql = `INSERT IGNORE INTO \`${table}\`${columns} ${values}`;
+        const results = await query(sql).catch(error => {
+            console.log('\x1b[31m%s\x1b[0m', error)
+            callback(null, {
+                isDone: true,
+                id: proccessID
+            });
+        })
+        return results.insertId;
+    }
+
+    /**
+     * update in to the database
+     * @param {String} table The name of the table to insert into
+     * @param {String} column the column in the db to mach
+     * @param val value used to match the column
+     * @param {Object} data the object containing key and values to insert
+     */
+    async function update(table, column, val, data) {
+        // set up an empty array to contain the WHERE conditions
+        let values = [];
+        // Iterate over each key / value in the object
+        Object.keys(data).forEach(function(key) {
+            // if the value is an empty string, do not use
+            if ('' === data[key]) {
+                return;
+            }
+            // if we've made it this far, add the clause to the array of conditions
+            values.push(`\`${key}\` = '${data[key]}'`);
+        });
+        // convert the where array into a string of , clauses
+        values = values.join(' , ');
+        // check the val type is string and set it as string 
+        if (typeof(val) == "string") {
+            val = `'${val}'`;
+        }
+
+        const sql = `UPDATE \`${table}\` SET ${values} WHERE \`${column}\`= ${val}`;
+        await query(sql).catch(error => {
+            console.log('\x1b[31m%s\x1b[0m', error)
+            callback(null, {
+                isDone: true,
+                id: proccessID
+            });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+}
+
+/**
+ * import model for file import
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.importICUMSDeclarations = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var XLSX = require('xlsx');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child reconcile: ' + data.id);
+            start();
+        });
+    });
+
+    var excelData = [];
+    var excelDataToInsert = [];
+    var filePath = data.path;
+
+    const start = async() => {
+        try {
+            var workbook = XLSX.readFile(filePath, {
+                // dateNF: "DD-MMM-YYYY",
+                header: 1,
+                defval: "",
+                cellDates: true,
+                cellNF: true,
+                raw: true,
+                dateNF: 'yyyy-mm-dd;@'
+            });
+            var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
+            await updateStatus("Cleaning data", "File read successfully - " + getTime());
+
+            /**
+             * modify array headers and remove special characters.
+             * add the location of the array in the excel file for latter access,
+             * incase an error occures
+             */
+            await asyncForEach(excelRow, async(excel, index) => {
+                var newObject = {};
+                for (var i in excel) {
+                    var newIndx = set_header(i);
+
+                    var value = excel[i].replace(/,/g, '');
+                    newObject[newIndx] = value;
+                    if (newIndx == "amount") {
+                        var value = excel[i].replace(/,/g, '');
+                        value = value.split(" ").join("");
+                        if (value.includes("(") && value.includes(")")) {
+                            value = value.split("(").join("-");
+                            value = value.split(")").join("");
+                        }
+                        newObject[newIndx] = value;
+                    }
+                    newObject["location"] = index + 2;
+                }
+                excelData.push(newObject);
+            }).catch(error => {
+                config.log(error)
+                updateStatus("Error", "error cleaning file, it may contain invalid characters");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            /**
+             * Delete the uploaded file.
+             * reason is for saving space
+             */
+            fs.unlink(filePath, (err) => {
+                if (err) config.log(' Error deleting file:: ' + err);
+            });
+            await updateStatus("Analyzing data", "done cleaning data - " + getTime());
+
+            var noErrorInFile = true,
+                lastKey = 0,
+                i = 0;
+            for (i = 0; i < excelData.length; i++) {
+                /**
+                 *validate accounting_date and account must not be empty
+                 */
+                var date = await convertDate(excelData[i]['date']);
+                // if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
+                //     noErrorInFile = false;
+                //     await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
+                //     return false;
+                // }
+                excelData[i]['date'] = date;
+                excelDataToInsert.push(excelData[i]);
+                lastKey++
+            }
+            await updateStatus("Validating file", "Analyzing succesful - " + getTime());
+
+            if (noErrorInFile) {
+                total = excelDataToInsert.length;
+
+                await updateStatus("Creating Receipts", "Validation successful - " + getTime());
+                await asyncForEach(excelDataToInsert, async(insertal, index) => {
+                    current = index + 1;
+                    //insert data to db
+                    await update("file_upload_receipt_status", "id", data.id, { current: current, total: total });
+                    await insertSql("petroleum_icums_declaration", insertal);
+                });
+                await updateStatus("completed", "All done - " + getTime(), "completed");
+            }
+        } catch (error) {
+            console.error(error);
+            await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
+        } finally {
+            callback(null, { isDone: true, id: proccessID });
+            config.log("task done ");
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function convertDate(inputDate) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var d = new Date(inputDate)
+        return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
+    }
+
+    /**
+     * Set the excel header to approprate format 
+     * @param value the value of the header that needs formating
+     */
+    function set_header(value) {
+        value = value.toString().trim();
+        value = value.split(" ").join("_");
+        value = value.split("-").join("_");
+        value = value.split("\r").join("");
+        value = value.split("\n").join("");
+        value = value.replace(/\./, '');
+        return value.toLowerCase();
+    }
+
+    /**
+     * update the current job status
+     * @param status the current status of the job
+     * @param jobstatus the overall status of the job
+     */
+    async function updateStatus(status, desc, jobstatus) {
+        var status = status || "",
+            desc = desc || "",
+            jobstatus = jobstatus || "processing";
+
+        const udateData = {
+            description: desc,
+            status: status,
+            total: total,
+            current: current,
+            processing: jobstatus
+        };
+        await update('file_upload_receipt_status', 'id', data.id, udateData);
+    }
+
+    /**
+     * db insert statement
+     * @param table the name of the table to insert the record to 
+     * @param dbData the data to insert
+     */
+    async function insertSql(table, dbData) {
+        var data = dbData;
+        if (isNaN(data.unit_price)) {
+            data.unit_price = 0;
+        }
+        const insertData = {
+            date: data.date,
+            amount: data.amount,
+            omc: data.omc
+        };
+        await insertIgnore("omc", { name: data.omc });
         return await insert(table, insertData);
     }
 

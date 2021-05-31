@@ -298,7 +298,13 @@ class WaybillsModel extends BaseModel
         $response = array();
         $response['computes'] = array();
         $response['total'] = 0;
-        $computes = $this->getWaybills($omc)??null;
+        
+        $group_products = true;
+        if($showBDC && $showBDC === "Show"){
+            $group_products = false;
+        }
+
+        $computes = $this->getWaybills($omc, $group_products)??null;
         if (empty($computes)) {
             $this->http->_403("Please provide variables to compute");
         }
@@ -340,8 +346,12 @@ class WaybillsModel extends BaseModel
         return $response;
     }
 
-    public function getWaybills($omc){
-        $this->db->query("SELECT * FROM ".self::$table." WHERE omc='$omc' ");
+    public function getWaybills($omc, $group_products){
+        if($group_products===true){
+            $this->db->query("SELECT SUM(volume) volume, MIN(date) date, product_type FROM ".self::$table." WHERE omc='$omc' GROUP BY product_type, (SELECT CONCAT(tax_product, '-', name) FROM tax_window WHERE `date_from`<= date AND `date_to` >= date ) ORDER BY product_type ASC, date ASC ");
+        }else{
+            $this->db->query("SELECT * FROM ".self::$table." WHERE omc='$omc' ORDER BY product_type ASC, date ASC ");
+        }
         return $this->db->results();
     }
 

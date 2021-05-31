@@ -30,43 +30,6 @@
               </date-range-picker>
             </div>
           </div>
-          <div class="w-1/4 px-2">
-            <span>Product Type</span>
-            <ajax-select
-              placeholder="Select bank type"
-              :include="['All']"
-              url="/taxproducts/options_list"
-              :clearable="false"
-              :dir="$vs.rtl ? 'rtl' : 'ltr'"
-              :selected="product_type"
-              v-on:update:data="product_type = $event"
-            />
-          </div>
-          <div class="w-1/4 px-2">
-            <span>BDC</span>
-            <ajax-select
-              placeholder="Select BDC"
-              :options="[]"
-              url="/bdc/options_list"
-              :clearable="false"
-              :include="['All']"
-              :dir="$vs.rtl ? 'rtl' : 'ltr'"
-              :selected="bdc"
-              v-on:update:data="bdc = $event"
-            />
-          </div>
-          <div class="w-1/5 px-2">
-            <span>Depot</span>
-            <ajax-select
-              placeholder="Select Condition"
-              url="/depot/options"
-              :include="['All']"
-              :clearable="false"
-              :dir="$vs.rtl ? 'rtl' : 'ltr'"
-              :selected="depot"
-              v-on:update:data="depot = $event"
-            />
-          </div>
           <div class="w-1/5 px-2">
             <span>OMC</span>
             <ajax-select
@@ -83,25 +46,22 @@
             <span>Status</span>
             <ajax-select
               placeholder="Select Status"
-              :options="['All', 'Ordered', 'Not Ordered']"
+              :options="['All', 'Flagged', 'Not Flagged']"
               :clearable="false"
               :dir="$vs.rtl ? 'rtl' : 'ltr'"
               :selected="status"
               v-on:update:data="status = $event"
             />
           </div>
-        </div>
-        <div class="w-full flex mb-4">
           <div class="w-1/5 px-2">
-            <span>Group Result By</span>
+            <span>Positives/Nagatives</span>
             <ajax-select
-              placeholder="Select Groupping"
-              :options="['BDC', 'Depot', 'OMC', 'Product type']"
+              placeholder="Select Status"
+              :options="['All', 'Nagatives', 'Positives']"
               :clearable="false"
-              :multiple="true"
               :dir="$vs.rtl ? 'rtl' : 'ltr'"
-              :selected="group_by"
-              v-on:update:data="group_by = $event"
+              :selected="nagatives"
+              v-on:update:data="nagatives = $event"
             />
           </div>
           <div class="w-1/5 px-2">
@@ -165,23 +125,18 @@
                   <th scope="col" class="td-check">
                     <vs-checkbox v-model="selectAll">#</vs-checkbox>
                   </th>
-                  <th scope="col">Preorder Date</th>
-                  <th scope="col">Product</th>
-                  <th scope="col">BDC</th>
+                  <th scope="col">Date</th>
                   <th scope="col">OMC</th>
-                  <th scope="col">Depot</th>
-                  <th scope="col">Total Preorder Vol.</th>
-                  <th scope="col">Total Order Vol.</th>
-                  <th scope="col">Vol. Difference</th>
-                  <th scope="col" class="text-right">Total Order Unit Price</th>
-                  <th scope="col">Status</th>
+                  <th scope="col" class="text-right">Recipt Amount</th>
+                  <th scope="col" class="text-right">ICUMS Amount</th>
+                  <th scope="col" class="text-right">Amount Difference</th>
                 </tr>
               </thead>
               <tbody>
                 <tr
                   v-for="(record, index) in sortedRecords"
                   :key="index"
-                  class="tr-values vs-table--tr tr-table-state-null selected"
+                  :class="['tr-values vs-table--tr tr-table-state-null selected',{'text-danger':record.flagged}]"
                 >
                   <td scope="row" @click.stop="">
                     <vs-checkbox
@@ -191,34 +146,19 @@
                     >
                   </td>
                   <td>
-                    {{ record.preorder_date }}
-                  </td>
-                  <td>
-                    {{ record.preorder_product }}
-                  </td>
-                  <td>
-                      {{ record.bdc }}
+                    {{ record.date }}
                   </td>
                   <td>
                       {{ record.omc }}
                   </td>
-                  <td>
-                      {{ record.depot }}
-                  </td>
-                  <td>
-                      {{ record.preorder_volume}}
-                  </td>
-                  <td>
-                    {{ record.order_volume }}
-                  </td>
-                  <td>
-                    {{ record.difference_volume }}
+                  <td class="text-right">
+                    {{ record.amount }}
                   </td>
                   <td class="text-right">
-                    {{ record.order_unit_price }}
+                    {{ record.dcl_amount }}
                   </td>
-                  <td>
-                    {{ record.status }}
+                  <td class="text-right">
+                    {{ record.difference_amount }}
                   </td>
                 </tr>
               </tbody>
@@ -331,6 +271,7 @@ export default {
       depot: "All",
       omc: "All",
       status: "All",
+      nagatives: "All",
       group_by: ["BDC"],
       date_range: {
         startDate: null,
@@ -390,6 +331,7 @@ export default {
       this.omc = "All";
       this.group_by = ["BDC"];
       this.status = "All";
+      this.nagatives = "All";
       this.date_range = {
         startDate: null,
         endDate: null,
@@ -400,7 +342,7 @@ export default {
     },
     filterData() {
       this.showLoading("Getting results...");
-      this.post("/analytics/orders", {
+      this.post("/ghana_gov/difference", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
         product_type: this.product_type,
@@ -409,6 +351,7 @@ export default {
         depot: this.depot,
         omc: this.omc,
         status: this.status,
+        nagatives: this.nagatives,
         date_range: this.date_range,
       })
         .then((response) => {
@@ -443,78 +386,6 @@ export default {
             duration: null,
             position: "bottom-left",
           });
-        });
-    },
-    //file import function starts here
-    uploadCompleted: function (data) {
-      if (data.success == true) {
-        this.pushDescription(data.message);
-        this.importStatus = "Reading File Content";
-        this.checkImportStatus(data.jobid);
-      } else {
-        Swal.fire("Failed!", data.message, "error");
-      }
-    },
-    checkImportStatus: function (id) {
-      const vm = this;
-      this.statuscheck = setInterval(function () {
-        vm.checkStatusForImport(id);
-      }, 1200);
-    },
-    formatDesc: function (data) {
-      var error = false;
-      this.errorStr.forEach((item) => {
-        if (data && data.toLowerCase().includes(item)) {
-          error = true;
-        }
-      });
-      if (error) {
-        return `<span class="text-danger">->${data}<br/></span> `;
-      }
-      return `<span class="text-primary">->${data}<br/></span> `;
-    },
-    pushDescription: function (data) {
-      if (!this.importDesc.includes(data)) {
-        this.importDesc.push(data);
-      }
-    },
-    clearLog: function () {
-      this.popupActive = false;
-      this.importDesc = [];
-      this.importStatus = "";
-      if (this.statuscheck) {
-        clearInterval(this.statuscheck);
-      }
-    },
-    checkStatusForImport: function (id) {
-      this.post("/preorder/import_status", {
-        jobid: id,
-      })
-        .then((response) => {
-          var data = response.data;
-          if (data.success) {
-            var status = data.status;
-            this.pushDescription(status.description);
-            this.importStatus = status.status;
-            this.importDetails = status.details;
-            if (status.status.toLowerCase() == "completed") {
-              clearInterval(this.statuscheck);
-              this.getData();
-              this.importStatus = "";
-              this.importDetails = "";
-            }
-            if (status.status.toLowerCase().includes("error")) {
-              clearInterval(this.statuscheck);
-              this.importStatus = "";
-            }
-          } else {
-            this.pushDescription(response.data.message);
-            this.importStatus = "";
-            clearInterval(this.statuscheck);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
         });
     },
   },

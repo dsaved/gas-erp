@@ -9,11 +9,13 @@ var workerFarm = require('worker-farm'),
         'compilePenalty',
         'importFile',
         'importReceiptFile',
+        'importReceiptFileGhanaGov',
         'importManifest',
         'importDeclaration',
         'importOrders',
         'importPreorders',
         'importWaybills',
+        'importICUMSDeclarations',
         'exportFile',
         'exportFileFallout',
         'exportFileNASummary',
@@ -49,9 +51,9 @@ fs.readFile(configPath, (error, db_config) => {
         // setInterval(() => {
         //     pump_product(Type.IN);
         // }, 5000);
-        setInterval(() => {
-            pump_product(Type.OUT);
-        }, 5000);
+        // setInterval(() => {
+        //     pump_product(Type.OUT);
+        // }, 5000);
         config.log('worker thread initialized');
 
 
@@ -174,9 +176,9 @@ function fileReceiptImport() {
             } else {
                 if (typeof(chatsHid[0]) != "undefined" && chatsHid[0] != null) {
                     var childJobDescription = chatsHid[0];
+                    var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
+                        getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
                     if (childJobDescription.type === "receipt") {
-                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
-                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
                         sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
                             if (err) {
                                 config.log(err);
@@ -190,9 +192,21 @@ function fileReceiptImport() {
                                 currentReceiptJobIm++;
                             }
                         });
+                    } else if (childJobDescription.type === "ghana_gov_omc_receipt") {
+                        sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                            if (err) {
+                                config.log(err);
+                            } else {
+                                workers.importReceiptFileGhanaGov(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentReceiptJobIm--;
+                                    }
+                                })
+                                currentReceiptJobIm++;
+                            }
+                        });
                     } else if (childJobDescription.type === "manifest_imp") {
-                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
-                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
                         sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
                             if (err) {
                                 config.log(err);
@@ -207,8 +221,6 @@ function fileReceiptImport() {
                             }
                         });
                     } else if (childJobDescription.type === "declaration_imp") {
-                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
-                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
                         sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
                             if (err) {
                                 config.log(err);
@@ -223,8 +235,6 @@ function fileReceiptImport() {
                             }
                         });
                     } else if (childJobDescription.type === "petroleum_order_imp") {
-                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
-                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
                         sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
                             if (err) {
                                 config.log(err);
@@ -239,8 +249,6 @@ function fileReceiptImport() {
                             }
                         });
                     } else if (childJobDescription.type === "petroleum_preorder_imp") {
-                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
-                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
                         sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
                             if (err) {
                                 config.log(err);
@@ -255,13 +263,25 @@ function fileReceiptImport() {
                             }
                         });
                     } else if (childJobDescription.type === "waybill_imp") {
-                        var sqlQuery = "UPDATE `file_upload_receipt_status` SET `processing`='processing', status='initializing', description='importation job accepted - " +
-                            getTime() + "' WHERE `processing`='pending' AND `id`=" + childJobDescription.id;
                         sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
                             if (err) {
                                 config.log(err);
                             } else {
                                 workers.importWaybills(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentReceiptJobIm--;
+                                    }
+                                })
+                                currentReceiptJobIm++;
+                            }
+                        });
+                    } else if (childJobDescription.type === "petroleum_icums_declaration_imp") {
+                        sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
+                            if (err) {
+                                config.log(err);
+                            } else {
+                                workers.importICUMSDeclarations(childJobDescription, function(err, result) {
                                     if (result.isDone) {
                                         process.kill(result.id);
                                         currentReceiptJobIm--;

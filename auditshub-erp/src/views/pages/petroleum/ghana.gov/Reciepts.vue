@@ -1,110 +1,8 @@
 
 <template>
   <div id="omc-org-view">
-    <vs-alert
-      color="danger"
-      title="OMC Not Found"
-      :active.sync="user_not_found"
-    >
-      <span>OMC record with id: {{ omcid }} not found. </span>
-      <span>
-        <span>Check </span
-        ><router-link :to="{ name: 'omc-list' }" class="text-inherit underline"
-          >All OMCs</router-link
-        >
-      </span>
-    </vs-alert>
-
-    <div id="omc-data" v-if="user_found">
-      <vx-card title="Oil Marketing Company" class="mb-base">
-        <!-- Avatar -->
-        <div class="vx-row">
-          <!-- Avatar Col -->
-          <div class="vx-col" id="avatar-col">
-            <div v-if="photo" class="con-img mb-2 mt-3">
-              <img
-                key="omc-image"
-                :src="photo"
-                alt="omc-img"
-                width="100"
-                height="100"
-                class="rounded-full shadow-md cursor-pointer block"
-              />
-            </div>
-          </div>
-
-          <!-- Information - Col 1 -->
-          <div class="vx-col flex-1" id="account-info-col-1">
-            <table>
-              <tr>
-                <td class="font-semibold">Name</td>
-                <td>{{ omc.name }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Email</td>
-                <td>{{ omc.email }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Phone</td>
-                <td>{{ omc.phone }}</td>
-              </tr>
-            </table>
-          </div>
-          <!-- /Information - Col 1 -->
-
-          <!-- Information - Col 2 -->
-          <div class="vx-col flex-1" id="account-info-col-2">
-            <table>
-              <tr>
-                <td class="font-semibold">Location</td>
-                <td>{{ omc.location }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Region</td>
-                <td>{{ omc.region }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">District</td>
-                <td>{{ omc.district }}</td>
-              </tr>
-            </table>
-          </div>
-          <!-- /Information - Col 2 -->
-          <div class="vx-col w-full flex" id="account-manage-buttons">
-            <vs-spacer />
-            <vs-button
-              type="border"
-              color="primary"
-              icon-pack="feather"
-              icon="icon-cpu"
-              class="mr-2"
-              v-if="canAdd()"
-              v-on:click="linkto('/petroleum/omc/' + omcid + '/compute/')"
-              >Compute Liftings</vs-button
-            >
-            <vs-button
-              type="border"
-              color="dark"
-              icon-pack="feather"
-              icon="icon-shuffle"
-              v-if="canAdd() && omc.reconciled=='0'"
-              v-on:click="linkto('/petroleum/omc/' + omcid + '/reconcile/')"
-              >Use For Reconcilation</vs-button
-            >
-            <vs-button
-              type="border"
-              color="danger"
-              icon-pack="feather"
-              icon="icon-slash"
-              v-if="canAdd() && omc.reconciled=='1'"
-              v-on:click="removeReconcilationWarn"
-              >Remove Reconcilation</vs-button
-            >
-          </div>
-        </div>
-      </vx-card>
-
-      <vx-card :title="omc.name + ' receipts'">
+    <div id="omc-data">
+      <vx-card title="Receipts">
         <p></p>
         <div class="vs-component vs-con-table stripe vs-table-secondary">
           <header class="header-table vs-table--header my-3">
@@ -127,7 +25,7 @@
                 color="danger"
                 icon-pack="feather"
                 class="ml-2"
-                v-if="canDelete()"
+                v-if="canDelete() && records.length > 0"
                 @click="deleteWarnSingle"
                 icon="icon-trash"
                 >Remove Receipts</vs-button
@@ -154,8 +52,8 @@
                     <th scope="col" class="td-check">
                       <vs-checkbox v-model="selectAll">#</vs-checkbox>
                     </th>
+                    <th scope="col">OMC</th>
                     <th scope="col">Bank</th>
-                    <!-- <th scope="col">Declaration Number &amp; Receipt Number</th> -->
                     <th scope="col">Mode of Payment</th>
                     <th scope="col" class="text-right">Amount</th>
                     <th scope="col">Date</th>
@@ -166,17 +64,10 @@
                   <tr
                     v-for="(record, index) in sortedRecords"
                     :key="index"
-                    v-on:click="
-                      linkto(
-                        '/petroleum/omc/' +
-                          omcid +
-                          '/view/receipt/' +
-                          record.id +
-                          '/' +
-                          number(index)
-                      )
-                    "
-                    :class="['tr-values vs-table--tr tr-table-state-null selected',{'text-danger':record.status==='flagged'}]"
+                    :class="[
+                      'tr-values vs-table--tr tr-table-state-null selected',
+                      { 'text-danger': record.status === 'flagged' },
+                    ]"
                   >
                     <td scope="row" @click.stop="">
                       <vs-checkbox
@@ -186,12 +77,11 @@
                       >
                     </td>
                     <td>
+                      {{ record.omc | title }}
+                    </td>
+                    <td>
                       {{ record.bank | title }}
                     </td>
-                    <!-- <td>
-                      <b>{{ record.declaration_number }}</b> <br />
-                      {{ record.receipt_number }}
-                    </td> -->
                     <td>
                       {{ record.mode_of_payment }}
                     </td>
@@ -270,9 +160,9 @@
     <vs-popup
       background-color="rgba(200,200,200,.8)"
       persistent
-      :title="'Upload Receipt for ' + omc.name"
+      :title="'Upload Receipts '"
       :active.sync="popupActive"
-      :key="popupActive+'121'"
+      :key="popupActive + '121'"
     >
       <p v-if="hasdata(importStatus)">
         <vs-progress
@@ -298,25 +188,13 @@
       </p>
 
       <p class="mt-4">
-          <ajax-select
-            placeholder="Select Bank"
-            class="mt-5 w-full"
-            :url="'/options/banks'"
-            :clearable="false"
-            :dir="$vs.rtl ? 'rtl' : 'ltr'"
-            :selected="banksoption"
-            v-on:update:data="banksoption = $event"
-          />
-      </p>
-      <p class="mt-4" v-if="banksoption">
         <ds-file-upload
           upload-button-lable="Upload Receipts"
           type="relief"
           color="primary"
           max-size="3072"
-          :file-id="omcid+'~'+banksoption.value"
           description="Allowed XLSX and XLX, Max size of 3MB"
-          upload-url="/omc/import/"
+          upload-url="/ghana_gov/import/"
           allowed-file-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
           v-on:completed="uploadCompleted"
         />
@@ -349,390 +227,293 @@
 
 <script>
 // Import Swal
-import Swal from 'sweetalert2'
-import mStorage from '@/store/storage.js'
+import Swal from "sweetalert2";
+import mStorage from "@/store/storage.js";
 
 export default {
-	beforeRouteEnter (to, from, next) {
-		next((vm) => {
-			if (
-				to.meta &&
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (
+        to.meta &&
         to.meta.identity &&
         !vm.AppActiveUser.pages.includes(to.meta.identity)
-			) {
-				vm.pushReplacement(vm.AppActiveUser.baseUrl)
-			}
-		})
-	},
-	beforeRouteLeave (to, from, next) {
-		if (this.statuscheck) {
-			clearInterval(this.statuscheck)
-			this.statuscheck = null
-		}
-		next()
-	},
-	props: {
-		omcid: {
-			type: String / Number,
-			default: 0
-		}
-	},
-	data () {
-		return {
-			user_not_found: false,
-			user_found: false,
-			omc: {},
-			//file import section
-			popupActive: false,
-			statuscheck: null,
-			errorStr: ['unknown jobid', 'error'],
-			importDesc: [],
-			importDetails: '',
-			importStatus: '',
-			//receipt data list starts here
-			pkey: 'omc-orgreceipt-list-key',
-			message: '',
-			numbering: 0,
-			currentPage: 1,
-			result_per_page: 20,
-			loading: true,
-			deletebutton: false,
-			pagination: {
-				haspages: false,
-				page: 0,
-				start: 0,
-				end: 0,
-				total: 0,
-				pages: 0,
-				hasNext: false,
-				hasPrevious: false
-			},
-			selectedRecords: [],
-			search: '',
-			records: [],
-			search_timer: null,
-			banksoption: null
-		}
-	},
-	computed: {
-		selectAll: {
-			get () {
-				return this.records
-					? this.selectedRecords.length == this.records.length
-					: false
-			},
-			set (value) {
-				const selected = []
+      ) {
+        vm.pushReplacement(vm.AppActiveUser.baseUrl);
+      }
+    });
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.statuscheck) {
+      clearInterval(this.statuscheck);
+      this.statuscheck = null;
+    }
+    next();
+  },
+  data() {
+    return {
+      omc: {},
+      //file import section
+      popupActive: false,
+      statuscheck: null,
+      errorStr: ["unknown jobid", "error"],
+      importDesc: [],
+      importDetails: "",
+      importStatus: "",
+      //receipt data list starts here
+      pkey: "ghana.gov-receipt-list-key",
+      message: "",
+      numbering: 0,
+      currentPage: 1,
+      result_per_page: 20,
+      loading: true,
+      deletebutton: false,
+      pagination: {
+        haspages: false,
+        page: 0,
+        start: 0,
+        end: 0,
+        total: 0,
+        pages: 0,
+        hasNext: false,
+        hasPrevious: false,
+      },
+      selectedRecords: [],
+      search: "",
+      records: [],
+      search_timer: null,
+      banksoption: null,
+    };
+  },
+  computed: {
+    selectAll: {
+      get() {
+        return this.records
+          ? this.selectedRecords.length == this.records.length
+          : false;
+      },
+      set(value) {
+        const selected = [];
 
-				if (value) {
-					this.records.forEach(function (record) {
-						selected.push(record.id)
-					})
-				}
-				this.selectedRecords = selected
-			}
-		},
-		sortedRecords () {
-			try {
-				return this.filterObj(this.records, this.search).sort((a, b) => {
-					let modifier = 1
-					if (this.currentSortDir === 'desc') modifier = -1
-					if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
-					if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
-					return 0
-				})
-			} catch (error) {
-				console.warn(error)
-			}
-		},
-		photo () {
-			return require('@/assets/images/portrait/small/default.png')
-		}
-	},
-	mounted () {
-		this.currentPage =
-      Number(mStorage.get(`${this.pkey}page${this.omcid}`)) || 1
-		this.getData()
-	},
-	watch: {
-		currentPage () {
-			mStorage.set(`${this.pkey}page${this.omcid}`, this.currentPage)
-			this.getReceipt()
-		},
-		search (newVal, oldVal) {
-			this.startSearch(newVal, oldVal)
-		},
-		pagination () {
-			this.numbering = this.pagination.start
-		}
-	},
-	methods: {
-		number (num) {
-			return this.numbering + num
-		},
-		startSearch (newVal, oldVal) {
-			if (this.search_timer) {
-				clearTimeout(this.search_timer)
-			}
-			const vm = this
-			this.search_timer = setTimeout(function () {
-				vm.getReceipt()
-			}, 800)
-		},
-		getReceipt () {
-			this.loading = true
-			this.post('/receipts/', {
-				result_per_page: this.result_per_page,
-				page: this.currentPage,
-				search: this.search,
-				id: this.omcid
-			})
-				.then((response) => {
-					this.loading = false
-					console.log(response.data)
-					if (response.data.success == true) {
-						this.message = ''
-						this.records = response.data.receipts
-					} else {
-						this.message = response.data.message
-						this.records = []
-						this.$vs.notify({
-							title: 'Error!!!',
-							text: `${response.data.message}`,
-							sticky: true,
-							border: 'danger',
-							color: 'dark',
-							duration: null,
-							position: 'bottom-left'
-						})
-					}
-					this.pagination = response.data.pagination
-				})
-				.catch((error) => {
-					this.loading = false
-					this.$vs.notify({
-						title: 'Error!!!',
-						text: `${error.message}`,
-						sticky: true,
-						border: 'danger',
-						color: 'dark',
-						duration: null,
-						position: 'bottom-left'
-					})
-				})
-		},
-		getData () {
-			this.showLoading('getting OMC infomation')
-			this.post('/omc/get', {
-				id: this.omcid
-			})
-				.then((response) => {
-					this.closeLoading()
-					if (response.data.success == true) {
-						this.user_found = true
-						this.omc = response.data.omcs[0]
-						this.getReceipt()
-					} else {
-						this.user_not_found = true
-						this.$vs.notify({
-							title: 'Error!!!',
-							text: `${response.data.message}`,
-							sticky: true,
-							color: 'danger',
-							duration: null,
-							position: 'bottom-left'
-						})
-					}
-				})
-				.catch((error) => {
-					this.closeLoading()
-					this.$vs.notify({
-						title: 'Error!!!',
-						text: `${error.message}`,
-						sticky: true,
-						color: 'danger',
-						duration: null,
-						position: 'bottom-left'
-					})
-					this.user_not_found = true
-				})
-		},
-		removeReconcilationWarn () {
-			if (!this.canDelete()) {
-				return Swal.fire(
-					'Not Allowed!',
-					'You do not have permission to delete any record',
-					'error'
-				)
-			}
-			Swal.fire({
-				title: 'Are you sure?',
-				text: 'You won\'t be able to revert this!',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3cc879',
-				cancelButtonColor: '#ea5455',
-				confirmButtonText: 'Yes, remove it!'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					this.removeReconcilation()
-				}
-			})
-		},
-		removeReconcilation () {
-			this.showLoading('Removing OMC Reconciliation, hang on a bit...')
-			this.post('/receipts/remove_reconcilation', {
-				id: this.omcid
-			})
-				.then((response) => {
-					this.closeLoading()
-					if (response.data.success == true) {
-						if (response.data.omc) {
-							this.omc = response.data.omc
-						}
-						Swal.fire(
-							'Removed!',
-							'The OMC Reconciliation has been removed.',
-							'success'
-						).then((result) => {
-							if (result.isConfirmed) {
-								// this.back();
-								this.getReceipt()
-							}
-						})
-					} else {
-						Swal.fire('Failed!', response.data.message, 'error')
-					}
-				})
-				.catch((error) => {
-					this.closeLoading()
-					Swal.fire('Failed!', error.message, 'error')
-				})
-		},
-		deleteWarnSingle () {
-			if (!this.canDelete()) {
-				return Swal.fire(
-					'Not Allowed!',
-					'You do not have permission to delete any record',
-					'error'
-				)
-			}
-			Swal.fire({
-				title: 'Are you sure?',
-				text: 'You won\'t be able to revert this!',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3cc879',
-				cancelButtonColor: '#ea5455',
-				confirmButtonText: 'Yes, remove them!'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					this.delete()
-				}
-			})
-		},
-		delete () {
-			this.showLoading('Removing OMC Receipts, hang on a bit...')
-			this.post('/receipts/remove', {
-				id: this.omcid
-			})
-				.then((response) => {
-					this.closeLoading()
-					if (response.data.success == true) {
-						Swal.fire(
-							'Removed!',
-							'The OMC Receipts has been deleted.',
-							'success'
-						).then((result) => {
-							if (result.isConfirmed) {
-								// this.back();
-								this.getReceipt()
-							}
-						})
-					} else {
-						Swal.fire('Failed!', response.data.message, 'error')
-					}
-				})
-				.catch((error) => {
-					this.closeLoading()
-					Swal.fire('Failed!', error.message, 'error')
-				})
-		},
-		//file import function starts here
-		uploadCompleted (data) {
-			if (data.success == true) {
-				this.pushDescription(data.message)
-				this.importStatus = 'Reading File Content'
-				this.checkImportStatus(data.jobid)
-			} else {
-				Swal.fire('Failed!', data.message, 'error')
-			}
-		},
-		checkImportStatus (id) {
-			const vm = this
-			this.statuscheck = setInterval(function () {
-				vm.checkStatusForImport(id)
-			}, 1200)
-		},
-		formatDesc (data) {
-			let error = false
-			this.errorStr.forEach((item) => {
-				if (data && data.toLowerCase().includes(item)) {
-					error = true
-				}
-			})
-			if (error) {
-				return `<span class="text-danger">->${data}<br/></span> `
-			}
-			return `<span class="text-primary">->${data}<br/></span> `
-		},
-		pushDescription (data) {
-			if (!this.importDesc.includes(data)) {
-				this.importDesc.push(data)
-			}
-		},
-		clearLog () {
-			this.banksoption = null
-			this.popupActive = false
-			this.importDesc = []
-			this.importStatus = ''
-			if (this.statuscheck) {
-				clearInterval(this.statuscheck)
-			}
-		},
-		checkStatusForImport (id) {
-			this.post('/omc/import_status', {
-				jobid: id
-			})
-				.then((response) => {
-					const data = response.data
-					if (data.success) {
-						const status = data.status
-						this.pushDescription(status.description)
-						this.importStatus = status.status
-						this.importDetails = status.details
-						if (status.status.toLowerCase() == 'completed') {
-							this.getReceipt()
-							clearInterval(this.statuscheck)
-							this.importStatus = ''
-							this.importDetails = ''
-						}
-						if (status.status.toLowerCase().includes('error')) {
-							clearInterval(this.statuscheck)
-							this.importStatus = ''
-						}
-					} else {
-						this.pushDescription(response.data.message)
-						this.importStatus = ''
-						clearInterval(this.statuscheck)
-					}
-				})
-				.catch((error) => {
-					console.log(error)
-				})
-		}
-	}
-}
+        if (value) {
+          this.records.forEach(function (record) {
+            selected.push(record.id);
+          });
+        }
+        this.selectedRecords = selected;
+      },
+    },
+    sortedRecords() {
+      try {
+        return this.filterObj(this.records, this.search).sort((a, b) => {
+          let modifier = 1;
+          if (this.currentSortDir === "desc") modifier = -1;
+          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+          return 0;
+        });
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+    photo() {
+      return require("@/assets/images/portrait/small/default.png");
+    },
+  },
+  mounted() {
+    this.currentPage =
+      Number(mStorage.get(`${this.pkey}page${this.omcid}`)) || 1;
+    this.getReceipt();
+  },
+  watch: {
+    currentPage() {
+      mStorage.set(`${this.pkey}page${this.omcid}`, this.currentPage);
+      this.getReceipt();
+    },
+    search(newVal, oldVal) {
+      this.startSearch(newVal, oldVal);
+    },
+    pagination() {
+      this.numbering = this.pagination.start;
+    },
+  },
+  methods: {
+    number(num) {
+      return this.numbering + num;
+    },
+    startSearch(newVal, oldVal) {
+      if (this.search_timer) {
+        clearTimeout(this.search_timer);
+      }
+      const vm = this;
+      this.search_timer = setTimeout(function () {
+        vm.getReceipt();
+      }, 800);
+    },
+    getReceipt() {
+      this.loading = true;
+      this.post("/ghana_gov/", {
+        result_per_page: this.result_per_page,
+        page: this.currentPage,
+        search: this.search,
+      })
+        .then((response) => {
+          this.loading = false;
+          console.log(response.data);
+          if (response.data.success == true) {
+            this.message = "";
+            this.records = response.data.receipts;
+          } else {
+            this.message = response.data.message;
+            this.records = [];
+            this.$vs.notify({
+              title: "Error!!!",
+              text: `${response.data.message}`,
+              sticky: true,
+              border: "danger",
+              color: "dark",
+              duration: null,
+              position: "bottom-left",
+            });
+          }
+          this.pagination = response.data.pagination;
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.$vs.notify({
+            title: "Error!!!",
+            text: `${error.message}`,
+            sticky: true,
+            border: "danger",
+            color: "dark",
+            duration: null,
+            position: "bottom-left",
+          });
+        });
+    },
+    deleteWarnSingle() {
+      if (!this.canDelete()) {
+        return Swal.fire(
+          "Not Allowed!",
+          "You do not have permission to delete any record",
+          "error"
+        );
+      }
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3cc879",
+        cancelButtonColor: "#ea5455",
+        confirmButtonText: "Yes, remove them!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.delete();
+        }
+      });
+    },
+    delete() {
+      this.showLoading("Removing OMC Receipts, hang on a bit...");
+      this.post("/ghana_gov/remove", {
+        id: this.omcid,
+      })
+        .then((response) => {
+          this.closeLoading();
+          if (response.data.success == true) {
+            Swal.fire(
+              "Removed!",
+              "The OMC Receipts has been deleted.",
+              "success"
+            ).then((result) => {
+              if (result.isConfirmed) {
+                // this.back();
+                this.getReceipt();
+              }
+            });
+          } else {
+            Swal.fire("Failed!", response.data.message, "error");
+          }
+        })
+        .catch((error) => {
+          this.closeLoading();
+          Swal.fire("Failed!", error.message, "error");
+        });
+    },
+    //file import function starts here
+    uploadCompleted(data) {
+      if (data.success == true) {
+        this.pushDescription(data.message);
+        this.importStatus = "Reading File Content";
+        this.checkImportStatus(data.jobid);
+      } else {
+        Swal.fire("Failed!", data.message, "error");
+      }
+    },
+    checkImportStatus(id) {
+      const vm = this;
+      this.statuscheck = setInterval(function () {
+        vm.checkStatusForImport(id);
+      }, 1200);
+    },
+    formatDesc(data) {
+      let error = false;
+      this.errorStr.forEach((item) => {
+        if (data && data.toLowerCase().includes(item)) {
+          error = true;
+        }
+      });
+      if (error) {
+        return `<span class="text-danger">->${data}<br/></span> `;
+      }
+      return `<span class="text-primary">->${data}<br/></span> `;
+    },
+    pushDescription(data) {
+      if (!this.importDesc.includes(data)) {
+        this.importDesc.push(data);
+      }
+    },
+    clearLog() {
+      this.banksoption = null;
+      this.popupActive = false;
+      this.importDesc = [];
+      this.importStatus = "";
+      if (this.statuscheck) {
+        clearInterval(this.statuscheck);
+      }
+    },
+    checkStatusForImport(id) {
+      this.post("/ghana_gov/import_status", {
+        jobid: id,
+      })
+        .then((response) => {
+          const data = response.data;
+          if (data.success) {
+            const status = data.status;
+            this.pushDescription(status.description);
+            this.importStatus = status.status;
+            this.importDetails = status.details;
+            if (status.status.toLowerCase() == "completed") {
+              this.getReceipt();
+              clearInterval(this.statuscheck);
+              this.importStatus = "";
+              this.importDetails = "";
+            }
+            if (status.status.toLowerCase().includes("error")) {
+              clearInterval(this.statuscheck);
+              this.importStatus = "";
+            }
+          } else {
+            this.pushDescription(response.data.message);
+            this.importStatus = "";
+            clearInterval(this.statuscheck);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+};
 </script>
 
 <style lang="scss">
