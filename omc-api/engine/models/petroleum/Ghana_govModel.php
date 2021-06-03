@@ -122,6 +122,7 @@ class Ghana_govModel extends BaseModel
         $nagatives = $this->http->json->nagatives??null;
         $dateRang = "";
         $on = "";
+        $hasRange = false;
 
         if ($date_range) {
             if ($date_range->endDate && $date_range->startDate) {
@@ -130,6 +131,7 @@ class Ghana_govModel extends BaseModel
                 $condition .= " AND (rep.date  BETWEEN '$startDate' AND '$endDate') ";
                 $on = " AND (icum_dcl.date  BETWEEN '$startDate' AND '$endDate') ";
                 $dateRang = $this->date->month_year_day($startDate) ." - ". $this->date->month_year_day($endDate);
+                $hasRange = true;
             }
         }
 
@@ -156,7 +158,7 @@ class Ghana_govModel extends BaseModel
             }
         }
 
-        $query = "SELECT 'All time' date, rep.omc, SUM(rep.amount) amount, icum_dcl.omc dcl_omc, SUM(icum_dcl.amount) dcl_amount FROM ".self::$table." rep LEFT JOIN petroleum_icums_declaration icum_dcl ON rep.omc=icum_dcl.omc $on $condition GROUP BY rep.omc $HAVING ORDER BY rep.id";
+        $query = "SELECT 'All time' date, rep.omc, SUM(rep.amount) amount, icum_dcl.omc dcl_omc, SUM(icum_dcl.amount) dcl_amount_icum FROM ".self::$table." rep LEFT JOIN petroleum_icums_declaration icum_dcl ON rep.omc=icum_dcl.omc $on $condition GROUP BY rep.omc $HAVING ORDER BY rep.id";
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
@@ -168,11 +170,17 @@ class Ghana_govModel extends BaseModel
         if (!empty($result)) {
             $response['success'] = true;
             foreach ($result as $key => &$value) {
-                $value->difference_amount = number_format($value->amount - $value->dcl_amount, 2);
+                if($hasRange){
+                    $value->date = $date_range;
+                }
+                $value->exp_dcl_amount = $this->expected_declaration($value->omc, $value->date);
+                $value->difference_amount_receipt_icums = number_format($value->amount - $value->dcl_amount_icum, 2);
+                $value->difference_amount_expected_icums = number_format($value->amount - $value->exp_dcl_amount, 2);
                 $value->amount = number_format($value->amount, 2);
-                $value->dcl_amount = number_format($value->dcl_amount, 2);
+                $value->exp_dcl_amount = number_format($value->exp_dcl_amount, 2);
+                $value->dcl_amount_icum = number_format($value->dcl_amount_icum, 2);
                 $value->date = $date_range && $date_range->endDate?$dateRang:$value->date;
-                $value->flagged  = $value->difference_amount <> 0;
+                $value->flagged  = $value->difference_amount_receipt_icums <> 0;
             }
             $response["reports"] = $result;
         } else {
@@ -182,6 +190,36 @@ class Ghana_govModel extends BaseModel
 
         $response["pagination"] = $this->paging->paging();
         return $response;
+    }
+    
+    public function expected_declaration($omc, $date)
+    {
+        $result_total = 0;
+        $computes = $this->getWaybills($omc, $date);
+        if ($computes)foreach ($computes as $key => $compute) {
+            $total = 0;
+            $this->db->query("SELECT tw.*, tt.name tax FROM tax_window tw JOIN `tax_type` tt ON tw.tax_type=tt.id WHERE tw.`tax_product` = (SELECT id FROM tax_schedule_products WHERE name = '{$compute->product_type}' LIMIT 1) AND tw.`date_from`<= '{$compute->date}' AND tw.`date_to` >= '{$compute->date}'");
+            $queryResult = $this->db->results();
+            if($queryResult && $this->db->count > 0){
+                foreach ($queryResult as $key => $tax) {
+                    $total += $compute->volume * $tax->rate;
+                }
+            }
+            $result_total+=$total;
+        }
+        return $result_total;
+    }
+
+    public function getWaybills($omc, $date){
+        if($date === "All time"){
+            $this->db->query("SELECT * FROM petroleum_waybill WHERE omc='$omc'");
+        }else{
+            $startDate = $this->date->sql_date($date->startDate);
+            $endDate = $this->date->sql_date($date->endDate);
+            $this->db->query("SELECT * FROM petroleum_waybill WHERE omc='$omc' AND date BETWEEN '$startDate' AND '$endDate'");
+        }
+        // var_dump($this->db);
+        return $this->db->results();
     }
     
 }

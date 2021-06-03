@@ -166,14 +166,16 @@
                     <vs-checkbox v-model="selectAll">#</vs-checkbox>
                   </th>
                   <th scope="col">Preorder Date</th>
+                  <th scope="col">Order Date</th>
+                  <th scope="col">Refference</th>
                   <th scope="col">Product</th>
                   <th scope="col">BDC</th>
                   <th scope="col">OMC</th>
                   <th scope="col">Depot</th>
                   <th scope="col">Total Preorder Vol.</th>
                   <th scope="col">Total Order Vol.</th>
-                  <th scope="col">Vol. Difference</th>
-                  <th scope="col" class="text-right">Total Order Unit Price</th>
+                  <th scope="col">Missing Vol.</th>
+                  <!-- <th scope="col" class="text-right">Total Order Unit Price</th> -->
                   <th scope="col">Status</th>
                 </tr>
               </thead>
@@ -192,6 +194,12 @@
                   </td>
                   <td>
                     {{ record.preorder_date }}
+                  </td>
+                  <td>
+                    {{ record.order_date }}
+                  </td>
+                  <td>
+                    {{ record.reference_number }}
                   </td>
                   <td>
                     {{ record.preorder_product }}
@@ -214,9 +222,9 @@
                   <td>
                     {{ record.difference_volume }}
                   </td>
-                  <td class="text-right">
+                  <!-- <td class="text-right">
                     {{ record.order_unit_price }}
-                  </td>
+                  </td> -->
                   <td>
                     {{ record.status }}
                   </td>

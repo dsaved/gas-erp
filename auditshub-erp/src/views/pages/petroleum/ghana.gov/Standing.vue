@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vx-card title="NPA ANALYTICS">
+    <vx-card title="Dept Potfolio / Good Standing">
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <div class="w-full flex mb-4">
@@ -51,17 +51,6 @@
               :dir="$vs.rtl ? 'rtl' : 'ltr'"
               :selected="status"
               v-on:update:data="status = $event"
-            />
-          </div>
-          <div class="w-1/5 px-2">
-            <span>Positives/Nagatives</span>
-            <ajax-select
-              placeholder="Select Status"
-              :options="['All', 'Nagatives', 'Positives']"
-              :clearable="false"
-              :dir="$vs.rtl ? 'rtl' : 'ltr'"
-              :selected="nagatives"
-              v-on:update:data="nagatives = $event"
             />
           </div>
           <div class="w-1/5 px-2">
@@ -127,9 +116,11 @@
                   </th>
                   <th scope="col">Date</th>
                   <th scope="col">OMC</th>
-                  <th scope="col" class="text-right">Recipt Amount</th>
-                  <th scope="col" class="text-right">ICUMS Amount</th>
-                  <th scope="col" class="text-right">Amount Difference</th>
+                  <th scope="col" class="text-right">Receipt Amount</th>
+                  <th scope="col" class="text-right">ICUMS Declaration<br/>Amount</th>
+                  <th scope="col" class="text-right">Expected Declaration<br/>Amount</th>
+                  <th scope="col" class="text-right">Amount Difference<br/>(Receipt - ICUMS)</th>
+                  <th scope="col" class="text-right">Amount Difference<br/>(Receipt - Expected Declaration)</th>
                 </tr>
               </thead>
               <tbody>
@@ -155,10 +146,16 @@
                     {{ record.amount }}
                   </td>
                   <td class="text-right">
-                    {{ record.dcl_amount }}
+                    {{ record.dcl_amount_icum }}
                   </td>
                   <td class="text-right">
-                    {{ record.difference_amount }}
+                    {{ record.exp_dcl_amount }}
+                  </td>
+                  <td class="text-right">
+                    {{ record.difference_amount_receipt_icums }}
+                  </td>
+                  <td class="text-right">
+                    {{ record.difference_amount_expected_icums }}
                   </td>
                 </tr>
               </tbody>

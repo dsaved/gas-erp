@@ -149,10 +149,9 @@
                   </th>
                   <th scope="col">Date</th>
                   <th scope="col">Product</th>
-                  <th scope="col">Depot</th>
-                  <th scope="col">BDC</th>
+                  <th scope="col">Depot (BDCs)</th>
                   <th scope="col">Waybi Vol.</th>
-                  <th scope="col">Outlet Vol.</th>
+                  <th scope="col">SML Outlet Vol.</th>
                   <th scope="col">Vol. Difference</th>
                 </tr>
               </thead>
@@ -177,9 +176,6 @@
                   </td>
                   <td>
                     {{ record.depot }}
-                  </td>
-                  <td>
-                    {{ record.bdc }}
                   </td>
                   <td>
                     {{ record.waybill_volume }}

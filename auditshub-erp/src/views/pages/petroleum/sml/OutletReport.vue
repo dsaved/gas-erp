@@ -130,10 +130,10 @@
                   <th scope="col">Order Date</th>
                   <th scope="col">Product</th>
                   <th scope="col">Depot</th>
-                  <th scope="col">Total Order Vol.</th>
+                  <th scope="col">Total Order Vol.(NPA)</th>
                   <th scope="col">Total Outlet Vol.</th>
                   <th scope="col">Vol. Difference</th>
-                  <th scope="col" class="text-right">Total Order Amount</th>
+                  <th scope="col" class="text-right">Total Order Amount(NPA)</th>
                 </tr>
               </thead>
               <tbody>
@@ -355,7 +355,6 @@ export default {
         page: this.currentPage,
         product_type: this.product_type,
         depot: this.depot,
-        group_by: this.group_by,
         idf_condition: this.idf_condition,
         declaration_condition: this.declaration_condition,
         status: this.status,

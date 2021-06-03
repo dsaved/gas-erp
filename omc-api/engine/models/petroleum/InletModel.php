@@ -13,7 +13,6 @@ class InletModel extends BaseModel {
       $result_per_page = $this->http->json->result_per_page??20;
       $page = $this->http->json->page??1;
 
-      $bdc = $this->http->json->bdc??null;
       $date_range = $this->http->json->date_range??null;
       $group_by = $this->http->json->group_by??null;
       $product_type = $this->http->json->product_type??null;
@@ -30,10 +29,6 @@ class InletModel extends BaseModel {
           }
       }
 
-      if ($bdc && $bdc!="All") {
-          $condition .= " AND bdc = '$bdc'";
-      }
-
       if ($product_type && $product_type!="All") {
           $condition .= " AND product_type = '$product_type'";
       }
@@ -47,9 +42,6 @@ class InletModel extends BaseModel {
           foreach ($group_by as $key => $group) {
               if ($group==="Product type") {
                   $list.= "product_type,";
-              }
-              if ($group==="BDC") {
-                  $list.= "bdc,";
               }
               if ($group==="Depot") {
                   $list.= "depot,";
@@ -69,7 +61,7 @@ class InletModel extends BaseModel {
       $this->paging->reset();
 
       $result = $this->paging->results();
-      // var_dump($this->paging->lastQuery());
+    //   var_dump($this->paging);
       if (!empty($result)) {
           $response['success'] = true;
           foreach ($result as $key => &$value) {

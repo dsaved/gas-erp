@@ -19,7 +19,7 @@
       </div>
     </vx-card>
 
-    <vx-card title="Tax Product">
+    <vx-card title="Tax Schedule">
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-primary">
         <header class="header-table vs-table--header my-3">

@@ -99,6 +99,16 @@
               v-model="result_per_page"
             />
           </div>
+          <div class="md:w-1/5 sm:w-full mx-1 mt-4">
+            <vs-button
+              color="danger"
+              class="m-1 w-full"
+              icon-pack="feather"
+              @click="resetFilter()"
+              icon="icon-refresh-cw"
+              >Reset</vs-button
+            >
+          </div>
         </div>
       </div>
     </vx-card>
@@ -116,7 +126,6 @@
                   </th>
                   <th scope="col">Outlet Date Time</th>
                   <th scope="col">Depot</th>
-                  <th scope="col">BDC</th>
                   <th scope="col">Product</th>
                   <th scope="col">Volume</th>
                 </tr>
@@ -139,9 +148,6 @@
                   </td>
                   <td>
                     {{ record.depot }}
-                  </td>
-                  <td>
-                    {{ record.bdc }}
                   </td>
                   <td>
                     {{ record.product_type }}
@@ -330,6 +336,18 @@ export default {
     },
   },
   methods: {
+    resetFilter: function () {
+      this.product_type = "All";
+      this.omc = "All";
+      this.bdc = "All";
+      this.depot = "All";
+      this.status = "All";
+      this.date_range = {
+        startDate: null,
+        endDate: null,
+      };
+      this.getData();
+    },
     number: function (num) {
       return this.numbering + num;
     },
@@ -340,7 +358,6 @@ export default {
         page: this.currentPage,
         product_type: this.product_type,
         bdc: this.bdc,
-        group_by: this.group_by,
         depot: this.depot,
         omc: this.omc,
         status: this.status,

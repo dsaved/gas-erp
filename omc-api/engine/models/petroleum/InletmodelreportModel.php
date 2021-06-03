@@ -29,7 +29,7 @@ class InletmodelreportModel extends BaseModel
             $condition .= " AND dcl.importer_name = '$bdc'";
         }
 
-        $query = "SELECT MIN(dcl.id) id, CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) AS week, SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, dcl.importer_name bdc FROM ".self::$petroleum_declaration." dcl LEFT JOIN ".self::$petroleum_inlet." inlet ON inlet.bdc = dcl.importer_name $condition GROUP BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) , dcl.importer_name, inlet.bdc ORDER BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) DESC";
+        $query = "SELECT MIN(dcl.id) id, CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) AS week, SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, dcl.product_type FROM ".self::$petroleum_declaration." dcl LEFT JOIN ".self::$petroleum_inlet." inlet ON inlet.product_type = dcl.product_type $condition GROUP BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) , dcl.product_type ORDER BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) DESC";
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
@@ -37,7 +37,7 @@ class InletmodelreportModel extends BaseModel
         $this->paging->reset();
 
         $result = $this->paging->results();
-        // var_dump($this->paging->lastQuery());
+        // var_dump($this->paging);
         if (!empty($result)) {
             $response['success'] = true;
             foreach ($result as $key => &$value) {

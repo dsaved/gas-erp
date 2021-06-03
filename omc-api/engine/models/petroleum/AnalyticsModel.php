@@ -199,7 +199,7 @@ class AnalyticsModel extends BaseModel
         
         $query = "SELECT prord.id preorder_id, prord.preorder_date, prord.omc, prord.bdc,prord.product_type preorder_product, 
         SUM(prord.volume) preorder_volume, prord.reference_number, prord.depot, 
-        ord.*, SUM(ord.unit_price) order_unit_price, SUM(ord.volume) order_volume
+        ord.*, SUM(ord.unit_price) order_unit_price, SUM(ord.volume) order_volume, ord.order_date
         FROM ".self::$petroleum_preorder." prord LEFT JOIN ".self::$petroleum_order." ord 
         ON prord.reference_number = ord.reference_number $condition $group_by Order By prord.preorder_date DESC";
 
@@ -219,6 +219,7 @@ class AnalyticsModel extends BaseModel
                 $value->order_volume = number_format($value->order_volume);
                 $value->order_unit_price = number_format($value->order_unit_price, 2);
                 $value->preorder_date = $date_range && $date_range->endDate?$dateRang:$this->date->month_year_day($value->preorder_date);
+                $value->order_date = $date_range && $date_range->endDate?$dateRang:$this->date->month_year_day($value->order_date);
                 $value->status = $status;
             }
             $response["reports"] = $result;

@@ -29,11 +29,6 @@ class OutletModel extends BaseModel {
               $dateRang = $this->date->month_year_day($startDate) ." - ". $this->date->month_year_day($endDate);
           }
       }
-
-      if ($bdc && $bdc!="All") {
-          $condition .= " AND bdc = '$bdc'";
-      }
-
       if ($product_type && $product_type!="All") {
           $condition .= " AND product_type = '$product_type'";
       }
@@ -47,9 +42,6 @@ class OutletModel extends BaseModel {
           foreach ($group_by as $key => $group) {
               if ($group==="Product type") {
                   $list.= "product_type,";
-              }
-              if ($group==="BDC") {
-                  $list.= "bdc,";
               }
               if ($group==="Depot") {
                   $list.= "depot,";

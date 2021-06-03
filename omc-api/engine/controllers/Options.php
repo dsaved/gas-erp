@@ -18,5 +18,20 @@ class Options extends SecureController
             $options
         )->json();
     }
+    
+    public function start_export()
+    {
+        $options = $this->model->start_export();
+        $this->http->reply(
+            $options
+        )->json();
+    }
 
+    public function file_export_status()
+    {
+        $options = $this->model->file_export_status();
+        $this->http->reply(
+            $options
+        )->json();
+    }
 }

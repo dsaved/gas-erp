@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vx-card title="Manifest volume Agaist Waybill volume">
+    <vx-card title="Declaration volume Agaist Waybill volume">
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <div class="w-full flex mb-4">
@@ -139,7 +139,7 @@
                   <th scope="col">Date</th>
                   <th scope="col">Product</th>
                   <th scope="col">BDC</th>
-                  <th scope="col">Manifest Vol.</th>
+                  <th scope="col">Declaration Vol.</th>
                   <th scope="col">Waybill Vol.</th>
                   <th scope="col">Vol. Difference</th>
                 </tr>
@@ -167,7 +167,7 @@
                     {{ record.bdc }}
                   </td>
                   <td>
-                    {{ record.manifest_volume }}
+                    {{ record.declaration_volume }}
                   </td>
                   <td>
                     {{ record.waybill_volume }}

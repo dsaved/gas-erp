@@ -64,18 +64,17 @@ class StatementsModel extends BaseModel
         return $response;
     }
 
-    public function getAccountStatements($condition=""){
+    public function getAccountStatements($condition=" WHERE 1 "){
         $response = array();
         $result_per_page = $this->http->json->result_per_page??20;
         $page = $this->http->json->page??1;
         $search = $this->http->json->search??null;
         $bank_type = $this->http->json->bank_type??null;
         $bank_name = $this->http->json->bank_name??null;
-
-        if(empty($condition)){
-            $condition = " WHERE (`post_date` LIKE '%$search%' OR `particulars` LIKE '%$search%' OR `reference` LIKE '%$search%'  OR `value_date` LIKE '%$search%' OR `debit_amount` LIKE '%$search%'  OR `credit_amount` LIKE '%$search%'  OR `balance` LIKE '%$search%'  OR `offset_acc_no` LIKE '%$search%' OR `status` LIKE '%$search%' ) ";
-        }else if(!empty($condition)){
-            $condition .=  " AND (`post_date` LIKE '%$search%' OR `particulars` LIKE '%$search%' OR `reference` LIKE '%$search%'  OR `value_date` LIKE '%$search%' OR `debit_amount` LIKE '%$search%'  OR `credit_amount` LIKE '%$search%'  OR `balance` LIKE '%$search%'  OR `offset_acc_no` LIKE '%$search%' OR `status` LIKE '%$search%' ) " ;
+        
+        if ($search) {
+            $value = implode("", explode(",", $search));
+            $condition .=  " AND (`post_date` LIKE '%$search%' OR `particulars` LIKE '%$search%' OR `reference` LIKE '%$search%'  OR `value_date` LIKE '%$search%' OR `debit_amount` LIKE '%$value%'  OR `credit_amount` LIKE '%$value%'  OR `balance` LIKE '%$value%'  OR `offset_acc_no` LIKE '%$search%' OR `status` LIKE '%$search%' ) " ;
         }
 
         $this->paging->table("`statements`");

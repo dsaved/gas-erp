@@ -29,16 +29,16 @@
             </div>
           </div>
           <div class="w-1/4 px-2">
-            <span>BDC</span>
+            <span>Depot</span>
             <ajax-select
               placeholder="Select BDC"
               :options="[]"
-              url="/bdc/options_list"
+              url="/depot/options"
               :clearable="false"
               :include="['All']"
               :dir="$vs.rtl ? 'rtl' : 'ltr'"
-              :selected="bdc"
-              v-on:update:data="bdc = $event"
+              :selected="depot"
+              v-on:update:data="depot = $event"
             />
           </div>
           <div class="w-1/5 px-2">
@@ -61,6 +61,16 @@
               v-model="result_per_page"
             />
           </div>
+          <div class="md:w-1/5 sm:w-full mx-1 mt-4">
+            <vs-button
+              color="danger"
+              class="m-1 w-full"
+              icon-pack="feather"
+              @click="resetFilter()"
+              icon="icon-refresh-cw"
+              >Reset</vs-button
+            >
+          </div>
         </div>
       </div>
     </vx-card>
@@ -77,9 +87,9 @@
                     <vs-checkbox v-model="selectAll">#</vs-checkbox>
                   </th>
                   <th scope="col">Week</th>
-                  <th scope="col">BDC</th>
-                  <th scope="col">Declared Vol.</th>
-                  <th scope="col">Inlet Vol.</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">icums Declared Vol.(BDCs)</th>
+                  <th scope="col">SML Inlet Vol.</th>
                   <th scope="col">Difference Vol.</th>
                 </tr>
               </thead>
@@ -100,7 +110,7 @@
                     {{ record.week }}
                   </td>
                   <td>
-                    {{ record.bdc }}
+                    {{ record.product_type }}
                   </td>
                   <td>
                     {{ record.declared_vol }}
@@ -222,7 +232,6 @@ export default {
       depot: "All",
       omc: "All",
       status: "All",
-      group_by: ["BDC"],
       date_range: {
         startDate: null,
         endDate: null,
@@ -278,9 +287,6 @@ export default {
     product_type: function () {
       this.getData();
     },
-    bdc: function () {
-      this.getData();
-    },
     depot: function () {
       this.getData();
     },
@@ -292,6 +298,16 @@ export default {
     },
   },
   methods: {
+    resetFilter: function () {
+      this.product_type = "All";
+      this.omc = "All";
+      this.status = "All";
+      this.date_range = {
+        startDate: null,
+        endDate: null,
+      };
+      this.getData();
+    },
     number: function (num) {
       return this.numbering + num;
     },
@@ -301,8 +317,6 @@ export default {
         result_per_page: this.result_per_page,
         page: this.currentPage,
         product_type: this.product_type,
-        bdc: this.bdc,
-        group_by: this.group_by,
         depot: this.depot,
         omc: this.omc,
         status: this.status,

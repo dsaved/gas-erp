@@ -22,7 +22,7 @@ module.exports = {
                                     const today = new Date();
                                     var diff = getDateDiff(today, lastSellDate);
                                     if (diff >= 7) {
-                                        var alarmQry = `INSERT INTO petroleum_alarm_notification(time,type, message,depot,bdc,product) VALUES ('${getTime(true)}','not sold for a week','This Depot has not sold ${depot.product} for a week','${depot.name}','${lastSoldData.bdc}','${depot.product}')`;
+                                        var alarmQry = `INSERT INTO petroleum_alarm_notification(time,type, message,depot,product) VALUES ('${getTime(true)}','not sold for a week','This Depot has not sold ${depot.product} for a week','${depot.name}','${depot.product}')`;
                                         sqlConn.query(alarmQry, function(err, tank, fields) {
                                             if (err) {
                                                 console.log(err)

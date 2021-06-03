@@ -238,44 +238,46 @@ export default [{
         icon: 'ActivityIcon',
         i18n: 'SML',
         submenu: [{
-            url: '/petroleum/sml/inlet',
-            name: 'Inlet',
-            page: 'Inlet',
-            slug: 'Inlet',
-            i18n: 'Inlet'
-        }, {
-            url: '/petroleum/sml/inlet-report',
-            name: 'Inlet Report',
-            page: 'Inlet Report',
-            slug: 'Inlet Report',
-            i18n: 'Inlet Report'
-        }, {
-            url: '/petroleum/sml/outlet',
-            name: 'Outlet',
-            page: 'Outlet',
-            slug: 'Outlet',
-            i18n: 'Outlet'
-        }, {
-            url: '/petroleum/sml/outlet-report',
-            name: 'Outlet Report',
-            page: 'Outlet Report',
-            slug: 'Outlet Report',
-            i18n: 'Outlet Report'
-        }, {
-            url: '/petroleum/sml/undeclared-product',
-            name: 'Undeclared Products',
-            page: 'Undeclared Products',
-            slug: 'Undeclared Products',
-            i18n: 'Undeclared Products'
-        }, {
-            url: '/petroleum/sml/missing-product',
-            name: 'Missing Products',
-            page: 'Missing Products',
-            slug: 'Missing Products',
-            i18n: 'Missing Products'
-        }, ]
-    },
-    {
+                url: '/petroleum/sml/inlet',
+                name: 'Inlet',
+                page: 'Inlet',
+                slug: 'Inlet',
+                i18n: 'Inlet'
+            }, {
+                url: '/petroleum/sml/inlet-report',
+                name: 'Inlet Report',
+                page: 'Inlet Report',
+                slug: 'Inlet Report',
+                i18n: 'Inlet Report'
+            }, {
+                url: '/petroleum/sml/outlet',
+                name: 'Outlet',
+                page: 'Outlet',
+                slug: 'Outlet',
+                i18n: 'Outlet'
+            }, {
+                url: '/petroleum/sml/outlet-report',
+                name: 'Outlet Report',
+                page: 'Outlet Report',
+                slug: 'Outlet Report',
+                i18n: 'Outlet Report'
+            },
+            // {
+            //     url: '/petroleum/sml/undeclared-product',
+            //     name: 'Undeclared Products',
+            //     page: 'Undeclared Products',
+            //     slug: 'Undeclared Products',
+            //     i18n: 'Undeclared Products'
+            // },
+            // {
+            //     url: '/petroleum/sml/missing-product',
+            //     name: 'Missing Products',
+            //     page: 'Missing Products',
+            //     slug: 'Missing Products',
+            //     i18n: 'Missing Products'
+            // },
+        ]
+    }, {
         url: null,
         name: 'Waybill',
         page: 'Waybill',
@@ -306,17 +308,17 @@ export default [{
                 page: 'Waybill Expected Declaration',
                 slug: 'expected-declaration',
                 i18n: 'Expected Declaration'
-            }, {
-                url: '/petroleum/waybill/stock-management',
-                name: 'Stock Management',
-                page: 'Waybill Stock Management',
-                slug: 'Stock Management',
-                icon: 'DatabaseIcon',
-                i18n: 'Stock Management'
             },
+            /* {
+                           url: '/petroleum/waybill/stock-management',
+                           name: 'Stock Management',
+                           page: 'Waybill Stock Management',
+                           slug: 'Stock Management',
+                           icon: 'DatabaseIcon',
+                           i18n: 'Stock Management'
+                       }, */
         ]
-    },
-    {
+    }, {
         url: null,
         name: 'Ghana.gov',
         page: 'Ghana.gov',

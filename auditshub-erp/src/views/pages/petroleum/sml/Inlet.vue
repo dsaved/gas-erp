@@ -40,19 +40,6 @@
               v-on:update:data="product_type = $event"
             />
           </div>
-          <div class="w-1/4 px-2">
-            <span>BDC</span>
-            <ajax-select
-              placeholder="Select BDC"
-              :options="[]"
-              url="/bdc/options_list"
-              :clearable="false"
-              :include="['All']"
-              :dir="$vs.rtl ? 'rtl' : 'ltr'"
-              :selected="bdc"
-              v-on:update:data="bdc = $event"
-            />
-          </div>
           <div class="w-1/5 px-2">
             <span>Depot</span>
             <ajax-select
@@ -99,6 +86,16 @@
               v-model="result_per_page"
             />
           </div>
+          <div class="md:w-1/5 sm:w-full mx-1 mt-4">
+            <vs-button
+              color="danger"
+              class="m-1 w-full"
+              icon-pack="feather"
+              @click="resetFilter()"
+              icon="icon-refresh-cw"
+              >Reset</vs-button
+            >
+          </div>
         </div>
       </div>
     </vx-card>
@@ -116,7 +113,6 @@
                   </th>
                   <th scope="col">Inlet Date Time</th>
                   <th scope="col">Depot</th>
-                  <th scope="col">BDC</th>
                   <th scope="col">Product</th>
                   <th scope="col">Volume</th>
                 </tr>
@@ -139,9 +135,6 @@
                   </td>
                   <td>
                     {{ record.depot }}
-                  </td>
-                  <td>
-                    {{ record.bdc }}
                   </td>
                   <td>
                     {{ record.product_type }}
@@ -330,6 +323,17 @@ export default {
     },
   },
   methods: {
+    resetFilter: function () {
+      this.product_type = "All";
+      this.omc = "All";
+      this.depot = "All";
+      this.status = "All";
+      this.date_range = {
+        startDate: null,
+        endDate: null,
+      };
+      this.getData();
+    },
     number: function (num) {
       return this.numbering + num;
     },
@@ -339,8 +343,6 @@ export default {
         result_per_page: this.result_per_page,
         page: this.currentPage,
         product_type: this.product_type,
-        bdc: this.bdc,
-        group_by: this.group_by,
         depot: this.depot,
         omc: this.omc,
         status: this.status,

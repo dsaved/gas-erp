@@ -217,7 +217,8 @@ class UnauthorizedModel extends BaseModel
         $account_id = $this->http->json->account_id??null;
         $offset_account = $this->http->json->offset_account??null;
         if($search){
-            $condition = "WHERE `st`.`reference` LIKE '%$search%'";
+            $value = implode("", explode(",", $search));
+            $condition = "WHERE `st`.`reference` LIKE '%$search%' OR `st`.`debit_amount` LIKE '%$value%'";
         }
         
         if (isset($isbog) && !empty($isbog) && $isbog==="true") {

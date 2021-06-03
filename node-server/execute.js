@@ -4582,3 +4582,271 @@ exports.compilePenalty = function(data, callback) {
         return time;
     }
 }
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.exportPetroleumInputAnalysis = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export fallout: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            const exportData = JSON.parse(data.ids);
+
+            var dataHeaders = [
+                "Arrival Date",
+                "Product",
+                "BDC",
+                "Total Manifest Volume",
+                "Total Declaration Volume",
+                "Total Volume Difference",
+                "Total Amount",
+                "Total Amount Difference",
+            ];
+            var ReportData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Summary",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push(data.export_type);
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+
+            var condition = " WHERE 1 ";
+            var bdc = exportData.bdc || null;
+            var date_range = exportData.date_range || null;
+            var group_by = exportData.group_by || null;
+            var status = exportData.status || null; //on declaration table
+            var product_type = exportData.product_type || null;
+            var idf_condition = exportData.idf_condition || null; //on declaration table
+            var declaration_condition = exportData.declaration_condition || null;
+            var dateRang = "";
+
+            if (date_range) {
+                if (date_range.endDate && date_range.startDate) {
+                    startDate = sql_date(date_range.startDate);
+                    endDate = sql_date(date_range.endDate);
+                    condition += " AND (m.arrival_date  BETWEEN 'startDate' AND 'endDate') ";
+                    dateRang = month_year_day(startDate) +
+                        " - " + month_year_day(endDate);
+                }
+            }
+
+            if (bdc && bdc != "All") {
+                condition += " AND m.importer_name = 'bdc'";
+            }
+
+            if (product_type && product_type != "All") {
+                condition += " AND m.product_type = 'product_type'";
+            }
+
+            if (status && status != "All") {
+                if (status === "Cleared") {
+                    condition += " AND d.cleared_date IS NOT NULL";
+                }
+                if (status === "Not Cleared") {
+                    condition += " AND d.cleared_date IS NULL";
+                }
+            }
+
+            if (idf_condition && idf_condition != "All") {
+                if (idf_condition === "Has IDF") {
+                    condition += " AND d.idf_application_number IS NOT NULL";
+                }
+                if (idf_condition === "No IDF") {
+                    condition += " AND d.idf_application_number IS NULL";
+                }
+            }
+
+            if (declaration_condition && declaration_condition != "All") {
+                if (declaration_condition === "Declared") {
+                    condition += " AND d.id IS NOT NULL";
+                }
+                if (declaration_condition === "Not Declared") {
+                    condition += " AND d.id IS NULL";
+                }
+            }
+
+            if (group_by) {
+                list = "";
+                group_by.forEach((group) => {
+                    if (group === "BDC") {
+                        list += "m.importer_name,";
+                    }
+                    if (group === "Product type") {
+                        list += "m.product_type,";
+                    }
+                });
+                group = trim(list, ',');
+                group_by = `Group By ${group} `;
+            } else {
+                group_by = "Group By m.arrival_date";
+            }
+
+            const sqlQuery = `SELECT m.id manifest_id, m.arrival_date, m.vessel_name, m.vessel_number,m.product_type manifest_product, 
+        SUM(m.volume) manifest_volume, SUM(m.amount) manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
+        m.importer_name manifest_omc, d.*, SUM(d.amount) declaration_amount, SUM(d.volume) declaration_volume
+         FROM petroleum_manifest m LEFT JOIN petroleum_declaration d 
+        ON m.ucr_number = d.ucr_number ${condition} ${group_by} Order By m.arrival_date DESC`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var date_ = date_range && date_range.endDate ? dateRang : exportData.arrival_date;
+                var manifest_volume = parseFloat(exportData.manifest_volume);
+                var declaration_volume = parseFloat(exportData.declaration_volume);
+                var manifest_amount = parseFloat(exportData.manifest_amount);
+                var declaration_amount = parseFloat(exportData.declaration_amount);
+                var difference_amount = manifest_amount - declaration_amount;
+                var difference_volume = manifest_volume - declaration_volume;
+                var newObject = [
+                    date_,
+                    exportData.manifest_product,
+                    exportData.manifest_omc,
+                    manifest_volume,
+                    declaration_volume,
+                    `${difference_volume}`,
+                    manifest_amount,
+                    `${difference_amount}`,
+                ];
+                ReportData.push(newObject);
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(ReportData)
+
+            workbook.Sheets[data.export_type] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function sql_date(dateTime) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var today = new Date();
+        var time = [pad(today.getFullYear()), pad(today.getMonth() + 1), today.getDate()].join('-');
+        return time;
+    }
+
+    function month_year_day(dateTime) {
+        return sql_date(dateTime);
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+
+    function trim(s, c) {
+        if (c === "]") c = "\\]";
+        if (c === "^") c = "\\^";
+        if (c === "\\") c = "\\\\";
+        return s.replace(new RegExp(
+            "^[" + c + "]+|[" + c + "]+$", "g"
+        ), "");
+    }
+}

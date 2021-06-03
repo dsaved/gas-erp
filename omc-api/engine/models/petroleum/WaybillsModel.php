@@ -3,7 +3,7 @@ class WaybillsModel extends BaseModel
 {
     private static $table = "petroleum_waybill";
     private static $petroleum_outlet = "petroleum_outlet";
-    private static $table_manifest = "petroleum_manifest";
+    private static $petroleum_declaration = "petroleum_declaration";
   
     public function __construct()
     {
@@ -53,7 +53,6 @@ class WaybillsModel extends BaseModel
         $result_per_page = $this->http->json->result_per_page??20;
         $page = $this->http->json->page??1;
 
-        $bdc = $this->http->json->bdc??null;
         $omc = $this->http->json->omc??null;
         $product_type = $this->http->json->product_type??null;
         $depot = $this->http->json->depot??null; //on declaration table
@@ -70,9 +69,6 @@ class WaybillsModel extends BaseModel
             }
         }
 
-        if ($bdc && $bdc!="All") {
-            $condition .= " AND waybill.bdc = '$bdc'";
-        }
 
         if ($product_type && $product_type!="All") {
             $condition .= " AND waybill.product_type = '$product_type'";
@@ -120,7 +116,7 @@ class WaybillsModel extends BaseModel
             }
         }
         
-        $query = "SELECT MIN(waybill.id) id, $grouping as grouping, waybill.depot, waybill.product_type, SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume, waybill.bdc bdc FROM ".self::$table." waybill JOIN ".self::$petroleum_outlet." outlet ON outlet.bdc = waybill.bdc AND outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type $condition $group_by, waybill.bdc, waybill.depot , waybill.product_type  ORDER BY $grouping DESC";
+        $query = "SELECT MIN(waybill.id) id, $grouping as grouping, waybill.depot, waybill.product_type, SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume FROM ".self::$table." waybill JOIN ".self::$petroleum_outlet." outlet ON outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type $condition $group_by, waybill.depot, waybill.product_type  ORDER BY $grouping DESC";
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
@@ -164,39 +160,39 @@ class WaybillsModel extends BaseModel
             if ($date_range->endDate && $date_range->startDate) {
                 $startDate = $this->date->sql_date($date_range->startDate);
                 $endDate = $this->date->sql_date($date_range->endDate);
-                $condition .= " AND (manifest.arrival_date  BETWEEN '$startDate' AND '$endDate') ";
+                $condition .= " AND (declaration.declaration_date  BETWEEN '$startDate' AND '$endDate') ";
             }
         }
 
         if ($bdc && $bdc!="All") {
-            $condition .= " AND manifest.importer_name = '$bdc'";
+            $condition .= " AND declaration.importer_name = '$bdc'";
         }
 
         if ($product_type && $product_type!="All") {
-            $condition .= " AND manifest.product_type = '$product_type'";
+            $condition .= " AND declaration.product_type = '$product_type'";
         }
 
-        $grouping = "CONCAT(YEAR(manifest.arrival_date), '/', MONTH(manifest.arrival_date))";
+        $grouping = "CONCAT(YEAR(declaration.declaration_date), '/', MONTH(declaration.declaration_date))";
 
         if ($status && $status!="All") {
             if ($status==="Flagged") {
-                $condition .= " AND (manifest.volume <> waybill.volume OR waybill.volume IS NULL)";
+                $condition .= " AND (declaration.volume <> waybill.volume OR waybill.volume IS NULL)";
             }
             if ($status==="Not Flagged") {
-                $condition .= " AND manifest.volume = waybill.volume ";
+                $condition .= " AND declaration.volume = waybill.volume ";
             }
         }
 
         if ($nagatives && $nagatives!="All") {
             if ($nagatives==="Nagatives") {
-                $condition .= " AND (manifest.volume - waybill.volume  < 0)";
+                $condition .= " AND (declaration.volume - waybill.volume  < 0)";
             }
             if ($nagatives==="Positives") {
-                $condition .= " AND (manifest.volume - waybill.volume  >= 0)";
+                $condition .= " AND (declaration.volume - waybill.volume  >= 0)";
             }
         }
         
-        $query = "SELECT MIN(manifest.id) id, $grouping as grouping, manifest.product_type, SUM(manifest.volume) manifest_volume, SUM(waybill.volume) waybill_volume, manifest.importer_name bdc FROM ".self::$table_manifest." manifest JOIN ".self::$table." waybill ON waybill.bdc = manifest.importer_name AND waybill.product_type = manifest.product_type $condition GROUP BY $grouping, manifest.importer_name, manifest.product_type  ORDER BY $grouping DESC";
+        $query = "SELECT MIN(declaration.id) id, $grouping as grouping, declaration.product_type, SUM(declaration.volume) declaration_volume, SUM(waybill.volume) waybill_volume, declaration.importer_name bdc FROM ".self::$petroleum_declaration." declaration JOIN ".self::$table." waybill ON waybill.bdc = declaration.importer_name AND waybill.product_type = declaration.product_type $condition GROUP BY $grouping, declaration.importer_name, declaration.product_type  ORDER BY $grouping DESC";
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
@@ -208,8 +204,8 @@ class WaybillsModel extends BaseModel
         if (!empty($result)) {
             $response['success'] = true;
             foreach ($result as $key => &$value) {
-                $value->difference_volume = number_format($value->manifest_volume - $value->waybill_volume);
-                $value->manifest_volume = number_format($value->manifest_volume);
+                $value->difference_volume = number_format($value->declaration_volume - $value->waybill_volume);
+                $value->declaration_volume = number_format($value->declaration_volume);
                 $value->waybill_volume = number_format($value->waybill_volume);
                 $value->flagged  = $value->difference_volume <> 0;
             }
@@ -348,10 +344,11 @@ class WaybillsModel extends BaseModel
 
     public function getWaybills($omc, $group_products){
         if($group_products===true){
-            $this->db->query("SELECT SUM(volume) volume, MIN(date) date, product_type FROM ".self::$table." WHERE omc='$omc' GROUP BY product_type, (SELECT CONCAT(tax_product, '-', name) FROM tax_window WHERE `date_from`<= date AND `date_to` >= date ) ORDER BY product_type ASC, date ASC ");
+            $this->db->query("SELECT SUM(volume) volume, MIN(date) date, product_type FROM ".self::$table." WHERE omc='$omc' GROUP BY product_type, (SELECT CONCAT(tax_product, '-', name) FROM tax_window WHERE `date_from`<= date AND `date_to` >= date LIMIT 1) ORDER BY product_type ASC, date ASC ");
         }else{
             $this->db->query("SELECT * FROM ".self::$table." WHERE omc='$omc' ORDER BY product_type ASC, date ASC ");
         }
+        // var_dump($this->db);
         return $this->db->results();
     }
 

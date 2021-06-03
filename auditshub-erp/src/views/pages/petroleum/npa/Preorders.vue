@@ -16,7 +16,7 @@
       </span>
     </vs-alert>
 
-    <vx-card title="DECLARATIONS" class="mt-5">
+    <vx-card title="PREORDERS" class="mt-5">
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <header class="md:flex my-3">

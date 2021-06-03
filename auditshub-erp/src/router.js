@@ -1298,13 +1298,31 @@ const router = new Router({
                     path: '/petroleum/rcn/npa-icums',
                     name: 'npa-icums',
                     component: () =>
-                        import ('./views/pages/petroleum/reconcile/NpaIcoms.vue')
+                        import ('./views/pages/petroleum/reconcile/NpaIcoms.vue'),
+                    meta: {
+                        identity: 'NPA Declarations', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Analytics', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Analytics'
+                    }
                 },
                 {
                     path: '/petroleum/rcn/npa-npa',
-                    name: 'npa-npa',
+                    name: 'npa-differnece',
                     component: () =>
-                        import ('./views/pages/petroleum/reconcile/NpaNpa.vue')
+                        import ('./views/pages/petroleum/reconcile/NpaNpa.vue'),
+                    meta: {
+                        identity: 'NPA Analytics', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Analytics', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'Analytics'
+                    }
                 },
                 // =============================================================================
                 // NPA MENU START HERE
@@ -1420,13 +1438,31 @@ const router = new Router({
                     path: '/petroleum/icums/declearations',
                     name: 'declearations',
                     component: () =>
-                        import ('./views/pages/petroleum/icums/Declearations.vue')
+                        import ('./views/pages/petroleum/icums/Declearations.vue'),
+                    meta: {
+                        identity: 'ICOMS Declearations', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Declearations', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'ICOMS (CEPS)'
+                    }
                 },
                 {
                     path: '/petroleum/icums/differences',
                     name: 'differences',
                     component: () =>
-                        import ('./views/pages/petroleum/icums/Differences.vue')
+                        import ('./views/pages/petroleum/icums/Differences.vue'),
+                    meta: {
+                        identity: 'ICOMS Differences', //this should match then page in navMainMenuItems.js
+                        breadcrumb: [
+                            { title: 'Home', url: '/petroleum' },
+                            { title: 'Differences', active: true }
+                        ],
+                        homeurl: '/petroleum',
+                        pageTitle: 'ICOMS (CEPS)'
+                    }
                 },
                 // =============================================================================
                 // SML MENU START HERE
@@ -1644,7 +1680,7 @@ const router = new Router({
                 // =============================================================================
                 {
                     path: '/petroleum/ghana.gov/reciepts',
-                    name: 'compute',
+                    name: 'ghana.gov-receipt',
                     component: () =>
                         import ('./views/pages/petroleum/ghana.gov/Reciepts.vue'),
                     meta: {
@@ -1704,7 +1740,7 @@ const router = new Router({
                             { title: 'Stock Management', active: true }
                         ],
                         homeurl: '/petroleum',
-                        pageTitle: 'Compute'
+                        pageTitle: 'Stock Managment'
                     }
                 },
                 {
@@ -1720,7 +1756,7 @@ const router = new Router({
                             { title: 'Products', active: true }
                         ],
                         homeurl: '/petroleum',
-                        pageTitle: 'Compute'
+                        pageTitle: 'Stock Managment'
                     },
                     props: true
                 },
@@ -1737,7 +1773,7 @@ const router = new Router({
                             { title: 'Invalid Discharge', active: true }
                         ],
                         homeurl: '/petroleum',
-                        pageTitle: 'Compute'
+                        pageTitle: 'Stock Managment'
                     },
                     props: true
                 },
