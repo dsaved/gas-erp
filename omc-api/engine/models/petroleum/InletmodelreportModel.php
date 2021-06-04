@@ -14,7 +14,7 @@ class InletmodelreportModel extends BaseModel
         $result_per_page = $this->http->json->result_per_page??20;
         $page = $this->http->json->page??1;
 
-        $bdc = $this->http->json->bdc??null;
+        $product_type  = $this->http->json->product_type ??null;
         $date_range = $this->http->json->date_range??null;
 
         if ($date_range) {
@@ -25,8 +25,8 @@ class InletmodelreportModel extends BaseModel
             }
         }
 
-        if ($bdc && $bdc!="All") {
-            $condition .= " AND dcl.importer_name = '$bdc'";
+        if ($product_type  && $product_type !="All") {
+            $condition .= " AND dcl.product_type  = '$product_type '";
         }
 
         $query = "SELECT MIN(dcl.id) id, CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) AS week, SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, dcl.product_type FROM ".self::$petroleum_declaration." dcl LEFT JOIN ".self::$petroleum_inlet." inlet ON inlet.product_type = dcl.product_type $condition GROUP BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) , dcl.product_type ORDER BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) DESC";

@@ -29,17 +29,6 @@
             />
           </div>
           <div class="w-1/5 px-2">
-            <span>Positives/Nagatives</span>
-            <ajax-select
-              placeholder="Select Status"
-              :options="['All', 'Nagatives', 'Positives']"
-              :clearable="false"
-              :dir="$vs.rtl ? 'rtl' : 'ltr'"
-              :selected="nagatives"
-              v-on:update:data="nagatives = $event"
-            />
-          </div>
-          <div class="w-1/5 px-2">
             <span>Result per page</span>
             <v-select
               placeholder="Result count"
@@ -85,6 +74,16 @@
               >Reset</vs-button
             >
           </div>
+          <vs-spacer />
+          <vs-button
+            type="relief"
+            color="warning"
+            icon-pack="feather"
+            icon="icon-file-text"
+            v-if="AppActiveUser.access_level === 'admin'"
+            @click="exportWarn()"
+            >Export</vs-button
+          >
         </div>
       </div>
     </vx-card>
@@ -175,6 +174,61 @@
         </div>
       </div>
     </vx-card>
+    
+    <vs-popup
+      background-color="rgba(200,200,200,.8)"
+      persistent
+      :button-close-hidden="true"
+      title="File Export In Progress"
+      :active.sync="showExportPopup"
+    >
+      <p>
+        <span
+          v-for="(desc, index) in exportDesc"
+          :key="index"
+          v-html="formatDesc(desc)"
+          ><br
+        /></span>
+      </p>
+      <p v-if="hasdata(exportStatus)" class="text-info loadingDot">
+        {{ exportStatus }}
+      </p>
+
+      <p>
+        <span class="text-secondary"
+          ><b>{{ exportDetails }}</b></span
+        >
+      </p>
+      <vs-row>
+        <vs-col
+          vs-offset="8"
+          vs-type="flex"
+          vs-justify="center"
+          vs-align="center"
+          vs-w="4"
+        >
+          <vs-button
+            v-if="reloadExportPopup"
+            color="primary"
+            icon-pack="feather"
+            icon="icon-refresh-cw"
+            @click="statusCheckFileExport()"
+            class="mx-1"
+            >reload</vs-button
+          >
+
+          <vs-button
+            v-if="canCloseExportPopup"
+            color="danger"
+            icon-pack="feather"
+            icon="icon-x"
+            @click="clearLog()"
+            class="mx-1"
+            >Close</vs-button
+          >
+        </vs-col>
+      </vs-row>
+    </vs-popup>
   </div>
 </template>
 
@@ -217,13 +271,16 @@ export default {
           return {};
         },
       },
-      //file import section
-      popupActive: false,
-      statuscheck: null,
+      // export data starts here
+      showExportPopup: false,
+      canCloseExportPopup: false,
+      reloadExportPopup: false,
+      statusCheckExport: null,
+      exportJobID: null,
       errorStr: ["unknown jobid", "error"],
-      importDesc: [],
-      importDetails: "",
-      importStatus: "",
+      exportDesc: [],
+      exportStatus: "",
+      exportDetails: "",
       //preorder data list starts here
       pkey: "waybil-reconciliation-list",
       message: "",
@@ -364,6 +421,131 @@ export default {
             duration: null,
             position: "bottom-left",
           });
+        });
+    },
+    //Export starts here
+    formatDesc(data) {
+      let error = false;
+      this.errorStr.forEach((item) => {
+        if (data && data.toLowerCase().includes(item)) {
+          error = true;
+        }
+      });
+      if (error) {
+        return `<span class="text-danger">-> ${data}<br/></span> `;
+      }
+      return `<span class="text-primary">-> ${data}<br/></span> `;
+    },
+    clearLog() {
+      this.showExportPopup = false;
+      this.canCloseExportPopup = false;
+      this.reloadExportPopup = false;
+      this.exportJobID = null;
+      this.exportDesc = [];
+      this.exportStatus = "";
+      if (this.statusCheckExport) {
+        clearInterval(this.statusCheckExport);
+      }
+    },
+    statusCheckFileExport() {
+      this.canCloseExportPopup = false;
+      this.reloadExportPopup = false;
+      const vm = this;
+      this.statusCheckExport = setInterval(function () {
+        vm.checkStatus();
+      }, 1200);
+    },
+    pushDescription(data) {
+      if (!this.exportDesc.includes(data)) {
+        this.exportDesc.push(data);
+      }
+    },
+    async exportWarn() {
+      const { value: filename } = await Swal.fire({
+        title: "Export Summary",
+        text: "You are about to export this summaries",
+        icon: "question",
+        input: "text",
+        showCancelButton: true,
+        confirmButtonColor: "#0d6723",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, continue!",
+        inputPlaceholder: "Save file as?",
+        inputValue: `${this.status}-icums-defferences-${new Date().getTime()}`,
+        inputValidator: (value) => {
+          if (!value) {
+            return "You need to write file name!";
+          }
+        },
+      });
+
+      if (filename) {
+        this.export(filename);
+      }
+    },
+    export(filename) {
+      this.showLoading("Sending Request For File Export");
+      this.post("/options/start_export", {
+        filename: filename,
+        export_type: "petroleum-icums-defferences",
+        config_data: JSON.stringify({
+          omc: this.omc,
+          status: this.status,
+        }),
+      })
+        .then((response) => {
+          this.closeLoading();
+          if (response.data.success === true) {
+            this.selectedRecords = [];
+            this.showExportPopup = true;
+            this.pushDescription(response.data.message);
+            this.exportStatus = "Initializing";
+            this.exportJobID = response.data.jobid;
+            this.statusCheckFileExport();
+          } else {
+            Swal.fire("Failed!", response.data.message, "error");
+          }
+        })
+        .catch((error) => {
+          this.closeLoading();
+          Swal.fire("Failed!", error.message, "error");
+        });
+    },
+    checkStatus() {
+      this.post("/options/file_export_status", {
+        jobid: this.exportJobID,
+      })
+        .then((response) => {
+          const data = response.data;
+          if (data.success) {
+            const status = data.status;
+            this.pushDescription(status.description);
+            this.exportStatus = status.status;
+            this.exportDetails = status.details;
+            if (status.status.toLowerCase() === "completed") {
+              clearInterval(this.statusCheckExport);
+              this.exportStatus = "";
+              this.canCloseExportPopup = true;
+            }
+            if (status.status.toLowerCase().includes("error")) {
+              clearInterval(this.statusCheckExport);
+              this.exportStatus = "";
+              this.canCloseExportPopup = true;
+            }
+          } else {
+            this.pushDescription(response.data.message);
+            this.exportStatus = "";
+            clearInterval(this.statusCheckExport);
+            this.canCloseExportPopup = true;
+          }
+        })
+        .catch((error) => {
+          this.pushDescription("a network error has occured");
+          clearInterval(this.statusCheckExport);
+          this.exportStatus = "";
+          this.canCloseExportPopup = true;
+          this.reloadExportPopup = true;
+          console.log(error);
         });
     },
 	

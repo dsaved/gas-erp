@@ -3630,7 +3630,7 @@ exports.exportFileFallout = function(data, callback) {
         sqlConn.connect(function(err) {
             if (err) config.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export fallout: ' + data.id);
+            config.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -3785,7 +3785,7 @@ exports.exportFileNASummary = function(data, callback) {
         sqlConn.connect(function(err) {
             if (err) config.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export fallout: ' + data.id);
+            config.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -4608,7 +4608,7 @@ exports.exportPetroleumInputAnalysis = function(data, callback) {
         sqlConn.connect(function(err) {
             if (err) config.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export fallout: ' + data.id);
+            config.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -4663,20 +4663,19 @@ exports.exportPetroleumInputAnalysis = function(data, callback) {
 
             if (date_range) {
                 if (date_range.endDate && date_range.startDate) {
-                    startDate = sql_date(date_range.startDate);
-                    endDate = sql_date(date_range.endDate);
-                    condition += " AND (m.arrival_date  BETWEEN 'startDate' AND 'endDate') ";
-                    dateRang = month_year_day(startDate) +
-                        " - " + month_year_day(endDate);
+                    const startDate = sql_date(date_range.startDate);
+                    const endDate = sql_date(date_range.endDate);
+                    condition += ` AND (m.arrival_date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
                 }
             }
 
             if (bdc && bdc != "All") {
-                condition += " AND m.importer_name = 'bdc'";
+                condition += ` AND m.importer_name = '${bdc}' `;
             }
 
             if (product_type && product_type != "All") {
-                condition += " AND m.product_type = 'product_type'";
+                condition += ` AND m.product_type = '${product_type}'`;
             }
 
             if (status && status != "All") {
@@ -4741,20 +4740,20 @@ exports.exportPetroleumInputAnalysis = function(data, callback) {
                 current = index + 1;
                 await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
                 var date_ = date_range && date_range.endDate ? dateRang : exportData.arrival_date;
-                var manifest_volume = parseFloat(exportData.manifest_volume);
-                var declaration_volume = parseFloat(exportData.declaration_volume);
-                var manifest_amount = parseFloat(exportData.manifest_amount);
-                var declaration_amount = parseFloat(exportData.declaration_amount);
+                var manifest_volume = parseFloat(exportData.manifest_volume || 0);
+                var declaration_volume = parseFloat(exportData.declaration_volume || 0);
+                var manifest_amount = parseFloat(exportData.manifest_amount || 0);
+                var declaration_amount = parseFloat(exportData.declaration_amount || 0);
                 var difference_amount = manifest_amount - declaration_amount;
                 var difference_volume = manifest_volume - declaration_volume;
                 var newObject = [
                     date_,
                     exportData.manifest_product,
                     exportData.manifest_omc,
-                    manifest_volume,
-                    declaration_volume,
+                    `${manifest_volume}`,
+                    `${declaration_volume}`,
                     `${difference_volume}`,
-                    manifest_amount,
+                    `${manifest_amount}`,
                     `${difference_amount}`,
                 ];
                 ReportData.push(newObject);
@@ -4839,6 +4838,2011 @@ exports.exportPetroleumInputAnalysis = function(data, callback) {
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         return time;
+    }
+
+    function trim(s, c) {
+        if (c === "]") c = "\\]";
+        if (c === "^") c = "\\^";
+        if (c === "\\") c = "\\\\";
+        return s.replace(new RegExp(
+            "^[" + c + "]+|[" + c + "]+$", "g"
+        ), "");
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.exportPetroleumInputReconciliation = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            const exportData = JSON.parse(data.ids);
+
+            var dataHeaders = [
+                "Arrival Date",
+                "Product",
+                "BDC",
+                "Total Manifest Volume",
+                "Total Declaration Volume",
+                "Total Volume Difference",
+                "Total Manifest Amount",
+                "Total Declaratioin Amount",
+                "Total Amount Difference",
+                "Cleared In (Days)",
+            ];
+            var ReportData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Summary",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push(data.export_type);
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+
+            var condition = " WHERE 1 ";
+            var bdc = exportData.bdc || null;
+            var date_range = exportData.date_range || null;
+            var status = exportData.status || null; //on declaration table
+            var product_type = exportData.product_type || null;
+            var dateRang = "";
+
+            if (date_range) {
+                if (date_range.endDate && date_range.startDate) {
+                    const startDate = sql_date(date_range.startDate);
+                    const endDate = sql_date(date_range.endDate);
+                    condition += ` AND (m.arrival_date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
+                }
+            }
+
+            if (bdc && bdc != "All") {
+                condition += ` AND m.importer_name = '${bdc}' `;
+            }
+
+            if (product_type && product_type != "All") {
+                condition += ` AND m.product_type = '${product_type}'`;
+            }
+
+            if (status && status != "All") {
+                if (status === "Flagged") {
+                    condition += " AND (m.volume <> d.volume OR m.amount <> d.amount OR d.amount IS NULL OR d.volume IS NULL)";
+                }
+                if (status === "Not Flagged") {
+                    condition += " AND m.volume = d.volume AND m.amount = d.amount";
+                }
+            }
+
+            const sqlQuery = `SELECT m.id manifest_id, m.arrival_date, m.vessel_name, m.vessel_number,m.product_type manifest_product, 
+            m.volume manifest_volume, m.amount manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
+            m.importer_name manifest_omc, d.*, d.amount declaration_amount, d.volume declaration_volume
+             FROM petroleum_manifest m LEFT JOIN petroleum_declaration d 
+             ON m.ucr_number = d.ucr_number ${condition} Order By m.arrival_date DESC`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var date_ = date_range && date_range.endDate ? dateRang : exportData.arrival_date;
+                var manifest_volume = parseFloat(exportData.manifest_volume || 0);
+                var declaration_volume = parseFloat(exportData.declaration_volume || 0);
+                var manifest_amount = parseFloat(exportData.manifest_amount || 0);
+                var declaration_amount = parseFloat(exportData.declaration_amount || 0);
+                var difference_amount = manifest_amount - declaration_amount;
+                var difference_volume = manifest_volume - declaration_volume;
+                var cleared_in = 0;
+                if (exportData.cleared_date && exportData.arrival_date) {
+                    const cleared_date = new Date(exportData.cleared_date);
+                    const arrival_date = new Date(exportData.arrival_date);
+                    cleared_in = getDateDiff(cleared_date, arrival_date);
+                }
+                var newObject = [
+                    date_,
+                    exportData.manifest_product,
+                    exportData.manifest_omc,
+                    `${manifest_volume}`,
+                    `${declaration_volume}`,
+                    `${difference_volume}`,
+                    `${manifest_amount}`,
+                    `${declaration_amount}`,
+                    `${difference_amount}`,
+                    `${cleared_in}`,
+                ];
+                ReportData.push(newObject);
+                // if (current === 1) console.log(newObject)
+                // if (current === 1) console.log("declaration_volume", exportData.declaration_volume)
+                // if (current === 1) console.log("declaration_amount", exportData.declaration_amount)
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(ReportData)
+
+            workbook.Sheets[data.export_type] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function sql_date(dateTime) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var today = new Date();
+        var time = [pad(today.getFullYear()), pad(today.getMonth() + 1), today.getDate()].join('-');
+        return time;
+    }
+
+    function month_year_day(dateTime) {
+        return sql_date(dateTime);
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+
+    function getDateDiff(d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+        return parseInt((t2 - t1) / (24 * 3600 * 1000));
+    }
+
+    function trim(s, c) {
+        if (c === "]") c = "\\]";
+        if (c === "^") c = "\\^";
+        if (c === "\\") c = "\\\\";
+        return s.replace(new RegExp(
+            "^[" + c + "]+|[" + c + "]+$", "g"
+        ), "");
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.exportPetroleumNPAAnalysis = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            const exportData = JSON.parse(data.ids);
+
+            var dataHeaders = [
+                "Preorder Date",
+                "Order Date",
+                "Refference",
+                "Product",
+                "BDC",
+                "OMC",
+                "Depot",
+                "Total Preorder Volume",
+                "Total Order Volume",
+                "Missing Volume",
+                "Status"
+            ];
+            var ReportData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Summary",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push(data.export_type);
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+
+            var condition = " WHERE 1 ";
+            var bdc = exportData.bdc || null;
+            var date_range = exportData.date_range || null;
+            var group_by = exportData.group_by || null;
+            var status = exportData.status || null; //on declaration table
+            var product_type = exportData.product_type || null;
+            var depot = exportData.depot || null; //on declaration table
+            var omc = exportData.omc || null;
+            var dateRang = "";
+
+            if (date_range) {
+                if (date_range.endDate && date_range.startDate) {
+                    const startDate = sql_date(date_range.startDate);
+                    const endDate = sql_date(date_range.endDate);
+                    condition += ` AND (prord.preorder_date BETWEEN '${startDate}' AND '${endDate}') `;
+                    dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
+                }
+            }
+
+            if (bdc && bdc != "All") {
+                condition += ` AND prord.bdc = '${bdc}' `;
+            }
+
+            if (depot && depot != "All") {
+                condition += ` AND prord.depot = '${depot}'`;
+            }
+
+            if (omc && omc != "All") {
+                condition += ` AND prord.omc = '${omc}'`;
+            }
+
+            if (product_type && product_type != "All") {
+                condition += ` AND prord.product_type = '${product_type}'`;
+            }
+
+            if (status && status != "All") {
+                if (status === "Ordered") {
+                    condition += " AND ord.order_date IS NOT NULL";
+                }
+                if (status === "Not Ordered") {
+                    condition += " AND ord.order_date IS NULL";
+                }
+            }
+
+            if (group_by) {
+                list = "";
+                group_by.forEach((group) => {
+                    if (group === "Product type") {
+                        list += "prord.product_type,";
+                    }
+                    if (group === "BDC") {
+                        list += "prord.bdc,";
+                    }
+                    if (group === "Depot") {
+                        list += "prord.depot,";
+                    }
+                    if (group === "OMC") {
+                        list += "prord.omc,";
+                    }
+                });
+                group = trim(list, ',');
+                group_by = `Group By ${group} `;
+            } else {
+                group_by = "Group By m.arrival_date";
+            }
+
+            const sqlQuery = `SELECT prord.id preorder_id, prord.preorder_date, prord.omc, prord.bdc,prord.product_type preorder_product, 
+            SUM(prord.volume) preorder_volume, prord.reference_number, prord.depot, 
+            ord.*, SUM(ord.unit_price) order_unit_price, SUM(ord.volume) order_volume, ord.order_date
+            FROM petroleum_preorder  prord LEFT JOIN petroleum_order ord 
+            ON prord.reference_number = ord.reference_number ${condition} ${group_by} Order By prord.preorder_date DESC`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var preorder_date = date_range && date_range.endDate ? dateRang : exportData.preorder_date;
+                var order_date = date_range && date_range.endDate ? dateRang : exportData.order_date;
+                var preorder_volume = parseFloat(exportData.preorder_volume || 0);
+                var order_volume = parseFloat(exportData.order_volume || 0);
+                var difference_volume = preorder_volume - order_volume;
+
+                var newObject = [
+                    preorder_date,
+                    order_date,
+                    exportData.reference_number,
+                    exportData.preorder_product,
+                    exportData.bdc,
+                    exportData.omc,
+                    exportData.depot,
+                    `${preorder_volume}`,
+                    `${order_volume}`,
+                    `${difference_volume}`,
+                    `${status}`,
+                ];
+                ReportData.push(newObject);
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(ReportData)
+
+            workbook.Sheets[data.export_type] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function sql_date(dateTime) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var today = new Date();
+        var time = [pad(today.getFullYear()), pad(today.getMonth() + 1), today.getDate()].join('-');
+        return time;
+    }
+
+    function month_year_day(dateTime) {
+        return sql_date(dateTime);
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+
+    function getDateDiff(d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+        return parseInt((t2 - t1) / (24 * 3600 * 1000));
+    }
+
+    function trim(s, c) {
+        if (c === "]") c = "\\]";
+        if (c === "^") c = "\\^";
+        if (c === "\\") c = "\\\\";
+        return s.replace(new RegExp(
+            "^[" + c + "]+|[" + c + "]+$", "g"
+        ), "");
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.exportPetroleumICUMSDifferences = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            const exportData = JSON.parse(data.ids);
+
+            var dataHeaders = [
+                "Date",
+                "OMC",
+                "ICUMS Declaration Amount",
+                "Waybill Expected Declaration Amount",
+                "Amount Difference",
+            ];
+            var ReportData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Summary",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push(data.export_type);
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+
+            var condition = " WHERE 1 ";
+            var status = exportData.status || null;
+            var omc = exportData.omc || null;
+
+            if (omc && omc != "All") {
+                condition += ` AND omc = '${omc}'`;
+            }
+
+            const sqlQuery = `SELECT * FROM petroleum_icums_declaration ${condition} Order By date DESC`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                const exp_declaration_amount = await expected_declaration(exportData.omc, exportData.date);
+                const amount = parseFloat(exportData.amount || 0);
+                const difference_amount = amount - exp_declaration_amount;
+                const flagged = (difference_amount > 0 || difference_amount < 0) ? true : false;
+
+                const newObject = [
+                    exportData.date,
+                    exportData.omc,
+                    `${amount}`,
+                    `${exp_declaration_amount}`,
+                    `${difference_amount}`,
+                ];
+
+                if (status && status != "All") {
+                    if (status === "Flagged") {
+                        if (flagged) ReportData.push(newObject);
+                    } else if (status === "Not Flagged") {
+                        if (!flagged) ReportData.push(newObject);
+                    }
+                } else {
+                    ReportData.push(newObject);
+                }
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            total = ReportData.length - 1;
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(ReportData)
+
+            workbook.Sheets[data.export_type] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    /**
+     * async function expected_declaration
+     * @param omc theomc to search for
+     * @param date date period
+     */
+    async function expected_declaration(omc, date) {
+        var total_amount = 0.0;
+        const computes = await getWaybills(omc, date);
+        for (let index = 0; index < computes.length; index++) {
+            const compute = computes[index];
+            total = 0;
+            var result = [];
+            result = await query(`SELECT tw.*, tt.name tax FROM tax_window tw JOIN tax_type tt ON tw.tax_type=tt.id WHERE tw.tax_product = (SELECT id FROM tax_schedule_products WHERE name = '${compute.product_type}' LIMIT 1) AND tw.date_from<= '${date}' AND tw.date_to >= '${date}'`).catch(error => {
+                console.log(error);
+                result = [];
+            });
+            if (result) {
+                for (let key = 0; key < result.length; key++) {
+                    total += compute.volume * result[key].rate;
+                }
+            }
+            total_amount += total;
+        }
+        return total_amount;
+    }
+
+    /**
+     * async function getWaybills
+     * @param omc theomc to search for
+     * @param date date period
+     */
+    async function getWaybills(omc, date) {
+        var result = [];
+        result = await query(`SELECT SUM(volume) volume, MIN(date) date, product_type FROM petroleum_waybill WHERE omc='${omc}' AND (date BETWEEN DATE((SELECT date_from FROM tax_window WHERE date_from<= '${date}' AND date_to >= '${date}' LIMIT 1 )) AND DATE((SELECT date_to FROM tax_window WHERE date_from<= '${date}' AND date_to >= '${date}' LIMIT 1 )) ) GROUP BY product_type, (SELECT CONCAT(tax_product, '-', name) FROM tax_window WHERE date_from<= '${date}' AND date_to >= '${date}' LIMIT 1) ORDER BY product_type ASC, date ASC `).catch(error => {
+            console.log(error);
+            result = [];
+        });
+        return result;
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function sql_date(dateTime) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var today = new Date();
+        var time = [pad(today.getFullYear()), pad(today.getMonth() + 1), today.getDate()].join('-');
+        return time;
+    }
+
+    function month_year_day(dateTime) {
+        return sql_date(dateTime);
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+
+    function getDateDiff(d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+        return parseInt((t2 - t1) / (24 * 3600 * 1000));
+    }
+
+    function trim(s, c) {
+        if (c === "]") c = "\\]";
+        if (c === "^") c = "\\^";
+        if (c === "\\") c = "\\\\";
+        return s.replace(new RegExp(
+            "^[" + c + "]+|[" + c + "]+$", "g"
+        ), "");
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.exportPetroleumDeptGood = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            const exportData = JSON.parse(data.ids);
+
+            var dataHeaders = [
+                "Date",
+                "OMC",
+                "Receipt Amount",
+                "ICUMS Declaration Amount",
+                "Expected Declaration Amount",
+                "Amount Difference (Receipt - ICUMS)",
+                "Amount Difference (Receipt - Expected Declaration)",
+            ];
+            var ReportData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Summary",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push(data.export_type);
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+
+            var condition = " WHERE 1 ";
+            var on = "";
+            var status = exportData.status || null;
+            var nagatives = exportData.nagatives || null;
+            var omc = exportData.omc || null;
+            var date_range = exportData.date_range || null;
+            var hasRange = false;
+            var dateRang = "";
+
+            if (date_range) {
+                if (date_range.endDate && date_range.startDate) {
+                    const startDate = sql_date(date_range.startDate);
+                    const endDate = sql_date(date_range.endDate);
+                    condition += ` AND (rep.date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    on = ` AND (icum_dcl.date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
+                    hasRange = true;
+                }
+            }
+
+            if (omc && omc != "All") {
+                condition += ` AND omc = '${omc}'`;
+            }
+
+            var HAVING = " HAVING 1";
+            if (status && status != "All") {
+                if (status === "Flagged") {
+                    HAVING += " AND (SUM(rep.amount) <> SUM(icum_dcl.amount) OR SUM(icum_dcl.amount) IS NULL)";
+                }
+                if (status === "Not Flagged") {
+                    HAVING += " AND SUM(rep.amount) = SUM(icum_dcl.amount) ";
+                }
+            }
+
+            if (nagatives && nagatives != "All") {
+                if (nagatives === "Nagatives") {
+                    HAVING += " AND SUM(rep.amount) - SUM(icum_dcl.amount)  < 0 ";
+                }
+                if (nagatives === "Positives") {
+                    HAVING += " AND (SUM(rep.amount) - SUM(icum_dcl.amount)  >= 0 OR SUM(icum_dcl.amount) IS NULL) ";
+                }
+            }
+
+            const sqlQuery = `SELECT 'All time' date, rep.omc, SUM(rep.amount) amount, icum_dcl.omc dcl_omc, SUM(icum_dcl.amount) dcl_amount_icum FROM ghana_gov_omc_receipt rep LEFT JOIN petroleum_icums_declaration icum_dcl ON rep.omc=icum_dcl.omc ${on} ${condition} GROUP BY rep.omc ${HAVING} ORDER BY rep.id`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var _date = exportData.date;
+                if (hasRange) {
+                    _date = date_range;
+                }
+                const exp_dcl_amount = await expected_declaration(exportData.omc, _date);
+                const amount = parseFloat(exportData.amount || 0);
+                const dcl_amount_icum = parseFloat(exportData.dcl_amount_icum || 0);
+                const difference_amount_receipt_icums = amount - dcl_amount_icum;
+                const difference_amount_expected_icums = amount - exp_dcl_amount;
+                const date = date_range && date_range.endDate ? dateRang : exportData.date;
+
+                const newObject = [
+                    date,
+                    exportData.omc,
+                    `${amount}`,
+                    `${dcl_amount_icum}`,
+                    `${exp_dcl_amount}`,
+                    `${difference_amount_receipt_icums}`,
+                    `${difference_amount_expected_icums}`,
+                ];
+
+                ReportData.push(newObject);
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            total = ReportData.length - 1;
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(ReportData)
+
+            workbook.Sheets[data.export_type] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    /**
+     * async function expected_declaration
+     * @param omc theomc to search for
+     * @param date date period
+     */
+    async function expected_declaration(omc, date) {
+        var total_amount = 0.0;
+        const computes = await getWaybills(omc, date);
+        for (let index = 0; index < computes.length; index++) {
+            const compute = computes[index];
+            total = 0;
+            var result = [];
+            result = await query(`SELECT tw.*, tt.name tax FROM tax_window tw JOIN tax_type tt ON tw.tax_type=tt.id WHERE tw.tax_product = (SELECT id FROM tax_schedule_products WHERE name = '${compute.product_type}' LIMIT 1) AND tw.date_from<= '${date}' AND tw.date_to >= '${date}'`).catch(error => {
+                console.log(error);
+                result = [];
+            });
+            if (result) {
+                for (let key = 0; key < result.length; key++) {
+                    total += compute.volume * result[key].rate;
+                }
+            }
+            total_amount += total;
+        }
+        return total_amount;
+    }
+
+    /**
+     * async function getWaybills
+     * @param omc theomc to search for
+     * @param date date period
+     */
+    async function getWaybills(omc, date) {
+        var result = [];
+        if (date === "All time") {
+            result = await query(`SELECT * FROM petroleum_waybill WHERE omc='${omc}'`).catch(error => {
+                console.log(error);
+                result = [];
+            });
+        } else {
+            const startDate = sql_date(date.startDate);
+            const endDate = sql_date(date.endDate);
+            result = await query(`SELECT * FROM petroleum_waybill WHERE omc='${omc}' AND date BETWEEN '${startDate}' AND '${endDate}' `).catch(error => {
+                console.log(error);
+                result = [];
+            });
+        }
+        return result;
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function sql_date(dateTime) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var today = new Date();
+        var time = [pad(today.getFullYear()), pad(today.getMonth() + 1), today.getDate()].join('-');
+        return time;
+    }
+
+    function month_year_day(dateTime) {
+        return sql_date(dateTime);
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+
+    function getDateDiff(d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+        return parseInt((t2 - t1) / (24 * 3600 * 1000));
+    }
+
+    function trim(s, c) {
+        if (c === "]") c = "\\]";
+        if (c === "^") c = "\\^";
+        if (c === "\\") c = "\\\\";
+        return s.replace(new RegExp(
+            "^[" + c + "]+|[" + c + "]+$", "g"
+        ), "");
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.exportPetroleumWaybillAnalysis = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            const exportData = JSON.parse(data.ids);
+
+            var dataHeaders = [
+                "Date",
+                "Product",
+                "BDC",
+                "Total Declaration Volume",
+                "Total Waybill Volume",
+                "Total Volume Difference",
+            ];
+            var ReportData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Summary",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push(data.export_type);
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+
+            var condition = " WHERE 1 ";
+            var bdc = exportData.bdc || null;
+            var date_range = exportData.date_range || null;
+            var status = exportData.status || null; //on declaration table
+            var product_type = exportData.product_type || null;
+            var nagatives = exportData.nagatives || null;
+            var dateRang = "";
+
+            if (date_range) {
+                if (date_range.endDate && date_range.startDate) {
+                    const startDate = sql_date(date_range.startDate);
+                    const endDate = sql_date(date_range.endDate);
+                    condition += ` AND (declaration.declaration_date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
+                }
+            }
+
+            if (bdc && bdc != "All") {
+                condition += ` AND declaration.importer_name = '${bdc}' `;
+            }
+
+            if (product_type && product_type != "All") {
+                condition += ` AND AND declaration.product_type = '${product_type}'`;
+            }
+
+            var grouping = "CONCAT(YEAR(declaration.declaration_date), '/', MONTH(declaration.declaration_date))";
+
+            if (status && status != "All") {
+                if (status === "Flagged") {
+                    condition += " AND (declaration.volume <> waybill.volume OR waybill.volume IS NULL)";
+                }
+                if (status === "Not Flagged") {
+                    condition += " declaration.volume = waybill.volume";
+                }
+            }
+
+            if (nagatives && nagatives != "All") {
+                if (nagatives === "Nagatives") {
+                    condition += " AND (declaration.volume - waybill.volume  < 0) ";
+                }
+                if (nagatives === "Positives") {
+                    condition += " AND (declaration.volume - waybill.volume  >= 0) ";
+                }
+            }
+
+            const sqlQuery = `SELECT MIN(declaration.id) id, ${grouping} as grouping, declaration.product_type, SUM(declaration.volume) declaration_volume, SUM(waybill.volume) waybill_volume, declaration.importer_name bdc FROM petroleum_declaration declaration JOIN petroleum_waybill waybill ON waybill.bdc = declaration.importer_name AND waybill.product_type = declaration.product_type ${condition} GROUP BY ${grouping}, declaration.importer_name, declaration.product_type  ORDER BY ${grouping} DESC`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var date_ = exportData.grouping;
+                var waybill_volume = parseFloat(exportData.waybill_volume || 0);
+                var declaration_volume = parseFloat(exportData.declaration_volume || 0);
+                var difference_volume = declaration_volume - waybill_volume;
+
+                var newObject = [
+                    date_,
+                    exportData.product_type,
+                    exportData.bdc,
+                    `${declaration_volume}`,
+                    `${waybill_volume}`,
+                    `${difference_volume}`,
+                ];
+                ReportData.push(newObject);
+                // if (current === 1) console.log(newObject)
+                // if (current === 1) console.log("declaration_volume", exportData.declaration_volume)
+                // if (current === 1) console.log("declaration_amount", exportData.declaration_amount)
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(ReportData)
+
+            workbook.Sheets[data.export_type] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function sql_date(dateTime) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var today = new Date();
+        var time = [pad(today.getFullYear()), pad(today.getMonth() + 1), today.getDate()].join('-');
+        return time;
+    }
+
+    function month_year_day(dateTime) {
+        return sql_date(dateTime);
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+
+    function getDateDiff(d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+        return parseInt((t2 - t1) / (24 * 3600 * 1000));
+    }
+
+    function trim(s, c) {
+        if (c === "]") c = "\\]";
+        if (c === "^") c = "\\^";
+        if (c === "\\") c = "\\\\";
+        return s.replace(new RegExp(
+            "^[" + c + "]+|[" + c + "]+$", "g"
+        ), "");
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.exportPetroleumWaybillReconcile = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            const exportData = JSON.parse(data.ids);
+
+            var dataHeaders = [
+                "Date",
+                "Product",
+                "Depot (BDCs)",
+                "Total Waybill Volume",
+                "Total SML Outlet Volume",
+                "Total Volume Difference",
+            ];
+            var ReportData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Summary",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push(data.export_type);
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+
+            var condition = " WHERE 1 ";
+            var omc = exportData.omc || null;
+            var date_range = exportData.date_range || null;
+            var status = exportData.status || null; //on declaration table
+            var product_type = exportData.product_type || null;
+            var depot = exportData.depot || null;
+            var group_by = exportData.group_by || null;
+            var nagatives = exportData.nagatives || null;
+            if (date_range) {
+                if (date_range.endDate && date_range.startDate) {
+                    const startDate = sql_date(date_range.startDate);
+                    const endDate = sql_date(date_range.endDate);
+                    condition += ` AND (waybill.date  BETWEEN '${startDate}' AND '${endDate}') `;
+                }
+            }
+
+
+            if (product_type && product_type != "All") {
+                condition += " AND waybill.product_type = 'product_type'";
+            }
+
+            if (depot && depot != "All") {
+                condition += ` AND waybill.depot ='${depot}'`;
+            }
+
+            if (omc && omc != "All") {
+                condition += ` AND waybill.omc = '${omc}'`;
+            }
+
+            var grouping = "waybill.date";
+            if (group_by) {
+                if (group_by === "Month") {
+                    grouping = " CONCAT(YEAR(waybill.date), '/', MONTH(waybill.date))";
+                } else if (group_by === "Week") {
+                    grouping = " CONCAT(YEAR(waybill.date), '/', WEEK(waybill.date))";
+                } else if (group_by === "Day") {
+                    grouping = " DATE(waybill.date)";
+                } else {
+                    grouping = " DATE(waybill.date)";
+                }
+                group_by = `Group By ${grouping} `;
+            } else {
+                group_by = "Group By waybill.date";
+            }
+
+            if (status && status != "All") {
+                if (status === "Flagged") {
+                    condition += " AND (waybill.volume <> outlet.volume OR outlet.volume IS NULL)";
+                }
+                if (status === "Not Flagged") {
+                    condition += " AND waybill.volume = outlet.volume ";
+                }
+            }
+
+            if (nagatives && nagatives != "All") {
+                if (nagatives === "Nagatives") {
+                    condition += " AND (waybill.volume - outlet.volume  < 0)";
+                }
+                if (nagatives === "Positives") {
+                    condition += " AND (waybill.volume - outlet.volume  >= 0)";
+                }
+            }
+
+            const sqlQuery = `SELECT MIN(waybill.id) id, ${grouping} as grouping, waybill.depot, waybill.product_type, SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume FROM petroleum_waybill waybill JOIN petroleum_outlet outlet ON outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type ${condition} ${group_by}, waybill.depot, waybill.product_type  ORDER BY ${grouping} DESC`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var date_ = exportData.grouping;
+                var waybill_volume = parseFloat(exportData.waybill_volume || 0);
+                var outlet_volume = parseFloat(exportData.outlet_volume || 0);
+                var difference_volume = waybill_volume - outlet_volume;
+
+                var newObject = [
+                    date_,
+                    exportData.product_type,
+                    exportData.depot,
+                    `${waybill_volume}`,
+                    `${outlet_volume}`,
+                    `${difference_volume}`,
+                ];
+                ReportData.push(newObject);
+                // if (current === 1) console.log(newObject)
+                // if (current === 1) console.log("declaration_volume", exportData.declaration_volume)
+                // if (current === 1) console.log("declaration_amount", exportData.declaration_amount)
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(ReportData)
+
+            workbook.Sheets[data.export_type] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function sql_date(dateTime) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var today = new Date();
+        var time = [pad(today.getFullYear()), pad(today.getMonth() + 1), today.getDate()].join('-');
+        return time;
+    }
+
+    function month_year_day(dateTime) {
+        return sql_date(dateTime);
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+
+    function getDateDiff(d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+        return parseInt((t2 - t1) / (24 * 3600 * 1000));
+    }
+
+    function trim(s, c) {
+        if (c === "]") c = "\\]";
+        if (c === "^") c = "\\^";
+        if (c === "\\") c = "\\\\";
+        return s.replace(new RegExp(
+            "^[" + c + "]+|[" + c + "]+$", "g"
+        ), "");
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.exportPetroleumInletReport = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            const exportData = JSON.parse(data.ids);
+
+            var dataHeaders = [
+                "Week",
+                "Product",
+                "ICUMS Declaration Volume (BDCs)",
+                "Total SML Inlet Volume",
+                "Total Volume Difference",
+            ];
+            var ReportData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Summary",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push(data.export_type);
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+
+            var condition = " WHERE 1 ";
+            var omc = exportData.omc || null;
+            var date_range = exportData.date_range || null;
+            var product_type = exportData.product_type || null;
+            var depot = exportData.depot || null;
+            if (date_range) {
+                if (date_range.endDate && date_range.startDate) {
+                    const startDate = sql_date(date_range.startDate);
+                    const endDate = sql_date(date_range.endDate);
+                    condition += ` AND (dcl.declaration_date  BETWEEN '${startDate}' AND '${endDate}') `;
+                }
+            }
+
+            if (product_type && product_type != "All") {
+                condition += ` AND dcl.product_type = '${product_type}'`;
+            }
+
+            // if (depot && depot != "All") {
+            //     condition += ` AND dcl.depot ='${depot}'`;
+            // }
+
+            const sqlQuery = `SELECT MIN(dcl.id) id, CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) AS week, SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, dcl.product_type FROM petroleum_declaration dcl LEFT JOIN petroleum_inlet inlet ON inlet.product_type = dcl.product_type ${condition} GROUP BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) , dcl.product_type ORDER BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) DESC`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var date_ = exportData.week;
+                var declared_vol = parseFloat(exportData.declared_vol || 0);
+                var inlet_vol = parseFloat(exportData.inlet_vol || 0);
+                var difference_volume = declared_vol - inlet_vol;
+
+                var newObject = [
+                    date_,
+                    exportData.product_type,
+                    `${declared_vol}`,
+                    `${inlet_vol}`,
+                    `${difference_volume}`,
+                ];
+                ReportData.push(newObject);
+                // if (current === 1) console.log(newObject)
+                // if (current === 1) console.log("declaration_volume", exportData.declaration_volume)
+                // if (current === 1) console.log("declaration_amount", exportData.declaration_amount)
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(ReportData)
+
+            workbook.Sheets[data.export_type] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function sql_date(dateTime) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var today = new Date();
+        var time = [pad(today.getFullYear()), pad(today.getMonth() + 1), today.getDate()].join('-');
+        return time;
+    }
+
+    function month_year_day(dateTime) {
+        return sql_date(dateTime);
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+
+    function getDateDiff(d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+        return parseInt((t2 - t1) / (24 * 3600 * 1000));
+    }
+
+    function trim(s, c) {
+        if (c === "]") c = "\\]";
+        if (c === "^") c = "\\^";
+        if (c === "\\") c = "\\\\";
+        return s.replace(new RegExp(
+            "^[" + c + "]+|[" + c + "]+$", "g"
+        ), "");
+    }
+}
+
+/**
+ * export model for file export
+ * @param data is a variable holding the current job
+ * @param callback this is a method called when the job is finished in otherto terminate the process.
+ */
+exports.exportPetroleumSMLOutletReport = function(data, callback) {
+    var module = require('./config');
+    var config = module.configs;
+    var mysql = require('mysql');
+    var fs = require('fs');
+    var path = require('path');
+    var proccessID = process.pid;
+    var XLSX = require('xlsx');
+    var total = 0;
+    var current = 0;
+
+    var sqlConn;
+    const configPath = path.join(process.cwd(), 'config.json');
+    fs.readFile(configPath, (error, db_config) => {
+        if (error) { console.log(error); return; }
+        // create mysql connection to database
+        sqlConn = mysql.createConnection(JSON.parse(db_config));
+        sqlConn.connect(function(err) {
+            if (err) config.log(err);
+            isSqlConnected = true;
+            config.log('mySql connected for child export: ' + data.id);
+            start();
+        });
+    });
+
+    var filePath = data.path + "downloads/docs/";
+
+    const start = async() => {
+        try {
+            const exportData = JSON.parse(data.ids);
+
+            var dataHeaders = [
+                "Order Date",
+                "Product",
+                "Depot",
+                "Total Order Volume (NPA)",
+                "Total SML Outlet Volume",
+                "Total Volume Difference",
+                "Total Order Amount (NPA)",
+            ];
+            var ReportData = [dataHeaders];
+
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: data.filename,
+                Subject: "Summary",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push(data.export_type);
+
+            fs.mkdir(filePath, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'Export job accepted - " + getTime() + "','gathering receipts','');");
+            /**
+             * get the statements for all unauthorized transafers
+             * @param exportDataUT this hold all the transactions of 
+             * the accounts selected
+             */
+
+            var condition = " WHERE 1 ";
+            var date_range = exportData.date_range || null;
+            var product_type = exportData.product_type || null;
+            var depot = exportData.depot || null;
+            var dateRang = "";
+            if (date_range) {
+                if (date_range.endDate && date_range.startDate) {
+                    const startDate = sql_date(date_range.startDate);
+                    const endDate = sql_date(date_range.endDate);
+                    condition += ` AND (ord.order_date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
+                }
+            }
+
+            if (product_type && product_type != "All") {
+                condition += ` AND ord.product_type = '${product_type}'`;
+            }
+
+            if (depot && depot != "All") {
+                condition += ` AND ord.depot ='${depot}'`;
+            }
+
+            const sqlQuery = `SELECT DATE(ord.order_date) order_date, ord.product_type product, 
+            SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, ord.depot,
+            SUM(outlet.volume) outlet_volume
+            FROM petroleum_order ord LEFT JOIN petroleum_outlet outlet 
+            ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type
+            ${condition} Group By DATE(ord.order_date), ord.product_type, ord.depot Order By DATE(ord.order_date)  DESC`;
+            var exportDataUT = await query(sqlQuery).catch(error => {
+                config.log(error);
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done gathering receipts - " + getTime() + "','spliting records into various categories','');");
+            total = exportDataUT.length;
+
+            //loop through all transaction comments and 
+            //add them to there approprate array
+            await asyncForEach(exportDataUT, async(exportData, index) => {
+                current = index + 1;
+                await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
+                var date_ = date_range && date_range.endDate ? dateRang : exportData.order_date;
+                var order_volume = parseFloat(exportData.order_volume || 0);
+                var outlet_volume = parseFloat(exportData.outlet_volume || 0);
+                var order_amount = parseFloat(exportData.order_amount || 0);
+                var difference_volume = order_volume - outlet_volume;
+
+                var newObject = [
+                    date_,
+                    exportData.product,
+                    exportData.depot,
+                    `${order_volume}`,
+                    `${outlet_volume}`,
+                    `${difference_volume}`,
+                    `${order_amount}`,
+                ];
+                ReportData.push(newObject);
+            }).catch(error => {
+                config.log(error)
+                executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
+                callback(null, { isDone: true, id: proccessID });
+            });
+
+            //add the array of different files to work here wooksheet
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done spliting records into various categories - " + getTime() + "','adding file data to worksheets','');");
+            WS_AuthorizedData = XLSX.utils.aoa_to_sheet(ReportData)
+
+            workbook.Sheets[data.export_type] = WS_AuthorizedData;
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'done adding file data to worksheets - " + getTime() + "','preparing file for download','');");
+
+            //save the worksheet for download
+            var wookbookFile = '../omc-api/downloads/docs/' + data.filename + '.xlsx';
+            // write the workbook object to a file
+            XLSX.writeFile(workbook, filePath + data.filename + '.xlsx');
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'File ready for download - " + getTime() + "','completed','completed');");
+
+            //create the download data by inserting it into the database
+            //so users can see the file in the download area and download it.
+            await executeStatement("INSERT INTO `file_download`(`filename`, `link`) VALUES ('" + data.filename + "','" + wookbookFile + "');");
+        } catch (error) {
+            console.error(error);
+            await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
+        } finally {
+            config.log("task done ");
+            callback(null, { isDone: true, id: proccessID });
+        }
+    }
+
+    /**
+     * async function forEach loop
+     * @param array the array to loop through
+     * @param arrayCallback returns the value, index and array itself to be used
+     */
+    async function asyncForEach(array, arrayCallback) {
+        for (let index = 0; index < array.length; index++) {
+            await arrayCallback(array[index], index, array);
+        }
+    }
+
+    async function executeStatement(sqlQuery) {
+        await query(sqlQuery).catch(error => {
+            config.log(error);
+            updateStatus("error", "job error: cannot insert record ", "completed");
+            callback(null, { isDone: true, id: proccessID });
+        });
+    }
+
+    /**
+     * sql statemen query
+     * @param sqlQuery raw query
+     */
+    function query(sqlQuery) {
+        return new Promise(function(resolve, reject) {
+            sqlConn.query(sqlQuery, function(err, result, fields) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    function sql_date(dateTime) {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var today = new Date();
+        var time = [pad(today.getFullYear()), pad(today.getMonth() + 1), today.getDate()].join('-');
+        return time;
+    }
+
+    function month_year_day(dateTime) {
+        return sql_date(dateTime);
+    }
+
+    function getTime() {
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return time;
+    }
+
+    function getDateDiff(d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+        return parseInt((t2 - t1) / (24 * 3600 * 1000));
     }
 
     function trim(s, c) {

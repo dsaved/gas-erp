@@ -22,6 +22,14 @@ var workerFarm = require('worker-farm'),
         'exportFilePenalty',
         'exportFileLog',
         'exportPetroleumInputAnalysis',
+        'exportPetroleumInputReconciliation',
+        'exportPetroleumNPAAnalysis',
+        'exportPetroleumICUMSDifferences',
+        'exportPetroleumDeptGood',
+        'exportPetroleumWaybillAnalysis',
+        'exportPetroleumWaybillReconcile',
+        'exportPetroleumInletReport',
+        'exportPetroleumSMLOutletReport',
     ]),
     maxJob = 4,
     currentJobR = 0,
@@ -336,6 +344,62 @@ function fileExport() {
                                 })
                             } else if (childJobDescription.export_type === "petroleum-import-analysis") {
                                 workers.exportPetroleumInputAnalysis(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else if (childJobDescription.export_type === "petroleum-import-reconciliation") {
+                                workers.exportPetroleumInputReconciliation(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else if (childJobDescription.export_type === "petroleum-npa-analysis") {
+                                workers.exportPetroleumNPAAnalysis(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else if (childJobDescription.export_type === "petroleum-icums-defferences") {
+                                workers.exportPetroleumICUMSDifferences(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else if (childJobDescription.export_type === "petroleum-good-standing") {
+                                workers.exportPetroleumDeptGood(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else if (childJobDescription.export_type === "petroleum-waybill-analysis") {
+                                workers.exportPetroleumWaybillAnalysis(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else if (childJobDescription.export_type === "petroleum-waybill-reconcile") {
+                                workers.exportPetroleumWaybillReconcile(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else if (childJobDescription.export_type === "petroleum-sml-inletreport") {
+                                workers.exportPetroleumInletReport(childJobDescription, function(err, result) {
+                                    if (result.isDone) {
+                                        process.kill(result.id);
+                                        currentJobExport--;
+                                    }
+                                })
+                            } else if (childJobDescription.export_type === "petroleum-sml-outletreport") {
+                                workers.exportPetroleumSMLOutletReport(childJobDescription, function(err, result) {
                                     if (result.isDone) {
                                         process.kill(result.id);
                                         currentJobExport--;

@@ -180,7 +180,7 @@ class Ghana_govModel extends BaseModel
                 $value->exp_dcl_amount = number_format($value->exp_dcl_amount, 2);
                 $value->dcl_amount_icum = number_format($value->dcl_amount_icum, 2);
                 $value->date = $date_range && $date_range->endDate?$dateRang:$value->date;
-                $value->flagged  = $value->difference_amount_receipt_icums <> 0;
+                $value->flagged  = $value->difference_amount_expected_icums <> 0 || $value->difference_amount_receipt_icums <> 0;
             }
             $response["reports"] = $result;
         } else {

@@ -26,7 +26,7 @@ class IcumsModel extends BaseModel
         $this->paging->table(self::$table);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
-        $this->paging->condition("$condition Order By `id`");
+        $this->paging->condition("$condition Order By `date` DESC");
         $this->paging->execute();
         $this->paging->reset();
 
@@ -119,32 +119,13 @@ class IcumsModel extends BaseModel
 
         $omc = $this->http->json->omc??null;
         $status = $this->http->json->status??null;
-        $nagatives = $this->http->json->nagatives??null;
 
 
         if ($omc && $omc!="All") {
             $condition .= " AND omc = '$omc'";
         }
 
-        // if ($status && $status!="All") {
-        //     if ($status==="Flagged") {
-        //         $condition .= " AND (waybill.volume <> outlet.volume OR outlet.volume IS NULL)";
-        //     }
-        //     if ($status==="Not Flagged") {
-        //         $condition .= " AND waybill.volume = outlet.volume ";
-        //     }
-        // }
-
-        // if ($nagatives && $nagatives!="All") {
-        //     if ($nagatives==="Nagatives") {
-        //         $condition .= " AND (waybill.volume - outlet.volume  < 0)";
-        //     }
-        //     if ($nagatives==="Positives") {
-        //         $condition .= " AND (waybill.volume - outlet.volume  >= 0)";
-        //     }
-        // }
-        
-        $query = "SELECT * FROM ".self::$table." $condition ORDER BY date";
+        $query = "SELECT * FROM ".self::$table." $condition ORDER BY date DESC";
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
@@ -161,6 +142,19 @@ class IcumsModel extends BaseModel
                 $value->flagged  = $value->difference_amount <> 0;
                 $value->exp_declaration_amount = number_format($exp_declaration_amount, 2);
                 $value->amount = number_format($value->amount, 2);
+                if ($status && $status!="All") {
+                    if ($status==="Flagged") {
+                        if(!$value->flagged){
+                            unset($result[$key]);
+                            continue;
+                        }
+                    }elseif ($status==="Not Flagged") {
+                        if($value->flagged){
+                            unset($result[$key]);
+                            continue;
+                        }
+                    }
+                }
             }
             $response["reports"] = $result;
         } else {
@@ -191,7 +185,7 @@ class IcumsModel extends BaseModel
     }
 
     public function getWaybills($omc, $date){
-        $this->db->query("SELECT SUM(volume) volume, MIN(date) date, product_type FROM petroleum_waybill WHERE omc='$omc' AND (date BETWEEN DATE((SELECT date_from FROM tax_window WHERE `date_from`<= '$date' AND `date_to` >= '$date' )) AND DATE((SELECT date_to FROM tax_window WHERE `date_from`<= '$date' AND `date_to` >= '$date' )) ) GROUP BY product_type, (SELECT CONCAT(tax_product, '-', name) FROM tax_window WHERE `date_from`<= '$date' AND `date_to` >= '$date' ) ORDER BY product_type ASC, date ASC ");
+        $this->db->query("SELECT SUM(volume) volume, MIN(date) date, product_type FROM petroleum_waybill WHERE omc='$omc' AND (date BETWEEN DATE((SELECT date_from FROM tax_window WHERE `date_from`<= '$date' AND `date_to` >= '$date' LIMIT 1 )) AND DATE((SELECT date_to FROM tax_window WHERE `date_from`<= '$date' AND `date_to` >= '$date' LIMIT 1 )) ) GROUP BY product_type, (SELECT CONCAT(tax_product, '-', name) FROM tax_window WHERE `date_from`<= '$date' AND `date_to` >= '$date' LIMIT 1) ORDER BY product_type ASC, date ASC ");
         // var_dump($this->db);
         return $this->db->results();
     }
