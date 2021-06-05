@@ -80,7 +80,8 @@
               <div class="flex justify-between flex-wrap">
                 <p class="text-cemter">
                   <b :style="'color:#192155'"
-                    >Current Quantity: {{ record.volume }}</b
+                    >Current Quantity: {{ record.volume }}
+                    {{ record.unit === "L" ? "Liters" : record.unit }}</b
                   >
                 </p>
                 <router-link
@@ -310,9 +311,25 @@ export default {
             this.assets_not_found = true;
             this.message = response.data.message;
             this.records = [];
+            if (!background) {
+              this.$vs.notify({
+                title: "Error!!!",
+                text: `${response.data.message}`,
+                sticky: true,
+                border: "danger",
+                color: "dark",
+                duration: null,
+                position: "bottom-left",
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          if (!background) {
             this.$vs.notify({
               title: "Error!!!",
-              text: `${response.data.message}`,
+              text: `${error.message}`,
               sticky: true,
               border: "danger",
               color: "dark",
@@ -320,18 +337,6 @@ export default {
               position: "bottom-left",
             });
           }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            border: "danger",
-            color: "dark",
-            duration: null,
-            position: "bottom-left",
-          });
         });
     },
     beforeDestroy() {

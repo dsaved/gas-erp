@@ -1,3 +1,6 @@
+const names = require('./names_map.js');
+var fs = require('fs')
+
 module.exports = {
     //should run only once a day
     alarmNosaleInWeek(sqlConn) {
@@ -128,4 +131,254 @@ module.exports = {
         }
         return true;
     },
+    //pump products
+    async pump_product(sqlConn) {
+
+        const capture_date = previousDay();
+        const inflow = `./data/InflowData_${capture_date}.json`;
+        const outflow = `./data/OutflowData_${capture_date}.json`;
+        try {
+            if (fs.existsSync(inflow)) {
+                //get the inlet data flow from media server
+                const jsonDataIn = fs.readFileSync(inflow)
+                const inletData = JSON.parse(jsonDataIn);
+
+                //check if the inlet data has data in it
+                if (inletData.length > 0) {
+                    var deportsQty = [];
+                    for (var dd = 0; dd < inletData.length; dd++) {
+                        const data = inletData[dd];
+                        const dbDate = `${data.Date}`.split('T').join(" ");
+                        var nodepot = true;
+                        const depot = await names.depot_name(data.DepotName);
+                        const product = await names.product_name(data.FuelType);
+
+                        if (data.Flow > 0) {
+                            //update depot quantity
+                            for (let index = 0; index < deportsQty.length; index++) {
+                                const element = deportsQty[index];
+                                if (element.identifyer === `${depot}-${product}`) {
+                                    nodepot = false;
+                                    deportsQty[index].volume = Number(element.volume) + Number(data.Flow)
+                                }
+                            }
+
+                            //create depot quantity
+                            if (nodepot) {
+                                deportsQty.push({ tank: "depot", unit: data.Units, identifyer: `${depot}-${product}`, product: product, depot: depot, volume: Number(data.Flow) })
+                            }
+
+                            //insert into petroleum inlet db
+                            var sqlQuery = "INSERT INTO `petroleum_inlet`(`datetime`, `depot`, `product_type`, `volume`)";
+                            sqlQuery += " VALUES ('" + dbDate + "','" + depot + "','" + product + "'," + data.Flow + ")";
+                            await query(sqlQuery).catch(err => console.log(err));
+                            await insertIgnore("depot", { name: depot });
+                            await insertIgnore("tax_schedule_products", { name: product });
+                        }
+                    }
+
+                    //create or update Tank for Depot
+                    for (let deportIndex = 0; deportIndex < deportsQty.length; deportIndex++) {
+                        const element = deportsQty[deportIndex];
+                        var size = 90000000;
+                        var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,tank,product,volume,full,unit) VALUES ('${element.identifyer}','${element.depot}','${element.tank}','${element.product}',${element.volume}, ${size}, '${element.unit}')ON DUPLICATE KEY UPDATE full= ${size},volume = volume + ${element.volume};`;
+                        await query(sqlQuery).catch(err => console.log(err));
+                    }
+                    console.log("inlet flow done")
+                    fs.unlinkSync(inflow)
+                }
+            }
+
+            if (fs.existsSync(outflow)) {
+                //get the oulet data flow from media server
+                const jsonDataOut = fs.readFileSync(outflow)
+                const outletData = JSON.parse(jsonDataOut);
+
+                //check if the outlet data has data in it
+                if (outletData.length > 0) {
+                    var deportsQty = [];
+                    for (var dd = 0; dd < outletData.length; dd++) {
+                        const data = outletData[dd];
+                        const dbDate = `${data.Date}`.split('T').join(" ");
+                        const depot = await names.depot_name(data.DepotName);
+                        const product = await names.product_name(data.FuelType);
+                        var nodepot = true;
+
+                        if (data.Flow > 0) {
+
+                            //update depot quantity
+                            for (let index = 0; index < deportsQty.length; index++) {
+                                const element = deportsQty[index];
+                                if (element.identifyer === `${depot}-${product}`) {
+                                    nodepot = false;
+                                    deportsQty[index].volume = Number(element.volume) + Number(data.Flow)
+                                    deportsQty[index].time = dbDate
+                                }
+                            }
+
+                            //create depot quantity
+                            if (nodepot) {
+                                deportsQty.push({ alarm: "depot", unit: data.Units, identifyer: `${depot}-${product}`, product: product, depot: data.depot, volume: Number(data.Flow) })
+                            }
+
+                            //insert into petroleum outlet db
+                            var sqlQuery = "INSERT INTO `petroleum_outlet`(`datetime`, `depot`, `product_type`, `volume`)";
+                            sqlQuery += " VALUES ('" + dbDate + "','" + depot + "','" + product + "'," + data.Flow + ")";
+                            await query(sqlQuery).catch(err => console.log(err));
+                            await insertIgnore("depot", { name: depot });
+                            await insertIgnore("tax_schedule_products", { name: product });
+                        }
+                    }
+
+                    //create or update Tank for Depot
+                    for (let deportIndex = 0; deportIndex < deportsQty.length; deportIndex++) {
+                        const element = deportsQty[deportIndex];
+
+                        // get the depot pumping the product and check if the tank is empty
+                        var sqlQuery = `SELECT * FROM petroleum_tanks WHERE identifyer = '${element.identifyer}' AND volume >= ${element.volume} LIMIT 1`;
+                        var tank = await query(sqlQuery).catch(err => console.log(err));
+                        if (tank == null || tank.length == 0 || typeof(tank[0]) == "undefined" || tank[0] == null) {
+                            //Pumping from empty tank
+                            // console.log("Pumping from empty tank", element)
+                            var alarmQry = `INSERT INTO petroleum_alarm_notification(time, type, message,depot, alarm, product, volume) VALUES ('${element.time}','discharge from empty tank','There was a discharge from an empty tank','${element.depot}','${element.alarm}','${element.product}',${element.volume})`;
+                            await query(alarmQry).catch(err => console.log(err));
+                        }
+
+                        var size = 90000000;
+                        var sqlQuery1 = `INSERT INTO petroleum_tanks (identifyer,depot,tank,product,volume,full,unit) VALUES ('${element.identifyer}','${element.depot}','${element.tank}','${element.product}',0,${size},'${element.unit}')ON DUPLICATE KEY UPDATE full= ${size}, volume = IF(volume > 0, volume - ${element.volume}, 0);`;
+                        await query(sqlQuery1).catch(err => console.log(err));
+                    }
+                    console.log("outlet flow done");
+                    fs.unlinkSync(outflow)
+                }
+            }
+        } catch (err) {
+            console.error("no new data available" + err)
+        }
+
+        function previousDay() {
+            function pad(s) { return (s < 10) ? '0' + s : s; }
+            var today = new Date();
+            today.setDate(today.getDate() - 1)
+            var date = [pad(today.getDate()), pad(today.getMonth() + 1), pad(today.getFullYear())].join('-');
+            return date;
+        }
+
+        /**
+         * sql statemen query
+         * @param sqlQuery raw query
+         */
+        function query(sqlQuery) {
+            return new Promise(function(resolve, reject) {
+                sqlConn.query(sqlQuery, function(err, result, fields) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+            });
+        }
+
+        /**
+         * insert in to the database
+         * @param {String} table The name of the table to insert into
+         * @param {Object} data the object containing key and values to insert
+         */
+        async function insertIgnore(table, data) {
+            if (!table) return;
+            if (!data) return;
+            // set up an empty array to contain the  columns and values
+            let columns = [];
+            let values = [];
+            // Iterate over each key / value in the object
+            Object.keys(data).forEach(function(key) {
+                // if the value is an empty string, do not use
+                if ('' === data[key]) {
+                    return;
+                }
+                // if we've made it this far, add the clause to the array of conditions
+                columns.push(`\`${key}\``);
+                values.push(`'${data[key]}'`);
+            });
+            // convert the columns array into a string of
+            columns = "(" + columns.join(' , ') + ")";
+            // convert the values array into a string 
+            values = "VALUES (" + values.join(' , ') + ");";
+            //construct the insert statement
+            const sql = `INSERT IGNORE INTO \`${table}\`${columns} ${values}`;
+            const results = await query(sql).catch(error => {
+                console.log('\x1b[31m%s\x1b[0m', error)
+                callback(null, {
+                    isDone: true,
+                    id: proccessID
+                });
+            })
+            return results.insertId;
+        }
+    },
+    //download file
+    download_files() {
+        const Client = require('ssh2').Client;
+        const conn = new Client();
+        const remoteDir = '';
+        const lockFile = './data/lock-file.json';
+
+        conn.on('ready', () => {
+            conn.sftp((err, sftp) => {
+                if (err) console.log(err);
+                sftp.readdir(remoteDir, (err, list) => {
+                    if (err) console.log(err);
+                    // console.log(list);
+                    list.forEach(item => {
+                        let remoteFile = remoteDir + item.filename;
+                        let date = item.filename.split('_')[1];
+                        if (date === `${previousDay()}.json`) {
+                            let localFile = './data/' + item.filename;
+                            console.log('Downloading ' + remoteFile);
+                            sftp.fastGet(remoteFile, localFile, (err) => {
+                                if (err) console.log(err);
+                                console.log('Downloaded to ' + localFile);
+                                var configuration = fs.readFileSync(lockFile);
+                                var conf = JSON.parse(configuration);
+                                conf.last = `${previousDay()}`;
+                                let data = JSON.stringify(conf, null, 2);
+                                fs.writeFileSync(lockFile, data);
+                            });
+                        }
+                    });
+                });
+            });
+        });
+
+        conn.on('error', (err) => {
+            // console.error('SSH connection stream problem');
+            // console.log(err);
+        });
+
+        var configuration = fs.readFileSync(lockFile);
+        var conf = JSON.parse(configuration);
+
+        console.log(conf.last)
+        if (conf.last !== previousDay()) {
+            console.log("ssh connecting...")
+                //connect to ssh
+            conn.connect({
+                host: 'smlexperion.com',
+                // host: '172.30.60.150',
+                port: 22,
+                username: 'sml_ai',
+                password: '@*+3$T!ni#',
+                // privateKey: readFileSync('/path/to/my/key')
+            });
+        }
+
+        function previousDay() {
+            function pad(s) { return (s < 10) ? '0' + s : s; }
+            var today = new Date();
+            today.setDate(today.getDate() - 1)
+            var date = [pad(today.getDate()), pad(today.getMonth() + 1), pad(today.getFullYear())].join('-');
+            return date;
+        }
+    }
 }

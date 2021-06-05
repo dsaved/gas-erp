@@ -57,14 +57,14 @@ fs.readFile(configPath, (error, db_config) => {
         setInterval(() => {
             initialize();
         }, 2000);
-        // setInterval(() => {
-        //     pump_product(Type.IN);
-        // }, 5000);
-        // setInterval(() => {
-        //     pump_product(Type.OUT);
-        // }, 8000);
-        config.log('worker thread initialized');
 
+        setInterval(() => {
+            helpers.download_files();
+        }, 5 * 1000);
+        setInterval(() => {
+            helpers.pump_product(sqlConn);
+        }, 20 * 1000);
+        config.log('worker thread initialized');
 
         //check missing or undeclared products
         // var checkingundcl = false;
@@ -450,142 +450,6 @@ function fileExportLog() {
             }
         });
     }
-}
-
-function pump_product(type) {
-    var XLSX = require('xlsx');
-    var excelData = [];
-    var workbook = XLSX.readFile('inlet-outlet-test.xlsx', {
-        // dateNF: "DD-MMM-YYYY",
-        header: 1,
-        defval: "",
-        cellDates: true,
-        cellNF: true,
-        raw: true,
-        dateNF: 'yyyy-mm-dd;@'
-    });
-    var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
-        // console.log(excelRow);
-        /**
-         * modify array headers and remove special characters.
-         * add the location of the array in the excel file for latter access,
-         * incase an error occures
-         */
-    for (var index = 0; index < excelRow.length; index++) {
-        var excel = excelRow[index];
-        var newObject = {};
-        for (var j in excel) {
-            var newIndx = set_header(j);
-            var value = excel[j].replace(/,/g, '');
-            newObject[newIndx] = value;
-            var today = new Date();
-            today.setMinutes(today.getMinutes() + index);
-            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-            if (newIndx === "date") {
-                value = value.split("/");
-                newObject[newIndx] = value[2] + "-" + value[0] + "-" + value[1] + " " + time;
-            }
-        }
-        excelData.push(newObject);
-    };
-
-    if (type === Type.IN) {
-        console.log("in flow detected");
-        var deportsQty = [];
-        for (var dd = 0; dd < excelData.length; dd++) {
-            var data = excelData[dd];
-            var nodepot = true;
-            for (let index = 0; index < deportsQty.length; index++) {
-                const element = deportsQty[index];
-                if (element.identifyer === `${data.depot}-${data.product_type}`) {
-                    nodepot = false;
-                    deportsQty[index].volume = Number(element.volume) + Number(data.volume)
-                }
-            }
-            if (nodepot) {
-                deportsQty.push({ tank: "depot", identifyer: `${data.depot}-${data.product_type}`, product: data.product_type, depot: data.depot, volume: Number(data.volume) })
-            }
-            var sqlQuery = "INSERT INTO `petroleum_inlet`(`datetime`, `depot`, `product_type`, `volume`)";
-            sqlQuery += " VALUES ('" + data.date + "','" + data.depot + "','" + data.product_type + "'," + data.volume + ")";
-            sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
-                if (err) console.log(err)
-            });
-        }
-
-        //create or update Tank for Depot
-        for (let deportIndex = 0; deportIndex < deportsQty.length; deportIndex++) {
-            const element = deportsQty[deportIndex];
-            var size = 90000000;
-            var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,tank,product,volume,full) VALUES ('${element.identifyer}','${element.depot}','${element.tank}','${element.product}',${element.volume}, ${size})ON DUPLICATE KEY UPDATE full= ${size},volume = volume + ${element.volume};`;
-            sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
-                if (err) console.log(err)
-            });
-        }
-    }
-
-    if (type === Type.OUT) {
-        console.log("out flow detected");
-        var deportsQty = [];
-        for (var dd = 0; dd < excelData.length; dd++) {
-            var data = excelData[dd];
-            var nodepot = true;
-            for (let index = 0; index < deportsQty.length; index++) {
-                const element = deportsQty[index];
-                if (element.identifyer === `${data.depot}-${data.product_type}`) {
-                    nodepot = false;
-                    deportsQty[index].volume = Number(element.volume) + Number(data.volume)
-                    deportsQty[index].time = data.date
-                }
-            }
-            if (nodepot) {
-                deportsQty.push({ alarm: "depot", identifyer: `${data.depot}-${data.product_type}`, product: data.product_type, depot: data.depot, volume: Number(data.volume) })
-            }
-            var sqlQuery = "INSERT INTO `petroleum_outlet`(`datetime`, `depot`, `product_type`, `volume`)";
-            sqlQuery += " VALUES ('" + data.date + "','" + data.depot + "','" + data.product_type + "'," + data.volume + ")";
-            sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
-                if (err) console.log(err)
-            });
-        }
-
-        //create or update Tank for Depot
-        for (let deportIndex = 0; deportIndex < deportsQty.length; deportIndex++) {
-            const element = deportsQty[deportIndex];
-
-            // get the depot pumping the product and check if the tank is empty
-            var sqlQuery = `SELECT * FROM petroleum_tanks WHERE identifyer = '${element.identifyer}' AND volume >= ${element.volume} LIMIT 1`;
-            sqlConn.query(sqlQuery, function(err, tank, fields) {
-                if (err) {
-                    console.log(err)
-                } else {
-                    // console.log(tank)
-                    if (tank.length == 0 || typeof(tank[0]) == "undefined" || tank[0] == null) {
-                        //Pumping from empty tank
-                        // console.log("Pumping from empty tank", element)
-                        var alarmQry = `INSERT INTO petroleum_alarm_notification(time, type, message,depot, alarm, product, volume) VALUES ('${element.time}','discharge from empty tank','There was a discharge from an empty tank','${element.depot}','${element.alarm}','${element.product}',${element.volume})`;
-                        sqlConn.query(alarmQry, function(err, tank, fields) {
-                            if (err) {
-                                console.log(err)
-                            }
-                        });
-                    }
-                }
-            });
-
-            var size = 90000000;
-            var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,tank,product,volume,full) VALUES ('${element.identifyer}','${element.depot}','${element.tank}','${element.product}',0,${size})ON DUPLICATE KEY UPDATE full= ${size}, volume = IF(volume > 0, volume - ${element.volume}, 0);`;
-            sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
-                if (err) console.log(err)
-            });
-        }
-    }
-}
-
-function set_header(value) {
-    value = value.toString().trim();
-    value = value.split(" ").join("_");
-    value = value.split("-").join("_");
-    value = value.replace(/\./, '');
-    return value.toLowerCase();
 }
 
 function getTime(dateTime) {

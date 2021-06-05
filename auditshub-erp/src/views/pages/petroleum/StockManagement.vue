@@ -2,8 +2,8 @@
   <div id="pag-tax-list">
     <div class="vx-col w-full my-5">
       <div class="flex">
-        <vs-spacer /> 
-         <div class="w-1/5 px-2">
+        <vs-spacer />
+        <div class="w-1/5 px-2">
           <span>Depot</span>
           <ajax-select
             placeholder="Select depot"
@@ -52,7 +52,7 @@
                   <th scope="col">Depot</th>
                   <th scope="col">Products</th>
                   <th scope="col">Level</th>
-                  <th scope="col">Total Quantity</th>
+                  <th scope="col" class="text-right">Total Quantity</th>
                 </tr>
               </thead>
               <tbody>
@@ -60,7 +60,9 @@
                   v-for="(record, index) in sortedRecords"
                   :key="index"
                   class="tr-values vs-table--tr tr-table-state-null selected"
-                  v-on:click="linkto('/petroleum/stock-management/'+record.depot)"
+                  v-on:click="
+                    linkto('/petroleum/stock-management/' + record.depot)
+                  "
                 >
                   <td scope="row" @click.stop="">
                     <vs-checkbox
@@ -99,7 +101,7 @@
                       :value="parseFloat(record.level)"
                     />
                   </td>
-                  <td>
+                  <td class="text-right">
                     {{ record.volume }}
                   </td>
                 </tr>
@@ -115,7 +117,12 @@
             >
               <vs-spacer />
               <div
-                class="vs-col vs-pagination--mb vs-xs-12 vs-sm-12 vs-lg-12 md:flex"
+                class="
+                  vs-col
+                  vs-pagination--mb
+                  vs-xs-12 vs-sm-12 vs-lg-12
+                  md:flex
+                "
                 style="
                   justify-content: flex-end;
                   align-items: center;
@@ -267,7 +274,7 @@ export default {
     this.getData();
     const vm = this;
     this.getDataInterval = setInterval(function () {
-      vm.getData();
+      vm.getData(true);
     }, 1300);
   },
   watch: {
@@ -298,8 +305,10 @@ export default {
         vm.getData();
       }, 800);
     },
-    getData() {
-      this.loading = true;
+    getData(background) {
+      if (!background) {
+        this.loading = true;
+      }
       this.post("/tanks", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
@@ -316,9 +325,25 @@ export default {
             this.assets_not_found = true;
             this.message = response.data.message;
             this.records = [];
+            if (!background) {
+              this.$vs.notify({
+                title: "Error!!!",
+                text: `${response.data.message}`,
+                sticky: true,
+                border: "danger",
+                color: "dark",
+                duration: null,
+                position: "bottom-left",
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          if (!background) {
             this.$vs.notify({
               title: "Error!!!",
-              text: `${response.data.message}`,
+              text: `${error.message}`,
               sticky: true,
               border: "danger",
               color: "dark",
@@ -326,18 +351,6 @@ export default {
               position: "bottom-left",
             });
           }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.$vs.notify({
-            title: "Error!!!",
-            text: `${error.message}`,
-            sticky: true,
-            border: "danger",
-            color: "dark",
-            duration: null,
-            position: "bottom-left",
-          });
         });
     },
     beforeDestroy() {
