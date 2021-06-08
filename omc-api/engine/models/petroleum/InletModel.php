@@ -37,23 +37,7 @@ class InletModel extends BaseModel {
           $condition .= " AND depot ='$depot'";
       }
 
-      if ($group_by) {
-          $list = "";
-          foreach ($group_by as $key => $group) {
-              if ($group==="Product type") {
-                  $list.= "product_type,";
-              }
-              if ($group==="Depot") {
-                  $list.= "depot,";
-              }
-          }
-          $group = trim($list, ',');
-          $group_by = "Group By $group ";
-      } else {
-          $group_by = "Group By datetime";
-      }
-      
-      $query = "SELECT *, SUM(volume) volume FROM ".self::$petroleum_inlet." $condition $group_by Order By datetime DESC";
+      $query = "SELECT * FROM ".self::$petroleum_inlet." $condition Order By datetime DESC";
       $this->paging->rawQuery($query);
       $this->paging->result_per_page($result_per_page);
       $this->paging->pageNum($page);
@@ -65,7 +49,7 @@ class InletModel extends BaseModel {
       if (!empty($result)) {
           $response['success'] = true;
           foreach ($result as $key => &$value) {
-              $value->volume = number_format($value->volume);
+              $value->volume = number_format($value->volume,1);
           }
           $response["reports"] = $result;
       } else {

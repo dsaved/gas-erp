@@ -107,9 +107,9 @@ class AnalyticsModel extends BaseModel
         if (!empty($result)) {
             $response['success'] = true;
             foreach ($result as $key => &$value) {
-                $value->difference_volume = number_format($value->manifest_volume - $value->declaration_volume);
-                $value->manifest_volume = number_format($value->manifest_volume);
-                $value->declaration_volume = number_format($value->declaration_volume);
+                $value->difference_volume = number_format($value->manifest_volume - $value->declaration_volume,1);
+                $value->manifest_volume = number_format($value->manifest_volume,1);
+                $value->declaration_volume = number_format($value->declaration_volume,1);
                 $value->difference_amount = number_format($value->manifest_amount - $value->declaration_amount, 2);
                 $value->manifest_amount = number_format($value->manifest_amount, 2);
                 $value->arrival_date = $date_range && $date_range->endDate?$dateRang:$this->date->month_year_day($value->arrival_date);
@@ -214,9 +214,9 @@ class AnalyticsModel extends BaseModel
         if (!empty($result)) {
             $response['success'] = true;
             foreach ($result as $key => &$value) {
-                $value->difference_volume = number_format($value->preorder_volume - $value->order_volume);
-                $value->preorder_volume = number_format($value->preorder_volume);
-                $value->order_volume = number_format($value->order_volume);
+                $value->difference_volume = number_format($value->preorder_volume - $value->order_volume,1);
+                $value->preorder_volume = number_format($value->preorder_volume,1);
+                $value->order_volume = number_format($value->order_volume,1);
                 $value->order_unit_price = number_format($value->order_unit_price, 2);
                 $value->preorder_date = $date_range && $date_range->endDate?$dateRang:$this->date->month_year_day($value->preorder_date);
                 $value->order_date = $date_range && $date_range->endDate?$dateRang:$this->date->month_year_day($value->order_date);

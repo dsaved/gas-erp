@@ -52,11 +52,7 @@ fs.readFile(configPath, (error, db_config) => {
     sqlConn.connect(function(err) {
         if (err) config.log(err);
         isSqlConnected = true;
-        config.log('mySql connected');
-        initialize();
-        setInterval(() => {
-            initialize();
-        }, 2000);
+        config.log('worker thread initialized');
 
         setInterval(() => {
             helpers.download_files();
@@ -64,23 +60,11 @@ fs.readFile(configPath, (error, db_config) => {
         setInterval(() => {
             helpers.pump_product(sqlConn);
         }, 20 * 1000);
-        config.log('worker thread initialized');
 
-        //check missing or undeclared products
-        // var checkingundcl = false;
-        // var checkingmissing = false;
-        // setInterval(async() => {
-        //     if (!checkingmissing) {
-        //         checkingmissing = true;
-        //         await helpers.missingProduct(sqlConn);
-        //         checkingmissing = false;
-        //     }
-        //     if (!checkingundcl) {
-        //         checkingundcl = true;
-        //         await helpers.undeclaredProduct(sqlConn);
-        //         checkingundcl = false;
-        //     }
-        // }, 1000 * 3);
+        initialize();
+        setInterval(() => {
+            initialize();
+        }, 2000);
 
         //alert no sell for a week
         setInterval(() => {

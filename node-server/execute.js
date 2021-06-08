@@ -6483,27 +6483,37 @@ exports.exportPetroleumInletReport = function(data, callback) {
              */
 
             var condition = " WHERE 1 ";
-            var omc = exportData.omc || null;
+            var condition1 = condition;
             var date_range = exportData.date_range || null;
             var product_type = exportData.product_type || null;
-            var depot = exportData.depot || null;
             if (date_range) {
                 if (date_range.endDate && date_range.startDate) {
                     const startDate = sql_date(date_range.startDate);
                     const endDate = sql_date(date_range.endDate);
                     condition += ` AND (dcl.declaration_date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    condition1 += ` AND (inlet.datetime  BETWEEN '${startDate}' AND '${endDate}') `;
                 }
             }
 
             if (product_type && product_type != "All") {
                 condition += ` AND dcl.product_type = '${product_type}'`;
+                condition1 += ` AND inlet.product_type = '${product_type}'`;
             }
 
             // if (depot && depot != "All") {
             //     condition += ` AND dcl.depot ='${depot}'`;
             // }
 
-            const sqlQuery = `SELECT MIN(dcl.id) id, CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) AS week, SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, dcl.product_type FROM petroleum_declaration dcl LEFT JOIN petroleum_inlet inlet ON inlet.product_type = dcl.product_type ${condition} GROUP BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) , dcl.product_type ORDER BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) DESC`;
+            const sqlQuery = `SELECT MIN(dcl.id) id, CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) AS week,
+            SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, dcl.product_type product_type
+            FROM petroleum_declaration dcl LEFT JOIN petroleum_inlet inlet 
+            ON inlet.product_type = dcl.product_type ${condition} GROUP BY week, product_type
+            UNION 
+            SELECT MIN(dcl.id) id, CONCAT(YEAR(inlet.datetime), '/', WEEK(inlet.datetime)) AS week,
+            SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, inlet.product_type product_type
+            FROM petroleum_declaration dcl RIGHT JOIN petroleum_inlet inlet
+            ON inlet.product_type = dcl.product_type ${condition1} 
+            GROUP BY week, product_type ORDER BY week DESC`;
             var exportDataUT = await query(sqlQuery).catch(error => {
                 config.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
@@ -6700,6 +6710,7 @@ exports.exportPetroleumSMLOutletReport = function(data, callback) {
              */
 
             var condition = " WHERE 1 ";
+            var condition1 = condition;
             var date_range = exportData.date_range || null;
             var product_type = exportData.product_type || null;
             var depot = exportData.depot || null;
@@ -6709,24 +6720,35 @@ exports.exportPetroleumSMLOutletReport = function(data, callback) {
                     const startDate = sql_date(date_range.startDate);
                     const endDate = sql_date(date_range.endDate);
                     condition += ` AND (ord.order_date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    condition1 += ` AND (outlet.datetime  BETWEEN '${startDate}' AND '${endDate}') `;
                     dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
                 }
             }
 
             if (product_type && product_type != "All") {
                 condition += ` AND ord.product_type = '${product_type}'`;
+                condition1 += ` AND outlet.product_type = '${product_type}'`;
             }
 
             if (depot && depot != "All") {
                 condition += ` AND ord.depot ='${depot}'`;
+                condition1 += ` AND outlet.depot ='${depot}'`;
             }
 
             const sqlQuery = `SELECT DATE(ord.order_date) order_date, ord.product_type product, 
-            SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, ord.depot,
+            SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, ord.depot depot,
             SUM(outlet.volume) outlet_volume
             FROM petroleum_order ord LEFT JOIN petroleum_outlet outlet 
-            ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type
-            ${condition} Group By DATE(ord.order_date), ord.product_type, ord.depot Order By DATE(ord.order_date)  DESC`;
+            ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type ${condition} Group By order_date, product, depot 
+            UNION
+            SELECT DATE(outlet.datetime) order_date, outlet.product_type product, 
+            SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, outlet.depot depot,
+            SUM(outlet.volume) outlet_volume
+            FROM petroleum_order ord RIGHT JOIN petroleum_outlet outlet 
+            ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type ${condition1}
+            Group By order_date, product, depot Order By order_date DESC`;
+
+
             var exportDataUT = await query(sqlQuery).catch(error => {
                 config.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");

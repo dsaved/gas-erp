@@ -329,7 +329,7 @@ export default {
       exportStatus: "",
       exportDetails: "",
       //preorder data list starts here
-      pkey: "input-petroleum-analytics-list",
+      pkey: "sml-petroleum-outlet-repot",
       message: "",
       numbering: 0,
       currentPage: 1,

@@ -35,6 +35,7 @@ class DeclarationsModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->amount = number_format($value->amount, 2);
+                $value->volume = number_format($value->volume, 1);
                 $value->idf_amount = number_format($value->idf_amount, 2);
             }
             $response["declarations"] = $result;

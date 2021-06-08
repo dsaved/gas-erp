@@ -4,7 +4,7 @@ var fs = require('fs')
 module.exports = {
     //should run only once a day
     alarmNosaleInWeek(sqlConn) {
-        var sqlQuery = `SELECT depot as name, product FROM petroleum_tanks Group by depot, product`;
+        var sqlQuery = `SELECT depot as name, product FROM petroleum_tanks WHERE volume > 999 Group by depot, product`;
         sqlConn.query(sqlQuery, function(err, depots, fields) {
             if (err) {
                 console.log(err)
@@ -133,7 +133,6 @@ module.exports = {
     },
     //pump products
     async pump_product(sqlConn) {
-
         const capture_date = previousDay();
         const inflow = `./data/InflowData_${capture_date}.json`;
         const outflow = `./data/OutflowData_${capture_date}.json`;
@@ -153,7 +152,7 @@ module.exports = {
                         const depot = await names.depot_name(data.DepotName);
                         const product = await names.product_name(data.FuelType);
 
-                        if (data.Flow > 0) {
+                        if (data.Flow > 999) {
                             //update depot quantity
                             for (let index = 0; index < deportsQty.length; index++) {
                                 const element = deportsQty[index];
@@ -189,6 +188,8 @@ module.exports = {
                 }
             }
 
+            await timeout(5000);
+
             if (fs.existsSync(outflow)) {
                 //get the oulet data flow from media server
                 const jsonDataOut = fs.readFileSync(outflow)
@@ -204,7 +205,7 @@ module.exports = {
                         const product = await names.product_name(data.FuelType);
                         var nodepot = true;
 
-                        if (data.Flow > 0) {
+                        if (data.Flow > 999) {
 
                             //update depot quantity
                             for (let index = 0; index < deportsQty.length; index++) {
@@ -218,7 +219,7 @@ module.exports = {
 
                             //create depot quantity
                             if (nodepot) {
-                                deportsQty.push({ alarm: "depot", unit: data.Units, identifyer: `${depot}-${product}`, product: product, depot: data.depot, volume: Number(data.Flow) })
+                                deportsQty.push({ alarm: "depot", unit: data.Units, identifyer: `${depot}-${product}`, product: product, depot: depot, volume: Number(data.Flow) })
                             }
 
                             //insert into petroleum outlet db
@@ -237,6 +238,7 @@ module.exports = {
                         // get the depot pumping the product and check if the tank is empty
                         var sqlQuery = `SELECT * FROM petroleum_tanks WHERE identifyer = '${element.identifyer}' AND volume >= ${element.volume} LIMIT 1`;
                         var tank = await query(sqlQuery).catch(err => console.log(err));
+                        console.log(`tanks: ${tank}`)
                         if (tank == null || tank.length == 0 || typeof(tank[0]) == "undefined" || tank[0] == null) {
                             //Pumping from empty tank
                             // console.log("Pumping from empty tank", element)
@@ -254,6 +256,10 @@ module.exports = {
             }
         } catch (err) {
             console.error("no new data available" + err)
+        }
+
+        function timeout(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         function previousDay() {
@@ -322,7 +328,7 @@ module.exports = {
         const Client = require('ssh2').Client;
         const conn = new Client();
         const remoteDir = '';
-        const lockFile = './data/lock-file.json';
+        const lockFile = './data/lock.json';
 
         conn.on('ready', () => {
             conn.sftp((err, sftp) => {
@@ -356,6 +362,12 @@ module.exports = {
             // console.log(err);
         });
 
+        try {
+            fs.readFileSync(lockFile);
+        } catch (error) {
+            var newFiledata = { "last": "00-00-0000" };
+            fs.writeFileSync(lockFile, JSON.stringify(newFiledata, null, 2));
+        }
         var configuration = fs.readFileSync(lockFile);
         var conf = JSON.parse(configuration);
 

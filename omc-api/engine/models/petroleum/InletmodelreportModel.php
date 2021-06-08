@@ -16,20 +16,33 @@ class InletmodelreportModel extends BaseModel
 
         $product_type  = $this->http->json->product_type ??null;
         $date_range = $this->http->json->date_range??null;
+        $condition1=$condition;
 
         if ($date_range) {
             if ($date_range->endDate && $date_range->startDate) {
                 $startDate = $this->date->sql_date($date_range->startDate);
                 $endDate = $this->date->sql_date($date_range->endDate);
                 $condition .= " AND (dcl.declaration_date  BETWEEN '$startDate' AND '$endDate') ";
+                $condition1 .= " AND (inlet.datetime  BETWEEN '$startDate' AND '$endDate') ";
             }
         }
 
         if ($product_type  && $product_type !="All") {
             $condition .= " AND dcl.product_type  = '$product_type '";
+            $condition1 .= " AND inlet.product_type  = '$product_type '";
         }
 
-        $query = "SELECT MIN(dcl.id) id, CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) AS week, SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, dcl.product_type FROM ".self::$petroleum_declaration." dcl LEFT JOIN ".self::$petroleum_inlet." inlet ON inlet.product_type = dcl.product_type $condition GROUP BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) , dcl.product_type ORDER BY CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) DESC";
+        $query = "SELECT MIN(dcl.id) id, CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) AS week,
+        SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, dcl.product_type product_type
+        FROM ".self::$petroleum_declaration." dcl LEFT JOIN ".self::$petroleum_inlet." inlet 
+        ON inlet.product_type = dcl.product_type $condition GROUP BY week, product_type
+        UNION 
+        SELECT MIN(dcl.id) id, CONCAT(YEAR(inlet.datetime), '/', WEEK(inlet.datetime)) AS week,
+        SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, inlet.product_type product_type
+        FROM ".self::$petroleum_declaration." dcl RIGHT JOIN ".self::$petroleum_inlet." inlet
+        ON inlet.product_type = dcl.product_type $condition1 
+        GROUP BY week, product_type ORDER BY week DESC";
+
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);

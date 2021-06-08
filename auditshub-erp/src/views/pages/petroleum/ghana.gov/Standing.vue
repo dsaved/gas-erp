@@ -315,7 +315,7 @@ export default {
       exportStatus: "",
       exportDetails: "",
       //preorder data list starts here
-      pkey: "input-petroleum-analytics-list",
+      pkey: "ghana.gov-petroleum-standing-list",
       message: "",
       numbering: 0,
       currentPage: 1,

@@ -35,6 +35,7 @@ class ManifestModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->amount = number_format($value->amount, 2);
+                $value->volume = number_format($value->volume, 1);
             }
             $response["manifest"] = $result;
         } else {

@@ -32,6 +32,9 @@ class PreorderModel extends BaseModel
       $result = $this->paging->results();
       if (!empty($result)) {
           $response['success'] = true;
+          foreach ($result as $key => &$value) {
+              $value->volume = number_format($value->volume, 1);
+          }
           $response["preorders"] = $result;
       } else {
           $response['success'] = false;

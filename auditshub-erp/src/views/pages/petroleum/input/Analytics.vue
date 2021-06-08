@@ -376,7 +376,7 @@ export default {
       exportStatus: "",
       exportDetails: "",
       //preorder data list starts here
-      pkey: "input-petroleum-analytics-list",
+      pkey: "input-petroleum-analytic-list",
       message: "",
       numbering: 0,
       currentPage: 1,
@@ -438,7 +438,10 @@ export default {
       }
     },
   },
-  mounted: function () {},
+  mounted: function () {
+    this.currentPage = Number(mStorage.get(`${this.pkey}page`)) || 1;
+    this.filterData();
+  },
   watch: {
     currentPage: function () {
       mStorage.set(`${this.pkey}page`, this.currentPage);

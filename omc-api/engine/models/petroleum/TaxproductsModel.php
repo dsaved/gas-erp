@@ -50,10 +50,9 @@ class TaxproductsModel extends BaseModel
         if ($search) {
             $condition = " WHERE (`name` LIKE '%$search%') ";
         }
-        $this->paging->table(self::$table);
+        $this->paging->rawQuery("SELECT name FROM ".self::$table."$condition GROUP BY name Order By `name`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum(1);
-        $this->paging->condition("$condition Order By `name`");
         $this->paging->execute();
         $this->paging->reset();
             

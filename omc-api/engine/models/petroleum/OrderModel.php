@@ -35,6 +35,7 @@ class OrderModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->unit_price = number_format($value->unit_price, 2);
+                $value->volume = number_format($value->volume, 1);
             }
             $response["orders"] = $result;
         } else {
