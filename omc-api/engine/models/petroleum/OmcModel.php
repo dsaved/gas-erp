@@ -60,7 +60,10 @@ class OmcModel extends BaseModel
         $results = $this->paging->results();
         if (!empty($results)) {
             foreach ($results as $data) {
-                array_push($response, $data->name);
+                $options = array();
+                $options['value'] = $data->tin;
+                $options['label'] = $data->name;
+                array_push($response, $options);
             }
         }
         return $response;
@@ -75,18 +78,14 @@ class OmcModel extends BaseModel
         return $this->omcs(" WHERE `id`= $id");
     }
     
-    public function omcs($condition="")
+    public function omcs($condition="WHERE 1 ")
     {
         $response = array();
         $result_per_page = $this->http->json->result_per_page??20;
         $page = $this->http->json->page??1;
         $search = $this->http->json->search??null;
         if ($search) {
-            if (empty($condition)) {
-                $condition .= " WHERE (`name` LIKE '%$search%' OR `email` LIKE '%$search%'OR `email` LIKE '%$search%' OR `region` LIKE '%$search%' OR `location` LIKE '%$search%' OR `district` LIKE '%$search%') ";
-            } else {
-                $condition .= " AND (`name` LIKE '%$search%' OR `email` LIKE '%$search%'OR `email` LIKE '%$search%' OR `region` LIKE '%$search%' OR `location` LIKE '%$search%' OR `district` LIKE '%$search%') ";
-            }
+            $condition .= " AND (`name` LIKE '%$search%' OR `email` LIKE '%$search%'OR `email` LIKE '%$search%' OR `region` LIKE '%$search%' OR `location` LIKE '%$search%' OR `district` LIKE '%$search%') ";
         }
         $this->paging->table(self::$table);
         $this->paging->result_per_page($result_per_page);
@@ -120,6 +119,10 @@ class OmcModel extends BaseModel
         if ($name===null) {
             $this->http->_403("Please provide OMC name");
         }
+        $tin = $this->http->json->tin??null;
+        if ($tin===null) {
+            $this->http->_403("Please provide OMC TIN");
+        }
 
         $this->db->query("SELECT * FROM ".self::$table." WHERE `name` = '$name'");
         if ($this->db->results() && $this->db->count >0) {
@@ -129,6 +132,7 @@ class OmcModel extends BaseModel
         $data = array(
             'name' => $name,
             "email"=>$email,
+            "tin"=>$tin,
             "phone"=>$phone,
             "location"=>$location,
             "district"=>$district,
@@ -159,6 +163,10 @@ class OmcModel extends BaseModel
         if ($name===null) {
             $this->http->_403("Please provide OMC name");
         }
+        $tin = $this->http->json->tin??null;
+        if ($tin===null) {
+            $this->http->_403("Please provide OMC TIN");
+        }
 
         $this->db->query("SELECT * FROM ".self::$table." WHERE `name` = '$name' AND `id`!=$id");
         if ($this->db->results() && $this->db->count >0) {
@@ -167,6 +175,7 @@ class OmcModel extends BaseModel
 
         $data = array(
             'name' => $name,
+            "tin"=>$tin,
             "email"=>$email,
             "phone"=>$phone,
             "location"=>$location,

@@ -40,7 +40,7 @@
               v-on:update:data="product_type = $event"
             />
           </div>
-          <div class="w-1/4 px-2">
+          <div class="w-1/2 px-2">
             <span>BDC</span>
             <ajax-select
               placeholder="Select BDC"
@@ -53,7 +53,7 @@
               v-on:update:data="bdc = $event"
             />
           </div>
-          <div class="w-1/5 px-2">
+          <div class="w-1/2 px-2">
             <span>Depot</span>
             <ajax-select
               placeholder="Select Condition"
@@ -147,10 +147,10 @@
                     {{ record.datetime }}
                   </td>
                   <td>
-                    {{ record.depot }}
+                    {{ record.depot_name }}
                   </td>
                   <td>
-                    {{ record.product_type }}
+                    {{ record.product_name }}
                   </td>
                   <td>
                     {{ record.volume }}
@@ -261,10 +261,10 @@ export default {
         hasPrevious: false,
       },
       selectedRecords: [],
-      product_type: "All",
-      bdc: "All",
-      depot: "All",
-      omc: "All",
+      product_type: {label:"All", value: "All"},
+      bdc: {label:"All", value: "All"},
+      depot: {label:"All", value: "All"},
+      omc: {label:"All", value: "All"},
       status: "All",
       group_by: ["BDC"],
       date_range: {
@@ -337,10 +337,10 @@ export default {
   },
   methods: {
     resetFilter: function () {
-      this.product_type = "All";
-      this.omc = "All";
-      this.bdc = "All";
-      this.depot = "All";
+      this.product_type = {label:"All", value: "All"},
+      this.omc = {label:"All", value: "All"},
+      this.bdc = {label:"All", value: "All"},
+      this.depot = {label:"All", value: "All"},
       this.status = "All";
       this.date_range = {
         startDate: null,
@@ -356,10 +356,10 @@ export default {
       this.post("/outlet/outlets", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
-        product_type: this.product_type,
-        bdc: this.bdc,
-        depot: this.depot,
-        omc: this.omc,
+        product_type: this.product_type.value,
+        bdc: this.bdc.value,
+        depot: this.depot.value,
+        omc: this.omc.value,
         status: this.status,
         date_range: this.date_range,
       })

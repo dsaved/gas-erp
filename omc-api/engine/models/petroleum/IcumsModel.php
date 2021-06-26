@@ -15,27 +15,27 @@ class IcumsModel extends BaseModel
     
     public function declarations($condition=" WHERE 1 ")
     {
+        $table = self::$table;
         $response = array();
         $result_per_page = $this->http->json->result_per_page??20;
         $page = $this->http->json->page??1;
         $search = $this->http->json->search??null;
         if ($search) {
             $value = implode("", explode(",", $search));
-            $condition .= " AND  (`omc` LIKE '%$search%' OR  `amount` LIKE '%$value%' )";
+            $condition .= " AND  (pid.`omc` LIKE '%$search%' OR pid.`window_code` LIKE '%$search%' OR  pid.`amount` LIKE '%$value%'  OR  pid.`product_type`= (SELECT code FROM tax_schedule_products WHERE `name` LIKE '%$value%' LIMIT 1))";
         }
-        $this->paging->table(self::$table);
+        $this->paging->rawQuery("SELECT pid.*, tsp.name product, omc.name omc FROM $table AS pid LEFT JOIN tax_schedule_products tsp ON tsp.code=pid.product_type LEFT JOIN omc omc ON omc.tin=pid.omc $condition Order By `date` DESC");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
-        $this->paging->condition("$condition Order By `date` DESC");
         $this->paging->execute();
         $this->paging->reset();
 
         $result = $this->paging->results();
+        // var_dump($this->paging);
         if (!empty($result)) {
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->amount = number_format($value->amount, 2);
-                $value->date = $this->date->human_date($value->date);
             }
             $response["declarations"] = $result;
         } else {
@@ -120,12 +120,20 @@ class IcumsModel extends BaseModel
         $omc = $this->http->json->omc??null;
         $status = $this->http->json->status??null;
 
-
         if ($omc && $omc!="All") {
-            $condition .= " AND omc = '$omc'";
+            $condition .= " AND pid.omc = '$omc'";
         }
 
-        $query = "SELECT * FROM ".self::$table." $condition ORDER BY date DESC";
+        if ($status && $status!="All") {
+            if ($status==="Flagged") {
+                $condition .= " AND pid.flagged = 1";
+            } elseif ($status==="Not Flagged") {
+                $condition .= " AND pid.flagged = 0";
+            }
+        }
+
+        $query = "SELECT pid.*, o.name omc FROM petroleum_icums_differences as pid LEFT JOIN omc as o ON o.tin=pid.omc $condition ORDER BY o.name";
+
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
@@ -137,24 +145,10 @@ class IcumsModel extends BaseModel
         if (!empty($result)) {
             $response['success'] = true;
             foreach ($result as $key => &$value) {
-                $exp_declaration_amount = $this->expected_declaration($value->omc, $value->date);
-                $value->difference_amount = number_format($value->amount - $exp_declaration_amount, 2);
-                $value->flagged  = $value->difference_amount <> 0;
-                $value->exp_declaration_amount = number_format($exp_declaration_amount, 2);
+                $value->difference_amount = number_format($value->amount - $value->exp_declaration_amount, 2);
+                $value->exp_declaration_amount = number_format($value->exp_declaration_amount, 2);
                 $value->amount = number_format($value->amount, 2);
-                if ($status && $status!="All") {
-                    if ($status==="Flagged") {
-                        if(!$value->flagged){
-                            unset($result[$key]);
-                            continue;
-                        }
-                    }elseif ($status==="Not Flagged") {
-                        if($value->flagged){
-                            unset($result[$key]);
-                            continue;
-                        }
-                    }
-                }
+                $value->flagged = ((int)$value->flagged===1)? true:false;
             }
             $response["reports"] = $result;
         } else {
@@ -164,29 +158,5 @@ class IcumsModel extends BaseModel
 
         $response["pagination"] = $this->paging->paging();
         return $response;
-    }
-    
-    public function expected_declaration($omc, $date)
-    {
-        $result_total = 0;
-        $computes = $this->getWaybills($omc, $date);
-        foreach ($computes as $key => $compute) {
-            $total = 0;
-            $this->db->query("SELECT tw.*, tt.name tax FROM tax_window tw JOIN `tax_type` tt ON tw.tax_type=tt.id WHERE tw.`tax_product` = (SELECT id FROM tax_schedule_products WHERE name = '{$compute->product_type}' LIMIT 1) AND tw.`date_from`<= '{$date}' AND tw.`date_to` >= '{$date}'");
-            $queryResult = $this->db->results();
-            if($queryResult && $this->db->count > 0){
-                foreach ($queryResult as $key => $tax) {
-                    $total += $compute->volume * $tax->rate;
-                }
-            }
-            $result_total+=$total;
-        }
-        return $result_total;
-    }
-
-    public function getWaybills($omc, $date){
-        $this->db->query("SELECT SUM(volume) volume, MIN(date) date, product_type FROM petroleum_waybill WHERE omc='$omc' AND (date BETWEEN DATE((SELECT date_from FROM tax_window WHERE `date_from`<= '$date' AND `date_to` >= '$date' LIMIT 1 )) AND DATE((SELECT date_to FROM tax_window WHERE `date_from`<= '$date' AND `date_to` >= '$date' LIMIT 1 )) ) GROUP BY product_type, (SELECT CONCAT(tax_product, '-', name) FROM tax_window WHERE `date_from`<= '$date' AND `date_to` >= '$date' LIMIT 1) ORDER BY product_type ASC, date ASC ");
-        // var_dump($this->db);
-        return $this->db->results();
     }
 }

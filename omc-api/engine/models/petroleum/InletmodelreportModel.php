@@ -28,17 +28,17 @@ class InletmodelreportModel extends BaseModel
         }
 
         if ($product_type  && $product_type !="All") {
-            $condition .= " AND dcl.product_type  = '$product_type '";
-            $condition1 .= " AND inlet.product_type  = '$product_type '";
+            $condition .= " AND dcl.product_type  = '$product_type'";
+            $condition1 .= " AND inlet.product_type  = '$product_type'";
         }
 
         $query = "SELECT MIN(dcl.id) id, CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) AS week,
-        SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, dcl.product_type product_type
+        SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, (SELECT name FROM tax_schedule_products WHERE code=dcl.product_type LIMIT 1) product_type
         FROM ".self::$petroleum_declaration." dcl LEFT JOIN ".self::$petroleum_inlet." inlet 
         ON inlet.product_type = dcl.product_type $condition GROUP BY week, product_type
         UNION 
         SELECT MIN(dcl.id) id, CONCAT(YEAR(inlet.datetime), '/', WEEK(inlet.datetime)) AS week,
-        SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, inlet.product_type product_type
+        SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, (SELECT name FROM tax_schedule_products WHERE code=inlet.product_type LIMIT 1) product_type
         FROM ".self::$petroleum_declaration." dcl RIGHT JOIN ".self::$petroleum_inlet." inlet
         ON inlet.product_type = dcl.product_type $condition1 
         GROUP BY week, product_type ORDER BY week DESC";

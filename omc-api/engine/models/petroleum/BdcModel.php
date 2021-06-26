@@ -60,7 +60,10 @@ class BdcModel extends BaseModel
         $results = $this->paging->results();
         if (!empty($results)) {
             foreach ($results as $data) {
-                array_push($response, $data->name);
+                $options = array();
+                $options['value'] = $data->code;
+                $options['label'] = $data->name;
+                array_push($response, $options);
             }
         }
         return $response;

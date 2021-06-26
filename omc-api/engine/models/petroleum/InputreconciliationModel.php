@@ -18,37 +18,51 @@ class InputreconciliationModel extends BaseModel
         $date_range = $this->http->json->date_range??null;
         $product_type = $this->http->json->product_type??null;
         $status = $this->http->json->status??null;
+        $condition1 = $condition;
 
         if ($date_range) {
             if ($date_range->endDate && $date_range->startDate) {
                 $startDate = $this->date->sql_date($date_range->startDate);
                 $endDate = $this->date->sql_date($date_range->endDate);
-                $condition .= " AND (m.arrival_date  BETWEEN '$startDate' AND '$endDate') ";
+                $condition .= " AND (m.arrival_date BETWEEN '$startDate' AND '$endDate') ";
+                $condition1 .= " AND (d.declaration_date BETWEEN '$startDate' AND '$endDate') ";
             }
         }
 
         if ($status && $status!="All") {
             if ($status==="Flagged") {
                 $condition .= " AND (m.volume <> d.volume OR m.amount <> d.amount OR d.amount IS NULL OR d.volume IS NULL)";
+                $condition1 .= " AND (m.volume <> d.volume OR m.amount <> d.amount OR d.amount IS NULL OR d.volume IS NULL)";
             }
             if ($status==="Not Flagged") {
                 $condition .= " AND m.volume = d.volume AND m.amount = d.amount";
+                $condition1 .= " AND m.volume = d.volume AND m.amount = d.amount";
             }
         }
 
         if ($bdc && $bdc!="All") {
             $condition .= " AND m.importer_name = '$bdc'";
+            $condition1 .= " AND d.importer_name = '$bdc'";
         }
 
         if ($product_type && $product_type!="All") {
             $condition .= " AND m.product_type = '$product_type'";
+            $condition1 .= " AND d.product_type = '$product_type'";
         }
 
-        $query = "SELECT m.id manifest_id, m.arrival_date, m.vessel_name, m.vessel_number,m.product_type manifest_product, 
-      m.volume manifest_volume, m.amount manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
-      m.importer_name manifest_omc, d.*, d.amount declaration_amount, d.volume declaration_volume
-       FROM ".self::$manifest." m LEFT JOIN ".self::$declaration." d 
-      ON m.ucr_number = d.ucr_number $condition Order By m.arrival_date DESC";
+        $query = "SELECT m.id manifest_id, m.arrival_date arrival_date,d.declaration_date, m.vessel_name, m.vessel_number,
+        (SELECT name FROM tax_schedule_products WHERE code=m.product_type LIMIT 1) manifest_product, 
+        m.volume manifest_volume, m.amount manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
+        (SELECT name FROM bdc WHERE code=m.importer_name LIMIT 1) manifest_omc, d.*, d.amount declaration_amount, d.volume declaration_volume
+        FROM ".self::$manifest." m LEFT JOIN ".self::$declaration." d 
+        ON m.ucr_number = d.ucr_number $condition
+        UNION
+        SELECT m.id manifest_id, m.arrival_date arrival_date,d.declaration_date, m.vessel_name, m.vessel_number,
+        (SELECT name FROM tax_schedule_products WHERE code=d.product_type LIMIT 1) manifest_product, 
+        m.volume manifest_volume, m.amount manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
+        (SELECT name FROM bdc WHERE code=d.importer_name LIMIT 1) manifest_omc, d.*, d.amount declaration_amount, d.volume declaration_volume
+        FROM ".self::$manifest." m RIGHT JOIN ".self::$declaration." d 
+        ON m.ucr_number = d.ucr_number $condition1 Order By arrival_date DESC";
 
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
@@ -57,7 +71,6 @@ class InputreconciliationModel extends BaseModel
         $this->paging->reset();
 
         $result = $this->paging->results();
-        // var_dump($this->paging->lastQuery());
         // var_dump($this->paging);
         if (!empty($result)) {
             $response['success'] = true;

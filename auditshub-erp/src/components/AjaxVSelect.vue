@@ -17,6 +17,7 @@
     v-bind:value="selected"
     @input="handleChange"
     :class="cClass"
+	:disabled="disabled"
     :filterable="filterable"
     :multiple="multiple"
   />
@@ -64,6 +65,10 @@ export default {
 			type: Boolean
 		},
 		multiple: {
+			default: false,
+			type: Boolean
+		},
+		disabled: {
 			default: false,
 			type: Boolean
 		}

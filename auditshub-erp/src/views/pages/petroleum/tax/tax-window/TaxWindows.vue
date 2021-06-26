@@ -82,6 +82,7 @@
                   <th scope="col" class="td-check">
                     <vs-checkbox v-model="selectAll">#</vs-checkbox>
                   </th>
+                  <th scope="col">Windown</th>
                   <th scope="col">Tax</th>
                   <th scope="col">Product</th>
                   <th scope="col">Rate</th>
@@ -104,6 +105,7 @@
                       >{{ number(index) }}</vs-checkbox
                     >
                   </td>
+                  <td>{{ record.code }}</td>
                   <td>{{ record.tax_type | title }}</td>
                   <td>{{ record.tax_product | title }}</td>
                   <td>{{ record.rate }}</td>

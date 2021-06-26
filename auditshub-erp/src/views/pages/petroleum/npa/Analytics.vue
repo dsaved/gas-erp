@@ -212,7 +212,7 @@
                     {{ record.reference_number }}
                   </td>
                   <td>
-                    {{ record.preorder_product }}
+                    {{ record.product_type }}
                   </td>
                   <td>
                       {{ record.bdc }}
@@ -402,10 +402,10 @@ export default {
         hasPrevious: false,
       },
       selectedRecords: [],
-      product_type: "All",
-      bdc: "All",
-      depot: "All",
-      omc: "All",
+      product_type: {value: "all", label: "All"},
+      bdc: {value: "all", label: "All"},
+      depot: {value: "all", label: "All"},
+      omc: {value: "all", label: "All"},
       status: "All",
       group_by: ["BDC"],
       date_range: {
@@ -463,10 +463,10 @@ export default {
   },
   methods: {
     resetFilter: function () {
-      this.product_type = "All";
-      this.bdc = "All";
-      this.depot = "All";
-      this.omc = "All";
+      this.product_type = {value: "all", label: "All"};
+      this.bdc ={value: "all", label: "All"};
+      this.depot = {value: "all", label: "All"};
+      this.omc = {value: "all", label: "All"};
       this.group_by = ["BDC"];
       this.status = "All";
       this.date_range = {
@@ -482,11 +482,11 @@ export default {
       this.post("/analytics/orders", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
-        product_type: this.product_type,
-        bdc: this.bdc,
+        product_type: this.product_type.value,
+        bdc: this.bdc.value,
         group_by: this.group_by,
-        depot: this.depot,
-        omc: this.omc,
+        depot: this.depot.value,
+        omc: this.omc.value,
         status: this.status,
         date_range: this.date_range,
       })

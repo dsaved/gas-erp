@@ -4,7 +4,7 @@
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <div class="w-full flex mb-4">
-          <div class="w-1/4 px-2">
+          <div class="w-1/3 px-2">
             <span>OMC</span>
             <ajax-select
               placeholder="Select BDC"
@@ -298,8 +298,8 @@ export default {
         hasPrevious: false,
       },
       selectedRecords: [],
-      product_type: "All",
-      omc: "All",
+      product_type: {label:"All", value: "All"},
+      omc: {label:"All", value: "All"},
       idf_condition: "All",
       declaration_condition: "All",
       status: "All",
@@ -360,8 +360,8 @@ export default {
   },
   methods: {
     resetFilter: function () {
-      this.product_type = "All";
-      this.omc = "All";
+      this.product_type = {label:"All", value: "All"},
+      this.omc = {label:"All", value: "All"},
       this.idf_condition = "All";
       this.declaration_condition = "All";
       this.group_by = "Day";
@@ -380,8 +380,8 @@ export default {
       this.post("/icums/difference", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
-        product_type: this.product_type,
-        omc: this.omc,
+        product_type: this.product_type.value,
+        omc: this.omc.value,
         group_by: this.group_by,
         idf_condition: this.idf_condition,
         declaration_condition: this.declaration_condition,
@@ -489,7 +489,7 @@ export default {
         filename: filename,
         export_type: "petroleum-icums-defferences",
         config_data: JSON.stringify({
-          omc: this.omc,
+          omc: this.omc.value,
           status: this.status,
         }),
       })

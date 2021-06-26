@@ -4,7 +4,7 @@ var fs = require('fs')
 module.exports = {
     //should run only once a day
     alarmNosaleInWeek(sqlConn) {
-        var sqlQuery = `SELECT depot as name, product FROM petroleum_tanks WHERE volume > 999 Group by depot, product`;
+        var sqlQuery = `SELECT (SELECT name FROM depot WHERE code=depot) as depot_name,depot, (SELECT name FROM tax_schedule_products WHERE code=product) as product_name,product FROM petroleum_tanks WHERE volume > 999 Group by depot, product`;
         sqlConn.query(sqlQuery, function(err, depots, fields) {
             if (err) {
                 console.log(err)
@@ -13,7 +13,7 @@ module.exports = {
                 if (depots.length > 0) {
                     for (let index = 0; index < depots.length; index++) {
                         const depot = depots[index];
-                        var alarmQry = `SELECT * FROM petroleum_outlet WHERE depot = '${depot.name}' ORDER BY id DESC LIMIT 1`;
+                        var alarmQry = `SELECT datetime FROM petroleum_outlet WHERE depot = '${depot.depot}' ORDER BY id DESC LIMIT 1`;
                         sqlConn.query(alarmQry, function(err, lastSold, fields) {
                             if (err) {
                                 console.log(err)
@@ -25,14 +25,14 @@ module.exports = {
                                     const today = new Date();
                                     var diff = getDateDiff(today, lastSellDate);
                                     if (diff >= 7) {
-                                        var alarmQry = `INSERT INTO petroleum_alarm_notification(time,type, message,depot,product) VALUES ('${getTime(true)}','not sold for a week','This Depot has not sold ${depot.product} for a week','${depot.name}','${depot.product}')`;
+                                        var alarmQry = `INSERT INTO petroleum_alarm_notification(time,type, message,depot,product) VALUES ('${getTime(true)}','not sold for a week','This Depot has not sold ${depot.product_name} for a week','${depot.depot}','${depot.product}')`;
                                         sqlConn.query(alarmQry, function(err, tank, fields) {
                                             if (err) {
                                                 console.log(err)
                                             }
                                         });
                                     } else {
-                                        var alarmQry = `DELETE FROM petroleum_alarm_notification  WHERE depot = '${depot.name}' AND product='${depot.product}'`;
+                                        var alarmQry = `DELETE FROM petroleum_alarm_notification  WHERE depot = '${depot.depot}' AND product='${depot.product}'`;
                                         sqlConn.query(alarmQry, function(err, tank, fields) {
                                             if (err) {
                                                 console.log(err)
@@ -156,7 +156,7 @@ module.exports = {
                             //update depot quantity
                             for (let index = 0; index < deportsQty.length; index++) {
                                 const element = deportsQty[index];
-                                if (element.identifyer === `${depot}-${product}`) {
+                                if (element.identifyer === `${depot.code}-${product.code}`) {
                                     nodepot = false;
                                     deportsQty[index].volume = Number(element.volume) + Number(data.Flow)
                                 }
@@ -164,15 +164,15 @@ module.exports = {
 
                             //create depot quantity
                             if (nodepot) {
-                                deportsQty.push({ tank: "depot", unit: data.Units, identifyer: `${depot}-${product}`, product: product, depot: depot, volume: Number(data.Flow) })
+                                deportsQty.push({ tank: "depot", unit: data.Units, identifyer: `${depot.code}-${product.code}`, product: product.code, depot: depot.code, volume: Number(data.Flow) })
                             }
 
                             //insert into petroleum inlet db
                             var sqlQuery = "INSERT INTO `petroleum_inlet`(`datetime`, `depot`, `product_type`, `volume`)";
-                            sqlQuery += " VALUES ('" + dbDate + "','" + depot + "','" + product + "'," + data.Flow + ")";
+                            sqlQuery += " VALUES ('" + dbDate + "','" + depot.code + "','" + product.code + "'," + data.Flow + ")";
                             await query(sqlQuery).catch(err => console.log(err));
-                            await insertIgnore("depot", { name: depot });
-                            await insertIgnore("tax_schedule_products", { name: product });
+                            await insertIgnore("depot", { name: depot.name, code: depot.code });
+                            await insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
                         }
                     }
 
@@ -183,6 +183,9 @@ module.exports = {
                         var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,tank,product,volume,full,unit) VALUES ('${element.identifyer}','${element.depot}','${element.tank}','${element.product}',${element.volume}, ${size}, '${element.unit}')ON DUPLICATE KEY UPDATE full= ${size},volume = volume + ${element.volume};`;
                         await query(sqlQuery).catch(err => console.log(err));
                     }
+                    console.log("inlet flow done")
+                    fs.unlinkSync(inflow)
+                } else {
                     console.log("inlet flow done")
                     fs.unlinkSync(inflow)
                 }
@@ -210,7 +213,7 @@ module.exports = {
                             //update depot quantity
                             for (let index = 0; index < deportsQty.length; index++) {
                                 const element = deportsQty[index];
-                                if (element.identifyer === `${depot}-${product}`) {
+                                if (element.identifyer === `${depot.code}-${product.code}`) {
                                     nodepot = false;
                                     deportsQty[index].volume = Number(element.volume) + Number(data.Flow)
                                     deportsQty[index].time = dbDate
@@ -219,15 +222,15 @@ module.exports = {
 
                             //create depot quantity
                             if (nodepot) {
-                                deportsQty.push({ alarm: "depot", unit: data.Units, identifyer: `${depot}-${product}`, product: product, depot: depot, volume: Number(data.Flow) })
+                                deportsQty.push({ alarm: "depot", unit: data.Units, identifyer: `${depot.code}-${product.code}`, product: product.code, depot: depot.code, volume: Number(data.Flow) })
                             }
 
                             //insert into petroleum outlet db
                             var sqlQuery = "INSERT INTO `petroleum_outlet`(`datetime`, `depot`, `product_type`, `volume`)";
-                            sqlQuery += " VALUES ('" + dbDate + "','" + depot + "','" + product + "'," + data.Flow + ")";
+                            sqlQuery += " VALUES ('" + dbDate + "','" + depot.code + "','" + product.code + "'," + data.Flow + ")";
                             await query(sqlQuery).catch(err => console.log(err));
-                            await insertIgnore("depot", { name: depot });
-                            await insertIgnore("tax_schedule_products", { name: product });
+                            await insertIgnore("depot", { name: depot.name, code: depot.code });
+                            await insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
                         }
                     }
 
@@ -252,6 +255,9 @@ module.exports = {
                     }
                     console.log("outlet flow done");
                     fs.unlinkSync(outflow)
+                } else {
+                    console.log("outlet flow done")
+                    fs.unlinkSync(outletData)
                 }
             }
         } catch (err) {
@@ -376,8 +382,8 @@ module.exports = {
             console.log("ssh connecting...")
                 //connect to ssh
             conn.connect({
-                host: 'smlexperion.com',
-                // host: '172.30.60.150',
+                // host: 'smlexperion.com',
+                host: '172.30.60.150',
                 port: 22,
                 username: 'sml_ai',
                 password: '@*+3$T!ni#',

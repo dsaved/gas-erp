@@ -18,7 +18,7 @@ class TanksModel extends BaseModel
             $condition .= " AND depot ='$depot'";
         }
       
-        $this->paging->rawQuery("SELECT  depot, Count(product) product, SUM(volume) vol, SUM(full) full FROM ".self::$table." $condition GROUP BY depot Order By depot ");
+        $this->paging->rawQuery("SELECT  (SELECT name FROM depot WHERE code=depot LIMIT 1) as depot,depot as depot_code, Count(product) product, SUM(volume) vol, SUM(full) full FROM ".self::$table." $condition GROUP BY (SELECT name FROM depot WHERE code=depot) Order By (SELECT name FROM depot WHERE code=depot)");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();
@@ -51,14 +51,15 @@ class TanksModel extends BaseModel
         $product_type = $this->http->json->product_type??null;
 
         if ($depot && $depot!="All") {
-            $condition .= " AND depot ='$depot'";
+            $condition .= " AND pt.depot ='$depot'";
         }
 
         if ($product_type && $product_type!="All") {
-            $condition .= " AND product = '$product_type'";
+            $condition .= " AND pt.product = '$product_type'";
         }
       
-        $this->paging->rawQuery("SELECT * FROM ".self::$table." $condition Order By `id`");
+        $this->paging->rawQuery("SELECT pt.*, (SELECT name FROM depot WHERE code=depot LIMIT 1) depot_name,
+        (SELECT name FROM tax_schedule_products WHERE code=product LIMIT 1) product_name FROM ".self::$table." pt $condition Order By `id`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();
@@ -101,14 +102,15 @@ class TanksModel extends BaseModel
         $product_type = $this->http->json->product??null;
 
         if ($depot && $depot!="All") {
-            $condition .= " AND depot ='$depot'";
+            $condition .= " AND pan.depot ='$depot'";
         }
 
         if ($product_type && $product_type!="All") {
-            $condition .= " AND product = '$product_type'";
+            $condition .= " AND pan.product = '$product_type'";
         }
       
-        $this->paging->rawQuery("SELECT * FROM petroleum_alarm_notification $condition Order By `id`");
+        $this->paging->rawQuery("SELECT pan.*, (SELECT name FROM depot WHERE code=pan.depot LIMIT 1) depot_name,
+        (SELECT name FROM tax_schedule_products WHERE code=pan.product LIMIT 1) product_name FROM petroleum_alarm_notification pan $condition Order By `id`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();

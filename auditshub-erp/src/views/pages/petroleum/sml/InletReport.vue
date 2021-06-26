@@ -295,10 +295,10 @@ export default {
         hasPrevious: false,
       },
       selectedRecords: [],
-      product_type: "All",
-      bdc: "All",
-      depot: "All",
-      omc: "All",
+      product_type: {label:"All", value: "All"},
+      bdc: {label:"All", value: "All"},
+      depot: {label:"All", value: "All"},
+      omc: {label:"All", value: "All"},
       status: "All",
       date_range: {
         startDate: null,
@@ -367,8 +367,8 @@ export default {
   },
   methods: {
     resetFilter: function () {
-      this.product_type = "All";
-      this.omc = "All";
+      this.product_type = {label:"All", value: "All"},
+      this.omc = {label:"All", value: "All"},
       this.status = "All";
       this.date_range = {
         startDate: null,
@@ -384,9 +384,9 @@ export default {
       this.post("/inletmodelreport", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
-        product_type: this.product_type,
-        depot: this.depot,
-        omc: this.omc,
+        product_type: this.product_type.value,
+        depot: this.depot.value,
+        omc: this.omc.value,
         status: this.status,
         date_range: this.date_range,
       })
@@ -490,7 +490,7 @@ export default {
         filename: filename,
         export_type: "petroleum-sml-inletreport",
         config_data: JSON.stringify({
-          product_type: this.product_type,
+          product_type: this.product_type.value,
           date_range: this.date_range,
         }),
       })

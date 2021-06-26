@@ -42,6 +42,7 @@
                   <vs-checkbox v-model="selectAll">#</vs-checkbox>
                 </th>
                 <th scope="col">Name</th>
+                <th scope="col">TIN</th>
                 <th scope="col">Email &amp; Phone</th>
                 <th scope="col">Region</th>
                 <th scope="col">Location</th>
@@ -52,7 +53,7 @@
               <tr
                 v-for="(record, index) in sortedRecords"
                 :key="index"
-                v-on:click="linkto('/petroleum/waybill/expected-declaration/' + record.name)"
+                v-on:click="linkto('/petroleum/waybill/expected-declaration/' + record.tin)"
                 class="tr-values vs-table--tr tr-table-state-null selected"
               >
                 <td scope="row" @click.stop="">
@@ -64,6 +65,9 @@
                 </td>
                 <td>
                   {{ record.name | title }}
+                </td>
+                <td>
+                  {{ record.tin }}
                 </td>
                 <td>
                   <b>{{ record.email }}</b> <br />

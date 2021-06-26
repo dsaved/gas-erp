@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vx-card title="Declaration volume Agaist Waybill volume">
+    <vx-card title="Petroleum Input Declaration volume Agaist Waybill volume">
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <div class="w-full flex mb-4">
@@ -28,7 +28,7 @@
               </date-range-picker>
             </div>
           </div>
-          <div class="w-1/4 px-2">
+          <div class="w-1/3 px-2">
             <span>Product Type</span>
             <ajax-select
               placeholder="Select bank type"
@@ -40,7 +40,7 @@
               v-on:update:data="product_type = $event"
             />
           </div>
-          <div class="w-1/4 px-2">
+          <div class="w-1/3 px-2">
             <span>BDC</span>
             <ajax-select
               placeholder="Select BDC"
@@ -53,6 +53,8 @@
               v-on:update:data="bdc = $event"
             />
           </div>
+        </div>
+        <div class="flex mb-4">
           <div class="w-1/5 px-2">
             <span>Status</span>
             <ajax-select
@@ -149,7 +151,7 @@
                   <th scope="col">Date</th>
                   <th scope="col">Product</th>
                   <th scope="col">BDC</th>
-                  <th scope="col">Declaration Vol.</th>
+                  <th scope="col">Input Declaration Vol.</th>
                   <th scope="col">Waybill Vol.</th>
                   <th scope="col">Vol. Difference</th>
                 </tr>
@@ -349,8 +351,8 @@ export default {
         hasPrevious: false,
       },
       selectedRecords: [],
-      product_type: "All",
-      bdc: "All",
+      product_type: {label:"All", value: "All"},
+      bdc: {label:"All", value: "All"},
       idf_condition: "All",
       declaration_condition: "All",
       status: "All",
@@ -411,8 +413,8 @@ export default {
   },
   methods: {
     resetFilter: function () {
-      this.product_type = "All";
-      this.bdc = "All";
+      this.product_type = {label:"All", value: "All"};
+      this.bdc = {label:"All", value: "All"};
       this.idf_condition = "All";
       this.declaration_condition = "All";
       this.group_by = "Day";
@@ -431,8 +433,8 @@ export default {
       this.post("/waybills/analytics", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
-        product_type: this.product_type,
-        bdc: this.bdc,
+        product_type: this.product_type.value,
+        bdc: this.bdc.value,
         group_by: this.group_by,
         idf_condition: this.idf_condition,
         declaration_condition: this.declaration_condition,
@@ -540,8 +542,8 @@ export default {
         filename: filename,
         export_type: "petroleum-waybill-analysis",
         config_data: JSON.stringify({
-            product_type: this.product_type,
-            bdc: this.bdc,
+            product_type: this.product_type.value,
+            bdc: this.bdc.value,
             group_by: this.group_by,
             idf_condition: this.idf_condition,
             declaration_condition: this.declaration_condition,

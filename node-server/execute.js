@@ -22,9 +22,9 @@ exports.reconcile = async function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
@@ -46,19 +46,19 @@ exports.reconcile = async function(data, callback) {
                     " AND (debit_amount > 0 || debit_amount < 0)";
             }
             var mainTransNoOffset = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 updateStatus("error", "job error: could not get results", "completed");
                 callback(null, { isDone: true, id: proccessID });
             });
             if (typeof(mainTransNoOffset) == "undefined") {
                 await updateStatus("Error", "error: no statements found for main account - " + getTime(), "completed");
-                config.log("error: no statements found for main account  - " + getTime());
+                console.log("error: no statements found for main account  - " + getTime());
                 return callback(null, { isDone: true, id: proccessID });
             }
 
             await updateStatus("processing account statements ", "done processing account statements  - " + getTime());
-            config.log("done processing account statements  - " + getTime());
-            config.log("processing account statements ");
+            console.log("done processing account statements  - " + getTime());
+            console.log("processing account statements ");
             totalAccount = mainTransNoOffset.length;
             workingOn = 0;
             await asyncForEach(mainTransNoOffset, async(statements, index) => {
@@ -84,13 +84,13 @@ exports.reconcile = async function(data, callback) {
                         " AND `status` != 'locked' LIMIT 1;";
                 }
                 var resultStatement = await query(stm).catch(error => {
-                    config.log(error);
+                    console.log(error);
                     updateStatus("error", "job error: " + error, "completed");
                     callback(null, { isDone: true, id: proccessID });
                 });
                 if (resultStatement && typeof(resultStatement[0]) != "undefined" && resultStatement[0] != null) {
                     var reslutStm = resultStatement[0];
-                    // config.log("statements match: " + reslutStm.id);
+                    // console.log("statements match: " + reslutStm.id);
                     /**
                      * transaction found therefore lock the transaction
                      * and remove it from the list of unauthorized transaction
@@ -102,12 +102,12 @@ exports.reconcile = async function(data, callback) {
                         sql = "Call create_log(" + statements.account_id + "," + statements.debit_amount + ",'" + statements.post_date + "','" + statements.particulars + "'," + statements.id + "," + reslutStm.account_id + "," + reslutStm.credit_amount + ",'" + reslutStm.post_date + "','" + reslutStm.particulars + "'," + reslutStm.id + "," + data.intval + ")";
                     }
                     await query(sql).catch(error => {
-                        config.log(error);
+                        console.log(error);
                         updateStatus("error", "job error: cannot update statement for matched transaction", "completed");
                         callback(null, { isDone: true, id: proccessID });
                     });
                 } else {
-                    // config.log("statements no match");
+                    // console.log("statements no match");
                     // flag the statement because no record was found
                     var sql = "";
                     if (data.transtype === "credit") {
@@ -116,7 +116,7 @@ exports.reconcile = async function(data, callback) {
                         sql = "Call flag_transaction(" + statements.account_id + ",''," + statements.id + "," + statements.debit_amount + "," + data.intval + ")";
                     }
                     await query(sql).catch(error => {
-                        config.log(error);
+                        console.log(error);
                         updateStatus("error", "job error: cannot update statement for no match transaction", "completed");
                         callback(null, { isDone: true, id: proccessID });
                     })
@@ -124,12 +124,12 @@ exports.reconcile = async function(data, callback) {
             });
 
             await updateStatus("completed", " reconciliation completed - " + getTime(), "completed");
-            config.log("reconciliation completed - " + getTime());
+            console.log("reconciliation completed - " + getTime());
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: " + error.message + " - " + getTime(), "completed");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -155,7 +155,7 @@ exports.reconcile = async function(data, callback) {
     function bgQuery(sqlQuery) {
         sqlConn.query(sqlQuery, function(err, result, fields) {
             if (err) {
-                config.log(err)
+                console.log(err)
             }
         });
     }
@@ -188,7 +188,7 @@ exports.reconcile = async function(data, callback) {
 
         const sql = `UPDATE \`${table}\` SET ${values} WHERE \`${column}\`= ${val}`;
         await query(sql).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: update error", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -222,7 +222,7 @@ exports.reconcile = async function(data, callback) {
         //construct the insert statement
         const sql = `INSERT INTO \`${table}\`${columns} ${values}`;
         await query(sql).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: " + error, "completed");
             callback(null, { isDone: true, id: proccessID });
         })
@@ -266,9 +266,9 @@ exports.reconcileOMC = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
@@ -283,21 +283,21 @@ exports.reconcileOMC = function(data, callback) {
             var sqlQuery = "SELECT omcr.bank,omcr.bank_id, omcr.id,omcr.amount, omcr.date, o.name as omc_name, o.id as omc_id FROM `omc_receipt` omcr LEFT JOIN omc o ON omcr.omc_id=o.id WHERE `omc_id` = " + data.account +
                 " AND amount > 0";
             var mainReceiptsData = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 updateStatus("error", "job error: cannot read OMC receipts", "completed");
                 callback(null, { isDone: true, id: proccessID });
             });
 
             if (typeof(mainReceiptsData) == "undefined") {
                 updateStatus("Error", "error: no receipts found for OMC - " + getTime(), "completed");
-                config.log("error:  no receipts found for OMC - " + getTime());
+                console.log("error:  no receipts found for OMC - " + getTime());
                 return callback(null, { isDone: true, id: proccessID });
             }
 
 
             await updateStatus("processing OMC receipts", "reconciliation started - " + getTime());
-            config.log("reconciliation started - " + getTime());
-            config.log("processing OMC Receipts");
+            console.log("reconciliation started - " + getTime());
+            console.log("processing OMC Receipts");
             totalAccount = mainReceiptsData.length;
             workingOn = 0;
             await asyncForEach(mainReceiptsData, async(receipts, index) => {
@@ -306,7 +306,7 @@ exports.reconcileOMC = function(data, callback) {
                     proccessing_account: workingOn,
                     total_account: totalAccount,
                 });
-                config.log("processing receipts: " + receipts.id);
+                console.log("processing receipts: " + receipts.id);
 
                 /**
                  * useing the bank id find the accounts in the bank and check 
@@ -314,14 +314,14 @@ exports.reconcileOMC = function(data, callback) {
                 var stm = `SELECT credit_amount, post_date,particulars, id, account_id,offset_acc_no FROM statements WHERE account_id IN (SELECT id FROM accounts WHERE bank = ${receipts.bank_id}) ` +
                     `AND  credit_amount = ${receipts.amount} AND  (DATE(post_date) BETWEEN '${receipts.date}' AND DATE_ADD('${receipts.date}', INTERVAL ${data.intval} DAY)) AND receipt_status != 'locked' LIMIT 1;`;
                 var resultStatement = await query(stm).catch(error => {
-                    config.log(error);
+                    console.log(error);
                     updateStatus("error", "job error: internal query failed", "completed");
                     callback(null, { isDone: true, id: proccessID });
                 });
                 if (resultStatement != null && typeof(resultStatement[0]) != "undefined" && resultStatement[0] != null) {
                     var $found = resultStatement[0];
                     var resultbankQuery = await query(`SELECT acc.name,acc.acc_num1,acc.acc_num2,acc.bank as bank_id, bnk.name as bank_name FROM accounts acc LEFT JOIN banks bnk ON bnk.id=acc.bank WHERE acc.id=${$found.account_id}`).catch(error => {
-                        config.log(error);
+                        console.log(error);
                     });
                     if (resultbankQuery != null && typeof(resultbankQuery[0]) != "undefined" && resultbankQuery[0] != null) {
                         let accountInfor = resultbankQuery[0];
@@ -348,7 +348,7 @@ exports.reconcileOMC = function(data, callback) {
                         sql += `VALUES (${omc_amount},'${omc_date}','${omc}','${bank}',${bank_id},'${account}',${account_id},'${account_number}','${description}',${credit_amount},'${creadit_date}',${intVal},${omc_id})`;
                         console.log(sql)
                         await query(sql).catch(error => {
-                            config.log(error);
+                            console.log(error);
                             updateStatus("error", "job error: cannot create log for matched receipt", "completed");
                             callback(null, { isDone: true, id: proccessID });
                         });
@@ -359,7 +359,7 @@ exports.reconcileOMC = function(data, callback) {
                 } else {
                     var sql = `UPDATE omc_receipt SET omc_receipt.status='flagged' WHERE omc_receipt.id = ${receipts.id};`;
                     await query(sql).catch(error => {
-                        config.log(error);
+                        console.log(error);
                         updateStatus("error", "job error: cannot flag receipts", "completed");
                         callback(null, { isDone: true, id: proccessID });
                     })
@@ -367,12 +367,12 @@ exports.reconcileOMC = function(data, callback) {
             });
 
             await updateStatus("completed", " reconciliation completed - " + getTime(), "completed");
-            config.log("reconciliation completed - " + getTime());
+            console.log("reconciliation completed - " + getTime());
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: " + error.message + " - " + getTime(), "completed");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -398,7 +398,7 @@ exports.reconcileOMC = function(data, callback) {
     function bgQuery(sqlQuery) {
         sqlConn.query(sqlQuery, function(err, result, fields) {
             if (err) {
-                config.log(err)
+                console.log(err)
             }
         });
     }
@@ -431,7 +431,7 @@ exports.reconcileOMC = function(data, callback) {
 
         const sql = `UPDATE \`${table}\` SET ${values} WHERE \`${column}\`= ${val}`;
         await query(sql).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: update error", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -465,7 +465,7 @@ exports.reconcileOMC = function(data, callback) {
         //construct the insert statement
         const sql = `INSERT INTO \`${table}\`${columns} ${values}`;
         await query(sql).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: " + error, "completed");
             callback(null, { isDone: true, id: proccessID });
         })
@@ -513,9 +513,9 @@ exports.importFile = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
@@ -577,7 +577,7 @@ exports.importFile = function(data, callback) {
                 }
                 excelData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 updateStatus("Error", "error cleaning file, it may contain invalid characters");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -587,7 +587,7 @@ exports.importFile = function(data, callback) {
              * reason is for saving space
              */
             fs.unlink(filePath, (err) => {
-                if (err) config.log(' Error deleting file:: ' + err);
+                if (err) console.log(' Error deleting file:: ' + err);
             });
 
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
@@ -703,7 +703,7 @@ exports.importFile = function(data, callback) {
             await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
         } finally {
             callback(null, { isDone: true, id: proccessID });
-            config.log("task done ");
+            console.log("task done ");
         }
     }
 
@@ -775,7 +775,7 @@ exports.importFile = function(data, callback) {
             jobstatus = jobstatus || "processing",
             sqlQuery = "UPDATE `file_upload_status` SET " + " `description` = '" + desc + "',  `status` = '" + status + "',  `total` = '" + total + "',  `current` = '" + current + "' , `processing` = '" + jobstatus + "' WHERE `id`=" + data.id;
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: " + error, "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -814,7 +814,7 @@ exports.importFile = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -866,9 +866,9 @@ exports.importReceiptFile = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
@@ -918,7 +918,7 @@ exports.importReceiptFile = function(data, callback) {
                 }
                 excelData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 updateStatus("Error", "error cleaning file, it may contain invalid characters");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -928,7 +928,7 @@ exports.importReceiptFile = function(data, callback) {
              * reason is for saving space
              */
             fs.unlink(filePath, (err) => {
-                if (err) config.log(' Error deleting file:: ' + err);
+                if (err) console.log(' Error deleting file:: ' + err);
             });
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
@@ -969,7 +969,7 @@ exports.importReceiptFile = function(data, callback) {
             await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
         } finally {
             callback(null, { isDone: true, id: proccessID });
-            config.log("task done ");
+            console.log("task done ");
         }
     }
 
@@ -1035,7 +1035,7 @@ exports.importReceiptFile = function(data, callback) {
             jobstatus = jobstatus || "processing",
             sqlQuery = "UPDATE `file_upload_receipt_status` SET " + " `description` = '" + desc + "',  `status` = '" + status + "',  `total` = '" + total + "',  `current` = '" + current + "' , `processing` = '" + jobstatus + "' WHERE `id`=" + data.id;
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: " + error, "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -1058,7 +1058,7 @@ exports.importReceiptFile = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -1087,6 +1087,7 @@ exports.importReceiptFile = function(data, callback) {
     }
 }
 
+// ORTHER ODULE IMPORTS STARTS HERE
 /**
  * import model for file import
  * @param data is a variable holding the current job
@@ -1110,20 +1111,31 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
 
     var excelData = [];
     var excelDataToInsert = [];
+    var errorData = [];
     var filePath = data.path;
 
     const start = async() => {
         try {
-            var workbook = XLSX.readFile(filePath, {
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: "Error Entries",
+                Subject: "Error Data",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push("page1");
+
+            const getbook = XLSX.readFile(filePath, {
                 // dateNF: "DD-MMM-YYYY",
                 header: 1,
                 defval: "",
@@ -1132,7 +1144,18 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
                 raw: true,
                 dateNF: 'yyyy-mm-dd;@'
             });
-            var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
+
+            var excelRow = [];
+            var pages = getbook.SheetNames;
+            for (var i = 0; i < pages.length; i++) {
+                var name = pages[i];
+                excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
+                    raw: false,
+                    range: 0,
+                    dateNF: 'yyyy-mm-dd;@'
+                }));
+            }
+            var excelRow = [].concat.apply([], excelRow);
             await updateStatus("Cleaning data", "File read successfully - " + getTime());
 
             /**
@@ -1156,11 +1179,10 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
                         }
                         newObject[newIndx] = value;
                     }
-                    newObject["location"] = index + 2;
                 }
                 excelData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 updateStatus("Error", "error cleaning file, it may contain invalid characters");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -1170,7 +1192,7 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
              * reason is for saving space
              */
             fs.unlink(filePath, (err) => {
-                if (err) config.log(' Error deleting file:: ' + err);
+                if (err) console.log(' Error deleting file:: ' + err);
             });
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
@@ -1182,11 +1204,6 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
                  *validate accounting_date and account must not be empty
                  */
                 var newDate = await convertDate(excelData[i]['date']);
-                // if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
-                //     noErrorInFile = false;
-                //     await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
-                //     return false;
-                // }
                 excelData[i]['date'] = newDate;
                 excelDataToInsert.push(excelData[i]);
                 lastKey++
@@ -1195,23 +1212,41 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
 
             if (noErrorInFile) {
                 total = excelDataToInsert.length;
-
+                errorData.push(Object.keys(excelData[0]));
                 await updateStatus("Creating Receipts", "Validation successful - " + getTime());
                 await asyncForEach(excelDataToInsert, async(insertal, index) => {
                     current = index + 1;
                     //insert data to db
-                    var sqlStm1 = await updateSql("file_upload_receipt_status", "id", data.id, { current: current, total: total });
-                    var sqlStm2 = await insertSql("ghana_gov_omc_receipt", insertal);
-                    await executeStatement(sqlStm1.toString() + sqlStm2.toString());
+                    await update("file_upload_receipt_status", "id", data.id, { current: current, total: total });
+                    var result = await insertSql("ghana_gov_omc_receipt", insertal);
+                    if (result == null) {
+                        errorData.push([
+                            insertal.bank,
+                            insertal.date,
+                            insertal.omc,
+                            insertal.mode_of_payment,
+                            insertal.amount,
+                        ]);
+                    }
                 });
-                await updateStatus("completed", "All done - " + getTime(), "completed");
+
+                if (errorData.length > 1) {
+                    workbook.Sheets["page1"] = XLSX.utils.aoa_to_sheet(errorData);
+                    //save the worksheet for download
+                    var wookbookFile = '../omc-api/downloads/docs-error/errored-file' + (+new Date()) + '.xlsx';
+                    // write the workbook object to a file
+                    XLSX.writeFile(workbook, wookbookFile);
+                    await updateStatus("completed", wookbookFile, "completed");
+                } else {
+                    await updateStatus("completed", "All done - " + getTime(), "completed");
+                }
             }
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
         } finally {
             callback(null, { isDone: true, id: proccessID });
-            config.log("task done ");
+            console.log("task done ");
         }
     }
 
@@ -1228,8 +1263,9 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
 
     async function convertDate(inputDate) {
         function pad(s) { return (s < 10) ? '0' + s : s; }
-        var d = new Date(inputDate)
-        return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
+        var date = inputDate.split('-');
+        var d = new Date(date[2], date[1], date[0]) //y/m/d
+        return [pad(d.getFullYear()), pad(d.getMonth()), d.getDate()].join('/')
     }
 
     /**
@@ -1244,28 +1280,6 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
         return value.toLowerCase();
     }
 
-    async function updateSql(table, column, val, data) {
-        // set up an empty array to contain the WHERE conditions
-        let values = [];
-        // Iterate over each key / value in the object
-        Object.keys(data).forEach(function(key) {
-            // if the value is an empty string, do not use
-            if ('' === data[key]) {
-                return;
-            }
-            // if we've made it this far, add the clause to the array of conditions
-            values.push(`\`${key}\` = '${data[key]}'`);
-        });
-        // convert the where array into a string of , clauses
-        values = values.join(' , ');
-        // check the val type is string and set it as string 
-        if (typeof(val) == "string") {
-            val = `'${val}'`;
-        }
-        const sql = `UPDATE \`${table}\` SET ${values} WHERE \`${column}\`= ${val};`;
-        return sql;
-    }
-
     /**
      * update the current job status
      * @param status the current status of the job
@@ -1277,7 +1291,7 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
             jobstatus = jobstatus || "processing",
             sqlQuery = "UPDATE `file_upload_receipt_status` SET " + " `description` = '" + desc + "',  `status` = '" + status + "',  `total` = '" + total + "',  `current` = '" + current + "' , `processing` = '" + jobstatus + "' WHERE `id`=" + data.id;
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: " + error, "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -1289,14 +1303,27 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
      * @param dbData the data to insert
      */
     async function insertSql(table, dbData) {
+        const names = require('./functions/names_map.js');
         var data = dbData;
         if (isNaN(data.amount)) {
             data.amount = 0;
         }
-        await insertIgnore("omc", { name: data.omc });
-        var sqlQuery = "INSERT INTO `" + table + "`(`bank`, `omc`, `date`, `mode_of_payment`,`amount`)  " +
-            "VALUES('" + data.bank + "','" + data.omc + "','" + data.date + "','" + data.mode_of_payment + "'," + data.amount + "); ";
-        return sqlQuery;
+
+        const OMC = await names.omc_name(data.omc);
+
+        if (OMC == null) {
+            return null;
+        }
+
+        const insertData = {
+            bank: data.bank,
+            omc: OMC.tin,
+            date: data.date,
+            mode_of_payment: data.mode_of_payment,
+            amount: data.amount
+        };
+        insertIgnore("omc", { name: OMC.name, tin: OMC.tin });
+        return await insert(table, insertData);
     }
 
     /**
@@ -1336,12 +1363,77 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
         return results.insertId;
     }
 
-    async function executeStatement(sqlQuery) {
-        await query(sqlQuery).catch(error => {
-            config.log(error);
-            updateStatus("error", "job error: cannot insert record ", "completed");
-            callback(null, { isDone: true, id: proccessID });
+    /**
+     * update in to the database
+     * @param {String} table The name of the table to insert into
+     * @param {String} column the column in the db to mach
+     * @param val value used to match the column
+     * @param {Object} data the object containing key and values to insert
+     */
+    async function update(table, column, val, data) {
+        // set up an empty array to contain the WHERE conditions
+        let values = [];
+        // Iterate over each key / value in the object
+        Object.keys(data).forEach(function(key) {
+            // if the value is an empty string, do not use
+            if ('' === data[key]) {
+                return;
+            }
+            // if we've made it this far, add the clause to the array of conditions
+            values.push(`\`${key}\` = '${data[key]}'`);
         });
+        // convert the where array into a string of , clauses
+        values = values.join(' , ');
+        // check the val type is string and set it as string 
+        if (typeof(val) == "string") {
+            val = `'${val}'`;
+        }
+
+        const sql = `UPDATE \`${table}\` SET ${values} WHERE \`${column}\`= ${val}`;
+        await query(sql).catch(error => {
+            console.log('\x1b[31m%s\x1b[0m', error)
+            callback(null, {
+                isDone: true,
+                id: proccessID
+            });
+        });
+    }
+
+    /**
+     * insert in to the database
+     * @param {String} table The name of the table to insert into
+     * @param {Object} data the object containing key and values to insert
+     */
+    async function insert(table, data) {
+        if (!table) return;
+        if (!data) return;
+        // set up an empty array to contain the  columns and values
+        let columns = [];
+        let values = [];
+        // Iterate over each key / value in the object
+        Object.keys(data).forEach(function(key) {
+            // if the value is an empty string, do not use
+            if ('' === data[key]) {
+                return;
+            }
+            // if we've made it this far, add the clause to the array of conditions
+            columns.push(`\`${key}\``);
+            values.push(`'${data[key]}'`);
+        });
+        // convert the columns array into a string of
+        columns = "(" + columns.join(' , ') + ")";
+        // convert the values array into a string 
+        values = "VALUES (" + values.join(' , ') + ");";
+        //construct the insert statement
+        const sql = `INSERT INTO \`${table}\`${columns} ${values}`;
+        const results = await query(sql).catch(error => {
+            console.log('\x1b[31m%s\x1b[0m', error)
+            callback(null, {
+                isDone: true,
+                id: proccessID
+            });
+        })
+        return results.insertId;
     }
 
     /**
@@ -1390,20 +1482,31 @@ exports.importManifest = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
 
     var excelData = [];
     var excelDataToInsert = [];
+    var errorData = [];
     var filePath = data.path;
 
     const start = async() => {
         try {
-            var workbook = XLSX.readFile(filePath, {
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: "Error Entries",
+                Subject: "Error Data",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push("page1");
+
+            const getbook = XLSX.readFile(filePath, {
                 // dateNF: "DD-MMM-YYYY",
                 header: 1,
                 defval: "",
@@ -1412,7 +1515,18 @@ exports.importManifest = function(data, callback) {
                 raw: true,
                 dateNF: 'yyyy-mm-dd;@'
             });
-            var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
+
+            var excelRow = [];
+            var pages = getbook.SheetNames;
+            for (var i = 0; i < pages.length; i++) {
+                var name = pages[i];
+                excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
+                    raw: false,
+                    range: 0,
+                    dateNF: 'yyyy-mm-dd;@'
+                }));
+            }
+            var excelRow = [].concat.apply([], excelRow);
             await updateStatus("Cleaning data", "File read successfully - " + getTime());
 
             /**
@@ -1436,11 +1550,10 @@ exports.importManifest = function(data, callback) {
                         }
                         newObject[newIndx] = value;
                     }
-                    newObject["location"] = index + 2;
                 }
                 excelData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 updateStatus("Error", "error cleaning file, it may contain invalid characters");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -1450,7 +1563,7 @@ exports.importManifest = function(data, callback) {
              * reason is for saving space
              */
             fs.unlink(filePath, (err) => {
-                if (err) config.log(' Error deleting file:: ' + err);
+                if (err) console.log(' Error deleting file:: ' + err);
             });
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
@@ -1462,11 +1575,6 @@ exports.importManifest = function(data, callback) {
                  *validate accounting_date and account must not be empty
                  */
                 var newDate = await convertDate(excelData[i]['arrival_date']);
-                // if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
-                //     noErrorInFile = false;
-                //     await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
-                //     return false;
-                // }
                 excelData[i]['date'] = newDate;
                 excelDataToInsert.push(excelData[i]);
                 lastKey++
@@ -1475,22 +1583,45 @@ exports.importManifest = function(data, callback) {
 
             if (noErrorInFile) {
                 total = excelDataToInsert.length;
-
+                errorData.push(Object.keys(excelData[0]));
                 await updateStatus("Creating Receipts", "Validation successful - " + getTime());
                 await asyncForEach(excelDataToInsert, async(insertal, index) => {
                     current = index + 1;
                     //insert data to db
                     await update("file_upload_receipt_status", "id", data.id, { current: current, total: total });
-                    await insertSql("petroleum_manifest", insertal);
+                    var result = await insertSql("petroleum_manifest", insertal);
+                    if (result == null) {
+                        errorData.push([
+                            insertal.arrival_date,
+                            insertal.vessel_number,
+                            insertal.vessel_name,
+                            insertal.product_type,
+                            insertal.volume,
+                            insertal.amount,
+                            insertal.ucr_number,
+                            insertal.exporter_name,
+                            insertal.importer_name,
+                        ]);
+                    }
                 });
-                await updateStatus("completed", "All done - " + getTime(), "completed");
+
+                if (errorData.length > 1) {
+                    workbook.Sheets["page1"] = XLSX.utils.aoa_to_sheet(errorData);
+                    //save the worksheet for download
+                    var wookbookFile = '../omc-api/downloads/docs-error/errored-file' + (+new Date()) + '.xlsx';
+                    // write the workbook object to a file
+                    XLSX.writeFile(workbook, wookbookFile);
+                    await updateStatus("completed", wookbookFile, "completed");
+                } else {
+                    await updateStatus("completed", "All done - " + getTime(), "completed");
+                }
             }
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
         } finally {
             callback(null, { isDone: true, id: proccessID });
-            config.log("task done ");
+            console.log("task done ");
         }
     }
 
@@ -1551,23 +1682,33 @@ exports.importManifest = function(data, callback) {
      * @param dbData the data to insert
      */
     async function insertSql(table, dbData) {
+        const names = require('./functions/names_map.js');
         var data = dbData;
         if (isNaN(data.amount)) {
             data.value = 0;
         }
+
+        // TODO change if product name is provided instead of code
+        const product = await names.product_name_by_code(data.product_type);
+        const BDC = await names.bdc_name(data.importer_name);
+
+        if (product == null || BDC == null) {
+            return null;
+        }
+
         const insertData = {
             arrival_date: data.date,
             vessel_name: data.vessel_name,
             vessel_number: data.vessel_number,
-            product_type: data.product_type,
+            product_type: product.code,
             volume: data.volume,
             amount: data.amount,
             exporter_name: data.exporter_name,
-            importer_name: data.importer_name,
+            importer_name: BDC.code,
             ucr_number: data.ucr_number
         };
-        await insertIgnore("tax_schedule_products", { name: data.product_type });
-        await insertIgnore("bdc", { name: data.importer_name });
+        insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
+        insertIgnore("bdc", { name: BDC.name, code: BDC.code });
         return await insert(table, insertData);
     }
 
@@ -1727,20 +1868,31 @@ exports.importDeclaration = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
 
     var excelData = [];
     var excelDataToInsert = [];
+    var errorData = [];
     var filePath = data.path;
 
     const start = async() => {
         try {
-            var workbook = XLSX.readFile(filePath, {
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: "Error Entries",
+                Subject: "Error Data",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push("page1");
+
+            const getbook = XLSX.readFile(filePath, {
                 // dateNF: "DD-MMM-YYYY",
                 header: 1,
                 defval: "",
@@ -1749,7 +1901,18 @@ exports.importDeclaration = function(data, callback) {
                 raw: true,
                 dateNF: 'yyyy-mm-dd;@'
             });
-            var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
+
+            var excelRow = [];
+            var pages = getbook.SheetNames;
+            for (var i = 0; i < pages.length; i++) {
+                var name = pages[i];
+                excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
+                    raw: false,
+                    range: 0,
+                    dateNF: 'yyyy-mm-dd;@'
+                }));
+            }
+            var excelRow = [].concat.apply([], excelRow);
             await updateStatus("Cleaning data", "File read successfully - " + getTime());
 
             /**
@@ -1773,11 +1936,10 @@ exports.importDeclaration = function(data, callback) {
                         }
                         newObject[newIndx] = value;
                     }
-                    newObject["location"] = index + 2;
                 }
                 excelData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 updateStatus("Error", "error cleaning file, it may contain invalid characters");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -1787,7 +1949,7 @@ exports.importDeclaration = function(data, callback) {
              * reason is for saving space
              */
             fs.unlink(filePath, (err) => {
-                if (err) config.log(' Error deleting file:: ' + err);
+                if (err) console.log(' Error deleting file:: ' + err);
             });
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
@@ -1814,22 +1976,46 @@ exports.importDeclaration = function(data, callback) {
 
             if (noErrorInFile) {
                 total = excelDataToInsert.length;
-
+                errorData.push(Object.keys(excelData[0]));
                 await updateStatus("Creating Receipts", "Validation successful - " + getTime());
                 await asyncForEach(excelDataToInsert, async(insertal, index) => {
                     current = index + 1;
                     //insert data to db
                     await update("file_upload_receipt_status", "id", data.id, { current: current, total: total });
-                    await insertSql("petroleum_declaration", insertal);
+                    var result = await insertSql("petroleum_declaration", insertal);
+                    if (result == null) {
+                        errorData.push([
+                            insertal.clearing_agent,
+                            insertal.product_type,
+                            insertal.volume,
+                            insertal.ucr_number,
+                            insertal.exporter_name,
+                            insertal.importer_name,
+                            insertal.cleared_date,
+                            insertal.idf_application_number,
+                            insertal.idf_amount,
+                            insertal.hs_code,
+                        ]);
+                    }
                 });
-                await updateStatus("completed", "All done - " + getTime(), "completed");
+
+                if (errorData.length > 1) {
+                    workbook.Sheets["page1"] = XLSX.utils.aoa_to_sheet(errorData);
+                    //save the worksheet for download
+                    var wookbookFile = '../omc-api/downloads/docs-error/errored-file' + (+new Date()) + '.xlsx';
+                    // write the workbook object to a file
+                    XLSX.writeFile(workbook, wookbookFile);
+                    await updateStatus("completed", wookbookFile, "completed");
+                } else {
+                    await updateStatus("completed", "All done - " + getTime(), "completed");
+                }
             }
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
         } finally {
             callback(null, { isDone: true, id: proccessID });
-            config.log("task done ");
+            console.log("task done ");
         }
     }
 
@@ -1890,16 +2076,26 @@ exports.importDeclaration = function(data, callback) {
      * @param dbData the data to insert
      */
     async function insertSql(table, dbData) {
+        const names = require('./functions/names_map.js');
         var data = dbData;
         if (isNaN(data.amount)) {
-            data.value = 0;
+            data.amount = 0;
         }
+
+        // TODO change if product name is provided instead of code
+        const product = await names.product_name_by_code(data.product_type);
+        const BDC = await names.bdc_name(data.importer_name);
+
+        if (product == null || BDC == null) {
+            return null;
+        }
+
         const insertData = {
             declaration_date: data.declaration_date,
             clearing_agent: data.clearing_agent,
-            product_type: data.product_type,
+            product_type: product.code,
             volume: data.volume,
-            importer_name: data.importer_name,
+            importer_name: BDC.code,
             ucr_number: data.ucr_number,
             amount: data.amount,
             hs_code: data.hs_code,
@@ -1907,11 +2103,10 @@ exports.importDeclaration = function(data, callback) {
             idf_application_number: data.idf_application_number,
             idf_amount: data.idf_amount
         };
-        await insertIgnore("tax_schedule_products", { name: data.product_type });
-        await insertIgnore("bdc", { name: data.importer_name });
+        insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
+        insertIgnore("bdc", { name: BDC.name, code: BDC.code });
         return await insert(table, insertData);
     }
-
 
     /**
      * insert in to the database
@@ -2070,20 +2265,31 @@ exports.importOrders = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
 
     var excelData = [];
     var excelDataToInsert = [];
+    var errorData = [];
     var filePath = data.path;
 
     const start = async() => {
         try {
-            var workbook = XLSX.readFile(filePath, {
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: "Error Entries",
+                Subject: "Error Data",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push("page1");
+
+            const getbook = XLSX.readFile(filePath, {
                 // dateNF: "DD-MMM-YYYY",
                 header: 1,
                 defval: "",
@@ -2092,9 +2298,20 @@ exports.importOrders = function(data, callback) {
                 raw: true,
                 dateNF: 'yyyy-mm-dd;@'
             });
-            var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
-            await updateStatus("Cleaning data", "File read successfully - " + getTime());
 
+            var excelRow = [];
+            var pages = getbook.SheetNames;
+            for (var i = 0; i < pages.length; i++) {
+                var name = pages[i];
+                excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
+                    raw: false,
+                    range: 3,
+                    dateNF: 'yyyy-mm-dd;@'
+                }));
+            }
+            var excelRow = [].concat.apply([], excelRow);
+
+            await updateStatus("Cleaning data", "File read successfully - " + getTime());
             /**
              * modify array headers and remove special characters.
              * add the location of the array in the excel file for latter access,
@@ -2107,7 +2324,7 @@ exports.importOrders = function(data, callback) {
 
                     var value = excel[i].replace(/,/g, '');
                     newObject[newIndx] = value;
-                    if (newIndx == "unit_price") {
+                    if (newIndx == "ex_ref_price") {
                         var value = excel[i].replace(/,/g, '');
                         value = value.split(" ").join("");
                         if (value.includes("(") && value.includes(")")) {
@@ -2116,11 +2333,10 @@ exports.importOrders = function(data, callback) {
                         }
                         newObject[newIndx] = value;
                     }
-                    newObject["location"] = index + 2;
                 }
                 excelData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 updateStatus("Error", "error cleaning file, it may contain invalid characters");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -2130,7 +2346,7 @@ exports.importOrders = function(data, callback) {
              * reason is for saving space
              */
             fs.unlink(filePath, (err) => {
-                if (err) config.log(' Error deleting file:: ' + err);
+                if (err) console.log(' Error deleting file:: ' + err);
             });
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
@@ -2142,11 +2358,6 @@ exports.importOrders = function(data, callback) {
                  *validate accounting_date and account must not be empty
                  */
                 var order_date = await convertDate(excelData[i]['order_date']);
-                // if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
-                //     noErrorInFile = false;
-                //     await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
-                //     return false;
-                // }
                 excelData[i]['order_date'] = order_date;
                 excelDataToInsert.push(excelData[i]);
                 lastKey++
@@ -2155,28 +2366,65 @@ exports.importOrders = function(data, callback) {
 
             if (noErrorInFile) {
                 total = excelDataToInsert.length;
-
+                errorData.push(Object.keys(excelData[0]));
                 await updateStatus("Creating Receipts", "Validation successful - " + getTime());
                 await asyncForEach(excelDataToInsert, async(insertal, index) => {
                     current = index + 1;
                     //insert data to db
                     await update("file_upload_receipt_status", "id", data.id, { current: current, total: total });
-                    await insertSql("petroleum_order", insertal);
+                    var result = await insertSql("petroleum_order", insertal);
+                    if (result == null) {
+                        errorData.push([
+                            current,
+                            insertal.price_window_id,
+                            insertal.declarant_name,
+                            insertal.declarant_tin,
+                            insertal.consignee_name,
+                            insertal.consignee_tin,
+                            insertal.order_no,
+                            insertal.transaction_id,
+                            insertal.order_status,
+                            insertal.product_cd,
+                            insertal.product_name,
+                            insertal.uom,
+                            insertal.pre_order_quantity,
+                            insertal.pre_order_date,
+                            insertal.order_quantity,
+                            insertal.order_date,
+                            insertal.bdc_name,
+                            insertal.depot_name,
+                            insertal.ex_ref_price,
+                            insertal.brv_no,
+                            insertal.brv_capacity,
+                            insertal.amount_payable,
+                            insertal.amount_expected,
+                        ]);
+                    }
                 });
-                await updateStatus("completed", "All done - " + getTime(), "completed");
+
+                if (errorData.length > 1) {
+                    workbook.Sheets["page1"] = XLSX.utils.aoa_to_sheet(errorData);
+                    //save the worksheet for download
+                    var wookbookFile = '../omc-api/downloads/docs-error/errored-file' + (+new Date()) + '.xlsx';
+                    // write the workbook object to a file
+                    XLSX.writeFile(workbook, wookbookFile);
+                    await updateStatus("completed", wookbookFile, "completed");
+                } else {
+                    await updateStatus("completed", "All done - " + getTime(), "completed");
+                }
             }
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
         } finally {
             callback(null, { isDone: true, id: proccessID });
-            config.log("task done ");
+            console.log("task done ");
         }
     }
 
     /**
      * async function forEach loop
-     * @param array the array to loop through
+000000000000000     * @param array the array to loop through
      * @param arrayCallback returns the value, index and array itself to be used
      */
     async function asyncForEach(array, arrayCallback) {
@@ -2187,8 +2435,9 @@ exports.importOrders = function(data, callback) {
 
     async function convertDate(inputDate) {
         function pad(s) { return (s < 10) ? '0' + s : s; }
-        var d = new Date(inputDate)
-        return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
+        var date = inputDate.split('/');
+        var d = new Date(date[2], date[1], date[0]) //y/m/d
+        return [pad(d.getFullYear()), pad(d.getMonth()), d.getDate()].join('/')
     }
 
     /**
@@ -2231,26 +2480,39 @@ exports.importOrders = function(data, callback) {
      * @param dbData the data to insert
      */
     async function insertSql(table, dbData) {
+        const names = require('./functions/names_map.js');
+
         var data = dbData;
-        if (isNaN(data.unit_price)) {
-            data.unit_price = 0;
+        if (isNaN(data.ex_ref_price)) {
+            data.ex_ref_price = 0;
+        }
+
+        const product = await names.product_name_by_code(data.product_cd);
+        const BDC = await names.bdc_name(data.bdc_name);
+        const OMC = await names.omc_name(data.declarant_name);
+        const DEPOT = await names.depot_name(data.depot_name);
+
+        if (product == null || BDC == null || OMC == null || DEPOT == null) {
+            return null;
         }
         const insertData = {
             order_date: data.order_date,
-            product_type: data.product_type,
+            product_type: product.code,
             transporter: data.transporter,
-            reference_number: data.reference_number,
-            vehicle_number: data.vehicle_number,
-            volume: data.volume,
-            unit_price: data.unit_price,
-            depot: data.depot,
-            bdc: data.bdc,
-            omc: data.omc
+            reference_number: data.order_no,
+            vehicle_number: data.brv_no,
+            order_number: data.order_no,
+            transaction_id: data.transaction_id,
+            volume: data.order_quantity,
+            unit_price: data.ex_ref_price,
+            depot: DEPOT.code,
+            bdc: BDC.code,
+            omc: OMC.tin
         };
-        await insertIgnore("tax_schedule_products", { name: data.product_type });
-        await insertIgnore("bdc", { name: data.bdc });
-        await insertIgnore("omc", { name: data.omc });
-        await insertIgnore("depot", { name: data.depot });
+        insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
+        insertIgnore("bdc", { name: BDC.name, code: BDC.code });
+        insertIgnore("omc", { name: OMC.name, tin: OMC.tin });
+        insertIgnore("depot", { name: DEPOT.name, code: DEPOT.code });
         return await insert(table, insertData);
     }
 
@@ -2412,20 +2674,31 @@ exports.importPreorders = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
 
     var excelData = [];
     var excelDataToInsert = [];
+    var errorData = [];
     var filePath = data.path;
 
     const start = async() => {
         try {
-            var workbook = XLSX.readFile(filePath, {
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: "Error Entries",
+                Subject: "Error Data",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push("page1");
+
+            const getbook = XLSX.readFile(filePath, {
                 // dateNF: "DD-MMM-YYYY",
                 header: 1,
                 defval: "",
@@ -2434,7 +2707,18 @@ exports.importPreorders = function(data, callback) {
                 raw: true,
                 dateNF: 'yyyy-mm-dd;@'
             });
-            var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
+
+            var excelRow = [];
+            var pages = getbook.SheetNames;
+            for (var i = 0; i < pages.length; i++) {
+                var name = pages[i];
+                excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
+                    raw: false,
+                    range: 3,
+                    dateNF: 'yyyy-mm-dd;@'
+                }));
+            }
+            var excelRow = [].concat.apply([], excelRow);
             await updateStatus("Cleaning data", "File read successfully - " + getTime());
 
             /**
@@ -2449,7 +2733,7 @@ exports.importPreorders = function(data, callback) {
 
                     var value = excel[i].replace(/,/g, '');
                     newObject[newIndx] = value;
-                    if (newIndx == "unit_price") {
+                    if (newIndx == "ex_ref_price") {
                         var value = excel[i].replace(/,/g, '');
                         value = value.split(" ").join("");
                         if (value.includes("(") && value.includes(")")) {
@@ -2462,7 +2746,7 @@ exports.importPreorders = function(data, callback) {
                 }
                 excelData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 updateStatus("Error", "error cleaning file, it may contain invalid characters");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -2472,7 +2756,7 @@ exports.importPreorders = function(data, callback) {
              * reason is for saving space
              */
             fs.unlink(filePath, (err) => {
-                if (err) config.log(' Error deleting file:: ' + err);
+                if (err) console.log(' Error deleting file:: ' + err);
             });
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
@@ -2483,13 +2767,8 @@ exports.importPreorders = function(data, callback) {
                 /**
                  *validate accounting_date and account must not be empty
                  */
-                var preorder_date = await convertDate(excelData[i]['preorder_date']);
-                // if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
-                //     noErrorInFile = false;
-                //     await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
-                //     return false;
-                // }
-                excelData[i]['preorder_date'] = preorder_date;
+                var preorder_date = await convertDate(excelData[i]['pre_order_date']);
+                excelData[i]['pre_order_date'] = preorder_date;
                 excelDataToInsert.push(excelData[i]);
                 lastKey++
             }
@@ -2497,22 +2776,59 @@ exports.importPreorders = function(data, callback) {
 
             if (noErrorInFile) {
                 total = excelDataToInsert.length;
-
+                errorData.push(Object.keys(excelData[0]));
                 await updateStatus("Creating Receipts", "Validation successful - " + getTime());
                 await asyncForEach(excelDataToInsert, async(insertal, index) => {
                     current = index + 1;
                     //insert data to db
                     await update("file_upload_receipt_status", "id", data.id, { current: current, total: total });
-                    await insertSql("petroleum_preorder", insertal);
+                    var result = await insertSql("petroleum_preorder", insertal);
+                    if (result == null) {
+                        errorData.push([
+                            current,
+                            insertal.price_window_id,
+                            insertal.declarant_name,
+                            insertal.declarant_tin,
+                            insertal.consignee_name,
+                            insertal.consignee_tin,
+                            insertal.order_no,
+                            insertal.transaction_id,
+                            insertal.order_status,
+                            insertal.product_cd,
+                            insertal.product_name,
+                            insertal.uom,
+                            insertal.pre_order_quantity,
+                            insertal.pre_order_date,
+                            insertal.order_quantity,
+                            insertal.order_date,
+                            insertal.bdc_name,
+                            insertal.depot_name,
+                            insertal.ex_ref_price,
+                            insertal.brv_no,
+                            insertal.brv_capacity,
+                            insertal.amount_payable,
+                            insertal.amount_expected,
+                        ]);
+                    }
                 });
-                await updateStatus("completed", "All done - " + getTime(), "completed");
+
+                if (errorData.length > 1) {
+                    workbook.Sheets["page1"] = XLSX.utils.aoa_to_sheet(errorData);
+                    //save the worksheet for download
+                    var wookbookFile = '../omc-api/downloads/docs-error/errored-file' + (+new Date()) + '.xlsx';
+                    // write the workbook object to a file
+                    XLSX.writeFile(workbook, wookbookFile);
+                    await updateStatus("completed", wookbookFile, "completed");
+                } else {
+                    await updateStatus("completed", "All done - " + getTime(), "completed");
+                }
             }
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
         } finally {
             callback(null, { isDone: true, id: proccessID });
-            config.log("task done ");
+            console.log("task done ");
         }
     }
 
@@ -2529,8 +2845,9 @@ exports.importPreorders = function(data, callback) {
 
     async function convertDate(inputDate) {
         function pad(s) { return (s < 10) ? '0' + s : s; }
-        var d = new Date(inputDate)
-        return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
+        var date = inputDate.split('/');
+        var d = new Date(date[2], date[1], date[0]) //y/m/d
+        return [pad(d.getFullYear()), pad(d.getMonth()), d.getDate()].join('/')
     }
 
     /**
@@ -2573,23 +2890,34 @@ exports.importPreorders = function(data, callback) {
      * @param dbData the data to insert
      */
     async function insertSql(table, dbData) {
+        const names = require('./functions/names_map.js');
+
         var data = dbData;
-        if (isNaN(data.unit_price)) {
-            data.unit_price = 0;
+        if (isNaN(data.ex_ref_price)) {
+            data.ex_ref_price = 0;
+        }
+
+        const product = await names.product_name_by_code(data.product_cd);
+        const BDC = await names.bdc_name(data.bdc_name);
+        const OMC = await names.omc_name(data.declarant_name);
+        const DEPOT = await names.depot_name(data.depot_name);
+
+        if (product == null || BDC == null || OMC == null || DEPOT == null) {
+            return null;
         }
         const insertData = {
-            preorder_date: data.preorder_date,
-            product_type: data.product_type,
-            reference_number: data.reference_number,
-            volume: data.volume,
-            depot: data.depot,
-            bdc: data.bdc,
-            omc: data.omc
+            preorder_date: data.pre_order_date,
+            product_type: product.code,
+            reference_number: data.order_no,
+            volume: data.pre_order_quantity,
+            depot: DEPOT.code,
+            bdc: BDC.code,
+            omc: OMC.tin
         };
-        await insertIgnore("tax_schedule_products", { name: data.product_type });
-        await insertIgnore("bdc", { name: data.bdc });
-        await insertIgnore("omc", { name: data.omc });
-        await insertIgnore("depot", { name: data.depot });
+        insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
+        insertIgnore("bdc", { name: BDC.name, code: BDC.code });
+        insertIgnore("omc", { name: OMC.name, tin: OMC.tin });
+        insertIgnore("depot", { name: DEPOT.name, code: DEPOT.code });
         return await insert(table, insertData);
     }
 
@@ -2751,20 +3079,31 @@ exports.importWaybills = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
 
     var excelData = [];
     var excelDataToInsert = [];
+    var errorData = [];
     var filePath = data.path;
 
     const start = async() => {
         try {
-            var workbook = XLSX.readFile(filePath, {
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: "Error Entries",
+                Subject: "Error Data",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push("page1");
+
+            const getbook = XLSX.readFile(filePath, {
                 // dateNF: "DD-MMM-YYYY",
                 header: 1,
                 defval: "",
@@ -2773,7 +3112,18 @@ exports.importWaybills = function(data, callback) {
                 raw: true,
                 dateNF: 'yyyy-mm-dd;@'
             });
-            var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
+
+            var excelRow = [];
+            var pages = getbook.SheetNames;
+            for (var i = 0; i < pages.length; i++) {
+                var name = pages[i];
+                excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
+                    raw: false,
+                    range: 0,
+                    dateNF: 'yyyy-mm-dd;@'
+                }));
+            }
+            var excelRow = [].concat.apply([], excelRow);
             await updateStatus("Cleaning data", "File read successfully - " + getTime());
 
             /**
@@ -2797,11 +3147,10 @@ exports.importWaybills = function(data, callback) {
                         }
                         newObject[newIndx] = value;
                     }
-                    newObject["location"] = index + 2;
                 }
                 excelData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 updateStatus("Error", "error cleaning file, it may contain invalid characters");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -2811,7 +3160,7 @@ exports.importWaybills = function(data, callback) {
              * reason is for saving space
              */
             fs.unlink(filePath, (err) => {
-                if (err) config.log(' Error deleting file:: ' + err);
+                if (err) console.log(' Error deleting file:: ' + err);
             });
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
@@ -2823,11 +3172,6 @@ exports.importWaybills = function(data, callback) {
                  *validate accounting_date and account must not be empty
                  */
                 var date = await convertDate(excelData[i]['date']);
-                // if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
-                //     noErrorInFile = false;
-                //     await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
-                //     return false;
-                // }
                 excelData[i]['date'] = date;
                 excelDataToInsert.push(excelData[i]);
                 lastKey++
@@ -2836,22 +3180,46 @@ exports.importWaybills = function(data, callback) {
 
             if (noErrorInFile) {
                 total = excelDataToInsert.length;
-
+                errorData.push(Object.keys(excelData[0]));
                 await updateStatus("Creating Receipts", "Validation successful - " + getTime());
                 await asyncForEach(excelDataToInsert, async(insertal, index) => {
                     current = index + 1;
                     //insert data to db
                     await update("file_upload_receipt_status", "id", data.id, { current: current, total: total });
-                    await insertSql("petroleum_waybill", insertal);
+                    var result = await insertSql("petroleum_waybill", insertal);
+                    if (result == null) {
+                        errorData.push([
+                            insertal.date,
+                            insertal.product,
+                            insertal.volume,
+                            insertal.depot,
+                            insertal.omc,
+                            insertal.bdc,
+                            insertal.driver,
+                            insertal.transporter,
+                            insertal.vehicle_number,
+                            insertal.destination,
+                        ]);
+                    }
                 });
-                await updateStatus("completed", "All done - " + getTime(), "completed");
+
+                if (errorData.length > 1) {
+                    workbook.Sheets["page1"] = XLSX.utils.aoa_to_sheet(errorData);
+                    //save the worksheet for download
+                    var wookbookFile = '../omc-api/downloads/docs-error/errored-file' + (+new Date()) + '.xlsx';
+                    // write the workbook object to a file
+                    XLSX.writeFile(workbook, wookbookFile);
+                    await updateStatus("completed", wookbookFile, "completed");
+                } else {
+                    await updateStatus("completed", "All done - " + getTime(), "completed");
+                }
             }
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
         } finally {
             callback(null, { isDone: true, id: proccessID });
-            config.log("task done ");
+            console.log("task done ");
         }
     }
 
@@ -2868,8 +3236,9 @@ exports.importWaybills = function(data, callback) {
 
     async function convertDate(inputDate) {
         function pad(s) { return (s < 10) ? '0' + s : s; }
-        var d = new Date(inputDate)
-        return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
+        var date = inputDate.split('/');
+        var d = new Date(date[2], date[1], date[0]) //y/m/d
+        return [pad(d.getFullYear()), pad(d.getMonth()), d.getDate()].join('/')
     }
 
     /**
@@ -2912,26 +3281,37 @@ exports.importWaybills = function(data, callback) {
      * @param dbData the data to insert
      */
     async function insertSql(table, dbData) {
+        const names = require('./functions/names_map.js');
+
         var data = dbData;
-        if (isNaN(data.unit_price)) {
-            data.unit_price = 0;
+        if (isNaN(data.volume)) {
+            data.volume = 0;
+        }
+
+        const product = await names.product_name_by_code(data.product);
+        const BDC = await names.bdc_name(data.bdc);
+        const OMC = await names.omc_name(data.omc);
+        const DEPOT = await names.depot_name(data.depot);
+
+        if (product == null || BDC == null || OMC == null || DEPOT == null) {
+            return null;
         }
         const insertData = {
             date: data.date,
-            product_type: data.product_type,
+            product_type: product.code,
             vehicle_number: data.vehicle_number,
             volume: data.volume,
             transporter: data.transporter,
             destination: data.destination,
             driver: data.driver,
-            depot: data.depot,
-            bdc: data.bdc,
-            omc: data.omc
+            depot: DEPOT.code,
+            bdc: BDC.code,
+            omc: OMC.tin
         };
-        await insertIgnore("tax_schedule_products", { name: data.product_type });
-        await insertIgnore("bdc", { name: data.bdc });
-        await insertIgnore("omc", { name: data.omc });
-        await insertIgnore("depot", { name: data.depot });
+        insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
+        insertIgnore("bdc", { name: BDC.name, code: BDC.code });
+        insertIgnore("omc", { name: OMC.name, tin: OMC.tin });
+        insertIgnore("depot", { name: DEPOT.name, code: DEPOT.code });
         return await insert(table, insertData);
     }
 
@@ -3093,20 +3473,31 @@ exports.importICUMSDeclarations = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
 
     var excelData = [];
     var excelDataToInsert = [];
+    var errorData = [];
     var filePath = data.path;
 
     const start = async() => {
         try {
-            var workbook = XLSX.readFile(filePath, {
+            const workbook = XLSX.utils.book_new();
+            workbook.Props = {
+                Title: "Error Entries",
+                Subject: "Error Data",
+                Author: "Strategic Mobilisation Ghana Limited",
+                Company: "Strategic Mobilisation Ghana Limited",
+                CreatedDate: new Date(),
+            }
+            workbook.SheetNames.push("page1");
+
+            const getbook = XLSX.readFile(filePath, {
                 // dateNF: "DD-MMM-YYYY",
                 header: 1,
                 defval: "",
@@ -3115,7 +3506,18 @@ exports.importICUMSDeclarations = function(data, callback) {
                 raw: true,
                 dateNF: 'yyyy-mm-dd;@'
             });
-            var excelRow = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]], { raw: false, dateNF: 'yyyy-mm-dd;@' })
+
+            var excelRow = [];
+            var pages = getbook.SheetNames;
+            for (var i = 0; i < pages.length; i++) {
+                var name = pages[i];
+                excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
+                    raw: false,
+                    range: 4,
+                    dateNF: 'yyyy-mm-dd;@'
+                }));
+            }
+            var excelRow = [].concat.apply([], excelRow);
             await updateStatus("Cleaning data", "File read successfully - " + getTime());
 
             /**
@@ -3130,7 +3532,7 @@ exports.importICUMSDeclarations = function(data, callback) {
 
                     var value = excel[i].replace(/,/g, '');
                     newObject[newIndx] = value;
-                    if (newIndx == "amount") {
+                    if (newIndx == "amount_payable") {
                         var value = excel[i].replace(/,/g, '');
                         value = value.split(" ").join("");
                         if (value.includes("(") && value.includes(")")) {
@@ -3139,11 +3541,10 @@ exports.importICUMSDeclarations = function(data, callback) {
                         }
                         newObject[newIndx] = value;
                     }
-                    newObject["location"] = index + 2;
                 }
                 excelData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 updateStatus("Error", "error cleaning file, it may contain invalid characters");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -3153,7 +3554,7 @@ exports.importICUMSDeclarations = function(data, callback) {
              * reason is for saving space
              */
             fs.unlink(filePath, (err) => {
-                if (err) config.log(' Error deleting file:: ' + err);
+                if (err) console.log(' Error deleting file:: ' + err);
             });
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
@@ -3164,36 +3565,67 @@ exports.importICUMSDeclarations = function(data, callback) {
                 /**
                  *validate accounting_date and account must not be empty
                  */
-                var date = await convertDate(excelData[i]['date']);
-                // if (excelData[i] && (null === excelData[i]['date']) || newDate === 'NaN/NaN/NaN') {
-                //     noErrorInFile = false;
-                //     await updateStatus("Error", "Error: Invalid date detected On line  " + excelData[i]['location']);
-                //     return false;
-                // }
-                excelData[i]['date'] = date;
-                excelDataToInsert.push(excelData[i]);
-                lastKey++
+                var found = excelDataToInsert.findIndex(x => x.price_window_id === excelData[i]['price_window_id'] && x.declarant_name === excelData[i]['declarant_name'] && x.product_cd === excelData[i]['product_cd']);
+                if (found !== -1) {
+                    excelDataToInsert[found]['item_quantity'] = parseFloat(excelDataToInsert[found]['item_quantity']) + parseFloat(excelData[i]['item_quantity']);
+                    excelDataToInsert[found]['amount_payable'] = parseFloat(excelDataToInsert[found]['amount_payable']) + parseFloat(excelData[i]['amount_payable']);
+                } else {
+                    excelDataToInsert.push(excelData[i]);
+                }
             }
             await updateStatus("Validating file", "Analyzing succesful - " + getTime());
 
             if (noErrorInFile) {
                 total = excelDataToInsert.length;
-
+                errorData.push(Object.keys(excelData[0]));
                 await updateStatus("Creating Receipts", "Validation successful - " + getTime());
                 await asyncForEach(excelDataToInsert, async(insertal, index) => {
                     current = index + 1;
                     //insert data to db
                     await update("file_upload_receipt_status", "id", data.id, { current: current, total: total });
-                    await insertSql("petroleum_icums_declaration", insertal);
+                    var result = await insertSql("petroleum_icums_declaration", insertal);
+                    if (result == null) {
+                        errorData.push([
+                            current,
+                            insertal.price_window_id,
+                            insertal.boe_no,
+                            insertal.declarant_name,
+                            insertal.declarant_tin,
+                            insertal.depot_name,
+                            insertal.product_cd,
+                            insertal.product_name,
+                            insertal.uom,
+                            insertal.item_quantity,
+                            insertal.amount_payable,
+                            insertal.amount_paid,
+                            insertal.amount_expected,
+                            insertal.amount_suspended,
+                            insertal.payment_mode,
+                            insertal.receive_bank_nm,
+                            insertal.payment_date,
+                            insertal.payment_reference_no,
+                            insertal.payment_receip_no,
+                        ]);
+                    }
                 });
-                await updateStatus("completed", "All done - " + getTime(), "completed");
+
+                if (errorData.length > 1) {
+                    workbook.Sheets["page1"] = XLSX.utils.aoa_to_sheet(errorData);
+                    //save the worksheet for download
+                    var wookbookFile = '../omc-api/downloads/docs-error/errored-file' + (+new Date()) + '.xlsx';
+                    // write the workbook object to a file
+                    XLSX.writeFile(workbook, wookbookFile);
+                    await updateStatus("completed", wookbookFile, "completed");
+                } else {
+                    await updateStatus("completed", "All done - " + getTime(), "completed");
+                }
             }
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
         } finally {
             callback(null, { isDone: true, id: proccessID });
-            config.log("task done ");
+            console.log("task done ");
         }
     }
 
@@ -3254,16 +3686,28 @@ exports.importICUMSDeclarations = function(data, callback) {
      * @param dbData the data to insert
      */
     async function insertSql(table, dbData) {
+        const names = require('./functions/names_map.js');
+
         var data = dbData;
-        if (isNaN(data.unit_price)) {
-            data.unit_price = 0;
+        if (isNaN(data.amount_payable)) {
+            data.amount_payable = 0;
         }
+
+        const product = await names.product_name_by_code(data.product_cd);
+        const OMC = await names.omc_name(data.declarant_name);
+
+        if (product == null || OMC == null) {
+            return null;
+        }
+
         const insertData = {
-            date: data.date,
-            amount: data.amount,
-            omc: data.omc
+            window_code: data.price_window_id,
+            amount: data.amount_payable,
+            product_type: product.code,
+            omc: OMC.tin
         };
-        await insertIgnore("omc", { name: data.omc });
+        insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
+        insertIgnore("omc", { name: OMC.name, tin: OMC.tin });
         return await insert(table, insertData);
     }
 
@@ -3425,9 +3869,9 @@ exports.exportFile = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
@@ -3481,7 +3925,7 @@ exports.exportFile = function(data, callback) {
              */
             var sqlQuery = "SELECT st.id,st.particulars as description,st.`account_id`,st.post_date,st.reference,ut.amount,ac.name,ac.acc_num1,ac.acc_num2,(SELECT GROUP_CONCAT(comment SEPARATOR '\n\n') as comment FROM comments WHERE statement_id = st.id AND reviewedby='org') AS org_comment,(SELECT GROUP_CONCAT(type SEPARATOR '\n\n') as type FROM comments WHERE statement_id = st.id AND reviewedby='org') AS org_response_type,(SELECT GROUP_CONCAT(comment SEPARATOR '\n\n') as comment FROM comments WHERE statement_id = st.id AND reviewedby='bog') AS bog_comment,(SELECT GROUP_CONCAT(type SEPARATOR '\n\n') as type FROM comments WHERE statement_id = st.id AND reviewedby='bog') AS bog_response_type FROM `statements` as st INNER JOIN unauthorized_transfers as ut ON st.account_id=ut.account_from AND st.id=ut.statement_id INNER JOIN accounts as ac ON ac.id=st.account_id WHERE st.`account_id` IN (" + data.ids + ") AND ut.softdelete=0";
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected account from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -3525,7 +3969,7 @@ exports.exportFile = function(data, callback) {
                     Unresponded.push(newObject);
                 }
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -3558,7 +4002,7 @@ exports.exportFile = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -3576,7 +4020,7 @@ exports.exportFile = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -3628,9 +4072,9 @@ exports.exportFileFallout = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -3668,7 +4112,7 @@ exports.exportFileFallout = function(data, callback) {
              */
             var sqlQuery = `SELECT * FROM omc_receipt WHERE omc_id=${data.ids} and status='flagged'`;
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -3688,7 +4132,7 @@ exports.exportFileFallout = function(data, callback) {
                 ];
                 AuthorizedData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -3713,7 +4157,7 @@ exports.exportFileFallout = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -3731,7 +4175,7 @@ exports.exportFileFallout = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -3783,9 +4227,9 @@ exports.exportFileNASummary = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -3831,7 +4275,7 @@ exports.exportFileNASummary = function(data, callback) {
             }
             var sqlQuery = `SELECT b.name as bank_name, o.name, omc_r.mode_of_payment, omc_r.bank, omc_r.date, omc_r.amount, omc_r.id FROM omc_receipt as omc_r LEFT JOIN omc as o ON o.id=omc_r.omc_id LEFT JOIN banks as b ON b.id=omc_r.bank_id WHERE omc_r.bank_id = ${bank_id} AND omc_r.date='${export_date}'  ${other}`;
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -3851,7 +4295,7 @@ exports.exportFileNASummary = function(data, callback) {
                 ];
                 AuthorizedData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -3876,7 +4320,7 @@ exports.exportFileNASummary = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -3894,7 +4338,7 @@ exports.exportFileNASummary = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -3946,9 +4390,9 @@ exports.exportFilePenalty = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export penalty: ' + data.id);
+            console.log('mySql connected for child export penalty: ' + data.id);
             start();
         });
     });
@@ -3992,7 +4436,7 @@ exports.exportFilePenalty = function(data, callback) {
              */
             var sqlQuery = "SELECT ac.id, ac.name,ac.acc_num1,ac.acc_num2,ac.status, ac.date_inactive, su.*  FROM surcharge as su LEFT JOIN `accounts` as ac on ac.id=su.account_id Order By `name`";
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected account from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -4034,7 +4478,7 @@ exports.exportFilePenalty = function(data, callback) {
                     sheets[indx].data.push(newObject);
                 }
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -4050,7 +4494,7 @@ exports.exportFilePenalty = function(data, callback) {
                     workbook.Sheets[sheet.name] = XLSX.utils.aoa_to_sheet(fileData);
                 }
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error adding sheets to workbook - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -4070,7 +4514,7 @@ exports.exportFilePenalty = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -4088,7 +4532,7 @@ exports.exportFilePenalty = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -4140,9 +4584,9 @@ exports.exportFileLog = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child reconcile: ' + data.id);
+            console.log('mySql connected for child reconcile: ' + data.id);
             start();
         });
     });
@@ -4170,7 +4614,7 @@ exports.exportFileLog = function(data, callback) {
             var transferTypes = [];
             var sqlQuery = "SELECT account_name_from FROM `audits_logs` WHERE  `account_id_from` IN (" + data.ids + ") GROUP BY account_name_from ";
             var sheetNames = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call file_export_status_logs(" + data.id + ", " + current + "," + total + " ,'Could not read sheet name from database- " + getTime() + "','error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -4179,7 +4623,7 @@ exports.exportFileLog = function(data, callback) {
                     const name = `${sheets.account_name_from}`.slice(0, 31);
                     transferTypes.push(name);
                 }).catch(error => {
-                    config.log(error)
+                    console.log(error)
                     executeStatement("Call file_export_status_logs(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                     callback(null, { isDone: true, id: proccessID });
                 });
@@ -4216,7 +4660,7 @@ exports.exportFileLog = function(data, callback) {
              */
             var sqlQuery = "SELECT * FROM `audits_logs` WHERE `account_id_from` IN (" + data.ids + ")";
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call file_export_status_logs(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected account from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -4247,7 +4691,7 @@ exports.exportFileLog = function(data, callback) {
                 const name = `${exportData.account_name_from}`.slice(0, 31);
                 exportFiles[name].push(dataArray);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call file_export_status_logs(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -4272,7 +4716,7 @@ exports.exportFileLog = function(data, callback) {
             console.error(error);
             await executeStatement("Call file_export_status_logs(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -4290,7 +4734,7 @@ exports.exportFileLog = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -4338,9 +4782,9 @@ exports.compilePenalty = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for compilation: ' + data.id);
+            console.log('mySql connected for compilation: ' + data.id);
             start();
         });
     });
@@ -4355,20 +4799,20 @@ exports.compilePenalty = function(data, callback) {
             const account_id_to_compile = data.ids;
             var sqlQuery = `SELECT COUNT(id) transactions, SUM(credit_amount) total_credit, SUM(debit_amount) total_debit, SUM(balance) total_balance, stm.* FROM statements stm WHERE stm.status !='flagged' AND stm.account_id= ${account_id_to_compile} GROUP by account_id, post_date ORDER by post_date`;
             var mainReceiptsData = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 updateStatus("error", "job error: cannot read account statements", "completed");
                 callback(null, { isDone: true, id: proccessID });
             });
 
             if (typeof(mainReceiptsData) == "undefined") {
                 updateStatus("Error", "error: no statements found  - " + getTime(), "completed");
-                config.log("error:  no statements found - " + getTime());
+                console.log("error:  no statements found - " + getTime());
                 return callback(null, { isDone: true, id: proccessID });
             }
 
             await updateStatus("processing statements", "compilation started - " + getTime());
-            config.log("compilation started - " + getTime());
-            config.log("processing statements");
+            console.log("compilation started - " + getTime());
+            console.log("processing statements");
             totalAccount = mainReceiptsData.length;
             workingOn = 0;
             await asyncForEach(mainReceiptsData, async(statement, index) => {
@@ -4377,7 +4821,7 @@ exports.compilePenalty = function(data, callback) {
                     proccessing_account: workingOn,
                     total_account: totalAccount,
                 });
-                // config.log("processing statements: " + receipts.id);
+                // console.log("processing statements: " + receipts.id);
 
                 //set variables for computation
                 const account_id = statement.account_id
@@ -4405,7 +4849,7 @@ exports.compilePenalty = function(data, callback) {
                 //query the db for previous balance
                 var balanceQry = `SELECT * FROM statements WHERE status !='flagged' AND account_id= ${account_id_to_compile} AND post_date < '${todays_date}' ORDER by post_date DESC LIMIT 1`;
                 var balanceData = await query(balanceQry).catch(error => {
-                    config.log(error);
+                    console.log(error);
                     updateStatus("error", "job error: cannot read previous day balance", "completed");
                     callback(null, { isDone: true, id: proccessID });
                 });
@@ -4429,7 +4873,7 @@ exports.compilePenalty = function(data, callback) {
                 const untransfered_founds = cash_available - total_debit_cash;
                 var stm = `SELECT rate FROM surcharge_rate  WHERE date_from <= '${todays_date}' AND date_to >= '${todays_date}'`;
                 var rateResult = await query(stm).catch(error => {
-                    config.log(error);
+                    console.log(error);
                     updateStatus("error", "job error: internal query failed, cannot get rate", "completed");
                     callback(null, { isDone: true, id: proccessID });
                 });
@@ -4460,12 +4904,12 @@ exports.compilePenalty = function(data, callback) {
             });
 
             await updateStatus("completed", " compilatiion completed - " + getTime(), "completed");
-            config.log("compilatiion completed - " + getTime());
+            console.log("compilatiion completed - " + getTime());
         } catch (error) {
             console.error(error);
             await updateStatus("Error", "error occured: " + error.message + " - " + getTime(), "completed");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -4491,7 +4935,7 @@ exports.compilePenalty = function(data, callback) {
     function bgQuery(sqlQuery) {
         sqlConn.query(sqlQuery, function(err, result, fields) {
             if (err) {
-                config.log(err)
+                console.log(err)
             }
         });
     }
@@ -4524,7 +4968,7 @@ exports.compilePenalty = function(data, callback) {
 
         const sql = `UPDATE \`${table}\` SET ${values} WHERE \`${column}\`= ${val}`;
         await query(sql).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: update error", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -4558,7 +5002,7 @@ exports.compilePenalty = function(data, callback) {
         //construct the insert statement
         const sql = `INSERT INTO \`${table}\`${columns} ${values}`;
         await query(sql).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: " + error, "completed");
             callback(null, { isDone: true, id: proccessID });
         })
@@ -4606,9 +5050,9 @@ exports.exportPetroleumInputAnalysis = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -4721,13 +5165,13 @@ exports.exportPetroleumInputAnalysis = function(data, callback) {
                 group_by = "Group By m.arrival_date";
             }
 
-            const sqlQuery = `SELECT m.id manifest_id, m.arrival_date, m.vessel_name, m.vessel_number,m.product_type manifest_product, 
-        SUM(m.volume) manifest_volume, SUM(m.amount) manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
-        m.importer_name manifest_omc, d.*, SUM(d.amount) declaration_amount, SUM(d.volume) declaration_volume
-         FROM petroleum_manifest m LEFT JOIN petroleum_declaration d 
-        ON m.ucr_number = d.ucr_number ${condition} ${group_by} Order By m.arrival_date DESC`;
+            const sqlQuery = `SELECT m.id manifest_id, m.arrival_date, m.vessel_name, m.vessel_number,(SELECT name FROM tax_schedule_products WHERE code=m.product_type LIMIT 1) manifest_product, 
+            SUM(m.volume) manifest_volume, SUM(m.amount) manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
+            (SELECT name FROM bdc WHERE code=m.importer_name LIMIT 1) manifest_omc, d.*, SUM(d.amount) declaration_amount, SUM(d.volume) declaration_volume
+            FROM petroleum_manifest m LEFT JOIN petroleum_declaration d 
+            ON m.ucr_number = d.ucr_number ${condition} ${group_by} Order By m.arrival_date DESC`;
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -4758,7 +5202,7 @@ exports.exportPetroleumInputAnalysis = function(data, callback) {
                 ];
                 ReportData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -4783,7 +5227,7 @@ exports.exportPetroleumInputAnalysis = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -4801,7 +5245,7 @@ exports.exportPetroleumInputAnalysis = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -4873,9 +5317,9 @@ exports.exportPetroleumInputReconciliation = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -4926,40 +5370,53 @@ exports.exportPetroleumInputReconciliation = function(data, callback) {
             var status = exportData.status || null; //on declaration table
             var product_type = exportData.product_type || null;
             var dateRang = "";
+            var condition1 = condition;
 
             if (date_range) {
                 if (date_range.endDate && date_range.startDate) {
                     const startDate = sql_date(date_range.startDate);
                     const endDate = sql_date(date_range.endDate);
-                    condition += ` AND (m.arrival_date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    condition += ` AND (m.arrival_date BETWEEN '${startDate}' AND '${endDate}') `;
+                    condition1 += ` AND (d.declaration_date BETWEEN '${startDate}' AND '${endDate}') `;
                     dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
                 }
             }
 
             if (bdc && bdc != "All") {
                 condition += ` AND m.importer_name = '${bdc}' `;
+                condition1 += ` AND d.importer_name = '${bdc}' `;
             }
 
             if (product_type && product_type != "All") {
                 condition += ` AND m.product_type = '${product_type}'`;
+                condition1 += ` AND d.product_type = '${product_type}'`;
             }
 
             if (status && status != "All") {
                 if (status === "Flagged") {
                     condition += " AND (m.volume <> d.volume OR m.amount <> d.amount OR d.amount IS NULL OR d.volume IS NULL)";
+                    condition1 += " AND (m.volume <> d.volume OR m.amount <> d.amount OR d.amount IS NULL OR d.volume IS NULL)";
                 }
                 if (status === "Not Flagged") {
                     condition += " AND m.volume = d.volume AND m.amount = d.amount";
+                    condition1 += " AND m.volume = d.volume AND m.amount = d.amount";
                 }
             }
 
-            const sqlQuery = `SELECT m.id manifest_id, m.arrival_date, m.vessel_name, m.vessel_number,m.product_type manifest_product, 
+            const sqlQuery = `SELECT m.id manifest_id, m.arrival_date arrival_date,d.declaration_date, m.vessel_name, m.vessel_number,
+            (SELECT name FROM tax_schedule_products WHERE code=m.product_type LIMIT 1) manifest_product, 
             m.volume manifest_volume, m.amount manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
-            m.importer_name manifest_omc, d.*, d.amount declaration_amount, d.volume declaration_volume
-             FROM petroleum_manifest m LEFT JOIN petroleum_declaration d 
-             ON m.ucr_number = d.ucr_number ${condition} Order By m.arrival_date DESC`;
+            (SELECT name FROM bdc WHERE code=m.importer_name LIMIT 1) manifest_omc, d.*, d.amount declaration_amount, d.volume declaration_volume
+            FROM petroleum_manifest m LEFT JOIN petroleum_declaration d ON m.ucr_number = d.ucr_number ${condition}
+            UNION
+            SELECT m.id manifest_id, m.arrival_date arrival_date,d.declaration_date, m.vessel_name, m.vessel_number,
+            (SELECT name FROM tax_schedule_products WHERE code=d.product_type LIMIT 1) manifest_product, 
+            m.volume manifest_volume, m.amount manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
+            (SELECT name FROM bdc WHERE code=d.importer_name LIMIT 1) manifest_omc, d.*, d.amount declaration_amount, d.volume declaration_volume
+            FROM petroleum_manifest m RIGHT JOIN petroleum_declaration d ON m.ucr_number = d.ucr_number ${condition1} Order By arrival_date DESC`;
+
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -5001,7 +5458,7 @@ exports.exportPetroleumInputReconciliation = function(data, callback) {
                 // if (current === 1) console.log("declaration_volume", exportData.declaration_volume)
                 // if (current === 1) console.log("declaration_amount", exportData.declaration_amount)
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -5026,7 +5483,7 @@ exports.exportPetroleumInputReconciliation = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -5044,7 +5501,7 @@ exports.exportPetroleumInputReconciliation = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -5122,9 +5579,9 @@ exports.exportPetroleumNPAAnalysis = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -5185,64 +5642,94 @@ exports.exportPetroleumNPAAnalysis = function(data, callback) {
                     const startDate = sql_date(date_range.startDate);
                     const endDate = sql_date(date_range.endDate);
                     condition += ` AND (prord.preorder_date BETWEEN '${startDate}' AND '${endDate}') `;
+                    condition1 += ` AND (ord.order_date BETWEEN '${startDate}' AND '${endDate}') `;
                     dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
                 }
             }
 
             if (bdc && bdc != "All") {
                 condition += ` AND prord.bdc = '${bdc}' `;
+                condition1 += ` AND ord.bdc = '${bdc}' `;
             }
 
             if (depot && depot != "All") {
                 condition += ` AND prord.depot = '${depot}'`;
+                condition1 += ` AND ord.depot = '${depot}'`;
             }
 
             if (omc && omc != "All") {
                 condition += ` AND prord.omc = '${omc}'`;
+                condition1 += ` AND ord.omc = '${omc}'`;
             }
 
             if (product_type && product_type != "All") {
                 condition += ` AND prord.product_type = '${product_type}'`;
+                condition1 += ` AND ord.product_type = '${product_type}'`;
             }
 
             if (status && status != "All") {
                 if (status === "Ordered") {
                     condition += " AND ord.order_date IS NOT NULL";
-                }
-                if (status === "Not Ordered") {
-                    condition += " AND ord.order_date IS NULL";
+                    condition1 += " AND ord.order_date IS NOT NULL";
                 }
             }
+            if (status === "Not Ordered") {
+                condition += " AND ord.order_date IS NULL AND prord.preorder_date IS NOT NULL";
+                condition1 += " AND ord.order_date IS NULL AND prord.preorder_date IS NOT NULL";
+            }
 
+            var group_by1 = "";
             if (group_by) {
-                list = "";
+                var list = "";
+                var list1 = "";
                 group_by.forEach((group) => {
                     if (group === "Product type") {
                         list += "prord.product_type,";
+                        list1 += "ord.product_type,";
                     }
                     if (group === "BDC") {
                         list += "prord.bdc,";
+                        list1 += "ord.bdc,";
                     }
                     if (group === "Depot") {
                         list += "prord.depot,";
+                        list1 += "ord.depot,";
                     }
                     if (group === "OMC") {
                         list += "prord.omc,";
+                        list1 += "ord.omc,";
                     }
                 });
-                group = trim(list, ',');
+                var group = trim(list, ',');
+                var group1 = trim(list1, ',');
                 group_by = `Group By ${group} `;
+                group_by1 = `Group By ${group1} `;
             } else {
-                group_by = "Group By m.arrival_date";
+                group_by = "Group By prord.preorder_date";
+                group_by1 = "Group By ord.order_date";
             }
 
-            const sqlQuery = `SELECT prord.id preorder_id, prord.preorder_date, prord.omc, prord.bdc,prord.product_type preorder_product, 
-            SUM(prord.volume) preorder_volume, prord.reference_number, prord.depot, 
-            ord.*, SUM(ord.unit_price) order_unit_price, SUM(ord.volume) order_volume, ord.order_date
-            FROM petroleum_preorder  prord LEFT JOIN petroleum_order ord 
-            ON prord.reference_number = ord.reference_number ${condition} ${group_by} Order By prord.preorder_date DESC`;
+            const sqlQuery = `SELECT prord.id, prord.preorder_date, prord.omc, prord.bdc, prord.depot, 
+            (SELECT name FROM tax_schedule_products WHERE code=prord.product_type LIMIT 1) product_type, 
+            (SELECT name FROM bdc WHERE code=prord.bdc LIMIT 1) bdc, 
+            (SELECT name FROM depot WHERE code=prord.depot LIMIT 1) depot, 
+            (SELECT name FROM omc WHERE tin=prord.omc LIMIT 1) omc, 
+            SUM(prord.volume) preorder_volume, prord.reference_number,
+            SUM(ord.unit_price) order_unit_price, SUM(ord.volume) order_volume, ord.order_date, prord.preorder_date date
+            FROM petroleum_preorder prord LEFT JOIN petroleum_order ord 
+            ON prord.reference_number = ord.reference_number ${condition} ${group_by}
+            UNION
+            SELECT prord.id, prord.preorder_date, ord.omc, ord.bdc,ord.depot, 
+            (SELECT name FROM tax_schedule_products WHERE code=ord.product_type LIMIT 1) product_type, 
+            (SELECT name FROM bdc WHERE code=ord.bdc LIMIT 1) bdc, 
+            (SELECT name FROM depot WHERE code=ord.depot LIMIT 1) depot, 
+            (SELECT name FROM omc WHERE tin=ord.omc LIMIT 1) omc, 
+            SUM(prord.volume) preorder_volume, ord.reference_number, 
+            SUM(ord.unit_price) order_unit_price, SUM(ord.volume) order_volume, ord.order_date, ord.order_date date
+            FROM petroleum_preorder prord RIGHT JOIN petroleum_order ord 
+            ON prord.reference_number = ord.reference_number ${condition1} ${group_by1} Order By date DESC`;
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -5275,7 +5762,7 @@ exports.exportPetroleumNPAAnalysis = function(data, callback) {
                 ];
                 ReportData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -5300,7 +5787,7 @@ exports.exportPetroleumNPAAnalysis = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -5318,7 +5805,7 @@ exports.exportPetroleumNPAAnalysis = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -5396,9 +5883,9 @@ exports.exportPetroleumICUMSDifferences = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -5443,12 +5930,21 @@ exports.exportPetroleumICUMSDifferences = function(data, callback) {
             var omc = exportData.omc || null;
 
             if (omc && omc != "All") {
-                condition += ` AND omc = '${omc}'`;
+                condition += ` AND pid.omc = '${omc}'`;
             }
 
-            const sqlQuery = `SELECT * FROM petroleum_icums_declaration ${condition} Order By date DESC`;
+            if (status && status != "All") {
+                if (status === "Flagged") {
+                    condition += " AND pid.flagged = 1";
+                }
+                if (status === "Not Flagged") {
+                    condition += " AND pid.flagged = 0 ";
+                }
+            }
+
+            const sqlQuery = `SELECT pid.*, o.name omc FROM petroleum_icums_differences as pid LEFT JOIN omc as o ON o.tin=pid.omc ${condition} Order By o.name`;
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -5460,10 +5956,10 @@ exports.exportPetroleumICUMSDifferences = function(data, callback) {
             await asyncForEach(exportDataUT, async(exportData, index) => {
                 current = index + 1;
                 await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
-                const exp_declaration_amount = await expected_declaration(exportData.omc, exportData.date);
+
+                const exp_declaration_amount = parseFloat(exportData.exp_declaration_amount);
                 const amount = parseFloat(exportData.amount || 0);
                 const difference_amount = amount - exp_declaration_amount;
-                const flagged = (difference_amount > 0 || difference_amount < 0) ? true : false;
 
                 const newObject = [
                     exportData.date,
@@ -5473,17 +5969,9 @@ exports.exportPetroleumICUMSDifferences = function(data, callback) {
                     `${difference_amount}`,
                 ];
 
-                if (status && status != "All") {
-                    if (status === "Flagged") {
-                        if (flagged) ReportData.push(newObject);
-                    } else if (status === "Not Flagged") {
-                        if (!flagged) ReportData.push(newObject);
-                    }
-                } else {
-                    ReportData.push(newObject);
-                }
+                ReportData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -5509,7 +5997,7 @@ exports.exportPetroleumICUMSDifferences = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -5525,49 +6013,9 @@ exports.exportPetroleumICUMSDifferences = function(data, callback) {
         }
     }
 
-    /**
-     * async function expected_declaration
-     * @param omc theomc to search for
-     * @param date date period
-     */
-    async function expected_declaration(omc, date) {
-        var total_amount = 0.0;
-        const computes = await getWaybills(omc, date);
-        for (let index = 0; index < computes.length; index++) {
-            const compute = computes[index];
-            total = 0;
-            var result = [];
-            result = await query(`SELECT tw.*, tt.name tax FROM tax_window tw JOIN tax_type tt ON tw.tax_type=tt.id WHERE tw.tax_product = (SELECT id FROM tax_schedule_products WHERE name = '${compute.product_type}' LIMIT 1) AND tw.date_from<= '${date}' AND tw.date_to >= '${date}'`).catch(error => {
-                console.log(error);
-                result = [];
-            });
-            if (result) {
-                for (let key = 0; key < result.length; key++) {
-                    total += compute.volume * result[key].rate;
-                }
-            }
-            total_amount += total;
-        }
-        return total_amount;
-    }
-
-    /**
-     * async function getWaybills
-     * @param omc theomc to search for
-     * @param date date period
-     */
-    async function getWaybills(omc, date) {
-        var result = [];
-        result = await query(`SELECT SUM(volume) volume, MIN(date) date, product_type FROM petroleum_waybill WHERE omc='${omc}' AND (date BETWEEN DATE((SELECT date_from FROM tax_window WHERE date_from<= '${date}' AND date_to >= '${date}' LIMIT 1 )) AND DATE((SELECT date_to FROM tax_window WHERE date_from<= '${date}' AND date_to >= '${date}' LIMIT 1 )) ) GROUP BY product_type, (SELECT CONCAT(tax_product, '-', name) FROM tax_window WHERE date_from<= '${date}' AND date_to >= '${date}' LIMIT 1) ORDER BY product_type ASC, date ASC `).catch(error => {
-            console.log(error);
-            result = [];
-        });
-        return result;
-    }
-
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -5645,9 +6093,9 @@ exports.exportPetroleumDeptGood = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -5692,7 +6140,6 @@ exports.exportPetroleumDeptGood = function(data, callback) {
             var condition = " WHERE 1 ";
             var on = "";
             var status = exportData.status || null;
-            var nagatives = exportData.nagatives || null;
             var omc = exportData.omc || null;
             var date_range = exportData.date_range || null;
             var hasRange = false;
@@ -5702,8 +6149,7 @@ exports.exportPetroleumDeptGood = function(data, callback) {
                 if (date_range.endDate && date_range.startDate) {
                     const startDate = sql_date(date_range.startDate);
                     const endDate = sql_date(date_range.endDate);
-                    condition += ` AND (rep.date  BETWEEN '${startDate}' AND '${endDate}') `;
-                    on = ` AND (icum_dcl.date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    condition += ` AND (date_from >= '${startDate}' AND date_to <= '${endDate}') `;
                     dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
                     hasRange = true;
                 }
@@ -5713,28 +6159,18 @@ exports.exportPetroleumDeptGood = function(data, callback) {
                 condition += ` AND omc = '${omc}'`;
             }
 
-            var HAVING = " HAVING 1";
             if (status && status != "All") {
                 if (status === "Flagged") {
-                    HAVING += " AND (SUM(rep.amount) <> SUM(icum_dcl.amount) OR SUM(icum_dcl.amount) IS NULL)";
+                    condition += " AND flagged = 1";
                 }
                 if (status === "Not Flagged") {
-                    HAVING += " AND SUM(rep.amount) = SUM(icum_dcl.amount) ";
+                    condition += " AND flagged = 0 ";
                 }
             }
 
-            if (nagatives && nagatives != "All") {
-                if (nagatives === "Nagatives") {
-                    HAVING += " AND SUM(rep.amount) - SUM(icum_dcl.amount)  < 0 ";
-                }
-                if (nagatives === "Positives") {
-                    HAVING += " AND (SUM(rep.amount) - SUM(icum_dcl.amount)  >= 0 OR SUM(icum_dcl.amount) IS NULL) ";
-                }
-            }
-
-            const sqlQuery = `SELECT 'All time' date, rep.omc, SUM(rep.amount) amount, icum_dcl.omc dcl_omc, SUM(icum_dcl.amount) dcl_amount_icum FROM ghana_gov_omc_receipt rep LEFT JOIN petroleum_icums_declaration icum_dcl ON rep.omc=icum_dcl.omc ${on} ${condition} GROUP BY rep.omc ${HAVING} ORDER BY rep.id`;
+            const sqlQuery = `SELECT *, 'All time' date, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc FROM petroleum_good_standing ${condition} GROUP BY omc ORDER BY date`;
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -5750,9 +6186,9 @@ exports.exportPetroleumDeptGood = function(data, callback) {
                 if (hasRange) {
                     _date = date_range;
                 }
-                const exp_dcl_amount = await expected_declaration(exportData.omc, _date);
                 const amount = parseFloat(exportData.amount || 0);
                 const dcl_amount_icum = parseFloat(exportData.dcl_amount_icum || 0);
+                const exp_dcl_amount = parseFloat(exportData.exp_dcl_amount || 0);
                 const difference_amount_receipt_icums = amount - dcl_amount_icum;
                 const difference_amount_expected_icums = amount - exp_dcl_amount;
                 const date = date_range && date_range.endDate ? dateRang : exportData.date;
@@ -5769,7 +6205,7 @@ exports.exportPetroleumDeptGood = function(data, callback) {
 
                 ReportData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -5795,7 +6231,7 @@ exports.exportPetroleumDeptGood = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -5811,58 +6247,9 @@ exports.exportPetroleumDeptGood = function(data, callback) {
         }
     }
 
-    /**
-     * async function expected_declaration
-     * @param omc theomc to search for
-     * @param date date period
-     */
-    async function expected_declaration(omc, date) {
-        var total_amount = 0.0;
-        const computes = await getWaybills(omc, date);
-        for (let index = 0; index < computes.length; index++) {
-            const compute = computes[index];
-            total = 0;
-            var result = [];
-            result = await query(`SELECT tw.*, tt.name tax FROM tax_window tw JOIN tax_type tt ON tw.tax_type=tt.id WHERE tw.tax_product = (SELECT id FROM tax_schedule_products WHERE name = '${compute.product_type}' LIMIT 1) AND tw.date_from<= '${date}' AND tw.date_to >= '${date}'`).catch(error => {
-                console.log(error);
-                result = [];
-            });
-            if (result) {
-                for (let key = 0; key < result.length; key++) {
-                    total += compute.volume * result[key].rate;
-                }
-            }
-            total_amount += total;
-        }
-        return total_amount;
-    }
-
-    /**
-     * async function getWaybills
-     * @param omc theomc to search for
-     * @param date date period
-     */
-    async function getWaybills(omc, date) {
-        var result = [];
-        if (date === "All time") {
-            result = await query(`SELECT * FROM petroleum_waybill WHERE omc='${omc}'`).catch(error => {
-                console.log(error);
-                result = [];
-            });
-        } else {
-            const startDate = sql_date(date.startDate);
-            const endDate = sql_date(date.endDate);
-            result = await query(`SELECT * FROM petroleum_waybill WHERE omc='${omc}' AND date BETWEEN '${startDate}' AND '${endDate}' `).catch(error => {
-                console.log(error);
-                result = [];
-            });
-        }
-        return result;
-    }
-
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -5940,9 +6327,9 @@ exports.exportPetroleumWaybillAnalysis = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -5989,48 +6376,72 @@ exports.exportPetroleumWaybillAnalysis = function(data, callback) {
             var status = exportData.status || null; //on declaration table
             var product_type = exportData.product_type || null;
             var nagatives = exportData.nagatives || null;
+            var condition1 = condition;
             var dateRang = "";
 
             if (date_range) {
                 if (date_range.endDate && date_range.startDate) {
                     const startDate = sql_date(date_range.startDate);
                     const endDate = sql_date(date_range.endDate);
-                    condition += ` AND (declaration.declaration_date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    condition += ` AND (declaration.declaration_date BETWEEN '${startDate}' AND '${endDate}') `;
+                    condition1 += ` AND (waybill.date BETWEEN '${startDate}' AND '${endDate}') `;
                     dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
                 }
             }
 
             if (bdc && bdc != "All") {
                 condition += ` AND declaration.importer_name = '${bdc}' `;
+                condition1 += ` AND waybill.bdc = '${bdc}' `;
             }
 
             if (product_type && product_type != "All") {
-                condition += ` AND AND declaration.product_type = '${product_type}'`;
+                condition += ` AND declaration.product_type = '${product_type}'`;
+                condition1 += ` AND waybill.product_type = '${product_type}'`;
             }
 
             var grouping = "CONCAT(YEAR(declaration.declaration_date), '/', MONTH(declaration.declaration_date))";
+            var grouping1 = "CONCAT(YEAR(waybill.date), '/', MONTH(waybill.date))";
 
             if (status && status != "All") {
                 if (status === "Flagged") {
                     condition += " AND (declaration.volume <> waybill.volume OR waybill.volume IS NULL)";
+                    condition1 += " AND (declaration.volume <> waybill.volume OR waybill.volume IS NULL)";
                 }
                 if (status === "Not Flagged") {
                     condition += " declaration.volume = waybill.volume";
+                    condition1 += " declaration.volume = waybill.volume";
                 }
             }
 
             if (nagatives && nagatives != "All") {
                 if (nagatives === "Nagatives") {
                     condition += " AND (declaration.volume - waybill.volume  < 0) ";
+                    condition1 += " AND (declaration.volume - waybill.volume  < 0) ";
                 }
                 if (nagatives === "Positives") {
                     condition += " AND (declaration.volume - waybill.volume  >= 0) ";
+                    condition1 += " AND (declaration.volume - waybill.volume  >= 0) ";
                 }
             }
 
-            const sqlQuery = `SELECT MIN(declaration.id) id, ${grouping} as grouping, declaration.product_type, SUM(declaration.volume) declaration_volume, SUM(waybill.volume) waybill_volume, declaration.importer_name bdc FROM petroleum_declaration declaration JOIN petroleum_waybill waybill ON waybill.bdc = declaration.importer_name AND waybill.product_type = declaration.product_type ${condition} GROUP BY ${grouping}, declaration.importer_name, declaration.product_type  ORDER BY ${grouping} DESC`;
+            const sqlQuery = `SELECT MIN(declaration.id) id, ${grouping} as grouping,
+            (SELECT name FROM tax_schedule_products WHERE code=declaration.product_type LIMIT 1) product_type,
+            (SELECT name FROM bdc WHERE code=declaration.importer_name LIMIT 1) bdc,
+            SUM(declaration.volume) declaration_volume, SUM(waybill.volume) waybill_volume
+            FROM petroleum_declaration declaration
+            LEFT JOIN petroleum_waybill waybill ON waybill.bdc = declaration.importer_name AND waybill.product_type = declaration.product_type
+            ${condition} GROUP BY ${grouping}, importer_name, product_type
+            UNION
+            SELECT MIN(declaration.id) id, ${grouping1} as grouping,
+            (SELECT name FROM tax_schedule_products WHERE code=waybill.product_type LIMIT 1) product_type,
+            (SELECT name FROM bdc WHERE code=waybill.bdc LIMIT 1) bdc,
+            SUM(declaration.volume) declaration_volume, SUM(waybill.volume) waybill_volume
+            FROM petroleum_declaration declaration
+            RIGHT JOIN petroleum_waybill waybill ON waybill.bdc = declaration.importer_name AND waybill.product_type = declaration.product_type
+            ${condition1} GROUP BY ${grouping1}, importer_name, product_type
+            ORDER BY grouping DESC`;
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -6056,11 +6467,8 @@ exports.exportPetroleumWaybillAnalysis = function(data, callback) {
                     `${difference_volume}`,
                 ];
                 ReportData.push(newObject);
-                // if (current === 1) console.log(newObject)
-                // if (current === 1) console.log("declaration_volume", exportData.declaration_volume)
-                // if (current === 1) console.log("declaration_amount", exportData.declaration_amount)
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -6085,7 +6493,7 @@ exports.exportPetroleumWaybillAnalysis = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -6103,7 +6511,7 @@ exports.exportPetroleumWaybillAnalysis = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -6181,9 +6589,9 @@ exports.exportPetroleumWaybillReconcile = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -6232,64 +6640,82 @@ exports.exportPetroleumWaybillReconcile = function(data, callback) {
             var depot = exportData.depot || null;
             var group_by = exportData.group_by || null;
             var nagatives = exportData.nagatives || null;
+            var condition1 = condition;
+
             if (date_range) {
                 if (date_range.endDate && date_range.startDate) {
                     const startDate = sql_date(date_range.startDate);
                     const endDate = sql_date(date_range.endDate);
-                    condition += ` AND (waybill.date  BETWEEN '${startDate}' AND '${endDate}') `;
+                    condition += ` AND (waybill.date BETWEEN '${startDate}' AND '${endDate}') `;
+                    condition1 += ` AND (outlet.datetime BETWEEN '${startDate}' AND '${endDate}') `;
                 }
             }
 
 
             if (product_type && product_type != "All") {
                 condition += " AND waybill.product_type = 'product_type'";
+                condition1 += " AND outlet.product_type = 'product_type'";
             }
 
             if (depot && depot != "All") {
                 condition += ` AND waybill.depot ='${depot}'`;
-            }
-
-            if (omc && omc != "All") {
-                condition += ` AND waybill.omc = '${omc}'`;
+                condition1 += ` AND outlet.depot ='${depot}'`;
             }
 
             var grouping = "waybill.date";
+            var grouping1 = "outlet.datetime";
             if (group_by) {
                 if (group_by === "Month") {
                     grouping = " CONCAT(YEAR(waybill.date), '/', MONTH(waybill.date))";
+                    grouping1 = " CONCAT(YEAR(outlet.datetime), '/', MONTH(outlet.datetime))";
                 } else if (group_by === "Week") {
                     grouping = " CONCAT(YEAR(waybill.date), '/', WEEK(waybill.date))";
+                    grouping1 = " CONCAT(YEAR(outlet.datetime), '/', WEEK(outlet.datetime))";
                 } else if (group_by === "Day") {
                     grouping = " DATE(waybill.date)";
+                    grouping1 = " DATE(outlet.datetime)";
                 } else {
                     grouping = " DATE(waybill.date)";
+                    grouping1 = " DATE(outlet.datetime)";
                 }
-                group_by = `Group By ${grouping} `;
+                group_by = `Group By grouping `;
             } else {
-                group_by = "Group By waybill.date";
+                group_by = "Group By grouping";
             }
 
             if (status && status != "All") {
                 if (status === "Flagged") {
                     condition += " AND (waybill.volume <> outlet.volume OR outlet.volume IS NULL)";
+                    condition1 += " AND (waybill.volume <> outlet.volume OR outlet.volume IS NULL)";
                 }
                 if (status === "Not Flagged") {
                     condition += " AND waybill.volume = outlet.volume ";
+                    condition1 += " AND waybill.volume = outlet.volume ";
                 }
             }
 
             if (nagatives && nagatives != "All") {
                 if (nagatives === "Nagatives") {
                     condition += " AND (waybill.volume - outlet.volume  < 0)";
+                    condition1 += " AND (waybill.volume - outlet.volume  < 0)";
                 }
                 if (nagatives === "Positives") {
                     condition += " AND (waybill.volume - outlet.volume  >= 0)";
+                    condition1 += " AND (waybill.volume - outlet.volume  >= 0)";
                 }
             }
 
-            const sqlQuery = `SELECT MIN(waybill.id) id, ${grouping} as grouping, waybill.depot, waybill.product_type, SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume FROM petroleum_waybill waybill JOIN petroleum_outlet outlet ON outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type ${condition} ${group_by}, waybill.depot, waybill.product_type  ORDER BY ${grouping} DESC`;
+            const sqlQuery = `SELECT MIN(waybill.id) id, ${grouping} as grouping, (SELECT name FROM depot WHERE code=waybill.depot LIMIT 1) depot, (SELECT name FROM tax_schedule_products WHERE code=waybill.product_type LIMIT 1) product_type,
+            SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume FROM petroleum_waybill waybill
+            LEFT JOIN petroleum_outlet outlet ON outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type
+            ${condition} ${group_by}, depot, product_type
+            UNION
+            SELECT MIN(waybill.id) id, ${grouping2} as grouping, (SELECT name FROM depot WHERE code=outlet.depot LIMIT 1) depot, (SELECT name FROM tax_schedule_products WHERE code=outlet.product_type LIMIT 1) product_type,
+            SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume FROM petroleum_waybill waybill
+            RIGHT JOIN petroleum_outlet outlet ON outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type
+            ${condition1} ${group_by}, depot, product_type ORDER BY grouping DESC`;
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -6319,7 +6745,7 @@ exports.exportPetroleumWaybillReconcile = function(data, callback) {
                 // if (current === 1) console.log("declaration_volume", exportData.declaration_volume)
                 // if (current === 1) console.log("declaration_amount", exportData.declaration_amount)
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -6344,7 +6770,7 @@ exports.exportPetroleumWaybillReconcile = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -6362,7 +6788,7 @@ exports.exportPetroleumWaybillReconcile = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -6440,9 +6866,9 @@ exports.exportPetroleumInletReport = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -6505,17 +6931,17 @@ exports.exportPetroleumInletReport = function(data, callback) {
             // }
 
             const sqlQuery = `SELECT MIN(dcl.id) id, CONCAT(YEAR(dcl.declaration_date), '/', WEEK(dcl.declaration_date)) AS week,
-            SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, dcl.product_type product_type
+            SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, (SELECT name FROM tax_schedule_products WHERE code=dcl.product_type LIMIT 1) product_type
             FROM petroleum_declaration dcl LEFT JOIN petroleum_inlet inlet 
             ON inlet.product_type = dcl.product_type ${condition} GROUP BY week, product_type
             UNION 
             SELECT MIN(dcl.id) id, CONCAT(YEAR(inlet.datetime), '/', WEEK(inlet.datetime)) AS week,
-            SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, inlet.product_type product_type
+            SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, (SELECT name FROM tax_schedule_products WHERE code=inlet.product_type LIMIT 1) product_type
             FROM petroleum_declaration dcl RIGHT JOIN petroleum_inlet inlet
             ON inlet.product_type = dcl.product_type ${condition1} 
             GROUP BY week, product_type ORDER BY week DESC`;
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -6544,7 +6970,7 @@ exports.exportPetroleumInletReport = function(data, callback) {
                 // if (current === 1) console.log("declaration_volume", exportData.declaration_volume)
                 // if (current === 1) console.log("declaration_amount", exportData.declaration_amount)
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -6569,7 +6995,7 @@ exports.exportPetroleumInletReport = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -6587,7 +7013,7 @@ exports.exportPetroleumInletReport = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });
@@ -6665,9 +7091,9 @@ exports.exportPetroleumSMLOutletReport = function(data, callback) {
         // create mysql connection to database
         sqlConn = mysql.createConnection(JSON.parse(db_config));
         sqlConn.connect(function(err) {
-            if (err) config.log(err);
+            if (err) console.log(err);
             isSqlConnected = true;
-            config.log('mySql connected for child export: ' + data.id);
+            console.log('mySql connected for child export: ' + data.id);
             start();
         });
     });
@@ -6735,14 +7161,14 @@ exports.exportPetroleumSMLOutletReport = function(data, callback) {
                 condition1 += ` AND outlet.depot ='${depot}'`;
             }
 
-            const sqlQuery = `SELECT DATE(ord.order_date) order_date, ord.product_type product, 
-            SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, ord.depot depot,
+            const sqlQuery = `SELECT DATE(ord.order_date) order_date, (SELECT name FROM tax_schedule_products WHERE code=ord.product_type LIMIT 1) product, 
+            SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, (SELECT name FROM depot WHERE code=ord.depot LIMIT 1) depot,
             SUM(outlet.volume) outlet_volume
             FROM petroleum_order ord LEFT JOIN petroleum_outlet outlet 
             ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type ${condition} Group By order_date, product, depot 
             UNION
-            SELECT DATE(outlet.datetime) order_date, outlet.product_type product, 
-            SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, outlet.depot depot,
+            SELECT DATE(outlet.datetime) order_date, (SELECT name FROM tax_schedule_products WHERE code=outlet.product_type LIMIT 1) product, 
+            SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, (SELECT name FROM depot WHERE code=outlet.depot LIMIT 1) depot,
             SUM(outlet.volume) outlet_volume
             FROM petroleum_order ord RIGHT JOIN petroleum_outlet outlet 
             ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type ${condition1}
@@ -6750,7 +7176,7 @@ exports.exportPetroleumSMLOutletReport = function(data, callback) {
 
 
             var exportDataUT = await query(sqlQuery).catch(error => {
-                config.log(error);
+                console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -6779,7 +7205,7 @@ exports.exportPetroleumSMLOutletReport = function(data, callback) {
                 ];
                 ReportData.push(newObject);
             }).catch(error => {
-                config.log(error)
+                console.log(error)
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: could not process data- " + getTime() + "','Error','completed');");
                 callback(null, { isDone: true, id: proccessID });
             });
@@ -6804,7 +7230,7 @@ exports.exportPetroleumSMLOutletReport = function(data, callback) {
             console.error(error);
             await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error occured: proccessing file eror- " + getTime() + "','Error','completed');");
         } finally {
-            config.log("task done ");
+            console.log("task done ");
             callback(null, { isDone: true, id: proccessID });
         }
     }
@@ -6822,7 +7248,7 @@ exports.exportPetroleumSMLOutletReport = function(data, callback) {
 
     async function executeStatement(sqlQuery) {
         await query(sqlQuery).catch(error => {
-            config.log(error);
+            console.log(error);
             updateStatus("error", "job error: cannot insert record ", "completed");
             callback(null, { isDone: true, id: proccessID });
         });

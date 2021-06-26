@@ -15,18 +15,18 @@ class ManifestModel extends BaseModel
     
     public function manifest($condition=" WHERE 1 ")
     {
+        $table = self::$table;
         $response = array();
         $result_per_page = $this->http->json->result_per_page??20;
         $page = $this->http->json->page??1;
         $search = $this->http->json->search??null;
         if ($search) {
             $value = implode("", explode(",", $search));
-            $condition .= " AND  (`vessel_name` LIKE '%$search%' OR `product_type` LIKE '%$search%'OR `volume` LIKE '%$search%' OR `amount` LIKE '%$value%' OR `ucr_number` LIKE '%$search%' OR `exporter_name` LIKE '%$search%' OR `importer_name` LIKE '%$search%' )";
+            $condition .= " AND  (`vessel_name` LIKE '%$search%' OR `product_type` = (SELECT code FROM tax_schedule_products WHERE name LIKE '%$search%' LIMIT 1) OR `volume` LIKE '%$search%' OR `amount` LIKE '%$value%' OR `ucr_number` LIKE '%$search%' OR `exporter_name` LIKE '%$search%' OR `importer_name` = (SELECT code FROM bdc WHERE name LIKE '%$search%' LIMIT 1))";
         }
-        $this->paging->table(self::$table);
+        $this->paging->rawQuery("SELECT *, (SELECT name FROM tax_schedule_products WHERE code=product_type LIMIT 1) product_type, (SELECT name FROM bdc WHERE code=importer_name LIMIT 1) importer_name FROM $table $condition Order By `id`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
-        $this->paging->condition("$condition Order By `id`");
         $this->paging->execute();
         $this->paging->reset();
 

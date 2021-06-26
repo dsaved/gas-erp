@@ -43,11 +43,18 @@ class TaxwindowModel extends BaseModel
         $this->paging->condition("$condition");
         $this->paging->execute();
         $this->paging->reset();
+
+        $window = [
+            'Window 1'=> ['label'=>'Window 1','value'=>'W1'],
+            'Window 2'=> ['label'=>'Window 2','value'=>'W2'],
+            'Window 3'=> ['label'=>'Window 3','value'=>'W3']
+        ];
         
         $results = $this->paging->results();
         if (!empty($results)) {
             $response['success'] = true;
             foreach ($results as $key => &$value) {
+                $value->name = $window[$value->name];
                 $this->db->query("SELECT id,name FROM `tax_type` WHERE `id`={$value->tax_type} LIMIT 1");
                 $taxtype = $this->db->results();
                 if ($taxtype && $this->db->count > 0) {
@@ -58,12 +65,12 @@ class TaxwindowModel extends BaseModel
                     $value->tax_type = $options;
                 }
 
-                $this->db->query("SELECT id,name FROM `tax_schedule_products` WHERE `id`={$value->tax_product} LIMIT 1");
+                $this->db->query("SELECT code,name FROM `tax_schedule_products` WHERE `code`='{$value->tax_product}' LIMIT 1");
                 $tax_schedule_products = $this->db->results();
                 if ($tax_schedule_products && $this->db->count > 0) {
                     $tax_product = $this->db->first();
                     $options = array();
-                    $options['value'] = $tax_product->id;
+                    $options['value'] = $tax_product->code;
                     $options['label'] = $tax_product->name;
                     $value->tax_product = $options;
                 }
@@ -93,7 +100,7 @@ class TaxwindowModel extends BaseModel
             $condition .= " AND  `tax_type` = $taxtype ";
         }
 
-        $this->paging->rawQuery("SELECT *, (SELECT name FROM `tax_type` WHERE `id`=".self::$table.".tax_type LIMIT 1) as tax_type, (SELECT name FROM `tax_schedule_products` WHERE `id`=".self::$table.".tax_product LIMIT 1) as tax_product FROM ".self::$table." $condition");
+        $this->paging->rawQuery("SELECT *, (SELECT name FROM `tax_type` WHERE `id`=".self::$table.".tax_type LIMIT 1) as tax_type, (SELECT name FROM `tax_schedule_products` WHERE `code`=".self::$table.".tax_product LIMIT 1) as tax_product FROM ".self::$table." $condition");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();
@@ -147,10 +154,12 @@ class TaxwindowModel extends BaseModel
 
         $date_from = $this->date->sql_datetime($date_from);
         $date_to = $this->date->sql_datetime($date_to);
+        $CODEDATE = date('YM', strtotime($date_from));
+        $window_code = strtoupper($CODEDATE).$this->http->json->wincode;
 
-        $this->db->query("SELECT *,(SELECT name FROM `tax_type` WHERE `id`=".self::$table.".tax_type LIMIT 1) as tax_type,(SELECT name FROM `tax_schedule_products` WHERE `id`=".self::$table.".tax_product LIMIT 1) as tax_product
+        $this->db->query("SELECT *,(SELECT name FROM `tax_type` WHERE `id`=".self::$table.".tax_type LIMIT 1) as tax_type,(SELECT name FROM `tax_schedule_products` WHERE `code`=".self::$table.".tax_product LIMIT 1) as tax_product
         FROM ".self::$table." WHERE (date_from BETWEEN '$date_from' AND '$date_to' OR date_to BETWEEN '$date_from' AND '$date_to' OR '$date_from' BETWEEN date_from AND date_to)
-        AND `tax_type` = $tax_type AND `tax_product` = $tax_product LIMIT 1");
+        AND `tax_type` = $tax_type AND `tax_product` = '$tax_product' LIMIT 1");
         if ($this->db->results() && $this->db->count >0) {
             $result = $this->db->first();
             $this->http->_403("Date Overlaps {$result->name}, from {$result->date_from} to {$result->date_to}. Tax: {$result->tax_type}, Product: {$result->tax_product}");
@@ -162,6 +171,7 @@ class TaxwindowModel extends BaseModel
             "date_to" =>  $date_to,
             "tax_product"=>$tax_product,
             "rate"=>$rate,
+            "code"=>$window_code,
             "name"=>$window_name,
         );
         if ($this->db->insert(self::$table, $data)) {
@@ -189,23 +199,15 @@ class TaxwindowModel extends BaseModel
             $this->http->_403("Please provide tax products");
         }
 
-        $window_name = $this->http->json->window_name??null;
-        if ($window_name===null) {
-            $this->http->_403("Please provide tax window name");
-        }
-
         $rate = $this->http->json->rate??null;
         if ($rate===null) {
             $this->http->_403("Please provide tax window rate");
         }
 
-
-
         $data = array(
             "tax_type" =>  $tax_type,
             "tax_product"=>$tax_product,
             "rate"=>$rate,
-            "name"=>$window_name,
         );
         if ($this->db->updateByID(self::$table, "id", $id, $data)) {
             $response['success'] = true;

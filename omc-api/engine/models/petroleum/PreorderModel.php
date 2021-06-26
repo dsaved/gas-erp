@@ -22,10 +22,13 @@ class PreorderModel extends BaseModel
       if ($search) {
           $condition .= " AND  (`product_type` LIKE '%$search%' OR `reference_number` LIKE '%$search%' OR `volume` LIKE '%$search%' OR `depot` LIKE '%$search%' OR `bdc` LIKE '%$search%' OR `omc` LIKE '%$search%' )";
       }
-      $this->paging->table(self::$table);
+      $this->paging->rawQuery("SELECT prord.*, 
+      (SELECT name FROM tax_schedule_products WHERE code=prord.product_type LIMIT 1) product_type, 
+      (SELECT name FROM bdc WHERE code=prord.bdc LIMIT 1) bdc, 
+      (SELECT name FROM depot WHERE code=prord.depot LIMIT 1) depot, 
+      (SELECT name FROM omc WHERE tin=prord.omc LIMIT 1) omc FROM ".self::$table. " prord $condition Order By `id`");
       $this->paging->result_per_page($result_per_page);
       $this->paging->pageNum($page);
-      $this->paging->condition("$condition Order By `id`");
       $this->paging->execute();
       $this->paging->reset();
 

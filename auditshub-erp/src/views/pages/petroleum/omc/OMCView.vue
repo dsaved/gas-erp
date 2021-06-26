@@ -41,6 +41,10 @@
                 <td>{{ omc.name }}</td>
               </tr>
               <tr>
+                <td class="font-semibold">TIN</td>
+                <td>{{ omc.tin }}</td>
+              </tr>
+              <tr>
                 <td class="font-semibold">Email</td>
                 <td>{{ omc.email }}</td>
               </tr>

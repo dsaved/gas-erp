@@ -40,14 +40,14 @@ class OutletmodelreportModel extends BaseModel
             $condition1 .= " AND outlet.product_type = '$product_type'";
         }
         
-        $query = "SELECT DATE(ord.order_date) order_date, ord.product_type product, 
-        SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, ord.depot depot,
+        $query = "SELECT DATE(ord.order_date) order_date, (SELECT name FROM tax_schedule_products WHERE code=ord.product_type LIMIT 1) product, 
+        SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, (SELECT name FROM depot WHERE code=ord.depot LIMIT 1) depot,
         SUM(outlet.volume) outlet_volume
         FROM ".self::$petroleum_order." ord LEFT JOIN ".self::$petroleum_outlet." outlet 
         ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type $condition Group By order_date, product, depot 
         UNION
-        SELECT DATE(outlet.datetime) order_date, outlet.product_type product, 
-        SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, outlet.depot depot,
+        SELECT DATE(outlet.datetime) order_date, (SELECT name FROM tax_schedule_products WHERE code=outlet.product_type LIMIT 1) product, 
+        SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, (SELECT name FROM depot WHERE code=outlet.depot LIMIT 1) depot,
         SUM(outlet.volume) outlet_volume
         FROM ".self::$petroleum_order." ord RIGHT JOIN ".self::$petroleum_outlet." outlet 
         ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type $condition1
@@ -60,7 +60,6 @@ class OutletmodelreportModel extends BaseModel
         $this->paging->reset();
 
         $result = $this->paging->results();
-        // var_dump($this->paging->lastQuery());
         // var_dump($this->paging);
         if (!empty($result)) {
             $response['success'] = true;

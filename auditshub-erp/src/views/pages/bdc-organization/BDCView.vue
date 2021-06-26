@@ -41,16 +41,16 @@
                 <td>{{ bdc.name }}</td>
               </tr>
               <tr>
+                <td class="font-semibold">Code</td>
+                <td>{{ bdc.code }}</td>
+              </tr>
+              <tr>
                 <td class="font-semibold">Email</td>
                 <td>{{ bdc.email }}</td>
               </tr>
               <tr>
                 <td class="font-semibold">Phone</td>
                 <td>{{ bdc.phone }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Depot</td>
-                <td>{{ bdc.depot }}</td>
               </tr>
             </table>
           </div>
@@ -59,6 +59,10 @@
           <!-- Information - Col 2 -->
           <div class="vx-col flex-1" id="account-info-col-2">
             <table>
+              <tr>
+                <td class="font-semibold">Depot</td>
+                <td>{{ bdc.depot }}</td>
+              </tr>
               <tr>
                 <td class="font-semibold">Location</td>
                 <td>{{ bdc.location }}</td>

@@ -23,10 +23,13 @@ class OrderModel extends BaseModel
             $value = implode("", explode(",", $search));
             $condition .= " AND  (`omc` LIKE '%$search%' OR `product_type` LIKE '%$search%' OR `volume` LIKE '%$search%' OR `bdc` LIKE '%$search%' OR `depot` LIKE '%$search%' OR `unit_price` LIKE '%$value%' OR `transporter` LIKE '%$search%' OR `vehicle_number` LIKE '%$search%' OR `reference_number` LIKE '%$search%' )";
         }
-        $this->paging->table(self::$table);
+        $this->paging->rawQuery("SELECT ord.*, 
+        (SELECT name FROM tax_schedule_products WHERE code=ord.product_type LIMIT 1) product_type, 
+        (SELECT name FROM bdc WHERE code=ord.bdc LIMIT 1) bdc, 
+        (SELECT name FROM depot WHERE code=ord.depot LIMIT 1) depot, 
+        (SELECT name FROM omc WHERE tin=ord.omc LIMIT 1) omc FROM ".self::$table. " ord $condition Order By `id`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
-        $this->paging->condition("$condition Order By `id`");
         $this->paging->execute();
         $this->paging->reset();
 

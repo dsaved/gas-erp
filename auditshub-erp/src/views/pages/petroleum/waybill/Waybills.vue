@@ -194,6 +194,16 @@
           v-html="formatDesc(desc)"
           ><br
         /></span>
+        <vs-button
+          color="dark"
+          icon-pack="feather"
+          size="small"
+          v-if="downloadLink.length > 5"
+          icon="icon-download"
+          class="w-full m-1"
+          @click="download(downloadLink)"
+          >Download errored file</vs-button
+        >
       </p>
       <p v-if="hasdata(importStatus)" class="text-secondary loadingDot">
         {{ importStatus }}
@@ -314,6 +324,7 @@ export default {
       search: "",
       records: [],
       search_timer: null,
+      downloadLink: "",
     };
   },
   computed: {
@@ -376,6 +387,11 @@ export default {
       this.search_timer = setTimeout(function () {
         vm.getData();
       }, 800);
+    },
+    download(file) {
+      const link = file.replace("../omc-api/", "");
+      const win = window.open(`${this.site_link}/${link}`, "_blank");
+      win.focus();
     },
     getData() {
       this.loading = true;
@@ -490,6 +506,7 @@ export default {
     },
     //file import function starts here
     uploadCompleted: function (data) {
+      this.downloadLink = "";
       if (data.success == true) {
         this.pushDescription(data.message);
         this.importStatus = "Reading File Content";
@@ -512,6 +529,10 @@ export default {
         }
       });
       if (error) {
+        if (data.includes("errored")) {
+          this.downloadLink = data;
+          return `<span class="text-danger">-> Error occured during data import<br/></span> `;
+        }
         return `<span class="text-danger">->${data}<br/></span> `;
       }
       return `<span class="text-primary">->${data}<br/></span> `;

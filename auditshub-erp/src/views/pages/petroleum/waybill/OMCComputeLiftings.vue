@@ -6,7 +6,7 @@
       title="OMC Not Found"
       :active.sync="user_not_found"
     >
-      <span>OMC record with name: {{ name }} not found. </span>
+      <span>OMC record with TIN: {{ name }} not found. </span>
       <span>
         <span>Check </span
         ><router-link
@@ -18,7 +18,7 @@
     </vs-alert>
 
     <div id="omc-data">
-      <vx-card :title="name + ' Expected Declarations'">
+      <vx-card :title="omc_name + ' Expected Declarations'">
         <p></p>
         <div class="vs-component vs-con-table stripe vs-table-secondary">
           <header class="md:flex my-3">
@@ -73,7 +73,7 @@
         <vx-card class="my-5" v-if="sortedRecords">
           <!-- product liftings -->
           <h3>
-            <b>{{ name }}</b>
+            <b>{{ omc_name }}</b>
           </h3>
           <div
             v-for="(rec, index) in sortedRecords"
@@ -218,6 +218,7 @@ export default {
       fromyear: "",
       toyear: "",
       show_bdc: "Hide",
+      omc_name: "",
     };
   },
   components: {},
@@ -274,7 +275,7 @@ export default {
       const vm = this;
       this.showLoading("getting file ready for download");
 
-      const exportFiles = [[this.name]];
+      const exportFiles = [[this.omc_name]];
       this.sortedRecords.forEach((data, index) => {
         exportFiles.push([""]);
         exportFiles.push([""]);
@@ -306,7 +307,7 @@ export default {
 
       const workbook = XLSX.utils.book_new();
       workbook.Props = {
-        Title: this.name,
+        Title: this.omc_name,
         Subject: "OMC REPORT",
         Author: "Strategic Mobilisation Ghana Limited",
         Company: "Strategic Mobilisation Ghana Limited",
@@ -371,7 +372,7 @@ export default {
 
       // ADD OMC TILE TO DOCUMENT
       docDefinition.content.push({
-        text: `${this.name}\n\n`,
+        text: `${this.omc_name}\n\n`,
         style: "header",
       });
 
@@ -452,6 +453,7 @@ export default {
           this.loading = false;
           this.records = response.data.computes;
           this.total = response.data.total;
+          this.omc_name = response.data.omc_name;
           this.receipts = response.data.receipts;
           this.receipt_total_amount = response.data.receipt_total_amount;
           this.remaining_balance = response.data.remaining_balance;

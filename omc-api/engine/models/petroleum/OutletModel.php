@@ -37,7 +37,8 @@ class OutletModel extends BaseModel {
           $condition .= " AND depot ='$depot'";
       }
       
-      $query = "SELECT * FROM ".self::$petroleum_outlet." $condition Order By datetime DESC";
+      $query = "SELECT *, (SELECT name FROM depot WHERE code=depot LIMIT 1) depot_name,
+      (SELECT name FROM tax_schedule_products WHERE code=product_type LIMIT 1) product_name FROM ".self::$petroleum_outlet." $condition Order By datetime DESC";
       $this->paging->rawQuery($query);
       $this->paging->result_per_page($result_per_page);
       $this->paging->pageNum($page);

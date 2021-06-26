@@ -63,6 +63,7 @@
                   <vs-checkbox v-model="selectAll">#</vs-checkbox>
                 </th>
                 <th scope="col">Name</th>
+                <th scope="col">Code</th>
                 <th scope="col">Email &amp; Phone</th>
                 <th scope="col">Region</th>
                 <th scope="col">Location</th>
@@ -86,6 +87,9 @@
                 </td>
                 <td>
                   {{ record.name | title }}
+                </td>
+                <td>
+                  {{ record.code }}
                 </td>
                 <td>
                   <b>{{ record.email }}</b> <br>

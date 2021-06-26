@@ -72,13 +72,13 @@
                     {{ record.time }}
                   </td>
                   <td>
-                    {{ record.depot }}
+                    {{ record.depot_name }}
                   </td>
                   <td>
                     {{ record.message }}
                   </td>
                   <td>
-                    {{ record.product }}
+                    {{ record.product_name }}
                   </td>
                   <td>
                     {{ record.volume }}

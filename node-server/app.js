@@ -1,7 +1,10 @@
 var module = require('./config');
 var config = module.configs;
 var mysql = require('mysql');
-const helpers = require('./functions/helper.js')
+const helpers = require('./functions/helper')
+const compute_declarations = require('./functions/expected_declarations')
+const icums_differences = require('./functions/icums_differences')
+const good_standings = require('./functions/good_standings')
 var workerFarm = require('worker-farm'),
     workers = workerFarm(require.resolve('./execute'), [
         'reconcile',
@@ -56,7 +59,7 @@ fs.readFile(configPath, (error, db_config) => {
 
         setInterval(() => {
             helpers.download_files();
-        }, 5 * 1000);
+        }, 60 * 120 * 1000);
         setInterval(() => {
             helpers.pump_product(sqlConn);
         }, 20 * 1000);
@@ -71,6 +74,18 @@ fs.readFile(configPath, (error, db_config) => {
             var time = getTime()
             if (time === "06:00:00") {
                 helpers.alarmNosaleInWeek(sqlConn);
+            }
+        }, 10000);
+
+        icums_differences(sqlConn);
+        setInterval(() => {
+            var time = getTime()
+            if (time === "01:00:00") {
+                compute_declarations(sqlConn);
+            }
+            if (time === "03:00:00") {
+                icums_differences(sqlConn);
+                good_standings(sqlConn);
             }
         }, 10000);
     });
@@ -264,6 +279,7 @@ function fileReceiptImport() {
                                     if (result.isDone) {
                                         process.kill(result.id);
                                         currentReceiptJobIm--;
+                                        compute_declarations(sqlConn);
                                     }
                                 })
                                 currentReceiptJobIm++;

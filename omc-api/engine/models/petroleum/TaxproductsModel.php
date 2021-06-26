@@ -50,7 +50,7 @@ class TaxproductsModel extends BaseModel
         if ($search) {
             $condition = " WHERE (`name` LIKE '%$search%') ";
         }
-        $this->paging->rawQuery("SELECT name FROM ".self::$table."$condition GROUP BY name Order By `name`");
+        $this->paging->rawQuery("SELECT name, code FROM ".self::$table."$condition GROUP BY name Order By `name`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum(1);
         $this->paging->execute();
@@ -59,7 +59,10 @@ class TaxproductsModel extends BaseModel
         $results = $this->paging->results();
         if (!empty($results)) {
             foreach ($results as $data) {
-                array_push($response, $data->name);
+                $options = array();
+                $options['value'] = $data->code;
+                $options['label'] = $data->name;
+                array_push($response, $options);
             }
         }
         return $response;

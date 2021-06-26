@@ -40,7 +40,7 @@
               v-on:update:data="product_type = $event"
             />
           </div>
-          <div class="w-1/5 px-2">
+          <div class="w-1/3 px-2">
             <span>Depot</span>
             <ajax-select
               placeholder="Select Depot"
@@ -345,8 +345,8 @@ export default {
         hasPrevious: false,
       },
       selectedRecords: [],
-      product_type: "All",
-      depot: "All",
+      product_type: {label:"All", value: "All"},
+      depot: {label:"All", value: "All"},
       idf_condition: "All",
       declaration_condition: "All",
       status: "All",
@@ -406,8 +406,8 @@ export default {
   },
   methods: {
     resetFilter: function () {
-      this.product_type = "All";
-      this.depot = "All";
+      this.product_type = {label:"All", value: "All"},
+      this.depot = {label:"All", value: "All"},
       this.idf_condition = "All";
       this.declaration_condition = "All";
       this.group_by = ["BDC"];
@@ -425,8 +425,8 @@ export default {
       this.post("/outletmodelreport", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
-        product_type: this.product_type,
-        depot: this.depot,
+        product_type: this.product_type.value,
+        depot: this.depot.value,
         date_range: this.date_range,
       })
         .then((response) => {
@@ -529,8 +529,8 @@ export default {
         filename: filename,
         export_type: "petroleum-sml-outletreport",
         config_data: JSON.stringify({
-          product_type: this.product_type,
-          depot: this.depot,
+          product_type: this.product_type.value,
+          depot: this.depot.value,
           date_range: this.date_range,
         }),
       })

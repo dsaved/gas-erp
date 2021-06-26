@@ -4,7 +4,7 @@
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <div class="w-full flex mb-4">
-          <div class="w-1/3 px-2">
+          <div class="w-1/4 px-2">
             <span>Date Range</span>
             <div class="w-full">
               <date-range-picker
@@ -28,7 +28,7 @@
               </date-range-picker>
             </div>
           </div>
-          <div class="w-1/4 px-2">
+          <div class="w-1/3 px-2">
             <span>Product Type</span>
             <ajax-select
               placeholder="Select bank type"
@@ -40,7 +40,7 @@
               v-on:update:data="product_type = $event"
             />
           </div>
-          <div class="w-1/4 px-2">
+          <div class="w-1/3 px-2">
             <span>BDC</span>
             <ajax-select
               placeholder="Select BDC"
@@ -356,8 +356,8 @@ export default {
         hasPrevious: false,
       },
       selectedRecords: [],
-      product_type: "All",
-      bdc: "All",
+      product_type: {label:"All", value: "All"},
+      bdc: {label:"All", value: "All"},
       idf_condition: "All",
       declaration_condition: "All",
       status: "All",
@@ -417,8 +417,8 @@ export default {
   },
   methods: {
     resetFilter: function () {
-      this.product_type = "All";
-      this.bdc = "All";
+      this.product_type = {label:"All", value: "All"};
+      this.bdc = {label:"All", value: "All"};
       this.idf_condition = "All";
       this.declaration_condition = "All";
       this.group_by = ["BDC"];
@@ -436,8 +436,8 @@ export default {
       this.post("/inputreconciliation", {
         result_per_page: this.result_per_page,
         page: this.currentPage,
-        product_type: this.product_type,
-        bdc: this.bdc,
+        product_type: this.product_type.value,
+        bdc: this.bdc.value,
         group_by: this.group_by,
         idf_condition: this.idf_condition,
         declaration_condition: this.declaration_condition,
@@ -544,8 +544,8 @@ export default {
         filename: filename,
         export_type: "petroleum-import-reconciliation",
         config_data: JSON.stringify({
-          product_type: this.product_type,
-          bdc: this.bdc,
+          product_type: this.product_type.value,
+          bdc: this.bdc.value,
           group_by: this.group_by,
           idf_condition: this.idf_condition,
           declaration_condition: this.declaration_condition,

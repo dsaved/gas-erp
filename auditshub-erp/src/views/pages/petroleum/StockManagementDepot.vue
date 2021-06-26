@@ -47,7 +47,7 @@
           <div class="vx-row">
             <div class="vx-col w-1/3">
               <h5 class="mb-2" :style="'color:#192155'">
-                {{ record.depot }}
+                {{ record.depot_name }}
               </h5>
               <progress-bar
                 :options="{
@@ -73,7 +73,7 @@
                 :value="parseFloat(record.percent)"
               />
               <p class="text-cemter">
-                <b :style="'color:#192155'">{{ record.product }}</b>
+                <b :style="'color:#192155'">{{ record.product_name }}</b>
               </p>
             </div>
             <div class="vx-col w-1/2">
@@ -228,7 +228,7 @@ export default {
         hasPrevious: false,
       },
       selectedRecords: [],
-      product_type: "All",
+      product_type: {label:"All", value: "All"},
       search: "",
       records: [],
       search_timer: null,
@@ -298,7 +298,7 @@ export default {
         result_per_page: this.result_per_page,
         page: this.currentPage,
         depot: this.depot,
-        product_type: this.product_type,
+        product_type: this.product_type.value,
       })
         .then((response) => {
           this.loading = false;

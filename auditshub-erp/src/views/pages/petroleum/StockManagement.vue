@@ -61,7 +61,7 @@
                   :key="index"
                   class="tr-values vs-table--tr tr-table-state-null selected"
                   v-on:click="
-                    linkto('/petroleum/stock-management/' + record.depot)
+                    linkto('/petroleum/stock-management/' + record.depot_code)
                   "
                 >
                   <td scope="row" @click.stop="">

@@ -22,6 +22,18 @@
             </div>
             <div class="vx-col sm:w-1/3 w-full mb-2">
               <vs-input
+                v-validate="'required|min:11'"
+                label-placeholder="TIN"
+                name="tin"
+                v-model="tin"
+                class="mt-5 w-full"
+              />
+              <span class="text-danger text-sm" v-show="errors.has('tin')">{{
+                errors.first("tin")
+              }}</span>
+            </div>
+            <div class="vx-col sm:w-1/3 w-full mb-2">
+              <vs-input
                 v-validate="''"
                 label-placeholder="Email"
                 name="email"
@@ -135,6 +147,7 @@ export default {
 		return {
 			loading: false,
 			name: '',
+			tin: '',
 			email: '',
 			phone: '',
 			location: '',
@@ -167,6 +180,7 @@ export default {
 		},
 		resetForm () {
 			this.name = ''
+			this.tin = ''
 			this.email = ''
 			this.phone = ''
 			this.location = ''
@@ -183,6 +197,7 @@ export default {
 					if (response.data.success == true) {
 						const result = response.data.omcs[0]
 						this.name = result.name
+						this.tin = result.tin
 						this.email = result.email
 						this.phone = result.phone
 						this.location = result.location
@@ -228,6 +243,7 @@ export default {
 						this.showLoading('Adding OMC to system')
 						this.post('/omc/add', {
 							name: this.name,
+							tin: this.tin,
 							email: this.email,
 							phone: this.phone,
 							location: this.location,
@@ -268,6 +284,7 @@ export default {
 						this.post('/omc/update', {
 							id: this.omcid,
 							name: this.name,
+							tin: this.tin,
 							email: this.email,
 							phone: this.phone,
 							location: this.location,

@@ -30,7 +30,7 @@
               </date-range-picker>
             </div>
           </div>
-          <div class="w-1/4 px-2">
+          <div class="w-1/3 px-2">
             <span>OMC</span>
             <ajax-select
               placeholder="Select Condition"

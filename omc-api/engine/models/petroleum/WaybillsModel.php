@@ -17,6 +17,7 @@ class WaybillsModel extends BaseModel
       
     public function waybills($condition=" WHERE 1 ")
     {
+        $table = self::$table;
         $response = array();
         $result_per_page = $this->http->json->result_per_page??20;
         $page = $this->http->json->page??1;
@@ -24,10 +25,12 @@ class WaybillsModel extends BaseModel
         if ($search) {
             $condition .= " AND  (`depot` LIKE '%$search%' OR `bdc` LIKE '%$search%' OR `omc` LIKE '%$search%' OR `transporter` LIKE '%$search%' OR `product_type` LIKE '%$search%' OR `volume` LIKE '%$search%' OR `driver` LIKE '%$search%' OR `vehicle_number` LIKE '%$search%' OR `destination` LIKE '%$search%' )";
         }
-        $this->paging->table(self::$table);
+        $this->paging->rawQuery("SELECT *, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc,
+        (SELECT name FROM bdc WHERE code=bdc LIMIT 1) bdc,
+        (SELECT name FROM depot WHERE code=depot LIMIT 1) depot,
+        (SELECT name FROM tax_schedule_products WHERE code=product_type LIMIT 1) product_type FROM $table $condition Order By `id`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
-        $this->paging->condition("$condition Order By `id`");
         $this->paging->execute();
         $this->paging->reset();
   
@@ -53,70 +56,86 @@ class WaybillsModel extends BaseModel
         $result_per_page = $this->http->json->result_per_page??20;
         $page = $this->http->json->page??1;
 
-        $omc = $this->http->json->omc??null;
         $product_type = $this->http->json->product_type??null;
         $depot = $this->http->json->depot??null; //on declaration table
         $group_by = $this->http->json->group_by??null;
         $date_range = $this->http->json->date_range??null;
         $status = $this->http->json->status??null;
         $nagatives = $this->http->json->nagatives??null;
+        $condition1=$condition;
 
         if ($date_range) {
             if ($date_range->endDate && $date_range->startDate) {
                 $startDate = $this->date->sql_date($date_range->startDate);
                 $endDate = $this->date->sql_date($date_range->endDate);
                 $condition .= " AND (waybill.date  BETWEEN '$startDate' AND '$endDate') ";
+                $condition1 .= " AND (outlet.datetime  BETWEEN '$startDate' AND '$endDate') ";
             }
         }
 
-
         if ($product_type && $product_type!="All") {
             $condition .= " AND waybill.product_type = '$product_type'";
+            $condition1 .= " AND outlet.product_type = '$product_type'";
         }
   
         if ($depot && $depot!="All") {
             $condition .= " AND waybill.depot ='$depot'";
-        }
-
-        if ($omc && $omc!="All") {
-            $condition .= " AND waybill.omc = '$omc'";
+            $condition1 .= " AND outlet.depot = '$depot'";
         }
 
         $grouping = "waybill.date";
+        $grouping2 = "outlet.datetime";
         if ($group_by) {
             if ($group_by==="Month") {
                 $grouping = " CONCAT(YEAR(waybill.date), '/', MONTH(waybill.date))";
+                $grouping2 = " CONCAT(YEAR(outlet.datetime), '/', MONTH(outlet.datetime))";
             }elseif ($group_by ==="Week") {
                 $grouping = " CONCAT(YEAR(waybill.date), '/', WEEK(waybill.date))";
+                $grouping2 = " CONCAT(YEAR(outlet.datetime), '/', WEEK(outlet.datetime))";
             }elseif ($group_by==="Day") {
                 $grouping = " DATE(waybill.date)";
+                $grouping2 = " DATE(outlet.datetime)";
             }else{
                 $grouping = " DATE(waybill.date)";
+                $grouping2 = " DATE(outlet.datetime)";
             }
-            $group_by = "Group By $grouping ";
+            $group_by = "Group By grouping ";
         } else {
-            $group_by = "Group By waybill.date";
+            $group_by = "Group By grouping";
         }
 
         if ($status && $status!="All") {
             if ($status==="Flagged") {
                 $condition .= " AND (waybill.volume <> outlet.volume OR outlet.volume IS NULL)";
+                $condition1 .= " AND (waybill.volume <> outlet.volume OR outlet.volume IS NULL)";
             }
             if ($status==="Not Flagged") {
                 $condition .= " AND waybill.volume = outlet.volume ";
+                $condition1 .= " AND waybill.volume = outlet.volume ";
             }
         }
 
         if ($nagatives && $nagatives!="All") {
             if ($nagatives==="Nagatives") {
                 $condition .= " AND (waybill.volume - outlet.volume  < 0)";
+                $condition1 .= " AND (waybill.volume - outlet.volume  < 0)";
             }
             if ($nagatives==="Positives") {
                 $condition .= " AND (waybill.volume - outlet.volume  >= 0)";
+                $condition1 .= " AND (waybill.volume - outlet.volume  >= 0)";
             }
         }
         
-        $query = "SELECT MIN(waybill.id) id, $grouping as grouping, waybill.depot, waybill.product_type, SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume FROM ".self::$table." waybill JOIN ".self::$petroleum_outlet." outlet ON outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type $condition $group_by, waybill.depot, waybill.product_type  ORDER BY $grouping DESC";
+        $query = "SELECT MIN(waybill.id) id, $grouping as grouping, (SELECT name FROM depot WHERE code=waybill.depot LIMIT 1) depot, (SELECT name FROM tax_schedule_products WHERE code=waybill.product_type LIMIT 1) product_type,
+        SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume FROM ".self::$table." waybill
+        LEFT JOIN ".self::$petroleum_outlet." outlet ON outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type
+        $condition $group_by, depot, product_type
+        UNION
+        SELECT MIN(waybill.id) id, $grouping2 as grouping, (SELECT name FROM depot WHERE code=outlet.depot LIMIT 1) depot, (SELECT name FROM tax_schedule_products WHERE code=outlet.product_type LIMIT 1) product_type,
+        SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume FROM ".self::$table." waybill
+        RIGHT JOIN ".self::$petroleum_outlet." outlet ON outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type
+        $condition1 $group_by, depot, product_type ORDER BY grouping DESC";
+
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
@@ -151,48 +170,72 @@ class WaybillsModel extends BaseModel
 
         $bdc = $this->http->json->bdc??null;
         $product_type = $this->http->json->product_type??null;
-        $group_by = $this->http->json->group_by??null;
         $date_range = $this->http->json->date_range??null;
         $status = $this->http->json->status??null;
         $nagatives = $this->http->json->nagatives??null;
+        $condition1 = $condition;
 
         if ($date_range) {
             if ($date_range->endDate && $date_range->startDate) {
                 $startDate = $this->date->sql_date($date_range->startDate);
                 $endDate = $this->date->sql_date($date_range->endDate);
                 $condition .= " AND (declaration.declaration_date  BETWEEN '$startDate' AND '$endDate') ";
+                $condition1 .= " AND (waybill.date  BETWEEN '$startDate' AND '$endDate') ";
             }
         }
 
         if ($bdc && $bdc!="All") {
             $condition .= " AND declaration.importer_name = '$bdc'";
+            $condition1 .= " AND waybill.bdc = '$bdc'";
         }
 
         if ($product_type && $product_type!="All") {
             $condition .= " AND declaration.product_type = '$product_type'";
+            $condition1 .= " AND waybill.product_type = '$product_type'";
         }
 
         $grouping = "CONCAT(YEAR(declaration.declaration_date), '/', MONTH(declaration.declaration_date))";
+        $grouping1 = "CONCAT(YEAR(waybill.date), '/', MONTH(waybill.date))";
 
         if ($status && $status!="All") {
             if ($status==="Flagged") {
                 $condition .= " AND (declaration.volume <> waybill.volume OR waybill.volume IS NULL)";
+                $condition1 .= " AND (declaration.volume <> waybill.volume OR waybill.volume IS NULL)";
             }
             if ($status==="Not Flagged") {
                 $condition .= " AND declaration.volume = waybill.volume ";
+                $condition1 .= " AND declaration.volume = waybill.volume ";
             }
         }
 
         if ($nagatives && $nagatives!="All") {
             if ($nagatives==="Nagatives") {
                 $condition .= " AND (declaration.volume - waybill.volume  < 0)";
+                $condition1 .= " AND (declaration.volume - waybill.volume  < 0)";
             }
             if ($nagatives==="Positives") {
                 $condition .= " AND (declaration.volume - waybill.volume  >= 0)";
+                $condition1 .= " AND (declaration.volume - waybill.volume  >= 0)";
             }
         }
         
-        $query = "SELECT MIN(declaration.id) id, $grouping as grouping, declaration.product_type, SUM(declaration.volume) declaration_volume, SUM(waybill.volume) waybill_volume, declaration.importer_name bdc FROM ".self::$petroleum_declaration." declaration JOIN ".self::$table." waybill ON waybill.bdc = declaration.importer_name AND waybill.product_type = declaration.product_type $condition GROUP BY $grouping, declaration.importer_name, declaration.product_type  ORDER BY $grouping DESC";
+        $query = "SELECT MIN(declaration.id) id, $grouping as grouping,
+        (SELECT name FROM tax_schedule_products WHERE code=declaration.product_type LIMIT 1) product_type,
+        (SELECT name FROM bdc WHERE code=declaration.importer_name LIMIT 1) bdc,
+        SUM(declaration.volume) declaration_volume, SUM(waybill.volume) waybill_volume
+        FROM ".self::$petroleum_declaration." declaration
+        LEFT JOIN ".self::$table." waybill ON waybill.bdc = declaration.importer_name AND waybill.product_type = declaration.product_type
+        $condition GROUP BY $grouping, importer_name, product_type
+        UNION
+        SELECT MIN(declaration.id) id, $grouping1 as grouping,
+        (SELECT name FROM tax_schedule_products WHERE code=waybill.product_type LIMIT 1) product_type,
+        (SELECT name FROM bdc WHERE code=waybill.bdc LIMIT 1) bdc,
+        SUM(declaration.volume) declaration_volume, SUM(waybill.volume) waybill_volume
+        FROM ".self::$petroleum_declaration." declaration
+        RIGHT JOIN ".self::$table." waybill ON waybill.bdc = declaration.importer_name AND waybill.product_type = declaration.product_type
+        $condition1 GROUP BY $grouping1, importer_name, product_type
+        ORDER BY grouping DESC";
+
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
@@ -317,16 +360,16 @@ class WaybillsModel extends BaseModel
             $product = array();
             $product['computations'] = array();
             $date = $this->date->sql_date($compute->date);
-            $product_title = $compute->product_type;
-            $window = "";
+            $product_title = $compute->product_name;
+            $window = " No tax avaiable on $date";
             $product['total'] = 0;
-            $this->db->query("SELECT tw.*, tt.name tax FROM tax_window tw JOIN `tax_type` tt ON tw.tax_type=tt.id WHERE tw.`tax_product` = (SELECT id FROM tax_schedule_products WHERE name = '{$compute->product_type}' LIMIT 1) AND tw.`date_from`<= '{$date}' AND tw.`date_to` >= '{$date}'");
+            $this->db->query("SELECT tw.*, tt.name tax FROM tax_window tw JOIN `tax_type` tt ON tw.tax_type=tt.id WHERE tw.`tax_product` = '{$compute->product_type}' AND tw.`date_from`<= '{$date}' AND tw.`date_to` >= '{$date}'");
             $queryResult = $this->db->results();
             if($queryResult && $this->db->count > 0){
                 foreach ($queryResult as $key => $tax) {
                     $tax_schedule = array();
-                    $window = ". {$this->date->day($tax->date_from)} - {$this->date->day($tax->date_to)} {$this->date->month_year($compute->date)} ";
-                    $tax_schedule['calculation'] = $compute->volume." * ".$tax->rate." (volume)";
+                    $window = ". {$this->date->day($tax->date_from)} - {$this->date->day($tax->date_to)} {$this->date->month_year($compute->date)} ($tax->code) ";
+                    $tax_schedule['calculation'] = number_format($compute->volume, 1)." * ".$tax->rate." (volume)";
                     $tax_schedule['tax'] = $tax->tax;
                     $tax_schedule['amount'] = number_format($compute->volume * $tax->rate,2);
                     $product['total'] += $compute->volume * $tax->rate;
@@ -339,14 +382,15 @@ class WaybillsModel extends BaseModel
             array_push($response['computes'], $product);
         }
         $response['total'] = number_format($response['total'],2);
+        $response['omc_name'] = $compute->omc_name;
         return $response;
     }
 
     public function getWaybills($omc, $group_products){
         if($group_products===true){
-            $this->db->query("SELECT SUM(volume) volume, MIN(date) date, product_type FROM ".self::$table." WHERE omc='$omc' GROUP BY product_type, (SELECT CONCAT(tax_product, '-', name) FROM tax_window WHERE `date_from`<= date AND `date_to` >= date LIMIT 1) ORDER BY product_type ASC, date ASC ");
+            $this->db->query("SELECT SUM(volume) volume, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc_name, (SELECT name FROM tax_schedule_products WHERE code=product_type LIMIT 1) product_name, MIN(date) date, product_type FROM ".self::$table." WHERE omc='$omc' GROUP BY product_type, (SELECT CONCAT(tax_product, '-', name) FROM tax_window WHERE `date_from`<= date AND `date_to` >= date LIMIT 1) ORDER BY product_type ASC, date ASC ");
         }else{
-            $this->db->query("SELECT * FROM ".self::$table." WHERE omc='$omc' ORDER BY product_type ASC, date ASC ");
+            $this->db->query("SELECT *, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc_name, (SELECT name FROM tax_schedule_products WHERE code=product_type LIMIT 1) product_name FROM ".self::$table." WHERE omc='$omc' ORDER BY product_type ASC, date ASC ");
         }
         // var_dump($this->db);
         return $this->db->results();
