@@ -40,9 +40,15 @@ var workerFarm = require('worker-farm'),
     currentReceiptJobIm = 0,
     currentJobIm = 0
 
+var isComputingGS = false,
+    pendingComputingForGS = false,
+    isComputingID = false,
+    pendingComputingForID = false,
+    isComputingEP = false,
+    pendingComputingForEP = false;
+
 var isSqlConnected = false;
 var sqlConn;
-const Type = { IN: 0, OUT: 1 }
 
 var fs = require('fs')
 var path = require('path')
@@ -57,12 +63,21 @@ fs.readFile(configPath, (error, db_config) => {
         isSqlConnected = true;
         config.log('worker thread initialized');
 
+        // run every 2 hours
         setInterval(() => {
             helpers.download_files();
+            computeGoodStandingsAndWait(sqlConn);
         }, 60 * 120 * 1000);
+
+        // run every 1 hour
+        setInterval(() => {
+            computeICUMSDifferencesAndWait(sqlConn);
+        }, 60 * 60 * 1000);
+
+        // run every 4 minutes
         setInterval(() => {
             helpers.pump_product(sqlConn);
-        }, 20 * 1000);
+        }, 240 * 1000);
 
         initialize();
         setInterval(() => {
@@ -77,19 +92,75 @@ fs.readFile(configPath, (error, db_config) => {
             }
         }, 10000);
 
-        icums_differences(sqlConn);
+        // computeGoodStandingsAndWait(sqlConn);
         setInterval(() => {
             var time = getTime()
             if (time === "01:00:00") {
-                compute_declarations(sqlConn);
+                computeExpectedDeclarationAndWait(sqlConn);
             }
             if (time === "03:00:00") {
-                icums_differences(sqlConn);
-                good_standings(sqlConn);
+                computeICUMSDifferencesAndWait(sqlConn);
+                computeGoodStandingsAndWait(sqlConn);
+            }
+
+            //run any pending computation
+            if (pendingComputingForEP && !isComputingEP) {
+                pendingComputingForEP = false;
+                console.log("Executing pending Exp. Declaration")
+                computeExpectedDeclarationAndWait(sqlConn);
+            }
+            if (pendingComputingForGS && !isComputingGS) {
+                pendingComputingForGS = false;
+                console.log("Executing pending Good Standing")
+                computeGoodStandingsAndWait(sqlConn);
+            }
+            if (pendingComputingForID && !isComputingID) {
+                pendingComputingForID = false;
+                console.log("Executing pending icums differences")
+                computeICUMSDifferencesAndWait(sqlConn);
             }
         }, 10000);
     });
 });
+
+// WHEN a waybill is loaded compute expected_declaration from the data uploaded
+async function computeExpectedDeclarationAndWait(sqlConn) {
+    if (!isComputingEP) {
+        console.log("Computing Exp. Declaration")
+        isComputingEP = true;
+        await compute_declarations(sqlConn);
+        isComputingEP = false;
+    } else {
+        console.log("Exp. Declaration still computing... adding to pending.")
+        pendingComputingForEP = true;
+    }
+}
+
+// compute good standing every 2 hours
+async function computeGoodStandingsAndWait(sqlConn) {
+    if (!isComputingGS) {
+        console.log("Computing good standing")
+        isComputingGS = true;
+        await good_standings(sqlConn);
+        isComputingGS = false;
+    } else {
+        console.log("good standing still computing... adding to pending.")
+        pendingComputingForGS = true;
+    }
+}
+
+// compute good standing every 1 hour
+async function computeICUMSDifferencesAndWait(sqlConn) {
+    if (!isComputingID) {
+        console.log("Computing icums differences")
+        isComputingID = true;
+        await icums_differences(sqlConn);
+        isComputingID = false;
+    } else {
+        console.log("icums differences still computing... adding to pending.")
+        pendingComputingForID = true;
+    }
+}
 
 function initialize() {
     startReconcilation();
@@ -279,7 +350,7 @@ function fileReceiptImport() {
                                     if (result.isDone) {
                                         process.kill(result.id);
                                         currentReceiptJobIm--;
-                                        compute_declarations(sqlConn);
+                                        computeExpectedDeclarationAndWait(sqlConn);
                                     }
                                 })
                                 currentReceiptJobIm++;

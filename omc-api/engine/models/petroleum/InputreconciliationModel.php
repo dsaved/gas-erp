@@ -62,7 +62,7 @@ class InputreconciliationModel extends BaseModel
         m.volume manifest_volume, m.amount manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
         (SELECT name FROM bdc WHERE code=d.importer_name LIMIT 1) manifest_omc, d.*, d.amount declaration_amount, d.volume declaration_volume
         FROM ".self::$manifest." m RIGHT JOIN ".self::$declaration." d 
-        ON m.ucr_number = d.ucr_number $condition1 Order By arrival_date DESC";
+        ON m.ucr_number = d.ucr_number $condition1 AND m.id IS NULL Order By arrival_date DESC";
 
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);

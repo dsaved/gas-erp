@@ -191,7 +191,7 @@ module.exports = {
                 }
             }
 
-            await timeout(5000);
+            await timeout(15000);
 
             if (fs.existsSync(outflow)) {
                 //get the oulet data flow from media server

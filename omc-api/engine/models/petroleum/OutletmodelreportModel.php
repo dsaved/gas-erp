@@ -50,7 +50,7 @@ class OutletmodelreportModel extends BaseModel
         SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, (SELECT name FROM depot WHERE code=outlet.depot LIMIT 1) depot,
         SUM(outlet.volume) outlet_volume
         FROM ".self::$petroleum_order." ord RIGHT JOIN ".self::$petroleum_outlet." outlet 
-        ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type $condition1
+        ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type $condition1 AND ord.id IS NULL
         Group By order_date, product, depot Order By order_date DESC";
 
         $this->paging->rawQuery($query);

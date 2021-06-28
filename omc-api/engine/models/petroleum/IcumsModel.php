@@ -24,7 +24,8 @@ class IcumsModel extends BaseModel
             $value = implode("", explode(",", $search));
             $condition .= " AND  (pid.`omc` LIKE '%$search%' OR pid.`window_code` LIKE '%$search%' OR  pid.`amount` LIKE '%$value%'  OR  pid.`product_type`= (SELECT code FROM tax_schedule_products WHERE `name` LIKE '%$value%' LIMIT 1))";
         }
-        $this->paging->rawQuery("SELECT pid.*, tsp.name product, omc.name omc FROM $table AS pid LEFT JOIN tax_schedule_products tsp ON tsp.code=pid.product_type LEFT JOIN omc omc ON omc.tin=pid.omc $condition Order By `date` DESC");
+
+        $this->paging->rawQuery("SELECT window_code, amount, (SELECT name FROM tax_schedule_products WHERE code=product_type LIMIT 1) product, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc FROM $table $condition Order By `date` DESC");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();

@@ -1432,7 +1432,7 @@ const router = new Router({
                     }
                 },
                 // =============================================================================
-                // ICOMS-CEPS MENU START HERE
+                // ICUMS-CEPS MENU START HERE
                 // =============================================================================
                 {
                     path: '/petroleum/icums/declearations',
@@ -1446,7 +1446,7 @@ const router = new Router({
                             { title: 'Declearations', active: true }
                         ],
                         homeurl: '/petroleum',
-                        pageTitle: 'ICOMS (CEPS)'
+                        pageTitle: 'ICUMS (CEPS)'
                     }
                 },
                 {
@@ -1461,7 +1461,7 @@ const router = new Router({
                             { title: 'Differences', active: true }
                         ],
                         homeurl: '/petroleum',
-                        pageTitle: 'ICOMS (CEPS)'
+                        pageTitle: 'ICUMS (CEPS)'
                     }
                 },
                 // =============================================================================

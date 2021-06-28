@@ -1262,8 +1262,10 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
     }
 
     async function convertDate(inputDate) {
+        if (!inputDate) return inputDate;
+
         function pad(s) { return (s < 10) ? '0' + s : s; }
-        var date = inputDate.split('-');
+        var date = inputDate.split('/');
         var d = new Date(date[2], date[1], date[0]) //y/m/d
         return [pad(d.getFullYear()), pad(d.getMonth()), d.getDate()].join('/')
     }
@@ -2434,6 +2436,8 @@ exports.importOrders = function(data, callback) {
     }
 
     async function convertDate(inputDate) {
+        if (!inputDate) return inputDate;
+
         function pad(s) { return (s < 10) ? '0' + s : s; }
         var date = inputDate.split('/');
         var d = new Date(date[2], date[1], date[0]) //y/m/d
@@ -2844,6 +2848,8 @@ exports.importPreorders = function(data, callback) {
     }
 
     async function convertDate(inputDate) {
+        if (!inputDate) return inputDate;
+
         function pad(s) { return (s < 10) ? '0' + s : s; }
         var date = inputDate.split('/');
         var d = new Date(date[2], date[1], date[0]) //y/m/d
@@ -3235,6 +3241,8 @@ exports.importWaybills = function(data, callback) {
     }
 
     async function convertDate(inputDate) {
+        if (!inputDate) return inputDate;
+
         function pad(s) { return (s < 10) ? '0' + s : s; }
         var date = inputDate.split('/');
         var d = new Date(date[2], date[1], date[0]) //y/m/d
@@ -3559,7 +3567,6 @@ exports.importICUMSDeclarations = function(data, callback) {
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
             var noErrorInFile = true,
-                lastKey = 0,
                 i = 0;
             for (i = 0; i < excelData.length; i++) {
                 /**
@@ -3578,7 +3585,7 @@ exports.importICUMSDeclarations = function(data, callback) {
             if (noErrorInFile) {
                 total = excelDataToInsert.length;
                 errorData.push(Object.keys(excelData[0]));
-                await updateStatus("Creating Receipts", "Validation successful - " + getTime());
+                await updateStatus("Creating Declarations", "Validation successful - " + getTime());
                 await asyncForEach(excelDataToInsert, async(insertal, index) => {
                     current = index + 1;
                     //insert data to db
@@ -5413,7 +5420,7 @@ exports.exportPetroleumInputReconciliation = function(data, callback) {
             (SELECT name FROM tax_schedule_products WHERE code=d.product_type LIMIT 1) manifest_product, 
             m.volume manifest_volume, m.amount manifest_amount, m.ucr_number manifest_ucr, m.exporter_name, 
             (SELECT name FROM bdc WHERE code=d.importer_name LIMIT 1) manifest_omc, d.*, d.amount declaration_amount, d.volume declaration_volume
-            FROM petroleum_manifest m RIGHT JOIN petroleum_declaration d ON m.ucr_number = d.ucr_number ${condition1} Order By arrival_date DESC`;
+            FROM petroleum_manifest m RIGHT JOIN petroleum_declaration d ON m.ucr_number = d.ucr_number ${condition1} AND m.id IS NULL Order By arrival_date DESC`;
 
             var exportDataUT = await query(sqlQuery).catch(error => {
                 console.log(error);
@@ -5727,7 +5734,7 @@ exports.exportPetroleumNPAAnalysis = function(data, callback) {
             SUM(prord.volume) preorder_volume, ord.reference_number, 
             SUM(ord.unit_price) order_unit_price, SUM(ord.volume) order_volume, ord.order_date, ord.order_date date
             FROM petroleum_preorder prord RIGHT JOIN petroleum_order ord 
-            ON prord.reference_number = ord.reference_number ${condition1} ${group_by1} Order By date DESC`;
+            ON prord.reference_number = ord.reference_number ${condition1}  AND prord.id IS NULL ${group_by1} Order By date DESC`;
             var exportDataUT = await query(sqlQuery).catch(error => {
                 console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
@@ -6438,7 +6445,7 @@ exports.exportPetroleumWaybillAnalysis = function(data, callback) {
             SUM(declaration.volume) declaration_volume, SUM(waybill.volume) waybill_volume
             FROM petroleum_declaration declaration
             RIGHT JOIN petroleum_waybill waybill ON waybill.bdc = declaration.importer_name AND waybill.product_type = declaration.product_type
-            ${condition1} GROUP BY ${grouping1}, importer_name, product_type
+            ${condition1}  AND declaration.id IS NULL GROUP BY ${grouping1}, importer_name, product_type
             ORDER BY grouping DESC`;
             var exportDataUT = await query(sqlQuery).catch(error => {
                 console.log(error);
@@ -6713,7 +6720,7 @@ exports.exportPetroleumWaybillReconcile = function(data, callback) {
             SELECT MIN(waybill.id) id, ${grouping2} as grouping, (SELECT name FROM depot WHERE code=outlet.depot LIMIT 1) depot, (SELECT name FROM tax_schedule_products WHERE code=outlet.product_type LIMIT 1) product_type,
             SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume FROM petroleum_waybill waybill
             RIGHT JOIN petroleum_outlet outlet ON outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type
-            ${condition1} ${group_by}, depot, product_type ORDER BY grouping DESC`;
+            ${condition1} AND waybill.id IS NULL ${group_by}, depot, product_type ORDER BY grouping DESC`;
             var exportDataUT = await query(sqlQuery).catch(error => {
                 console.log(error);
                 executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'error: cannot read selected omc from database - " + getTime() + "','Error','completed');");
@@ -6938,7 +6945,7 @@ exports.exportPetroleumInletReport = function(data, callback) {
             SELECT MIN(dcl.id) id, CONCAT(YEAR(inlet.datetime), '/', WEEK(inlet.datetime)) AS week,
             SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, (SELECT name FROM tax_schedule_products WHERE code=inlet.product_type LIMIT 1) product_type
             FROM petroleum_declaration dcl RIGHT JOIN petroleum_inlet inlet
-            ON inlet.product_type = dcl.product_type ${condition1} 
+            ON inlet.product_type = dcl.product_type ${condition1} AND dcl.id IS NULL
             GROUP BY week, product_type ORDER BY week DESC`;
             var exportDataUT = await query(sqlQuery).catch(error => {
                 console.log(error);
@@ -7171,7 +7178,7 @@ exports.exportPetroleumSMLOutletReport = function(data, callback) {
             SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, (SELECT name FROM depot WHERE code=outlet.depot LIMIT 1) depot,
             SUM(outlet.volume) outlet_volume
             FROM petroleum_order ord RIGHT JOIN petroleum_outlet outlet 
-            ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type ${condition1}
+            ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type ${condition1} AND ord.id IS NULL
             Group By order_date, product, depot Order By order_date DESC`;
 
 

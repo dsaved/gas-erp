@@ -7,7 +7,7 @@ module.exports = async function icums_differences(sqlConn) {
     UNION
     SELECT ped.window_code window_code, ped.product_code product_type, ped.omc omc, SUM(pid.amount) amount,
     SUM(ped.expected_declaration_amount) expected_declaration_amount FROM petroleum_icums_declaration pid
-    RIGHT JOIN petroleum_expected_declaration ped ON ped.omc=pid.omc AND ped.window_code=pid.window_code
+    RIGHT JOIN petroleum_expected_declaration ped ON ped.omc=pid.omc AND ped.window_code=pid.window_code WHERE pid.id IS NULL
     GROUP BY omc, window_code ORDER BY omc`).catch(error => {
         console.log(error);
     });

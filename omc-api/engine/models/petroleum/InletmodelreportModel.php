@@ -40,7 +40,7 @@ class InletmodelreportModel extends BaseModel
         SELECT MIN(dcl.id) id, CONCAT(YEAR(inlet.datetime), '/', WEEK(inlet.datetime)) AS week,
         SUM(dcl.volume) declared_vol, SUM(inlet.volume) inlet_vol, (SELECT name FROM tax_schedule_products WHERE code=inlet.product_type LIMIT 1) product_type
         FROM ".self::$petroleum_declaration." dcl RIGHT JOIN ".self::$petroleum_inlet." inlet
-        ON inlet.product_type = dcl.product_type $condition1 
+        ON inlet.product_type = dcl.product_type $condition1 AND dcl.id IS NULL
         GROUP BY week, product_type ORDER BY week DESC";
 
         $this->paging->rawQuery($query);

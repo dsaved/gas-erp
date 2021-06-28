@@ -233,7 +233,7 @@ class AnalyticsModel extends BaseModel
         SUM(prord.volume) preorder_volume, ord.reference_number, 
          SUM(ord.unit_price) order_unit_price, SUM(ord.volume) order_volume, ord.order_date, ord.order_date date
         FROM ".self::$petroleum_preorder." prord RIGHT JOIN ".self::$petroleum_order." ord 
-        ON prord.reference_number = ord.reference_number $condition1 $group_by1
+        ON prord.reference_number = ord.reference_number $condition1 AND prord.id IS NULL $group_by1
         Order By date DESC";
 
         $this->paging->rawQuery($query);

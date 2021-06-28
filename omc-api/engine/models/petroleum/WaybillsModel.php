@@ -134,7 +134,7 @@ class WaybillsModel extends BaseModel
         SELECT MIN(waybill.id) id, $grouping2 as grouping, (SELECT name FROM depot WHERE code=outlet.depot LIMIT 1) depot, (SELECT name FROM tax_schedule_products WHERE code=outlet.product_type LIMIT 1) product_type,
         SUM(waybill.volume) waybill_volume, SUM(outlet.volume) outlet_volume FROM ".self::$table." waybill
         RIGHT JOIN ".self::$petroleum_outlet." outlet ON outlet.depot = waybill.depot AND outlet.product_type = waybill.product_type
-        $condition1 $group_by, depot, product_type ORDER BY grouping DESC";
+        $condition1 AND waybill.id IS NULL $group_by, depot, product_type ORDER BY grouping DESC";
 
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
@@ -233,7 +233,7 @@ class WaybillsModel extends BaseModel
         SUM(declaration.volume) declaration_volume, SUM(waybill.volume) waybill_volume
         FROM ".self::$petroleum_declaration." declaration
         RIGHT JOIN ".self::$table." waybill ON waybill.bdc = declaration.importer_name AND waybill.product_type = declaration.product_type
-        $condition1 GROUP BY $grouping1, importer_name, product_type
+        $condition1 AND declaration.id IS NULL GROUP BY $grouping1, importer_name, product_type
         ORDER BY grouping DESC";
 
         $this->paging->rawQuery($query);
