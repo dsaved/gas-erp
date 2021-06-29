@@ -180,7 +180,7 @@ module.exports = {
                     for (let deportIndex = 0; deportIndex < deportsQty.length; deportIndex++) {
                         const element = deportsQty[deportIndex];
                         var size = 90000000;
-                        var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,tank,product,volume,full,unit) VALUES ('${element.identifyer}','${element.depot}','${element.tank}','${element.product}',${element.volume}, ${size}, '${element.unit}')ON DUPLICATE KEY UPDATE full= ${size},volume = volume + ${element.volume};`;
+                        var sqlQuery = `INSERT INTO petroleum_tanks (identifyer,depot,tank,product,volume,full,unit) VALUES ('${element.identifyer}','${element.depot}','${element.tank}','${element.product}',${element.volume}, ${size}, '${element.unit}')ON DUPLICATE KEY UPDATE full= ${size},volume =IF(volume < 0, ${element.volume}, volume + ${element.volume});`;
                         await query(sqlQuery).catch(err => console.log(err));
                     }
                     console.log("inlet flow done")
@@ -222,7 +222,7 @@ module.exports = {
 
                             //create depot quantity
                             if (nodepot) {
-                                deportsQty.push({ alarm: "depot", unit: data.Units, identifyer: `${depot.code}-${product.code}`, product: product.code, depot: depot.code, volume: Number(data.Flow) })
+                                deportsQty.push({ tank: "depot", unit: data.Units, identifyer: `${depot.code}-${product.code}`, product: product.code, depot: depot.code, volume: Number(data.Flow) })
                             }
 
                             //insert into petroleum outlet db
@@ -245,7 +245,7 @@ module.exports = {
                         if (tank == null || tank.length == 0 || typeof(tank[0]) == "undefined" || tank[0] == null) {
                             //Pumping from empty tank
                             // console.log("Pumping from empty tank", element)
-                            var alarmQry = `INSERT INTO petroleum_alarm_notification(time, type, message,depot, alarm, product, volume) VALUES ('${element.time}','discharge from empty tank','There was a discharge from an empty tank','${element.depot}','${element.alarm}','${element.product}',${element.volume})`;
+                            var alarmQry = `INSERT INTO petroleum_alarm_notification(time, type, message,depot, alarm, product, volume) VALUES ('${element.time}','discharge from empty tank','There was a discharge from an empty tank','${element.depot}','${element.tank}','${element.product}',${element.volume})`;
                             await query(alarmQry).catch(err => console.log(err));
                         }
 
@@ -382,12 +382,10 @@ module.exports = {
             console.log("ssh connecting...")
                 //connect to ssh
             conn.connect({
-                // host: 'smlexperion.com',
                 host: '172.30.60.150',
                 port: 22,
                 username: 'sml_ai',
                 password: '@*+3$T!ni#',
-                // privateKey: readFileSync('/path/to/my/key')
             });
         }
 

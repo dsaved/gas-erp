@@ -18,7 +18,7 @@ class TanksModel extends BaseModel
             $condition .= " AND depot ='$depot'";
         }
       
-        $this->paging->rawQuery("SELECT  (SELECT name FROM depot WHERE code=depot LIMIT 1) as depot,depot as depot_code, Count(product) product, SUM(volume) vol, SUM(full) full FROM ".self::$table." $condition GROUP BY (SELECT name FROM depot WHERE code=depot) Order By (SELECT name FROM depot WHERE code=depot)");
+        $this->paging->rawQuery("SELECT  (SELECT name FROM depot WHERE code=depot LIMIT 1) as depot,depot as depot_code, Count(product) product, SUM(volume) vol, SUM(full) full FROM ".self::$table." $condition GROUP BY (SELECT name FROM depot WHERE code=depot LIMIT 1) Order By (SELECT name FROM depot WHERE code=depot LIMIT 1)");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();

@@ -44,14 +44,14 @@ class OutletmodelreportModel extends BaseModel
         SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, (SELECT name FROM depot WHERE code=ord.depot LIMIT 1) depot,
         SUM(outlet.volume) outlet_volume
         FROM ".self::$petroleum_order." ord LEFT JOIN ".self::$petroleum_outlet." outlet 
-        ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type $condition Group By order_date, product, depot 
+        ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type $condition Group By ord.order_date, ord.product_type, ord.depot 
         UNION
-        SELECT DATE(outlet.datetime) order_date, (SELECT name FROM tax_schedule_products WHERE code=outlet.product_type LIMIT 1) product, 
+        SELECT DATE(ord.order_date) order_date, (SELECT name FROM tax_schedule_products WHERE code=outlet.product_type LIMIT 1) product, 
         SUM(ord.volume) order_volume, SUM(ord.unit_price) order_amount, (SELECT name FROM depot WHERE code=outlet.depot LIMIT 1) depot,
         SUM(outlet.volume) outlet_volume
         FROM ".self::$petroleum_order." ord RIGHT JOIN ".self::$petroleum_outlet." outlet 
         ON ord.depot = outlet.depot AND ord.product_type = outlet.product_type $condition1 AND ord.id IS NULL
-        Group By order_date, product, depot Order By order_date DESC";
+        Group By outlet.datetime, outlet.product_type, outlet.depot Order By order_date DESC";
 
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
