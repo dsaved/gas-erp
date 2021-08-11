@@ -549,6 +549,7 @@ exports.importFile = function(data, callback) {
                     var newIndx = set_header(i);
 
                     var value = excel[i].replace(/,/g, '');
+                    value = value.split("\\").join("");
                     newObject[newIndx] = value;
                     if (newIndx == "debit_amount" || newIndx == "credit_amount" || newIndx == "balance") {
                         var value = excel[i].replace(/,/g, '');
@@ -738,6 +739,7 @@ exports.importFile = function(data, callback) {
         value = value.toString().trim();
         value = value.split(" ").join("_");
         value = value.split("-").join("_");
+        value = value.split("\\").join("");
         value = value.replace(/\./, '');
         return value.toLowerCase();
     }
@@ -902,6 +904,7 @@ exports.importReceiptFile = function(data, callback) {
                     var newIndx = set_header(i);
 
                     var value = excel[i].replace(/,/g, '');
+                    value = value.split("\\").join("");
                     newObject[newIndx] = value;
                     if (newIndx == "amount") {
                         var value = excel[i].replace(/,/g, '');
@@ -985,6 +988,8 @@ exports.importReceiptFile = function(data, callback) {
     }
 
     async function convertDate(inputDate) {
+        if (!inputDate) return inputDate;
+
         function pad(s) { return (s < 10) ? '0' + s : s; }
         var d = new Date(inputDate)
         return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
@@ -998,6 +1003,7 @@ exports.importReceiptFile = function(data, callback) {
         value = value.toString().trim();
         value = value.split(" ").join("_");
         value = value.split("-").join("_");
+        value = value.split("\\").join("");
         value = value.replace(/\./, '');
         return value.toLowerCase();
     }
@@ -1169,6 +1175,7 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
                     var newIndx = set_header(i);
 
                     var value = excel[i].replace(/,/g, '');
+                    value = value.split("\\").join("");
                     newObject[newIndx] = value;
                     if (newIndx == "amount") {
                         var value = excel[i].replace(/,/g, '');
@@ -1278,6 +1285,7 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
         value = value.toString().trim();
         value = value.split(" ").join("_");
         value = value.split("-").join("_");
+        value = value.split("\\").join("");
         value = value.replace(/\./, '');
         return value.toLowerCase();
     }
@@ -1542,6 +1550,7 @@ exports.importManifest = function(data, callback) {
                     var newIndx = set_header(i);
 
                     var value = excel[i].replace(/,/g, '');
+                    value = value.split("\\").join("");
                     newObject[newIndx] = value;
                     if (newIndx == "amount") {
                         var value = excel[i].replace(/,/g, '');
@@ -1639,6 +1648,8 @@ exports.importManifest = function(data, callback) {
     }
 
     async function convertDate(inputDate) {
+        if (!inputDate) return inputDate;
+
         function pad(s) { return (s < 10) ? '0' + s : s; }
         var d = new Date(inputDate)
         return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
@@ -1654,6 +1665,7 @@ exports.importManifest = function(data, callback) {
         value = value.split("-").join("_");
         value = value.split("\r").join("");
         value = value.split("\n").join("");
+        value = value.split("\\").join("");
         value = value.replace(/\./, '');
         return value.toLowerCase();
     }
@@ -1928,6 +1940,7 @@ exports.importDeclaration = function(data, callback) {
                     var newIndx = set_header(i);
 
                     var value = excel[i].replace(/,/g, '');
+                    value = value.split("\\").join("");
                     newObject[newIndx] = value;
                     if (newIndx == "amount") {
                         var value = excel[i].replace(/,/g, '');
@@ -2033,6 +2046,8 @@ exports.importDeclaration = function(data, callback) {
     }
 
     async function convertDate(inputDate) {
+        if (!inputDate) return inputDate;
+
         function pad(s) { return (s < 10) ? '0' + s : s; }
         var d = new Date(inputDate)
         return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
@@ -2048,6 +2063,7 @@ exports.importDeclaration = function(data, callback) {
         value = value.split("-").join("_");
         value = value.split("\r").join("");
         value = value.split("\n").join("");
+        value = value.split("\\").join("");
         value = value.replace(/\./, '');
         return value.toLowerCase();
     }
@@ -2307,7 +2323,7 @@ exports.importOrders = function(data, callback) {
                 var name = pages[i];
                 excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
                     raw: false,
-                    range: 3,
+                    // range: 3,
                     dateNF: 'yyyy-mm-dd;@'
                 }));
             }
@@ -2325,6 +2341,7 @@ exports.importOrders = function(data, callback) {
                     var newIndx = set_header(i);
 
                     var value = excel[i].replace(/,/g, '');
+                    value = value.split("\\").join("");
                     newObject[newIndx] = value;
                     if (newIndx == "ex_ref_price") {
                         var value = excel[i].replace(/,/g, '');
@@ -2360,6 +2377,7 @@ exports.importOrders = function(data, callback) {
                  *validate accounting_date and account must not be empty
                  */
                 var order_date = await convertDate(excelData[i]['order_date']);
+                console.log(order_date);
                 excelData[i]['order_date'] = order_date;
                 excelDataToInsert.push(excelData[i]);
                 lastKey++
@@ -2454,6 +2472,7 @@ exports.importOrders = function(data, callback) {
         value = value.split("-").join("_");
         value = value.split("\r").join("");
         value = value.split("\n").join("");
+        value = value.split("\\").join("");
         value = value.replace(/\./, '');
         return value.toLowerCase();
     }
@@ -2718,7 +2737,7 @@ exports.importPreorders = function(data, callback) {
                 var name = pages[i];
                 excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
                     raw: false,
-                    range: 3,
+                    // range: 3,
                     dateNF: 'yyyy-mm-dd;@'
                 }));
             }
@@ -2736,6 +2755,7 @@ exports.importPreorders = function(data, callback) {
                     var newIndx = set_header(i);
 
                     var value = excel[i].replace(/,/g, '');
+                    value = value.split("\\").join("");
                     newObject[newIndx] = value;
                     if (newIndx == "ex_ref_price") {
                         var value = excel[i].replace(/,/g, '');
@@ -2866,6 +2886,7 @@ exports.importPreorders = function(data, callback) {
         value = value.split("-").join("_");
         value = value.split("\r").join("");
         value = value.split("\n").join("");
+        value = value.split("\\").join("");
         value = value.replace(/\./, '');
         return value.toLowerCase();
     }
@@ -3143,6 +3164,7 @@ exports.importWaybills = function(data, callback) {
                     var newIndx = set_header(i);
 
                     var value = excel[i].replace(/,/g, '');
+                    value = value.split("\\").join("");
                     newObject[newIndx] = value;
                     if (newIndx == "volume") {
                         var value = excel[i].replace(/,/g, '');
@@ -3259,6 +3281,7 @@ exports.importWaybills = function(data, callback) {
         value = value.split("-").join("_");
         value = value.split("\r").join("");
         value = value.split("\n").join("");
+        value = value.split("\\").join("");
         value = value.replace(/\./, '');
         return value.toLowerCase();
     }
@@ -3521,7 +3544,7 @@ exports.importICUMSDeclarations = function(data, callback) {
                 var name = pages[i];
                 excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
                     raw: false,
-                    range: 4,
+                    // range: 4,
                     dateNF: 'yyyy-mm-dd;@'
                 }));
             }
@@ -3539,6 +3562,7 @@ exports.importICUMSDeclarations = function(data, callback) {
                     var newIndx = set_header(i);
 
                     var value = excel[i].replace(/,/g, '');
+                    value = value.split("\\").join("");
                     newObject[newIndx] = value;
                     if (newIndx == "amount_payable") {
                         var value = excel[i].replace(/,/g, '');
@@ -3648,6 +3672,8 @@ exports.importICUMSDeclarations = function(data, callback) {
     }
 
     async function convertDate(inputDate) {
+        if (!inputDate) return inputDate;
+
         function pad(s) { return (s < 10) ? '0' + s : s; }
         var d = new Date(inputDate)
         return [pad(d.getFullYear()), pad(d.getMonth() + 1), d.getDate()].join('/')
@@ -3663,6 +3689,7 @@ exports.importICUMSDeclarations = function(data, callback) {
         value = value.split("-").join("_");
         value = value.split("\r").join("");
         value = value.split("\n").join("");
+        value = value.split("\\").join("");
         value = value.replace(/\./, '');
         return value.toLowerCase();
     }

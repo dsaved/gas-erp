@@ -3,6 +3,7 @@ module.exports = {
         name = `${name}`.toLowerCase().trim();
         const name_map = {
             "akwaaba": { name: "ADINKRA STORAGE COMPANY GHANA LIMITED", code: "WVTOR9TMAL" },
+            "akwaaba oil refinery limited": { name: "ADINKRA STORAGE COMPANY GHANA LIMITED", code: "WVTOR9TMAL" },
             "adinkra storage company ghana limited": { name: "ADINKRA STORAGE COMPANY GHANA LIMITED", code: "WVTOR9TMAL" },
 
             "blue ocean ridge": { name: "BLUE OCEAN INVESTMENTS LIMITED (RIDGE)", code: "WVTOR9TRD9" },
@@ -63,6 +64,102 @@ module.exports = {
     async omc_name(name) {
         name = `${name}`.toLowerCase().trim();
         const name_map = {
+            "bulk oil storage and transportation": {
+                "name": "BULK OIL STORAGE AND TRANSPORTATION",
+                "tin": "G0005117895"
+            },
+            "gat oil company limited": {
+                "name": "GAT OIL COMPANY LIMITED",
+                "tin": "C0004630432"
+            },
+            "agapet limited": {
+                "name": "AGAPET LIMITED",
+                "tin": "C0002864215"
+            },
+            "champion oil company limited": {
+                "name": "CHAMPION OIL COMPANY LIMITED",
+                "tin": "C0003168603"
+            },
+            "santol energy limited": {
+                "name": "SANTOL ENERGY LIMITED",
+                "tin": "C0001199374"
+            },
+            "blanko oil company limited": {
+                "name": "BLANKO OIL COMPANY LIMITED",
+                "tin": "C0004345304"
+            },
+            "lillygold energy resources limited": {
+                "name": "LILLYGOLD ENERGY RESOURCES LIMITED",
+                "tin": "C0005705886"
+            },
+            "express petroleum limited": {
+                "name": "EXPRESS PETROLEUM LIMITED",
+                "tin": "C0005165644"
+            },
+            "big energy limited": {
+                "name": "BIG ENERGY LIMITED",
+                "tin": "C0002942615"
+            },
+            "chase petroleum ghana limited": {
+                "name": "CHASE PETROLEUM GHANA LIMITED",
+                "tin": "C0002840278"
+            },
+            "abagurugu oil company limited": {
+                "name": "ABAGURUGU OIL COMPANY LIMITED",
+                "tin": "C0003717496"
+            },
+            "da oil company limited": {
+                "name": "DA OIL COMPANY LIMITED",
+                "tin": "C0004395689"
+            },
+            "icon energy ltd": {
+                "name": "ICON ENERGY LTD",
+                "tin": "C0054712629"
+            },
+            "jet petroleum services limited": {
+                "name": "JET PETROLEUM SERVICES LIMITED",
+                "tin": "C0000555363"
+            },
+            "jo & ju company limited": {
+                "name": "JO & JU COMPANY LIMITED",
+                "tin": "C000403354X"
+            },
+            "kingsperp oil limited": {
+                "name": "KINGSPERP OIL LIMITED",
+                "tin": "C001606965X"
+            },
+            "mba global petroleum limited": {
+                "name": "MBA GLOBAL PETROLEUM LIMITED",
+                "tin": "C0037077104"
+            },
+            "royal rose oil company limited": {
+                "name": "ROYAL ROSE OIL COMPANY LIMITED",
+                "tin": "C0004700937"
+            },
+            "sephem oil company limited": {
+                "name": "SEPHEM OIL COMPANY LIMITED",
+                "tin": "C0001972154"
+            },
+            "torrid global company limited": {
+                "name": "TORRID GLOBAL COMPANY LIMITED",
+                "tin": "C0047563664"
+            },
+            "unique oil company limited": {
+                "name": "UNIQUE OIL COMPANY LIMITED",
+                "tin": "C0003165639"
+            },
+            "hak oil company limited": {
+                "name": "HAK OIL COMPANY LIMITED",
+                "tin": "C000549592X"
+            },
+            "fueltrade limited": {
+                "name": "FUELTRADE LIMITED",
+                "tin": "C0002862840"
+            },
+            "petrol xp ghana limited": {
+                "name": "PETROL XP GHANA LIMITED",
+                "tin": "C0021876134"
+            },
             "total petroleum ghana limited": {
                 "name": "TOTAL PETROLEUM GHANA LIMITED",
                 "tin": "C0003140083"
@@ -174,6 +271,10 @@ module.exports = {
             "glasark oil company limited": {
                 "name": "GLASARK OIL COMPANY LIMITED",
                 "tin": "C0005791812"
+            },
+            "zoe petroleum limited": {
+                "name": "ZOE PETROLEUM LIMITED",
+                "tin": "C0004435184"
             },
             "aminasar oil company limited": {
                 "name": "AMINASAR OIL COMPANY LIMITED",
@@ -693,13 +794,33 @@ module.exports = {
     async bdc_name(name) {
         name = `${name}`.toLowerCase().trim();
         const name_map = {
+            "bulk oil storage and transportation": {
+                "name": "BULK OIL STORAGE AND TRANSPORTATION",
+                "code": "DBC1628105170554"
+            },
+            "hask oil company limited": {
+                "name": "HASK OIL COMPANY LIMITED",
+                "code": "DBC1628168496944"
+            },
             "vihama energy company limited": {
                 "name": "VIHAMA ENERGY COMPANY LIMITED",
                 "code": "DBC1624303275078"
             },
+            "kpabulga energy limited": {
+                "name": "KPABULGA ENERGY LIMITED",
+                "code": "DBC1628179551090"
+            },
             "petroleum ware housing and supplies limited": {
                 "name": "PETROLEUM WARE HOUSING AND SUPPLIES LIMITED",
                 "code": "DBC1624303275137"
+            },
+            "genysis global limited": {
+                "name": "GENYSIS GLOBAL LIMITED",
+                "code": "DBC1628104866511"
+            },
+            "battop energy limited": {
+                "name": "BATTOP ENERGY LIMITED",
+                "code": "DBC1628105170592"
             },
             "cirrus oil services limited": {
                 "name": "CIRRUS OIL SERVICES LIMITED",

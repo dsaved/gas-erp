@@ -191,8 +191,6 @@ module.exports = {
                 }
             }
 
-            await timeout(15000);
-
             if (fs.existsSync(outflow)) {
                 //get the oulet data flow from media server
                 const jsonDataOut = fs.readFileSync(outflow)
@@ -241,7 +239,6 @@ module.exports = {
                         // get the depot pumping the product and check if the tank is empty
                         var sqlQuery = `SELECT * FROM petroleum_tanks WHERE identifyer = '${element.identifyer}' AND volume >= ${element.volume} LIMIT 1`;
                         var tank = await query(sqlQuery).catch(err => console.log(err));
-                        console.log(`tanks: ${tank}`)
                         if (tank == null || tank.length == 0 || typeof(tank[0]) == "undefined" || tank[0] == null) {
                             //Pumping from empty tank
                             // console.log("Pumping from empty tank", element)
@@ -262,10 +259,6 @@ module.exports = {
             }
         } catch (err) {
             console.error("no new data available" + err)
-        }
-
-        function timeout(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         function previousDay() {

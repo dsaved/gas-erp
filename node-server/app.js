@@ -74,10 +74,10 @@ fs.readFile(configPath, (error, db_config) => {
             computeICUMSDifferencesAndWait(sqlConn);
         }, 60 * 60 * 1000);
 
-        // run every 4 minutes
+        // run every 1 hour 30 minutes
         setInterval(() => {
             helpers.pump_product(sqlConn);
-        }, 240 * 1000);
+        }, 60 * 90 * 1000);
 
         initialize();
         setInterval(() => {

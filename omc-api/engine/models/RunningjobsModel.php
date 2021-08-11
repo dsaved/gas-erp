@@ -19,7 +19,11 @@ class RunningjobsModel extends BaseModel
         // $this->paging->table("`auditslogs`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
-        $this->paging->rawQuery("SELECT jobid,status,proccessing_account, total_account,description,processing,created FROM reconcilation_status UNION ALL SELECT id,status, current,total,description,processing,created FROM file_upload_status UNION ALL SELECT jobid, status,current_count,total_account,description,processing, created FROM file_export_status ORDER BY created DESC");
+        $this->paging->rawQuery("SELECT jobid,status,proccessing_account, total_account,description,processing,created 
+        FROM reconcilation_status UNION ALL SELECT id,status, current,total,description,processing,created 
+        FROM file_upload_status UNION ALL SELECT id, status,current,total,description,processing, created 
+        FROM file_upload_receipt_status UNION ALL SELECT jobid, status,current_count,total_account,description,processing, created 
+        FROM file_export_status ORDER BY created DESC");
         $this->paging->execute();
         $this->paging->reset();
         // var_dump($this->paging);exit;
