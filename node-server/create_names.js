@@ -86,7 +86,7 @@ var XLSX = require('xlsx');
 // fs.writeFileSync('C:\\Users\\dsave\\Desktop\\Depots.json', JSON.stringify(newFiledata, null, 2));
 
 //OMC NAMES
-var workbook = XLSX.readFile("C:\\Users\\dsave\\Desktop\\errored-file1628193408123.xlsx", {
+var workbook = XLSX.readFile("C:\\Users\\dsave\\Desktop\\Apr-June_errored-file1628871150109.xlsx", {
     // dateNF: "DD-MMM-YYYY",
     header: 1,
     defval: "",
@@ -120,7 +120,7 @@ fs.writeFileSync('C:\\Users\\dsave\\Desktop\\OMCNames.json', JSON.stringify(newF
 
 
 //BDC NAMES
-var workbook = XLSX.readFile("C:\\Users\\dsave\\Desktop\\errored-file1628193408123.xlsx", {
+var workbook = XLSX.readFile("C:\\Users\\dsave\\Desktop\\Apr-June_errored-file1628871150109.xlsx", {
     // dateNF: "DD-MMM-YYYY",
     header: 1,
     defval: "",

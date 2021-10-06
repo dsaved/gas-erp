@@ -3590,12 +3590,40 @@ exports.importICUMSDeclarations = function(data, callback) {
             });
             await updateStatus("Analyzing data", "done cleaning data - " + getTime());
 
+            errorData.push(Object.keys(excelData[0]));
             var noErrorInFile = true,
                 i = 0;
             for (i = 0; i < excelData.length; i++) {
                 /**
                  *validate accounting_date and account must not be empty
                  */
+                if (null === excelData[i]['receive_bank_nm'] || excelData[i]['receive_bank_nm'] === undefined) {
+                    const errorBank = excelData[i];
+                    errorData.push([
+                        errorBank.row_number,
+                        errorBank.price_window_id,
+                        errorBank.boe_no,
+                        errorBank.declarant_name,
+                        errorBank.declarant_tin,
+                        errorBank.depot_name,
+                        errorBank.product_cd,
+                        errorBank.product_name,
+                        errorBank.uom,
+                        errorBank.item_quantity,
+                        errorBank.amount_payable,
+                        errorBank.amount_paid,
+                        errorBank.amount_expected,
+                        errorBank.amount_suspended,
+                        errorBank.payment_mode,
+                        errorBank.receive_bank_nm,
+                        errorBank.payment_date,
+                        errorBank.payment_reference_no,
+                        errorBank.payment_receip_no,
+                    ]);
+
+                    //we dont want this files to be added to the system so we skip them
+                    continue;
+                }
                 var found = excelDataToInsert.findIndex(x => x.price_window_id === excelData[i]['price_window_id'] && x.declarant_name === excelData[i]['declarant_name'] && x.product_cd === excelData[i]['product_cd']);
                 if (found !== -1) {
                     excelDataToInsert[found]['item_quantity'] = parseFloat(excelDataToInsert[found]['item_quantity']) + parseFloat(excelData[i]['item_quantity']);
@@ -3608,7 +3636,6 @@ exports.importICUMSDeclarations = function(data, callback) {
 
             if (noErrorInFile) {
                 total = excelDataToInsert.length;
-                errorData.push(Object.keys(excelData[0]));
                 await updateStatus("Creating Declarations", "Validation successful - " + getTime());
                 await asyncForEach(excelDataToInsert, async(insertal, index) => {
                     current = index + 1;

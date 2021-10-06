@@ -214,7 +214,7 @@ export default {
 						this.record_not_found = true
 						this.$vs.notify({
 							title: 'Error!!!',
-							text: `${response.transactions.message}`,
+							text: `${response.data.message}`,
 							sticky: true,
 							color: 'danger',
 							duration: null,

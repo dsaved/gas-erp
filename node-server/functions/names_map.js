@@ -80,6 +80,42 @@ module.exports = {
                 "name": "CHAMPION OIL COMPANY LIMITED",
                 "tin": "C0003168603"
             },
+            "rigworld petroleum services limited": {
+                "name": "RIGWORLD PETROLEUM SERVICES LIMITED",
+                "tin": "C000755981X"
+            },
+            "deep petroleum limited": {
+                "name": "DEEP PETROLEUM LIMITED",
+                "tin": "C0006013392"
+            },
+            "maiga & hhm company limited": {
+                "name": "MAIGA & HHM COMPANY LIMITED",
+                "tin": "C0007706359"
+            },
+            "petra energy limited": {
+                "name": "PETRA ENERGY LIMITED",
+                "tin": "C0007634641"
+            },
+            "warren oil company limited": {
+                "name": "WARREN OIL COMPANY LIMITED",
+                "tin": "C0003313573"
+            },
+            "havilah oil ghana limited": {
+                "name": "HAVILAH OIL GHANA LIMITED",
+                "tin": "C0003268063"
+            },
+            "sonnidom limited": {
+                "name": "SONNIDOM LIMITED",
+                "tin": "C0003628892"
+            },
+            "sky petroleum limited": {
+                "name": "SKY PETROLEUM LIMITED",
+                "tin": "C0005108764"
+            },
+            "semanhyia oil limited": {
+                "name": "SEMANHYIA OIL LIMITED",
+                "tin": "C0005012449"
+            },
             "santol energy limited": {
                 "name": "SANTOL ENERGY LIMITED",
                 "tin": "C0001199374"
