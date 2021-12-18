@@ -92,16 +92,21 @@ class DepotModel extends BaseModel
         if ($name===null) {
             $this->http->_403("Please provide Depot name");
         }
+        $code = $this->http->json->code??null;
+        if ($code===null) {
+            $this->http->_403("Please provide Depot code");
+        }
 
-        $this->db->query("SELECT * FROM ".self::$table." WHERE `name` = '$name'");
+        $this->db->query("SELECT * FROM ".self::$table." WHERE `name` = '$name' OR code = '$code'");
         if ($this->db->results() && $this->db->count >0) {
-            $this->http->_403("This Depot name ($name) already exist");
+            $this->http->_403("This Depot already exist");
         }
 
         $data = array(
             'name' => $name,
             "email"=>$email,
-            "phone"=>$phone
+            "phone"=>$phone,
+            "code"=>$code
         );
         if ($this->db->insert(self::$table, $data)) {
             $response['success'] = true;
@@ -125,8 +130,12 @@ class DepotModel extends BaseModel
         if ($name===null) {
             $this->http->_403("Please provide Depot name");
         }
+        $code = $this->http->json->code??null;
+        if ($code===null) {
+            $this->http->_403("Please provide Depot code");
+        }
 
-        $this->db->query("SELECT * FROM ".self::$table." WHERE `name` = '$name' AND `id`!=$id");
+        $this->db->query("SELECT * FROM ".self::$table." WHERE (`name` = '$name' OR code='$code') AND `id`!=$id");
         if ($this->db->results() && $this->db->count >0) {
             $this->http->_403("This Depot name ($name) already exist");
         }
@@ -134,7 +143,8 @@ class DepotModel extends BaseModel
         $data = array(
             'name' => $name,
             "email"=>$email,
-            "phone"=>$phone
+            "phone"=>$phone,
+            "code"=>$code,
         );
         if ($this->db->updateByID(self::$table, "id", $id, $data)) {
             $response['success'] = true;

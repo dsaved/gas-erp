@@ -35,7 +35,7 @@ class ManifestModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->amount = number_format($value->amount, 2);
-                $value->volume = number_format($value->volume, 1);
+                $value->volume = number_format($value->volume);
             }
             $response["manifest"] = $result;
         } else {
@@ -100,7 +100,14 @@ class ManifestModel extends BaseModel
     public function delete()
     {
         $response = array();
-        $done = $this->db->query("TRUNCATE `".self::$table."`;");
+        $ids = $this->http->json->ids;
+        if ($ids) {
+            $id = implode(',', array_map('intval', $ids));
+            $done = $this->db->query("DELETE FROM ".self::$table." WHERE `id` IN ($id)");
+        }
+        else{
+            $done = $this->db->query("TRUNCATE `".self::$table."`;");
+        }
         if ($done) {
             $response['success'] = true;
             $response['message'] = "Data removed successfully";

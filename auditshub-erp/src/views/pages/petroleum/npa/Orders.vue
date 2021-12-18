@@ -45,7 +45,8 @@
               v-if="canDelete()"
               @click="deleteWarn()"
               icon="icon-trash"
-              >Remove All</vs-button
+              >Remove
+              {{ selectedRecords.length > 0 ? "Selected" : "All" }}</vs-button
             >
           </div>
           <vs-spacer />
@@ -219,7 +220,7 @@
           upload-button-lable="Upload Order"
           type="relief"
           color="primary"
-          max-size="5072"
+          max-size="10072"
           description="Allowed XLSX and XLX, Max size of 5MB"
           upload-url="/order/import/"
           allowed-file-type="excel"
@@ -472,7 +473,9 @@ export default {
       }
       Swal.fire({
         title: "Are you sure?",
-        html: `<p>you are about to remove all orders from the system!</p><span class="text-warning">You won't be able to revert this! </span>`,
+        html: `<p>you are about to remove ${
+          this.selectedRecords.length > 0 ? "selected" : "all"
+        } orders from the system!</p><span class="text-warning">You won't be able to revert this! </span>`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -486,7 +489,9 @@ export default {
     },
     delete: function () {
       this.showLoading("Deleting Order, hang on a bit...");
-      this.post("/order/delete", {})
+      this.post("/order/delete", {
+        ids: this.selectedRecords,
+      })
         .then((response) => {
           this.closeLoading();
           if (response.data.success == true) {

@@ -187,19 +187,20 @@ export default [{
         page: 'NPA',
         icon: 'ActivityIcon',
         i18n: 'NPA',
-        submenu: [{
-                url: '/petroleum/npa/analytics',
-                name: 'Analytics',
-                page: 'NPA Analytics',
-                slug: 'NPA Analytics',
-                i18n: 'NPA Analytics'
-            }, {
-                url: '/petroleum/npa/preorders',
-                name: 'Preorders',
-                page: 'Preorders',
-                slug: 'Preorders',
-                i18n: 'Preorders'
-            },
+        submenu: [
+            /* {
+                            url: '/petroleum/npa/analytics',
+                            name: 'Analytics',
+                            page: 'NPA Analytics',
+                            slug: 'NPA Analytics',
+                            i18n: 'NPA Analytics'
+                        }, {
+                            url: '/petroleum/npa/preorders',
+                            name: 'Preorders',
+                            page: 'Preorders',
+                            slug: 'Preorders',
+                            i18n: 'Preorders'
+                        }, */
             {
                 url: '/petroleum/npa/orders',
                 name: 'Orders',
@@ -332,10 +333,10 @@ export default [{
             i18n: 'Ghana.gov Reciepts'
         }, {
             url: '/petroleum/ghana.gov/standing',
-            name: 'Dept Potfolio / Good Standing',
-            page: 'Dept Potfolio / Good Standing',
-            slug: 'Dept Potfolio / Good Standing',
-            i18n: 'Dept Potfolio / Good Standing'
+            name: 'Debt Potfolio / Good Standing',
+            page: 'Debt Potfolio / Good Standing',
+            slug: 'Debt Potfolio / Good Standing',
+            i18n: 'Debt Potfolio / Good Standing'
         }, ]
     }
 ]

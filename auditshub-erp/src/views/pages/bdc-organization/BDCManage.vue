@@ -23,6 +23,18 @@
             <div class="vx-col sm:w-1/3 w-full mb-2">
               <vs-input
                 v-validate="''"
+                label-placeholder="Code"
+                name="code"
+                v-model="code"
+                class="mt-5 w-full"
+              />
+              <span class="text-danger text-sm" v-show="errors.has('code')">{{
+                errors.first("code")
+              }}</span>
+            </div>
+            <div class="vx-col sm:w-1/3 w-full mb-2">
+              <vs-input
+                v-validate="''"
                 label-placeholder="Email"
                 name="email"
                 v-model="email"
@@ -95,13 +107,6 @@
                 :selected="depot"
                 v-on:update:data="depot = $event"
               />
-              <vs-input
-                v-validate="'required'"
-                name="depot"
-                v-model="depot"
-                class="mt-5 w-full"
-				hidden
-              />
               <span class="text-danger text-sm" v-show="errors.has('depot')">{{
                 errors.first("depot")
               }}</span>
@@ -165,6 +170,7 @@ export default {
       region: "",
       district: "",
       depot: "",
+      code: "",
     };
   },
   watch: {
@@ -198,6 +204,7 @@ export default {
       this.region = "";
       this.district = "";
       this.depot = "";
+      this.code = "";
     },
     getData() {
       this.loading = true;
@@ -215,6 +222,7 @@ export default {
             this.region = result.region;
             this.district = result.district;
             this.depot = result.depot;
+            this.code = result.code;
           } else {
             this.$vs.notify({
               title: "Error!!!",
@@ -261,6 +269,7 @@ export default {
               region: this.region,
               district: this.district,
               depot: this.depot,
+              code: this.code,
             })
               .then((result) => {
                 console.log(result.data);
@@ -302,6 +311,7 @@ export default {
               region: this.region,
               district: this.district,
               depot: this.depot,
+              code: this.code,
             })
               .then((result) => {
                 console.log(result.data);

@@ -1698,10 +1698,10 @@ const router = new Router({
                     component: () =>
                         import ('./views/pages/petroleum/ghana.gov/Standing.vue'),
                     meta: {
-                        identity: 'Dept Potfolio / Good Standing', //this should match then page in navMainMenuItems.js
+                        identity: 'Debt Potfolio / Good Standing', //this should match then page in navMainMenuItems.js
                         breadcrumb: [
                             { title: 'Home', url: '/petroleum' },
-                            { title: 'Dept Potfolio / Good Standing', active: true }
+                            { title: 'Debt Potfolio / Good Standing', active: true }
                         ],
                         homeurl: '/petroleum',
                         pageTitle: 'Ghana.gov'

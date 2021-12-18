@@ -41,8 +41,8 @@
                 <td>{{ depot.name }}</td>
               </tr>
               <tr>
-                <td class="font-semibold">Email</td>
-                <td>{{ depot.email }}</td>
+                <td class="font-semibold">Code</td>
+                <td>{{ depot.code }}</td>
               </tr>
             </table>
           </div>
@@ -54,6 +54,10 @@
               <tr>
                 <td class="font-semibold">Phone</td>
                 <td>{{ depot.phone }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Email</td>
+                <td>{{ depot.email }}</td>
               </tr>
             </table>
           </div>

@@ -25,7 +25,7 @@ class IcumsModel extends BaseModel
             $condition .= " AND  (pid.`omc` LIKE '%$search%' OR pid.`window_code` LIKE '%$search%' OR  pid.`amount` LIKE '%$value%'  OR  pid.`product_type`= (SELECT code FROM tax_schedule_products WHERE `name` LIKE '%$value%' LIMIT 1))";
         }
 
-        $this->paging->rawQuery("SELECT window_code, amount, (SELECT name FROM tax_schedule_products WHERE code=product_type LIMIT 1) product, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc FROM $table $condition Order By `date` DESC");
+        $this->paging->rawQuery("SELECT id, window_code, amount, (SELECT name FROM tax_schedule_products WHERE code=product_type LIMIT 1) product, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc FROM $table $condition Order By `date` DESC");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();
@@ -36,7 +36,7 @@ class IcumsModel extends BaseModel
         if (!empty($result)) {
             $response['success'] = true;
             foreach ($result as $key => &$value) {
-                $value->amount = number_format($value->amount, 2);
+                $value->amount = number_format($value->amount);
             }
             $response["declarations"] = $result;
         } else {
@@ -101,7 +101,22 @@ class IcumsModel extends BaseModel
     public function delete()
     {
         $response = array();
-        $done = $this->db->query("TRUNCATE `".self::$table."`;");
+        $ids = $this->http->json->ids;
+        if ($ids) {
+            $id = implode(',', array_map('intval', $ids));
+
+            $this->db->query("SELECT * FROM ".self::$table." WHERE `id` IN ($id)");
+            $results = $this->db->results();
+            for ($i=0; $i < count($results); $i++) { 
+                $result = $results[$i];
+                $this->db->query("DELETE FROM window_refference WHERE window='$result->window_code' AND omc ='$result->omc' AND product_cd ='$result->product_type'");
+            }
+            $done = $this->db->query("DELETE FROM ".self::$table." WHERE `id` IN ($id)");
+        }
+        else{
+            $this->db->query("TRUNCATE `window_refference`;");
+            $done = $this->db->query("TRUNCATE `".self::$table."`;");
+        }
         if ($done) {
             $response['success'] = true;
             $response['message'] = "Data removed successfully";

@@ -1,20 +1,19 @@
 module.exports = async function good_standings(sqlConn) {
     await query("TRUNCATE petroleum_good_standing");
-    const good_standings = await query(`SELECT MIN(rep.date) date_from, MAX(rep.date) date_to, rep.omc omc, SUM(rep.amount) amount, SUM(icum_dcl.amount) dcl_amount_icum,
+    const good_standings = await query(`SELECT (SELECT window FROM window_refference WHERE payment_receipt_no = rep.receipt_number LIMIT 1) window_code, rep.omc omc, SUM(rep.amount) amount, SUM(wf.amount) dcl_amount_icum,
     SUM(ped.expected_declaration_amount) ped_amount
-    FROM ghana_gov_omc_receipt rep LEFT JOIN petroleum_icums_declaration icum_dcl ON rep.omc=icum_dcl.omc
-    LEFT JOIN petroleum_expected_declaration ped ON rep.omc=ped.omc GROUP BY rep.omc
+    FROM ghana_gov_omc_receipt rep RIGHT JOIN window_refference wf ON rep.receipt_number=wf.payment_receipt_no 
+    LEFT JOIN petroleum_expected_declaration ped ON rep.omc=ped.omc AND rep.date >= ped.date_from AND rep.date <= ped.date_to GROUP BY rep.omc
     UNION
-    SELECT (SELECT date_from FROM tax_window WHERE code=icum_dcl.window_code LIMIT 1) date_from,
-    (SELECT date_to FROM tax_window WHERE code=icum_dcl.window_code LIMIT 1) date_to, icum_dcl.omc omc, SUM(rep.amount) amount, SUM(icum_dcl.amount) dcl_amount_icum,
+    SELECT wf.window window_code, wf.omc omc, SUM(rep.amount) amount, SUM(wf.amount) dcl_amount_icum,
     SUM(ped.expected_declaration_amount) ped_amount
-    FROM ghana_gov_omc_receipt rep RIGHT JOIN petroleum_icums_declaration icum_dcl ON rep.omc=icum_dcl.omc
-    RIGHT JOIN petroleum_expected_declaration ped ON rep.omc=ped.omc WHERE rep.id IS NULL GROUP BY icum_dcl.omc
+    FROM ghana_gov_omc_receipt rep RIGHT JOIN window_refference wf ON rep.receipt_number=wf.payment_receipt_no 
+    LEFT JOIN petroleum_expected_declaration ped ON rep.omc=ped.omc AND rep.date >= ped.date_from AND rep.date <= ped.date_to WHERE rep.id IS NULL GROUP BY wf.omc
     UNION
-    SELECT ped.date_from date_from, ped.date_to date_to, ped.omc omc, SUM(rep.amount) amount, SUM(icum_dcl.amount) dcl_amount_icum,
+    SELECT ped.window_code window_code, ped.omc omc, SUM(rep.amount) amount, SUM(wf.amount) dcl_amount_icum,
     SUM(ped.expected_declaration_amount) ped_amount
-    FROM ghana_gov_omc_receipt rep RIGHT JOIN petroleum_icums_declaration icum_dcl ON rep.omc=icum_dcl.omc
-    RIGHT JOIN petroleum_expected_declaration ped ON rep.omc=ped.omc WHERE rep.id IS NULL GROUP BY ped.omc, date_from, date_to ORDER BY date_from`).catch(error => {
+    FROM ghana_gov_omc_receipt rep RIGHT JOIN petroleum_expected_declaration ped ON rep.omc=ped.omc AND rep.date >= ped.date_from AND rep.date <= ped.date_to
+    LEFT JOIN window_refference wf ON rep.receipt_number=wf.payment_receipt_no AND rep.id IS NULL GROUP BY ped.omc ORDER BY window_code`).catch(error => {
         console.log(error);
     });
 
@@ -23,17 +22,14 @@ module.exports = async function good_standings(sqlConn) {
             const amount = good_standing.amount;
             const dcl_amount_icum = good_standing.dcl_amount_icum;
             const exp_declaration_amount = good_standing.ped_amount;
-
-            const date_from = good_standing.date_from;
-            const date_to = good_standing.date_to;
+            const window_code = good_standing.window_code;
 
             const difference_amount_receipt_icums = (amount - dcl_amount_icum);
             const difference_amount_expected_icums = (amount - exp_declaration_amount);
             const flagged = (difference_amount_expected_icums > 0 || difference_amount_expected_icums < 0) || (difference_amount_receipt_icums > 0 || difference_amount_receipt_icums < 0) ? 1 : 0;
 
             const insertData = {
-                date_from: date_from,
-                date_to: date_to,
+                window_code: window_code,
                 omc: good_standing.omc,
                 amount: amount,
                 dcl_amount_icum: dcl_amount_icum,

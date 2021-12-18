@@ -50,7 +50,7 @@ class OutletModel extends BaseModel {
       if (!empty($result)) {
           $response['success'] = true;
           foreach ($result as $key => &$value) {
-              $value->volume = number_format($value->volume,1);
+              $value->volume = number_format($value->volume);
           }
           $response["reports"] = $result;
       } else {

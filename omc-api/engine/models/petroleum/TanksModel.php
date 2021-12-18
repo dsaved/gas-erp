@@ -29,8 +29,8 @@ class TanksModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->product = number_format($value->product);
-                $value->level = number_format(($value->vol * 100) /$value->full, 2);
-                $value->volume = number_format($value->vol , 2);
+                $value->level = number_format(($value->vol * 100) /$value->full);
+                $value->volume = number_format($value->vol);
             }
             $response["tanks"] = $result;
         } else {
@@ -70,7 +70,7 @@ class TanksModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->percent = number_format(($value->volume * 100) /$value->full, 2);
-                $value->volume = number_format($value->volume , 2);
+                $value->volume = number_format($value->volume);
                 $value->notsold = false;
                 $this->db->query("SELECT * FROM petroleum_alarm_notification WHERE product='{$value->product}' AND alarm= 'depot' AND depot='{$value->depot}' AND type='not sold for a week' ORDER BY time DESC LIMIT 1");
                 if ($this->db->count > 0) {
@@ -121,7 +121,7 @@ class TanksModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->time = $this->date->human_datetime_short($value->time);
-                $value->volume = number_format($value->volume, 2);
+                $value->volume = number_format($value->volume);
             }
             $response["reports"] = $result;
         } else {
@@ -155,8 +155,8 @@ class TanksModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->product = number_format($value->product);
-                $value->level = number_format(($value->vol * 100) /$value->full, 2);
-                $value->volume = number_format($value->vol , 2);
+                $value->level = number_format(($value->vol * 100) /$value->full);
+                $value->volume = number_format($value->vol);
             }
             $response["tanks"] = $result;
         } else {
@@ -195,7 +195,7 @@ class TanksModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->percent = number_format(($value->volume * 100) /$value->full, 2);
-                $value->volume = number_format($value->volume , 2);
+                $value->volume = number_format($value->volume);
                 $value->notsold = false;
                 $this->db->query("SELECT * FROM petroleum_alarm_notification WHERE product='{$value->product}' AND alarm= 'bdc' AND bdc='{$value->bdc}' AND type='not sold for a week' ORDER BY time DESC LIMIT 1");
                 if ($this->db->count > 0) {
@@ -245,7 +245,7 @@ class TanksModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->time = $this->date->human_datetime_short($value->time);
-                $value->volume = number_format($value->volume, 2);
+                $value->volume = number_format($value->volume);
             }
             $response["reports"] = $result;
         } else {

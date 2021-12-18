@@ -6,7 +6,15 @@
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
+const DEVELOPMENT = true;
 
+let SITELINK = 'https://api.smlexperion.net'
+let STORAGEKEY = 'gas-storage'
+
+if (DEVELOPMENT) {
+    SITELINK = 'http://localhost/gas/omc-api'
+    STORAGEKEY = 'gas-storage-local'
+}
 
 import Vue from 'vue'
 import App from './App.vue'
@@ -17,33 +25,26 @@ import 'material-icons/iconfont/material-icons.css' //Material Icons
 import 'vuesax/dist/vuesax.css' // Vuesax
 // Vue.use(Vuesax)
 
-
 // axios
 import axios from 'axios'
 
 // Filters
 import './filters/filters.js'
 
-
 // Theme Configurations
 import '../themeConfig.js'
-
 
 // Globally Registered Components
 import './globalComponents.js'
 
-
 // Styles: SCSS
 import './assets/scss/main.scss'
-
 
 // Tailwind
 import '@/assets/css/main.css'
 
-
 // Vue Router
 import router from './router'
-
 
 // Vuex Store
 import store from './store/store'
@@ -57,21 +58,14 @@ import Swal from 'sweetalert2'
 Vue.mixin({
             data() {
                 return {
-                    development: true,
-                    // site_link: 'https://api.smlexperion.net',
-                    // storage_key: 'gas-storage',
-                    site_link: 'http://localhost/gas/omc-api',
-                    storage_key: 'gas-storage-local',
+                    development: DEVELOPMENT,
+                    site_link: SITELINK,
+                    storage_key: STORAGEKEY,
                     axiosCancelSource: null,
                     allowed_pages: ['neutral']
                 }
             },
             mounted() {
-                // Clear the browser cache data in localStorage when closing the browser window
-                // window.onbeforeunload = function(e) {
-                //     var storage = window.localStorage;
-                //     storage.clear()
-                // }
                 this.$nextTick(function() {})
             },
             beforeMount() {

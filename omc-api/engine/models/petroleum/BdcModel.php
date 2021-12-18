@@ -119,13 +119,18 @@ class BdcModel extends BaseModel
         $district = $this->http->json->district??null;
         $region = $this->http->json->region??null;
         $depot = $this->http->json->depot??null;
+        $code = $this->http->json->code??null;
 
         $name = $this->http->json->name??null;
         if ($name===null) {
             $this->http->_403("Please provide BDC name");
         }
+        $code = $this->http->json->code??null;
+        if ($code===null) {
+            $this->http->_403("Please provide BDC code");
+        }
 
-        $this->db->query("SELECT * FROM ".self::$table." WHERE `name` = '$name'");
+        $this->db->query("SELECT * FROM ".self::$table." WHERE `name` = '$name' OR code ='$code'");
         if ($this->db->results() && $this->db->count >0) {
             $this->http->_403("This BDC name ($name) already exist");
         }
@@ -137,7 +142,8 @@ class BdcModel extends BaseModel
             "location"=>$location,
             "district"=>$district,
             "region"=>$region,
-            "depot"=>$depot
+            "depot"=>$depot,
+            "code"=>$code
         );
         if ($this->db->insert(self::$table, $data)) {
             $response['success'] = true;
@@ -160,13 +166,18 @@ class BdcModel extends BaseModel
         $district = $this->http->json->district??null;
         $region = $this->http->json->region??null;
         $depot = $this->http->json->depot??null;
+        $code = $this->http->json->code??null;
 
         $name = $this->http->json->name??null;
         if ($name===null) {
             $this->http->_403("Please provide BDC name");
         }
+        $code = $this->http->json->code??null;
+        if ($code===null) {
+            $this->http->_403("Please provide BDC code");
+        }
 
-        $this->db->query("SELECT * FROM ".self::$table." WHERE `name` = '$name' AND `id`!=$id");
+        $this->db->query("SELECT * FROM ".self::$table." WHERE (`name` = '$name' OR code = '$code') AND `id`!=$id");
         if ($this->db->results() && $this->db->count >0) {
             $this->http->_403("This BDC name ($name) already exist");
         }
@@ -178,7 +189,8 @@ class BdcModel extends BaseModel
             "location"=>$location,
             "district"=>$district,
             "region"=>$region,
-            "depot"=>$depot
+            "depot"=>$depot,
+            "code"=>$code,
         );
         if ($this->db->updateByID(self::$table, "id", $id, $data)) {
             $response['success'] = true;

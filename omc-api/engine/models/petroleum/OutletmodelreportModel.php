@@ -65,8 +65,8 @@ class OutletmodelreportModel extends BaseModel
             $response['success'] = true;
             foreach ($result as $key => &$value) {
                 $value->difference_volume = number_format($value->order_volume - $value->outlet_volume);
-                $value->order_volume = number_format($value->order_volume,1);
-                $value->outlet_volume = number_format($value->outlet_volume,1);
+                $value->order_volume = number_format($value->order_volume);
+                $value->outlet_volume = number_format($value->outlet_volume);
                 $value->order_amount = number_format($value->order_amount, 2);
                 $value->order_date = $date_range && $date_range->endDate?$dateRang:$this->date->month_year_day($value->order_date);
             }

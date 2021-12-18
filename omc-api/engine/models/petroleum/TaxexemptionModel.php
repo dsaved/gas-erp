@@ -22,7 +22,7 @@ class TaxexemptionModel extends BaseModel
         return $this->exemption(" WHERE `id`= $id");
     }
     
-    public function exemption($condition="")
+    public function exemption($condition=" WHERE 1 ")
     {
         $response = array();
         $result_per_page = $this->http->json->result_per_page??20;
@@ -30,19 +30,11 @@ class TaxexemptionModel extends BaseModel
         $search = $this->http->json->search??null;
         $omcfilter = $this->http->json->omcfilter??null;
         if ($search) {
-            if (empty($condition)) {
-                $condition .= " WHERE  (`omc` IN (SELECT id FROM `omc` WHERE `name` LIKE '%$search%') OR `tax_product` IN (SELECT id FROM `tax_schedule_products` WHERE `name` LIKE '%$search%') ) ";
-            }else{
-                $condition .= " AND  (`omc` IN (SELECT id FROM `omc` WHERE `name` LIKE '%$search%') OR `tax_product` IN (SELECT id FROM `tax_schedule_products` WHERE `name` LIKE '%$search%') ) ";
-            }
+            $condition .= " AND  (`company` LIKE '$search%' OR `company_tin` LIKE '$search%' OR `omc` IN (SELECT id FROM `omc` WHERE `name` LIKE '%$search%') OR `tax_product` IN (SELECT id FROM `tax_schedule_products` WHERE `name` LIKE '%$search%') ) ";
         }
 
         if ($omcfilter) {
-            if (empty($condition)) {
-                $condition .= " WHERE  `omc` = $omcfilter ";
-            }else{
-                $condition .= " AND  `omc` = $omcfilter ";
-            }
+            $condition .= " AND  `omc` = $omcfilter ";
         }
 
         $this->paging->table(self::$table);
@@ -86,7 +78,7 @@ class TaxexemptionModel extends BaseModel
         return $response;
     }
     
-    public function exemptions($condition="")
+    public function exemptions($condition=" WHERE 1")
     {
         $response = array();
         $result_per_page = $this->http->json->result_per_page??20;
@@ -94,19 +86,11 @@ class TaxexemptionModel extends BaseModel
         $search = $this->http->json->search??null;
         $omcfilter = $this->http->json->omcfilter??null;
         if ($search) {
-            if (empty($condition)) {
-                $condition .= " WHERE  (`omc` IN (SELECT id FROM `omc` WHERE `name` LIKE '%$search%') OR `tax_product` IN (SELECT id FROM `tax_schedule_products` WHERE `name` LIKE '%$search%') ) ";
-            }else{
-                $condition .= " AND  (`omc` IN (SELECT id FROM `omc` WHERE `name` LIKE '%$search%') OR `tax_product` IN (SELECT id FROM `tax_schedule_products` WHERE `name` LIKE '%$search%') ) ";
-            }
-        }
+            $condition .= " AND  (`company` LIKE '$search%' OR `company_tin` LIKE '$search%' OR `omc` IN (SELECT id FROM `omc` WHERE `name` LIKE '%$search%') OR `tax_product` IN (SELECT id FROM `tax_schedule_products` WHERE `name` LIKE '%$search%') ) ";
+       }
 
         if ($omcfilter) {
-            if (empty($condition)) {
-                $condition .= " WHERE  `omc` = $omcfilter ";
-            }else{
-                $condition .= " AND  `omc` = $omcfilter ";
-            }
+            $condition .= " AND  `omc` = $omcfilter ";
         }
 
         $this->paging->rawQuery("SELECT *, (SELECT name FROM `omc` WHERE `id`=".self::$table.".omc LIMIT 1) as omc, (SELECT name FROM `tax_schedule_products` WHERE `id`=".self::$table.".tax_product LIMIT 1) as tax_product FROM ".self::$table." $condition");
@@ -155,12 +139,24 @@ class TaxexemptionModel extends BaseModel
             $this->http->_403("Please provide tax exemption litters");
         }
 
+        $company = $this->http->json->company??null;
+        if ($company===null) {
+            $this->http->_403("Please provide tax exemption company");
+        }
+
+        $company_tin = $this->http->json->company_tin??null;
+        if ($company_tin===null) {
+            $this->http->_403("Please provide tax exemption company_tin");
+        }
+
         $data = array(
             "omc" =>  $omc,
             "date_from" =>  $this->date->sql_date($date_from),
             "date_to" =>  $this->date->sql_date($date_to),
             "tax_product"=>$tax_product,
             "litters"=>$litters,
+            "company"=>$company,
+            "company_tin"=>$company_tin,
         );
         if ($this->db->insert(self::$table, $data)) {
             $response['success'] = true;
@@ -202,6 +198,14 @@ class TaxexemptionModel extends BaseModel
         if ($litters===null) {
             $this->http->_403("Please provide tax exemption litters");
         }
+        $company = $this->http->json->company??null;
+        if ($company===null) {
+            $this->http->_403("Please provide tax exemption company");
+        }
+        $company_tin = $this->http->json->company_tin??null;
+        if ($company_tin===null) {
+            $this->http->_403("Please provide tax exemption company tin");
+        }
 
         $data = array(
             "omc" =>  $omc,
@@ -209,6 +213,8 @@ class TaxexemptionModel extends BaseModel
             "date_to" =>  $this->date->sql_date($date_to),
             "tax_product"=>$tax_product,
             "litters"=>$litters,
+            "company"=>$company,
+            "company_tin"=>$company_tin,
         );
         if ($this->db->updateByID(self::$table, "id", $id, $data)) {
             $response['success'] = true;

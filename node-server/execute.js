@@ -1313,26 +1313,19 @@ exports.importReceiptFileGhanaGov = function(data, callback) {
      * @param dbData the data to insert
      */
     async function insertSql(table, dbData) {
-        const names = require('./functions/names_map.js');
         var data = dbData;
         if (isNaN(data.amount)) {
             data.amount = 0;
         }
 
-        const OMC = await names.omc_name(data.omc);
-
-        if (OMC == null) {
-            return null;
-        }
-
         const insertData = {
             bank: data.bank,
-            omc: OMC.tin,
+            omc: data.tin,
             date: data.date,
             mode_of_payment: data.mode_of_payment,
+            receipt_number: data.receipt_no,
             amount: data.amount
         };
-        insertIgnore("omc", { name: OMC.name, tin: OMC.tin });
         return await insert(table, insertData);
     }
 
@@ -1704,9 +1697,8 @@ exports.importManifest = function(data, callback) {
 
         // TODO change if product name is provided instead of code
         const product = await names.product_name_by_code(data.product_type);
-        const BDC = await names.bdc_name(data.importer_name);
 
-        if (product == null || BDC == null) {
+        if (product == null) {
             return null;
         }
 
@@ -1718,11 +1710,11 @@ exports.importManifest = function(data, callback) {
             volume: data.volume,
             amount: data.amount,
             exporter_name: data.exporter_name,
-            importer_name: BDC.code,
+            importer_name: data.dbc_cd,
             ucr_number: data.ucr_number
         };
         insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
-        insertIgnore("bdc", { name: BDC.name, code: BDC.code });
+        insertIgnore("bdc", { name: data.importer_name, code: data.dbc_cd });
         return await insert(table, insertData);
     }
 
@@ -2102,9 +2094,8 @@ exports.importDeclaration = function(data, callback) {
 
         // TODO change if product name is provided instead of code
         const product = await names.product_name_by_code(data.product_type);
-        const BDC = await names.bdc_name(data.importer_name);
 
-        if (product == null || BDC == null) {
+        if (product == null) {
             return null;
         }
 
@@ -2113,7 +2104,7 @@ exports.importDeclaration = function(data, callback) {
             clearing_agent: data.clearing_agent,
             product_type: product.code,
             volume: data.volume,
-            importer_name: BDC.code,
+            importer_name: data.bdc_cd,
             ucr_number: data.ucr_number,
             amount: data.amount,
             hs_code: data.hs_code,
@@ -2122,7 +2113,7 @@ exports.importDeclaration = function(data, callback) {
             idf_amount: data.idf_amount
         };
         insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
-        insertIgnore("bdc", { name: BDC.name, code: BDC.code });
+        insertIgnore("bdc", { name: data.dbc_name, code: data.bdc_cd });
         return await insert(table, insertData);
     }
 
@@ -2377,7 +2368,6 @@ exports.importOrders = function(data, callback) {
                  *validate accounting_date and account must not be empty
                  */
                 var order_date = await convertDate(excelData[i]['order_date']);
-                console.log(order_date);
                 excelData[i]['order_date'] = order_date;
                 excelDataToInsert.push(excelData[i]);
                 lastKey++
@@ -2511,11 +2501,8 @@ exports.importOrders = function(data, callback) {
         }
 
         const product = await names.product_name_by_code(data.product_cd);
-        const BDC = await names.bdc_name(data.bdc_name);
-        const OMC = await names.omc_name(data.declarant_name);
-        const DEPOT = await names.depot_name(data.depot_name);
 
-        if (product == null || BDC == null || OMC == null || DEPOT == null) {
+        if (product == null) {
             return null;
         }
         const insertData = {
@@ -2528,423 +2515,14 @@ exports.importOrders = function(data, callback) {
             transaction_id: data.transaction_id,
             volume: data.order_quantity,
             unit_price: data.ex_ref_price,
-            depot: DEPOT.code,
-            bdc: BDC.code,
-            omc: OMC.tin
+            depot: data.depot_cd,
+            bdc: data.bdc_cd,
+            omc: data.declarant_tin
         };
         insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
-        insertIgnore("bdc", { name: BDC.name, code: BDC.code });
-        insertIgnore("omc", { name: OMC.name, tin: OMC.tin });
-        insertIgnore("depot", { name: DEPOT.name, code: DEPOT.code });
-        return await insert(table, insertData);
-    }
-
-
-    /**
-     * insert in to the database
-     * @param {String} table The name of the table to insert into
-     * @param {Object} data the object containing key and values to insert
-     */
-    async function insert(table, data) {
-        if (!table) return;
-        if (!data) return;
-        // set up an empty array to contain the  columns and values
-        let columns = [];
-        let values = [];
-        // Iterate over each key / value in the object
-        Object.keys(data).forEach(function(key) {
-            // if the value is an empty string, do not use
-            if ('' === data[key]) {
-                return;
-            }
-            // if we've made it this far, add the clause to the array of conditions
-            columns.push(`\`${key}\``);
-            values.push(`'${data[key]}'`);
-        });
-        // convert the columns array into a string of
-        columns = "(" + columns.join(' , ') + ")";
-        // convert the values array into a string 
-        values = "VALUES (" + values.join(' , ') + ");";
-        //construct the insert statement
-        const sql = `INSERT INTO \`${table}\`${columns} ${values}`;
-        const results = await query(sql).catch(error => {
-            console.log('\x1b[31m%s\x1b[0m', error)
-            callback(null, {
-                isDone: true,
-                id: proccessID
-            });
-        })
-        return results.insertId;
-    }
-
-
-    /**
-     * insert in to the database
-     * @param {String} table The name of the table to insert into
-     * @param {Object} data the object containing key and values to insert
-     */
-    async function insertIgnore(table, data) {
-        if (!table) return;
-        if (!data) return;
-        // set up an empty array to contain the  columns and values
-        let columns = [];
-        let values = [];
-        // Iterate over each key / value in the object
-        Object.keys(data).forEach(function(key) {
-            // if the value is an empty string, do not use
-            if ('' === data[key]) {
-                return;
-            }
-            // if we've made it this far, add the clause to the array of conditions
-            columns.push(`\`${key}\``);
-            values.push(`'${data[key]}'`);
-        });
-        // convert the columns array into a string of
-        columns = "(" + columns.join(' , ') + ")";
-        // convert the values array into a string 
-        values = "VALUES (" + values.join(' , ') + ");";
-        //construct the insert statement
-        const sql = `INSERT IGNORE INTO \`${table}\`${columns} ${values}`;
-        const results = await query(sql).catch(error => {
-            console.log('\x1b[31m%s\x1b[0m', error)
-            callback(null, {
-                isDone: true,
-                id: proccessID
-            });
-        })
-        return results.insertId;
-    }
-
-    /**
-     * update in to the database
-     * @param {String} table The name of the table to insert into
-     * @param {String} column the column in the db to mach
-     * @param val value used to match the column
-     * @param {Object} data the object containing key and values to insert
-     */
-    async function update(table, column, val, data) {
-        // set up an empty array to contain the WHERE conditions
-        let values = [];
-        // Iterate over each key / value in the object
-        Object.keys(data).forEach(function(key) {
-            // if the value is an empty string, do not use
-            if ('' === data[key]) {
-                return;
-            }
-            // if we've made it this far, add the clause to the array of conditions
-            values.push(`\`${key}\` = '${data[key]}'`);
-        });
-        // convert the where array into a string of , clauses
-        values = values.join(' , ');
-        // check the val type is string and set it as string 
-        if (typeof(val) == "string") {
-            val = `'${val}'`;
-        }
-
-        const sql = `UPDATE \`${table}\` SET ${values} WHERE \`${column}\`= ${val}`;
-        await query(sql).catch(error => {
-            console.log('\x1b[31m%s\x1b[0m', error)
-            callback(null, {
-                isDone: true,
-                id: proccessID
-            });
-        });
-    }
-
-    /**
-     * sql statemen query
-     * @param sqlQuery raw query
-     */
-    function query(sqlQuery) {
-        return new Promise(function(resolve, reject) {
-            sqlConn.query(sqlQuery, function(err, result, fields) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(result);
-                }
-            });
-        });
-    }
-
-    function getTime() {
-        var today = new Date();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        return time;
-    }
-}
-
-/**
- * import model for file import
- * @param data is a variable holding the current job
- * @param callback this is a method called when the job is finished in otherto terminate the process.
- */
-exports.importPreorders = function(data, callback) {
-    var module = require('./config');
-    var config = module.configs;
-    var mysql = require('mysql');
-    var XLSX = require('xlsx');
-    var fs = require('fs');
-    var path = require('path');
-    var proccessID = process.pid;
-    var total = 0;
-    var current = 0;
-
-    var sqlConn;
-    const configPath = path.join(process.cwd(), 'config.json');
-    fs.readFile(configPath, (error, db_config) => {
-        if (error) { console.log(error); return; }
-        // create mysql connection to database
-        sqlConn = mysql.createConnection(JSON.parse(db_config));
-        sqlConn.connect(function(err) {
-            if (err) console.log(err);
-            isSqlConnected = true;
-            console.log('mySql connected for child reconcile: ' + data.id);
-            start();
-        });
-    });
-
-    var excelData = [];
-    var excelDataToInsert = [];
-    var errorData = [];
-    var filePath = data.path;
-
-    const start = async() => {
-        try {
-            const workbook = XLSX.utils.book_new();
-            workbook.Props = {
-                Title: "Error Entries",
-                Subject: "Error Data",
-                Author: "Strategic Mobilisation Ghana Limited",
-                Company: "Strategic Mobilisation Ghana Limited",
-                CreatedDate: new Date(),
-            }
-            workbook.SheetNames.push("page1");
-
-            const getbook = XLSX.readFile(filePath, {
-                // dateNF: "DD-MMM-YYYY",
-                header: 1,
-                defval: "",
-                cellDates: true,
-                cellNF: true,
-                raw: true,
-                dateNF: 'yyyy-mm-dd;@'
-            });
-
-            var excelRow = [];
-            var pages = getbook.SheetNames;
-            for (var i = 0; i < pages.length; i++) {
-                var name = pages[i];
-                excelRow.push(XLSX.utils.sheet_to_row_object_array(getbook.Sheets[name], {
-                    raw: false,
-                    // range: 3,
-                    dateNF: 'yyyy-mm-dd;@'
-                }));
-            }
-            var excelRow = [].concat.apply([], excelRow);
-            await updateStatus("Cleaning data", "File read successfully - " + getTime());
-
-            /**
-             * modify array headers and remove special characters.
-             * add the location of the array in the excel file for latter access,
-             * incase an error occures
-             */
-            await asyncForEach(excelRow, async(excel, index) => {
-                var newObject = {};
-                for (var i in excel) {
-                    var newIndx = set_header(i);
-
-                    var value = excel[i].replace(/,/g, '');
-                    value = value.split("\\").join("");
-                    newObject[newIndx] = value;
-                    if (newIndx == "ex_ref_price") {
-                        var value = excel[i].replace(/,/g, '');
-                        value = value.split(" ").join("");
-                        if (value.includes("(") && value.includes(")")) {
-                            value = value.split("(").join("-");
-                            value = value.split(")").join("");
-                        }
-                        newObject[newIndx] = value;
-                    }
-                    newObject["location"] = index + 2;
-                }
-                excelData.push(newObject);
-            }).catch(error => {
-                console.log(error)
-                updateStatus("Error", "error cleaning file, it may contain invalid characters");
-                callback(null, { isDone: true, id: proccessID });
-            });
-
-            /**
-             * Delete the uploaded file.
-             * reason is for saving space
-             */
-            fs.unlink(filePath, (err) => {
-                if (err) console.log(' Error deleting file:: ' + err);
-            });
-            await updateStatus("Analyzing data", "done cleaning data - " + getTime());
-
-            var noErrorInFile = true,
-                lastKey = 0,
-                i = 0;
-            for (i = 0; i < excelData.length; i++) {
-                /**
-                 *validate accounting_date and account must not be empty
-                 */
-                var preorder_date = await convertDate(excelData[i]['pre_order_date']);
-                excelData[i]['pre_order_date'] = preorder_date;
-                excelDataToInsert.push(excelData[i]);
-                lastKey++
-            }
-            await updateStatus("Validating file", "Analyzing succesful - " + getTime());
-
-            if (noErrorInFile) {
-                total = excelDataToInsert.length;
-                errorData.push(Object.keys(excelData[0]));
-                await updateStatus("Creating Receipts", "Validation successful - " + getTime());
-                await asyncForEach(excelDataToInsert, async(insertal, index) => {
-                    current = index + 1;
-                    //insert data to db
-                    await update("file_upload_receipt_status", "id", data.id, { current: current, total: total });
-                    var result = await insertSql("petroleum_preorder", insertal);
-                    if (result == null) {
-                        errorData.push([
-                            current,
-                            insertal.price_window_id,
-                            insertal.declarant_name,
-                            insertal.declarant_tin,
-                            insertal.consignee_name,
-                            insertal.consignee_tin,
-                            insertal.order_no,
-                            insertal.transaction_id,
-                            insertal.order_status,
-                            insertal.product_cd,
-                            insertal.product_name,
-                            insertal.uom,
-                            insertal.pre_order_quantity,
-                            insertal.pre_order_date,
-                            insertal.order_quantity,
-                            insertal.order_date,
-                            insertal.bdc_name,
-                            insertal.depot_name,
-                            insertal.ex_ref_price,
-                            insertal.brv_no,
-                            insertal.brv_capacity,
-                            insertal.amount_payable,
-                            insertal.amount_expected,
-                        ]);
-                    }
-                });
-
-                if (errorData.length > 1) {
-                    workbook.Sheets["page1"] = XLSX.utils.aoa_to_sheet(errorData);
-                    //save the worksheet for download
-                    var wookbookFile = '../omc-api/downloads/docs-error/errored-file' + (+new Date()) + '.xlsx';
-                    // write the workbook object to a file
-                    XLSX.writeFile(workbook, wookbookFile);
-                    await updateStatus("completed", wookbookFile, "completed");
-                } else {
-                    await updateStatus("completed", "All done - " + getTime(), "completed");
-                }
-            }
-        } catch (error) {
-            console.error(error);
-            await updateStatus("Error", "error occured: proccessing file eror- " + getTime(), "completed");
-        } finally {
-            callback(null, { isDone: true, id: proccessID });
-            console.log("task done ");
-        }
-    }
-
-    /**
-     * async function forEach loop
-     * @param array the array to loop through
-     * @param arrayCallback returns the value, index and array itself to be used
-     */
-    async function asyncForEach(array, arrayCallback) {
-        for (let index = 0; index < array.length; index++) {
-            await arrayCallback(array[index], index, array);
-        }
-    }
-
-    async function convertDate(inputDate) {
-        if (!inputDate) return inputDate;
-
-        function pad(s) { return (s < 10) ? '0' + s : s; }
-        var date = inputDate.split('/');
-        var d = new Date(date[2], date[1], date[0]) //y/m/d
-        return [pad(d.getFullYear()), pad(d.getMonth()), d.getDate()].join('/')
-    }
-
-    /**
-     * Set the excel header to approprate format 
-     * @param value the value of the header that needs formating
-     */
-    function set_header(value) {
-        value = value.toString().trim();
-        value = value.split(" ").join("_");
-        value = value.split("-").join("_");
-        value = value.split("\r").join("");
-        value = value.split("\n").join("");
-        value = value.split("\\").join("");
-        value = value.replace(/\./, '');
-        return value.toLowerCase();
-    }
-
-    /**
-     * update the current job status
-     * @param status the current status of the job
-     * @param jobstatus the overall status of the job
-     */
-    async function updateStatus(status, desc, jobstatus) {
-        var status = status || "",
-            desc = desc || "",
-            jobstatus = jobstatus || "processing";
-
-        const udateData = {
-            description: desc,
-            status: status,
-            total: total,
-            current: current,
-            processing: jobstatus
-        };
-        await update('file_upload_receipt_status', 'id', data.id, udateData);
-    }
-
-    /**
-     * db insert statement
-     * @param table the name of the table to insert the record to 
-     * @param dbData the data to insert
-     */
-    async function insertSql(table, dbData) {
-        const names = require('./functions/names_map.js');
-
-        var data = dbData;
-        if (isNaN(data.ex_ref_price)) {
-            data.ex_ref_price = 0;
-        }
-
-        const product = await names.product_name_by_code(data.product_cd);
-        const BDC = await names.bdc_name(data.bdc_name);
-        const OMC = await names.omc_name(data.declarant_name);
-        const DEPOT = await names.depot_name(data.depot_name);
-
-        if (product == null || BDC == null || OMC == null || DEPOT == null) {
-            return null;
-        }
-        const insertData = {
-            preorder_date: data.pre_order_date,
-            product_type: product.code,
-            reference_number: data.order_no,
-            volume: data.pre_order_quantity,
-            depot: DEPOT.code,
-            bdc: BDC.code,
-            omc: OMC.tin
-        };
-        insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
-        insertIgnore("bdc", { name: BDC.name, code: BDC.code });
-        insertIgnore("omc", { name: OMC.name, tin: OMC.tin });
-        insertIgnore("depot", { name: DEPOT.name, code: DEPOT.code });
+        insertIgnore("bdc", { name: data.bdc_name, code: data.bdc_cd });
+        insertIgnore("omc", { name: data.declarant_name, tin: data.declarant_tin });
+        insertIgnore("depot", { name: data.depot_name, code: data.depot_cd });
         return await insert(table, insertData);
     }
 
@@ -3320,11 +2898,8 @@ exports.importWaybills = function(data, callback) {
         }
 
         const product = await names.product_name_by_code(data.product);
-        const BDC = await names.bdc_name(data.bdc);
-        const OMC = await names.omc_name(data.omc);
-        const DEPOT = await names.depot_name(data.depot);
 
-        if (product == null || BDC == null || OMC == null || DEPOT == null) {
+        if (product == null) {
             return null;
         }
         const insertData = {
@@ -3335,14 +2910,14 @@ exports.importWaybills = function(data, callback) {
             transporter: data.transporter,
             destination: data.destination,
             driver: data.driver,
-            depot: DEPOT.code,
-            bdc: BDC.code,
-            omc: OMC.tin
+            depot: data.depot_cd,
+            bdc: data.bdc_cd,
+            omc: data.omc_tin
         };
         insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
-        insertIgnore("bdc", { name: BDC.name, code: BDC.code });
-        insertIgnore("omc", { name: OMC.name, tin: OMC.tin });
-        insertIgnore("depot", { name: DEPOT.name, code: DEPOT.code });
+        insertIgnore("bdc", { name: data.bdc, code: data.bdc_cd });
+        insertIgnore("omc", { name: data.omc, tin: data.omc_tin });
+        insertIgnore("depot", { name: data.depot, code: data.depot_cd });
         return await insert(table, insertData);
     }
 
@@ -3600,7 +3175,6 @@ exports.importICUMSDeclarations = function(data, callback) {
                 if (null === excelData[i]['receive_bank_nm'] || excelData[i]['receive_bank_nm'] === undefined) {
                     const errorBank = excelData[i];
                     errorData.push([
-                        errorBank.row_number,
                         errorBank.price_window_id,
                         errorBank.boe_no,
                         errorBank.declarant_name,
@@ -3624,6 +3198,18 @@ exports.importICUMSDeclarations = function(data, callback) {
                     //we dont want this files to be added to the system so we skip them
                     continue;
                 }
+
+                if (isNaN(excelData[i]['amount_payable'])) {
+                    excelData[i]['amount_payable'] = 0;
+                }
+                await insert('window_refference', {
+                        window: excelData[i]['price_window_id'],
+                        omc: excelData[i]['declarant_tin'],
+                        product_cd: excelData[i]['product_cd'],
+                        amount: excelData[i]['amount_payable'],
+                        payment_receipt_no: excelData[i]['payment_receipt_no']
+                    })
+                    //TODO store window in db and use for analytics
                 var found = excelDataToInsert.findIndex(x => x.price_window_id === excelData[i]['price_window_id'] && x.declarant_name === excelData[i]['declarant_name'] && x.product_cd === excelData[i]['product_cd']);
                 if (found !== -1) {
                     excelDataToInsert[found]['item_quantity'] = parseFloat(excelDataToInsert[found]['item_quantity']) + parseFloat(excelData[i]['item_quantity']);
@@ -3755,9 +3341,8 @@ exports.importICUMSDeclarations = function(data, callback) {
         }
 
         const product = await names.product_name_by_code(data.product_cd);
-        const OMC = await names.omc_name(data.declarant_name);
 
-        if (product == null || OMC == null) {
+        if (product == null) {
             return null;
         }
 
@@ -3765,10 +3350,9 @@ exports.importICUMSDeclarations = function(data, callback) {
             window_code: data.price_window_id,
             amount: data.amount_payable,
             product_type: product.code,
-            omc: OMC.tin
+            omc: data.declarant_tin
         };
         insertIgnore("tax_schedule_products", { name: product.name, code: product.code });
-        insertIgnore("omc", { name: OMC.name, tin: OMC.tin });
         return await insert(table, insertData);
     }
 
@@ -5088,6 +4672,8 @@ exports.compilePenalty = function(data, callback) {
     }
 }
 
+
+// EXPORT RECORD SECTION
 /**
  * export model for file export
  * @param data is a variable holding the current job
@@ -6168,7 +5754,7 @@ exports.exportPetroleumDeptGood = function(data, callback) {
             const exportData = JSON.parse(data.ids);
 
             var dataHeaders = [
-                "Date",
+                "Window Code",
                 "OMC",
                 "Receipt Amount",
                 "ICUMS Declaration Amount",
@@ -6202,22 +5788,14 @@ exports.exportPetroleumDeptGood = function(data, callback) {
             var on = "";
             var status = exportData.status || null;
             var omc = exportData.omc || null;
-            var date_range = exportData.date_range || null;
-            var hasRange = false;
-            var dateRang = "";
-
-            if (date_range) {
-                if (date_range.endDate && date_range.startDate) {
-                    const startDate = sql_date(date_range.startDate);
-                    const endDate = sql_date(date_range.endDate);
-                    condition += ` AND (date_from >= '${startDate}' AND date_to <= '${endDate}') `;
-                    dateRang = month_year_day(startDate) + " - " + month_year_day(endDate);
-                    hasRange = true;
-                }
-            }
+            var window_code = exportData.window_code || null;
 
             if (omc && omc != "All") {
                 condition += ` AND omc = '${omc}'`;
+            }
+
+            if (window_code && window_code != "All") {
+                condition += ` AND window_code = '${window_code}'`;
             }
 
             if (status && status != "All") {
@@ -6243,19 +5821,15 @@ exports.exportPetroleumDeptGood = function(data, callback) {
             await asyncForEach(exportDataUT, async(exportData, index) => {
                 current = index + 1;
                 await executeStatement("Call update_file_export(" + data.id + ", " + current + "," + total + " ,'spliting records into various categories','processing','');");
-                var _date = exportData.date;
-                if (hasRange) {
-                    _date = date_range;
-                }
+                var window_code = exportData.window_code;
                 const amount = parseFloat(exportData.amount || 0);
                 const dcl_amount_icum = parseFloat(exportData.dcl_amount_icum || 0);
                 const exp_dcl_amount = parseFloat(exportData.exp_dcl_amount || 0);
                 const difference_amount_receipt_icums = amount - dcl_amount_icum;
                 const difference_amount_expected_icums = amount - exp_dcl_amount;
-                const date = date_range && date_range.endDate ? dateRang : exportData.date;
 
                 const newObject = [
-                    date,
+                    window_code,
                     exportData.omc,
                     `${amount}`,
                     `${dcl_amount_icum}`,

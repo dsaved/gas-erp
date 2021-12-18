@@ -7,7 +7,11 @@
         <div class="vs-component vs-con-table stripe vs-table-secondary">
           <header class="header-table vs-table--header my-3">
             <div
-              class="flex flex-wrap-reverse items-center data-list-btn-container"
+              class="
+                flex flex-wrap-reverse
+                items-center
+                data-list-btn-container
+              "
             >
               <vs-button
                 color="dark"
@@ -19,7 +23,11 @@
               >
             </div>
             <div
-              class="flex flex-wrap-reverse items-center data-list-btn-container"
+              class="
+                flex flex-wrap-reverse
+                items-center
+                data-list-btn-container
+              "
             >
               <vs-button
                 color="danger"
@@ -28,12 +36,17 @@
                 v-if="canDelete() && records.length > 0"
                 @click="deleteWarnSingle"
                 icon="icon-trash"
-                >Remove Receipts</vs-button
+                >Remove
+                {{ selectedRecords.length > 0 ? "Selected" : "All" }}</vs-button
               >
             </div>
             <vs-spacer />
             <div
-              class="flex flex-wrap-reverse items-center data-list-btn-container"
+              class="
+                flex flex-wrap-reverse
+                items-center
+                data-list-btn-container
+              "
             >
               <vs-input
                 id="text"
@@ -53,6 +66,7 @@
                       <vs-checkbox v-model="selectAll">#</vs-checkbox>
                     </th>
                     <th scope="col">OMC</th>
+                    <th scope="col">TIN</th>
                     <th scope="col">Bank</th>
                     <th scope="col">Mode of Payment</th>
                     <th scope="col" class="text-right">Amount</th>
@@ -78,6 +92,9 @@
                     </td>
                     <td>
                       {{ record.omc | title }}
+                    </td>
+                    <td>
+                      {{ record.omc_tin }}
                     </td>
                     <td>
                       {{ record.bank | title }}
@@ -202,7 +219,7 @@
           upload-button-lable="Upload Receipts"
           type="relief"
           color="primary"
-          max-size="3072"
+          max-size="10072"
           description="Allowed XLSX and XLX, Max size of 3MB"
           upload-url="/ghana_gov/import/"
           allowed-file-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
@@ -416,7 +433,9 @@ export default {
       }
       Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        html: `<p>you are about to remove ${
+          this.selectedRecords.length > 0 ? "selected" : "all"
+        } reciepts from the system!</p><span class="text-warning">You won't be able to revert this! </span>`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3cc879",
@@ -431,7 +450,7 @@ export default {
     delete() {
       this.showLoading("Removing OMC Receipts, hang on a bit...");
       this.post("/ghana_gov/delete", {
-        id: this.omcid,
+        ids: this.selectedRecords,
       })
         .then((response) => {
           this.closeLoading();

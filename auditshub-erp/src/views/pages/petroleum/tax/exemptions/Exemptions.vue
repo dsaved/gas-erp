@@ -82,7 +82,8 @@
                   <th scope="col" class="td-check">
                     <vs-checkbox v-model="selectAll">#</vs-checkbox>
                   </th>
-                  <th scope="col">OMC</th>
+                  <th scope="col">Nominated OMC</th>
+                  <th scope="col">Exempted Company</th>
                   <th scope="col">Product</th>
                   <th scope="col">Litters</th>
                   <th scope="col">From</th>
@@ -105,6 +106,7 @@
                     >
                   </td>
                   <td>{{ record.omc | title }}</td>
+                  <td>{{ record.company | title }}</td>
                   <td>{{ record.tax_product | title }}</td>
                   <td>{{ record.litters }}</td>
                   <td>

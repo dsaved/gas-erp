@@ -1,33 +1,21 @@
 <template>
   <div>
-    <vx-card title="Dept Potfolio / Good Standing">
+    <vx-card title="Debt Potfolio / Good Standing">
       <p></p>
       <div class="vs-component vs-con-table stripe vs-table-secondary">
         <div class="w-full flex mb-4">
           <div class="w-1/4 px-2">
-            <span>Date Range</span>
+            <span>Window</span>
             <div class="w-full">
-              <date-range-picker
-                :opens="'right'"
-                :closeOnEsc="true"
-                :locale-data="{ firstDay: 1, format: 'dd-m-yyyy' }"
-                :singleDatePicker="false"
-                :linked-calendars="false"
-                :showWeekNumbers="false"
-                :showDropdowns="true"
-                :autoApply="true"
-                :alwaysShowCalendars="true"
-                :appendToBody="true"
-                v-model="date_range"
-                class="w-full"
-              >
-                <template
-                  v-slot:input="picker"
-                >
-                  {{ picker.startDate | date(true) }} -
-                  {{ picker.endDate | date(true) }}
-                </template>
-              </date-range-picker>
+               <ajax-select
+              placeholder="Select Condition"
+              url="/ghana_gov/options_list"
+              :include="['All']"
+              :clearable="false"
+              :dir="$vs.rtl ? 'rtl' : 'ltr'"
+              :selected="window_code"
+              v-on:update:data="window_code = $event"
+            />
             </div>
           </div>
           <div class="w-1/3 px-2">
@@ -124,8 +112,9 @@
                   <th scope="col" class="td-check">
                     <vs-checkbox v-model="selectAll">#</vs-checkbox>
                   </th>
-                  <th scope="col">Date</th>
+                  <th scope="col">Window</th>
                   <th scope="col">OMC</th>
+                  <th scope="col">TIN</th>
                   <th scope="col" class="text-right">Receipt Amount</th>
                   <th scope="col" class="text-right">ICUMS Declaration<br/>Amount</th>
                   <th scope="col" class="text-right">Expected Declaration<br/>Amount</th>
@@ -147,10 +136,13 @@
                     >
                   </td>
                   <td>
-                    {{ record.date }}
+                    {{ record.window_code }}
                   </td>
                   <td>
                       {{ record.omc }}
+                  </td>
+                  <td>
+                      {{ record.omc_tin }}
                   </td>
                   <td class="text-right">
                     {{ record.amount }}
@@ -338,10 +330,7 @@ export default {
       status: "All",
       nagatives: "All",
       group_by: ["BDC"],
-      date_range: {
-        startDate: null,
-        endDate: null,
-      },
+      window_code: 'All',
       records: [],
       search_timer: null,
     };
@@ -397,10 +386,7 @@ export default {
       this.group_by = ["BDC"];
       this.status = "All";
       this.nagatives = "All";
-      this.date_range = {
-        startDate: null,
-        endDate: null,
-      };
+      this.window_code = 'All';
     },
     number: function (num) {
       return this.numbering + num;
@@ -417,7 +403,7 @@ export default {
         omc: this.omc,
         status: this.status,
         nagatives: this.nagatives,
-        date_range: this.date_range,
+        window_code: this.window_code,
       })
         .then((response) => {
           this.closeLoading();
@@ -522,7 +508,7 @@ export default {
           omc: this.omc,
           status: this.status,
           nagatives: this.nagatives,
-          date_range: this.date_range,
+          window_code: this.window_code,
         }),
       })
         .then((response) => {

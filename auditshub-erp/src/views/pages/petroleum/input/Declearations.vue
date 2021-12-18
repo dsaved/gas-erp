@@ -45,7 +45,8 @@
               v-if="canDelete()"
               @click="deleteWarn()"
               icon="icon-trash"
-              >Remove All</vs-button
+              >Remove
+              {{ selectedRecords.length > 0 ? "Selected" : "All" }}</vs-button
             >
           </div>
           <vs-spacer />
@@ -97,13 +98,13 @@
                     {{ record.declaration_date | dateyear(true) }}
                   </td>
                   <td>
-                      {{ record.clearing_agent }}
+                    {{ record.clearing_agent }}
                   </td>
                   <td>
-                      {{ record.product_type}}
+                    {{ record.product_type }}
                   </td>
                   <td>
-                    {{ record.volume  }}
+                    {{ record.volume }}
                   </td>
                   <td class="text-right">
                     {{ record.amount }}
@@ -121,10 +122,10 @@
                     {{ record.cleared_date | dateyear(true) }}
                   </td>
                   <td>
-                    {{ record.idf_application_number  }}
+                    {{ record.idf_application_number }}
                   </td>
                   <td class="text-right">
-                    {{ record.idf_amount  }}
+                    {{ record.idf_amount }}
                   </td>
                 </tr>
               </tbody>
@@ -146,7 +147,12 @@
             >
               <vs-spacer />
               <div
-                class="vs-col vs-pagination--mb vs-xs-12 vs-sm-12 vs-lg-12 md:flex"
+                class="
+                  vs-col
+                  vs-pagination--mb
+                  vs-xs-12 vs-sm-12 vs-lg-12
+                  md:flex
+                "
                 style="
                   justify-content: flex-end;
                   align-items: center;
@@ -188,8 +194,8 @@
         ></vs-progress>
       </p>
       <p>
-        Please select the file containing the <b>Declaration</b> list you wish to
-        import.
+        Please select the file containing the <b>Declaration</b> list you wish
+        to import.
       </p>
       <p v-if="hasdata(importDesc)">
         <span
@@ -218,7 +224,7 @@
           upload-button-lable="Upload Declaration"
           type="relief"
           color="primary"
-          max-size="5072"
+          max-size="10072"
           description="Allowed XLSX and XLX, Max size of 5MB"
           upload-url="/declarations/import/"
           allowed-file-type="excel"
@@ -278,13 +284,13 @@ export default {
       }
     });
   },
-	beforeRouteLeave (to, from, next) {
-		if (this.statuscheck) {
-			clearInterval(this.statuscheck)
-			this.statuscheck = null
-		}
-		next()
-	},
+  beforeRouteLeave(to, from, next) {
+    if (this.statuscheck) {
+      clearInterval(this.statuscheck);
+      this.statuscheck = null;
+    }
+    next();
+  },
   components: {
     Datepicker,
   },
@@ -471,7 +477,9 @@ export default {
       }
       Swal.fire({
         title: "Are you sure?",
-        html: `<p>you are about to remove all declarations from the system!</p><span class="text-warning">You won't be able to revert this! </span>`,
+        html: `<p>you are about to remove ${
+          this.selectedRecords.length > 0 ? "selected" : "all"
+        }  declarations from the system!</p><span class="text-warning">You won't be able to revert this! </span>`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -485,7 +493,9 @@ export default {
     },
     delete: function () {
       this.showLoading("Deleting Declaration, hang on a bit...");
-      this.post("/declarations/delete", {})
+      this.post("/declarations/delete", {
+        ids: this.selectedRecords,
+      })
         .then((response) => {
           this.closeLoading();
           if (response.data.success == true) {

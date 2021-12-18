@@ -24,7 +24,7 @@ class Ghana_govModel extends BaseModel
             $value = implode("", explode(",", $search));
             $condition .= " AND  (`omc` = (SELECT tin FROM omc WHERE name LIKE '%$search%' LIMIT 1) OR `bank` LIKE '%$search%' OR `mode_of_payment`)";
         }
-        $this->paging->rawQuery("SELECT *, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc FROM $table $condition Order By `id`");
+        $this->paging->rawQuery("SELECT *, omc omc_tin, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc FROM $table $condition Order By `id`");
         $this->paging->result_per_page($result_per_page);
         $this->paging->pageNum($page);
         $this->paging->execute();
@@ -99,7 +99,14 @@ class Ghana_govModel extends BaseModel
     public function delete()
     {
         $response = array();
-        $done = $this->db->query("TRUNCATE `".self::$table."`;");
+        $ids = $this->http->json->ids;
+        if ($ids) {
+            $id = implode(',', array_map('intval', $ids));
+            $done = $this->db->query("DELETE FROM ".self::$table." WHERE `id` IN ($id)");
+        }
+        else{
+            $done = $this->db->query("TRUNCATE `".self::$table."`;");
+        }
         if ($done) {
             $response['success'] = true;
             $response['message'] = "Data removed successfully";
@@ -118,23 +125,15 @@ class Ghana_govModel extends BaseModel
 
         $omc = $this->http->json->omc??null;
         $status = $this->http->json->status??null;
-        $date_range = $this->http->json->date_range??null;
+        $window_code = $this->http->json->window_code??null;
 
-        $dateRang = "";
-        $hasRange = false;
-
-        if ($date_range) {
-            if ($date_range->endDate && $date_range->startDate) {
-                $startDate = $this->date->sql_date($date_range->startDate);
-                $endDate = $this->date->sql_date($date_range->endDate);
-                $condition .= " AND (date_from >= '$startDate' AND date_to <= '$endDate') ";
-                $dateRang = $this->date->month_year_day($startDate) ." - ". $this->date->month_year_day($endDate);
-                $hasRange = true;
-            }
-        }
 
         if ($omc && $omc!="All") {
             $condition .= " AND omc = '$omc'";
+        }
+
+        if ($window_code && $window_code!="All") {
+            $condition .= " AND window_code = '$window_code'";
         }
 
         if ($status && $status!="All") {
@@ -146,7 +145,7 @@ class Ghana_govModel extends BaseModel
             }
         }
 
-        $query = "SELECT *, 'All time' date, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc FROM petroleum_good_standing $condition GROUP BY omc ORDER BY date";
+        $query = "SELECT *,omc omc_tin, (SELECT name FROM omc WHERE tin=omc LIMIT 1) omc FROM petroleum_good_standing $condition GROUP BY omc ORDER BY window_code";
 
         $this->paging->rawQuery($query);
         $this->paging->result_per_page($result_per_page);
@@ -159,15 +158,11 @@ class Ghana_govModel extends BaseModel
         if (!empty($result)) {
             $response['success'] = true;
             foreach ($result as $key => &$value) {
-                if($hasRange){
-                    $value->date = $date_range;
-                }
                 $value->difference_amount_receipt_icums = number_format($value->amount - $value->dcl_amount_icum, 2);
                 $value->difference_amount_expected_icums = number_format($value->amount - $value->exp_dcl_amount, 2);
                 $value->amount = number_format($value->amount, 2);
                 $value->exp_dcl_amount = number_format($value->exp_dcl_amount, 2);
                 $value->dcl_amount_icum = number_format($value->dcl_amount_icum, 2);
-                $value->date = $date_range && $date_range->endDate?$dateRang:$value->date;
                 $value->flagged  = ((int)$value->flagged===1)? true:false;
             }
             $response["reports"] = $result;
@@ -180,33 +175,28 @@ class Ghana_govModel extends BaseModel
         return $response;
     }
     
-    // public function expected_declaration($omc, $date)
-    // {
-    //     $result_total = 0;
-    //     $computes = $this->getWaybills($omc, $date);
-    //     if ($computes)foreach ($computes as $key => $compute) {
-    //         $total = 0;
-    //         $this->db->query("SELECT tw.*, tt.name tax FROM tax_window tw JOIN `tax_type` tt ON tw.tax_type=tt.id WHERE tw.`tax_product` = '{$compute->product_type}' AND tw.`date_from`<= '{$compute->date}' AND tw.`date_to` >= '{$compute->date}'");
-    //         $queryResult = $this->db->results();
-    //         if($queryResult && $this->db->count > 0){
-    //             foreach ($queryResult as $key => $tax) {
-    //                 $total += $compute->volume * $tax->rate;
-    //             }
-    //         }
-    //         $result_total+=$total;
-    //     }
-    //     return $result_total;
-    // }
-
-    // public function getWaybills($omc, $date){
-    //     if($date === "All time"){
-    //         $this->db->query("SELECT * FROM petroleum_waybill WHERE omc='$omc'");
-    //     }else{
-    //         $startDate = $this->date->sql_date($date->startDate);
-    //         $endDate = $this->date->sql_date($date->endDate);
-    //         $this->db->query("SELECT * FROM petroleum_waybill WHERE omc='$omc' AND date BETWEEN '$startDate' AND '$endDate'");
-    //     }
-    //     // var_dump($this->db);
-    //     return $this->db->results();
-    // }
+    public function options()
+    {
+        $response = array();
+        $result_per_page = $this->http->json->result_per_page??40;
+        $search = $this->http->json->search??null;
+        $condition = "";
+        if ($search) {
+            $condition = " WHERE (`window_code` LIKE '%$search%') ";
+        }
+        $this->paging->rawQuery("SELECT DISTINCT window_code FROM petroleum_good_standing $condition Order By window_code");
+        $this->paging->result_per_page($result_per_page);
+        $this->paging->pageNum(1);
+        $this->paging->execute();
+        $this->paging->reset();
+            
+        $results = $this->paging->results();
+        if (!empty($results)) {
+            foreach ($results as $data) {
+                array_push($response, $data->window_code);
+            }
+        }
+        return $response;
+    }
+    
 }

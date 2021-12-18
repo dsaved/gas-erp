@@ -25,8 +25,8 @@ class Files{
 	public $video_format = array('mpg','mpeg','avi','wmv','mov','rm','ram','swf','flv','webm','ogg','mp4','mkv','vlc');
 	public $audio_format = array('acc','midi','mid','rm','wav','mp3','m4a');
 	public $image_format = array('webp','bmp','jpg','jpeg','png','gif','svg','png');
-	public $all_format = array('zip','rar','pdf','docx','doc','txt','xls','xlsx','mpg','mpeg','avi','wmv','mov','rm','ram','swf','flv','webm','ogg','mp4','mkv','vlc','webp','bmp','jpg','jpeg','png','gif','svg','acc','midi','mid','wma','wav','mp3','webp','bmp','jpg','jpeg','png','gif','svg','m4a');
-	public $files_format = array('pdf','docx','doc','txt','xls','xlsx');
+	public $all_format = array('zip','csv','rar','pdf','docx','doc','txt','xls','xlsx','mpg','mpeg','avi','wmv','mov','rm','ram','swf','flv','webm','ogg','mp4','mkv','vlc','webp','bmp','jpg','jpeg','png','gif','svg','acc','midi','mid','wma','wav','mp3','webp','bmp','jpg','jpeg','png','gif','svg','m4a');
+	public $files_format = array('pdf','docx','doc','txt','xls','xlsx','csv');
 	public $other = array('zip','rar');
 
 	public static function getInstance(){

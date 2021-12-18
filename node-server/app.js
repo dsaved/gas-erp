@@ -16,7 +16,6 @@ var workerFarm = require('worker-farm'),
         'importManifest',
         'importDeclaration',
         'importOrders',
-        'importPreorders',
         'importWaybills',
         'importICUMSDeclarations',
         'exportFile',
@@ -66,13 +65,13 @@ fs.readFile(configPath, (error, db_config) => {
         // run every 2 hours
         setInterval(() => {
             helpers.download_files();
-            computeGoodStandingsAndWait(sqlConn);
         }, 60 * 120 * 1000);
 
-        // run every 1 hour
+        // run every 5 minutes
         setInterval(() => {
             computeICUMSDifferencesAndWait(sqlConn);
-        }, 60 * 60 * 1000);
+            computeExpectedDeclarationAndWait(sqlConn);
+        }, 60 * 15 * 1000);
 
         // run every 1 hour 30 minutes
         setInterval(() => {
@@ -129,6 +128,7 @@ async function computeExpectedDeclarationAndWait(sqlConn) {
         console.log("Computing Exp. Declaration")
         isComputingEP = true;
         await compute_declarations(sqlConn);
+        await computeGoodStandingsAndWait(sqlConn);
         isComputingEP = false;
     } else {
         console.log("Exp. Declaration still computing... adding to pending.")
@@ -319,20 +319,6 @@ function fileReceiptImport() {
                                 config.log(err);
                             } else {
                                 workers.importOrders(childJobDescription, function(err, result) {
-                                    if (result.isDone) {
-                                        process.kill(result.id);
-                                        currentReceiptJobIm--;
-                                    }
-                                })
-                                currentReceiptJobIm++;
-                            }
-                        });
-                    } else if (childJobDescription.type === "petroleum_preorder_imp") {
-                        sqlConn.query(sqlQuery, function(err, chatsHid, fields) {
-                            if (err) {
-                                config.log(err);
-                            } else {
-                                workers.importPreorders(childJobDescription, function(err, result) {
                                     if (result.isDone) {
                                         process.kill(result.id);
                                         currentReceiptJobIm--;

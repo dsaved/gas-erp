@@ -38,4 +38,11 @@ class Ghana_gov extends SecureController {
           $result
       )->json();
     }
+  
+    public function options_list(){
+      $result = $this->model->options();
+      $this->http->reply(
+          $result
+      )->json();
+    }
 }
