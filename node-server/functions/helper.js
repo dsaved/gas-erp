@@ -1,5 +1,6 @@
 const names = require('./names_map.js');
 var fs = require('fs')
+var pumping_product = false;
 
 module.exports = {
     //should run only once a day
@@ -133,6 +134,8 @@ module.exports = {
     },
     //pump products
     async pump_product(sqlConn) {
+        if (pumping_product) return;
+        pumping_product = true
         const capture_date = previousDay();
         const inflow = `./data/InflowData_${capture_date}.json`;
         const outflow = `./data/OutflowData_${capture_date}.json`;
@@ -257,7 +260,9 @@ module.exports = {
                     fs.unlinkSync(outletData)
                 }
             }
+            pumping_product = false
         } catch (err) {
+            pumping_product = false
             console.error("no new data available" + err)
         }
 

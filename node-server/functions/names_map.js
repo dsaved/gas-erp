@@ -1027,6 +1027,7 @@ module.exports = {
             "kerosene": { name: "KEROSENE", code: "2710114200" },
             "kero": { name: "KEROSENE", code: "2710114200" },
             "naphtha": { name: "NAPHTHA", code: "2710111000" },
+            "naptha": { name: "NAPHTHA", code: "2710111000" },
             "lpg": { name: "LPG", code: "2711130000" },
             "rfo": { name: "RFO", code: "2710115900" },
             "ago Mines": { name: "AGO", code: "2710115110" },
