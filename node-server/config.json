@@ -2,7 +2,7 @@
     "host": "localhost",
     "user": "root",
     "password": "",
-    "database": "audits_master_db",
+    "database": "00000000000",
     "debug": false,
     "dateStrings": "date",
     "multipleStatements": true
