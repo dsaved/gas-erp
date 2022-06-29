@@ -202,8 +202,7 @@
           v-for="(desc, index) in importDesc"
           :key="index"
           v-html="formatDesc(desc)"
-          ><br
-        /></span>
+          ></span>
         <vs-button
           color="dark"
           icon-pack="feather"

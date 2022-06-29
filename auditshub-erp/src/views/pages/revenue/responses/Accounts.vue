@@ -166,8 +166,7 @@
           v-for="(desc, index) in importDesc"
           :key="index"
           v-html="formatDesc(desc)"
-          ><br
-        /></span>
+          ></span>
       </p>
       <p v-if="hasdata(exportStatus)" class="text-info loadingDot">
         {{ exportStatus }}
@@ -412,7 +411,7 @@ export default {
 		async exportWarn () {
 			const { value: filename } = await Swal.fire({
 				title: 'Export Account Responses',
-				text: 'You are about to export responses in his account!',
+				text: 'You are about to export responses in this account!',
 				icon: 'question',
 				input: 'text',
 				showCancelButton: true,
